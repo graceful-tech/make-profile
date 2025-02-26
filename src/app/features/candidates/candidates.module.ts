@@ -10,7 +10,7 @@ import { AddCandidatesComponent } from './add-candidates/add-candidates.componen
 
 @NgModule({
   declarations: [
-    
+   
   ],
   imports: [
     CommonModule,

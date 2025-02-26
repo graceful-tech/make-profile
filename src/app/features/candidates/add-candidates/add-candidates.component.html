@@ -1,3 +1,5 @@
+<router-outlet></router-outlet>
+
 <div class="wrapper">
   <div class="hurecom-wrapper">
 <form [formGroup]="candidateForm">
@@ -67,7 +69,7 @@
       </div>
   
   
-      <div class="col-12 md:col-6 lg:col-3" *ngIf="display('languagesKnown')">
+      <div class="col-12 md:col-6 lg:col-3">
         <div class="field-wrapper">
           <label [ngClass]="{ required: isRequired('languagesKnown') }">Languages Known</label>
           <div class="input-wrapper">
@@ -76,11 +78,37 @@
             </p-multiSelect>
           </div>
         </div>
-        <small class="error-message" *ngIf="candidateForm.controls['languagesKnown'].invalid && showError">
-          Languages Known is required</small>
       </div>
+
+      <div class="col-12 md:col-6 lg:col-3">
+        <div class="field-wrapper">
+          <label>LinkedIn</label>
+          <div class="input-wrapper">
+            <input type="text" pInputText formControlName="email" />
+          </div>
+        </div>
+      </div>
+
     </div>
-  
+   
+   
+    <app-make-profile-divider></app-make-profile-divider>
+    <div class="section-heading mt-3">
+      <div>Skills</div>
+    </div>
+
+    <div class="grid">
+       <div class="col-12">
+        <div class="field-wrapper">
+         <label>Skills</label>
+          <div class="input-wrapper">
+           <p-chips separator="," formControlName="skills" [addOnBlur]="true" [addOnTab]="true"></p-chips>
+          </div>
+        </div>
+       </div>
+    </div>
+
+
     <app-make-profile-divider></app-make-profile-divider>
     <div class="section-heading mt-3">
       <div>Professional Details</div>
@@ -125,9 +153,18 @@
     
             <div class="col-12 md:col-6 lg:col-3">
               <div class="field-wrapper">
-                <label>Total Experience (in Years)</label>
+                <label>Start Year</label>
                 <div class="input-wrapper">
-                  <input pKeyFilter="num" [maxlength]="5" pInputText formControlName="totalWorkExperience" />
+                  <p-calendar formControlName="yearStartDate" placeholder="Select From Date"></p-calendar>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12 md:col-6 lg:col-3">
+              <div class="field-wrapper">
+                <label>End Year</label>
+                <div class="input-wrapper">
+                  <p-calendar formControlName="yearEndDate" placeholder="Select From Date"></p-calendar>
                 </div>
               </div>
             </div>
@@ -163,10 +200,19 @@
                     </div>
                   </div>
                 </div>
+
+                <div class="col-12 md:col-6 lg:col-3">
+                  <div class="field-wrapper">
+                    <label>Project Role</label>
+                    <div class="input-wrapper">
+                      <input type="text" pInputText formControlName="projectName" />
+                    </div>
+                  </div>
+                </div>
     
                 <div class="col-12 md:col-6 lg:col-3">
                   <div class="field-wrapper">
-                    <label>Description</label>
+                    <label>Project Description</label>
                     <div class="input-wrapper">
                       <textarea rows="2" type="text" pInputText formControlName="description"></textarea>
                     </div>
@@ -225,18 +271,18 @@
     
             <div class="col-12 md:col-6 lg:col-3">
               <div class="field-wrapper">
-                <label>Degree Started</label>
+                <label>Start Year</label>
                 <div class="input-wrapper">
-                  <input     pInputText formControlName="degreeStarted" />
+                  <p-dropdown [options]="yearsList" placeholder="Select Year" formControlName="startYear"></p-dropdown>
                 </div>
               </div>
             </div>
 
             <div class="col-12 md:col-6 lg:col-3">
               <div class="field-wrapper">
-                <label>Degree Ended</label>
+                <label>End year</label>
                 <div class="input-wrapper">
-                  <input     pInputText formControlName="degreeEnded" />
+                  <p-dropdown [options]="yearsList" placeholder="Select Year" formControlName="endYear"></p-dropdown>
                 </div>
               </div>
             </div>
@@ -245,7 +291,7 @@
               <div class="field-wrapper">
                 <label>Percentage</label>
                 <div class="input-wrapper">
-                  <input     pInputText formControlName="percentage" />
+                  <input placeholder="Ex:88.8" pKeyFilter="num" type="number" [min]="0.0" [max]="99.99" pInputText formControlName="Percentage" />
                 </div>
               </div>
             </div>
@@ -256,13 +302,95 @@
             <p-button type="button" label="Remove Qualification"  (click)="removeQualification(i)"></p-button>
           </div>
         </div>
+        <div class="col-12 md:col-6 lg:col-3">
+          <p-button type="button" label="+ Add Qualifications" (click)="addQualication()"></p-button>
+        </div>
       </div>
     
-      <div class="col-12 md:col-6 lg:col-3">
-        <p-button type="button" label="+ Add Qualifications" (click)="addQualication()"></p-button>
+      <app-make-profile-divider></app-make-profile-divider>
+      <div class="section-heading mt-3">
+        <div>Course & Certificates</div>
       </div>
 
-  </form>
+      <div formArrayName="certificates">
+        <div *ngFor="let certificate of certificateControls.controls; let i = index" [formGroupName]="i" class="experience-container">
 
+          <div class="grid">
+             <div class="col-12 md:col-6 lg:col-3">
+                <div class="field-wrapper">
+                  <label>Course Name</label>
+                <div class="input-wrapper">
+                   <input type="text" pInputText formControlName="courseName" />
+              </div>
+            </div>
+          </div>
+  
+           <div class="col-12 md:col-6 lg:col-3">
+              <div class="field-wrapper">
+                 <label>Start Year</label>
+                   <div class="input-wrapper">
+                     <p-dropdown [options]="yearsList" placeholder="Select Year" formControlName="courseStartDate"></p-dropdown>
+                   </div>
+              </div>
+           </div>
+
+            <div class="col-12 md:col-6 lg:col-3">
+                <div class="field-wrapper">
+                    <label>Course End year</label>
+                       <div class="input-wrapper">
+                           <p-dropdown [options]="yearsList" placeholder="Select Year" formControlName="courseEndDate"></p-dropdown>
+                        </div>
+                </div>
+            </div>
+
+         </div>
+          <div class="col-12 md:col-6 lg:col-3" style="padding-left: 15px;" *ngIf="i>0">
+               <p-button type="button" label="Remove Qualification"  (click)="removeCertificates(i)"></p-button>
+           </div>
+         </div>
+           <div class="col-12 md:col-6 lg:col-3">
+              <p-button type="button" label="+ Add Couse" (click)="addCertificates()"></p-button>
+           </div>
+       </div>
+
+
+       <app-make-profile-divider></app-make-profile-divider>
+      <div class="section-heading mt-3">
+        <div>Achievements & Awards</div>
+      </div>
+
+      <div formArrayName="achievements">
+         <div *ngFor="let certificate of achievementsControls.controls; let i = index" [formGroupName]="i" class="experience-container">
+
+           <div class="grid">
+              <div class="col-12 md:col-6 lg:col-3">
+                <div class="field-wrapper">
+                 <label>Course Name</label>
+                  <div class="input-wrapper">
+                    <input type="text" pInputText formControlName="achievementsName" />
+                  </div>
+                </div>
+              </div>
+ 
+             <div class="col-12 md:col-6 lg:col-3">
+              <div class="field-wrapper">
+                <label>Start Year</label>
+                   <div class="input-wrapper">
+                    <p-dropdown [options]="yearsList" placeholder="Select Year" formControlName="achievementsDate"></p-dropdown>
+                   </div>
+               </div>
+             </div>
+     
+           </div>
+               <div class="col-12 md:col-6 lg:col-3" style="padding-left: 15px;" *ngIf="i>0">
+                  <p-button type="button" label="Remove Achievements"  (click)="removeaddAchievements(i)"></p-button>
+               </div>
+        </div>
+            <div class="col-12 md:col-6 lg:col-3">
+               <p-button type="button" label="+ Add Achievements" (click)="addAchievements()"></p-button>
+            </div>
+      </div>   
+             
+   </form>
  </div> 
 </div> 

@@ -94,3 +94,7 @@
   border-top: 1px dashed #aaa;
   margin: 15px 0;
 }
+
+::ng-deep .custom-dialog .p-dialog-footer .p-button {
+  margin: 0 10px; /* Adds space between Yes and No buttons */
+}

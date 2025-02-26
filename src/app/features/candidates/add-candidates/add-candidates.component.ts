@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { DialogService } from 'primeng/dynamicdialog';
 import { ApiService } from '../../../services/api.service';
@@ -13,6 +13,7 @@ import { Candidate } from '../../../models/candidates/candidate.model';
 import { CommonModule } from '@angular/common';
 import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ConfirmationService } from 'primeng/api';
 
 @Component({
   standalone: false,
@@ -49,6 +50,7 @@ export class AddCandidatesComponent {
   requirement: any;
   userName: any;
   isFresher: boolean = false;
+  yearsList: any[] = [];
   
 
   constructor(
@@ -59,11 +61,15 @@ export class AddCandidatesComponent {
     private dialog: DialogService,
     private ngxLoader: NgxUiLoaderService,
     private route: ActivatedRoute,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private router: Router
   ) {}
+
+  
 
   ngOnInit() {
     this.createCandidateForm();
+    this.generateYearList();
    // this.createQualification();
     // this.getGenderList();
     // this.getLanguages();
@@ -75,7 +81,7 @@ export class AddCandidatesComponent {
     this.candidateForm.controls['isFresher'].valueChanges.subscribe(
       (response: boolean) => {
         // this.patchProfessionalDetails(response);
-        // this.toggleFresher(response);
+          this.toggleFresher(response);
       }
     );
 
@@ -100,10 +106,10 @@ export class AddCandidatesComponent {
 
   ngAfterViewInit() {}
 
-  // toggleFresher(event: any) {
-  //   event.checked === true ?
-  //   this.candidateForm.get('isFresher')?.setValue(true):this.candidateForm.get('isFresher')?.setValue(false)
-  // }
+  toggleFresher(isFresher: boolean) {
+    isFresher=== true ?
+    this.candidateForm.get('isFresher')?.setValue(true):this.candidateForm.get('isFresher')?.setValue(false)
+  }
 
   createCandidateForm() {
     this.candidateForm = this.fb.group({
@@ -139,7 +145,9 @@ export class AddCandidatesComponent {
       byCandidate: [false],
       clientLocationId: [''],
       experiences: this.fb.array([this.createExperience()]),
-      qualification: this.fb.array([this.createQualification()])
+      qualification: this.fb.array([this.createQualification()]),
+      certificates: this.fb.array([this.createCertificates()]),
+      achievements: this.fb.array([this.createAchievements()])
     });
   }
 
@@ -500,7 +508,8 @@ export class AddCandidatesComponent {
   }
 
   removeExperience(index: number): void {
-    if (this.experienceControls.length > 1) {
+    const confirmDelete = window.confirm("Are you sure you want to remove this Experience?");
+    if (confirmDelete && this.experienceControls.length > 1) {
       this.experienceControls.removeAt(index);
     }
   }
@@ -524,8 +533,10 @@ export class AddCandidatesComponent {
   }
 
   removeProject(experienceIndex: number, projectIndex: number): void {
+
+    const confirmDelete = window.confirm("Are you sure you want to remove this Project?");
     const projectArray = this.getProjects(experienceIndex);
-    if (projectArray.length > 1) {
+    if (confirmDelete && projectArray.length > 1) {
       projectArray.removeAt(projectIndex);
     }
   }
@@ -535,8 +546,8 @@ export class AddCandidatesComponent {
     return this.fb.group({
       instutionName: [''],
       department: [''],
-      degreeStarted: [''],
-      degreeEnded:[''],
+      startYear : [''],
+      endYear:[''],
       percentage:['']
     });
   }
@@ -549,12 +560,67 @@ export class AddCandidatesComponent {
     this.qualificationControls.push(this.createQualification());
   }
   
-
   removeQualification(index: number){
-    if (this.qualificationControls.length > 1) {
+    const confirmDelete = window.confirm("Are you sure you want to remove this qualification?");
+    if (confirmDelete && this.qualificationControls.length > 1) {
       this.qualificationControls.removeAt(index);
       this.cdr.detectChanges();
     }
   }
+
+  generateYearList() {
+    const currentYear = new Date().getFullYear();
+    for (let year = currentYear; year >= 1980; year--) {
+      this.yearsList.push({ label: year.toString(), value: year });
+    }
+  }
+
+  get certificateControls() {
+    return this.candidateForm.get('certificates') as FormArray;
+  }
+
+  addCertificates(){
+    this.certificateControls.push(this.createCertificates());
+  }
+
+  removeCertificates(index: number){
+    const confirmDelete = window.confirm("Are you sure you want to remove this certificates?");
+    if (confirmDelete && this.certificateControls.length > 1) {
+      this.certificateControls.removeAt(index);
+    }
+  }
+
+  createCertificates(): FormGroup  {
+    return this.fb.group({
+      courseName: [''],
+      courseStartDate: [''],
+      courseEndDate : [''],
+    });
+  }
+
+  get  achievementsControls() {
+    return this.candidateForm.get('achievements') as FormArray;
+  }
+
+  addAchievements(){
+    this.achievementsControls.push(this.createAchievements());
+  }
+
+  removeaddAchievements(index: number){
+    const confirmDelete = window.confirm("Are you sure you want to remove this achievements?");
+    if (confirmDelete && this.achievementsControls.length > 1) {
+      this.achievementsControls.removeAt(index);
+    }
+  }
+
+  createAchievements(): FormGroup  {
+    return this.fb.group({
+      achievementsName: [''],
+      achievementsDate: [''],
+    });
+  }
+
+  
+
 
 }

@@ -3,7 +3,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared/shared.module';
@@ -12,12 +12,17 @@ import { NgIdleModule } from '@ng-idle/core';
 import { AppComponent } from './app.component';
 import { AddCandidatesComponent } from './features/candidates/add-candidates/add-candidates.component';
 import { LayoutModule } from './layout/layout.module';
+import { InterceptorService } from './services/interceptor.service';
+import { LandingPageComponent } from './layout/landing-page/landing-page.component';
 
 
 
 @NgModule({
   declarations: [
     AppComponent,
+    LandingPageComponent,
+    AddCandidatesComponent
+   
     
   ],
   imports: [
@@ -35,6 +40,7 @@ import { LayoutModule } from './layout/layout.module';
     DynamicDialogRef,
     DynamicDialogConfig,
     DatePipe,
+    ConfirmationService,
   //   { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true },
   //   {
   //     provide: LocationStrategy,
@@ -50,8 +56,8 @@ import { LayoutModule } from './layout/layout.module';
   //     deps: [PlatformLocation], // Inject PlatformLocation as dependency
   //   },
   // ],
-  // { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true },
-  // { provide: LocationStrategy, useClass: HashLocationStrategy },
+  { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true },
+  { provide: LocationStrategy, useClass: HashLocationStrategy },
   ],
   bootstrap: [AppComponent]
 })

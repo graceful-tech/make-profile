@@ -14,7 +14,7 @@ import { AddCandidatesComponent } from '../features/candidates/add-candidates/ad
 @NgModule({
   declarations: [
     MakeProfileDividerComponent,
-    AddCandidatesComponent
+   
   ],
   imports: [
     CommonModule,
@@ -31,7 +31,6 @@ import { AddCandidatesComponent } from '../features/candidates/add-candidates/ad
     ReactiveFormsModule,
     ClipboardModule,
     MakeProfileDividerComponent,
-    AddCandidatesComponent
   ]
 })
 export class SharedModule { }
