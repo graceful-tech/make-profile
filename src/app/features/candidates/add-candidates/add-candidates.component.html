@@ -1,0 +1,268 @@
+<div class="wrapper">
+  <div class="hurecom-wrapper">
+<form [formGroup]="candidateForm">
+    <div class="section-heading">Personal Details</div>
+    <div class="grid">
+      <div class="col-12 md:col-6 lg:col-3">
+        <div class="field-wrapper">
+          <label class="required">Mobile Number</label>
+          <div class="input-wrapper">
+            <input type="text"  pKeyFilter="int"  [maxlength]="10"  pInputText formControlName="mobileNumber" />
+            <!--
+                      <p-autoComplete pKeyFilter="int" [maxlength]="10" formControlName="mobileNumber"
+                          [suggestions]="mobileNumbers" (completeMethod)="searchMobileNumbers($event)"
+                          (onSelect)="getCandidateDetailsByMobileNumber($event)"
+                          (onBlur)="checkIfDetailsExists(candidateForm.value.mobileNumber)" [lazy]="true">
+                      </p-autoComplete>
+                      -->
+          </div>
+        </div>
+        <small class="error-message" *ngIf="candidateForm.controls['mobileNumber'].invalid && showError">
+          Mobile Number is required</small>
+      </div>
+  
+      <div class="col-12 md:col-6 lg:col-3">
+        <div class="field-wrapper">
+          <label class="required">Candidate Name</label>
+          <div class="input-wrapper">
+            <input type="text" pInputText formControlName="name" />
+          </div>
+        </div>
+        <small  class="error-message" *ngIf="candidateForm.controls['name'].invalid && showError"> Candidate Name is required</small>
+      </div>
+  
+      <div class="col-12 md:col-6 lg:col-3">
+        <div class="field-wrapper">
+          <label class="required">Email</label>
+          <div class="input-wrapper">
+            <input type="text" pInputText formControlName="email" />
+          </div>
+        </div>
+        <small class="error-message" *ngIf="candidateForm.controls['email'].invalid && showError" >
+          Email is required</small>
+      </div>
+  
+      <div class="col-12 md:col-6 lg:col-3">
+        <div class="field-wrapper">
+          <label class="required">Gender</label>
+          <div class="input-wrapper">
+            <p-dropdown [options]="genderList" optionLabel="displayValue" optionValue="dataValue"  placeholder="Select Gender"
+              formControlName="gender">
+            </p-dropdown>
+          </div>
+        </div>
+        <small class="error-message" *ngIf="candidateForm.controls['gender'].invalid && showError">
+          Gender is required</small>
+      </div>
+  
+      <div class="col-12 md:col-6 lg:col-3">
+        <div class="field-wrapper">
+          <label>Alt Mobile Number</label>
+          <div class="input-wrapper">
+            <input type="text"pKeyFilter="int" [maxlength]="10" pInputText formControlName="alternateMobileNumber"/>
+          </div>
+        </div>
+        <small class="error-message" *ngIf="candidateForm.controls['alternateMobileNumber'].invalid && showError">
+          Alt Mobile Number is required</small>
+      </div>
+  
+  
+      <div class="col-12 md:col-6 lg:col-3" *ngIf="display('languagesKnown')">
+        <div class="field-wrapper">
+          <label [ngClass]="{ required: isRequired('languagesKnown') }">Languages Known</label>
+          <div class="input-wrapper">
+            <p-multiSelect [options]="languages" defaultLabel="Select Languages" [showHeader]="false" optionLabel="displayValue"
+              optionValue="dataValue" formControlName="languagesKnown">
+            </p-multiSelect>
+          </div>
+        </div>
+        <small class="error-message" *ngIf="candidateForm.controls['languagesKnown'].invalid && showError">
+          Languages Known is required</small>
+      </div>
+    </div>
+  
+    <app-make-profile-divider></app-make-profile-divider>
+    <div class="section-heading mt-3">
+      <div>Professional Details</div>
+    </div>
+  
+    <div class="grid">
+      <div class="col-12 md:col-6 lg:col-3">
+        <div class="fresher-checkbox pb-3">
+          <p-checkbox
+            [binary]="true"
+            inputId="fresher"
+            formControlName="isFresher"
+          ></p-checkbox>
+          <label for="fresher">Fresher</label>
+        </div>
+      </div>
+    </div>
+  
+    <ng-container *ngIf="!candidateForm.get('isFresher')?.value">
+      <div formArrayName="experiences">
+        <div *ngFor="let experience of experienceControls.controls; let i = index" [formGroupName]="i" class="experience-container">
+          
+          <!-- Experience Details -->
+          <div class="grid">
+            <div class="col-12 md:col-6 lg:col-3">
+              <div class="field-wrapper">
+                <label>Company Name</label>
+                <div class="input-wrapper">
+                  <input type="text" pInputText formControlName="companyName" />
+                </div>
+              </div>
+            </div>
+    
+            <div class="col-12 md:col-6 lg:col-3">
+              <div class="field-wrapper">
+                <label>Designation</label>
+                <div class="input-wrapper">
+                  <input type="text" pInputText formControlName="designation" />
+                </div>
+              </div>
+            </div>
+    
+            <div class="col-12 md:col-6 lg:col-3">
+              <div class="field-wrapper">
+                <label>Total Experience (in Years)</label>
+                <div class="input-wrapper">
+                  <input pKeyFilter="num" [maxlength]="5" pInputText formControlName="totalWorkExperience" />
+                </div>
+              </div>
+            </div>
+    
+            <div class="col-12 md:col-6 lg:col-3" *ngIf="i>0">
+              <p-button type="button" label="Remove Experience" (click)="removeExperience(i)"></p-button>
+            </div>
+          </div>
+    
+          <!-- Project Details -->
+          <div formArrayName="projects">
+            <div class="bysection-heading mt-4">
+              <div>Project Details</div>
+            </div>
+    
+            <div *ngFor="let project of getProjects(i).controls; let j = index" [formGroupName]="j" class="project-container">
+              
+              <div class="grid">
+                <div class="col-12 md:col-6 lg:col-3">
+                  <div class="field-wrapper">
+                    <label>Project Name</label>
+                    <div class="input-wrapper">
+                      <input type="text" pInputText formControlName="projectName" />
+                    </div>
+                  </div>
+                </div>
+    
+                <div class="col-12 md:col-6 lg:col-3">
+                  <div class="field-wrapper">
+                    <label>Project Skills</label>
+                    <div class="input-wrapper">
+                      <p-chips separator="," formControlName="skills" [addOnBlur]="true" [addOnTab]="true"></p-chips>
+                    </div>
+                  </div>
+                </div>
+    
+                <div class="col-12 md:col-6 lg:col-3">
+                  <div class="field-wrapper">
+                    <label>Description</label>
+                    <div class="input-wrapper">
+                      <textarea rows="2" type="text" pInputText formControlName="description"></textarea>
+                    </div>
+                  </div>
+                </div>
+    
+                <div class="col-12 md:col-6 lg:col-3" *ngIf="j>0">
+                  <p-button type="button" label="Remove Project" (click)="removeProject(i, j)"></p-button>
+                </div>
+
+              </div>
+
+              <div class="col-12 md:col-6 lg:col-3" *ngIf="j === getProjectCount(i) - 1">
+                <p-button type="button" label="+ Add Project" (click)="addProject(i)"></p-button>
+              </div>
+
+              <hr class="sub-section-divider" />
+
+            </div>
+          </div>
+           
+          <div class="col-12 md:col-6 lg:col-3" *ngIf="i === getExperienceCount(i) -1" >
+            <p-button type="button" label="+ Add Experience" (click)="addExperience()"></p-button>
+          </div>
+        </div>
+        
+      </div>
+    </ng-container>
+
+    <app-make-profile-divider></app-make-profile-divider>
+    <div class="section-heading mt-3">
+      <div>Qualification Details</div>
+    </div>
+   
+      <div formArrayName="qualification">
+        <div *ngFor="let qualifications of qualificationControls.controls; let i = index" [formGroupName]="i" class="experience-container">
+          
+          <div class="grid">
+            <div class="col-12 md:col-6 lg:col-3">
+              <div class="field-wrapper">
+                <label>Instution Name</label>
+                <div class="input-wrapper">
+                  <input type="text" pInputText formControlName="instutionName" />
+                </div>
+              </div>
+            </div>
+    
+            <div class="col-12 md:col-6 lg:col-3">
+              <div class="field-wrapper">
+                <label>Department</label>
+                <div class="input-wrapper">
+                  <input type="text" pInputText formControlName="department" />
+                </div>
+              </div>
+            </div>
+    
+            <div class="col-12 md:col-6 lg:col-3">
+              <div class="field-wrapper">
+                <label>Degree Started</label>
+                <div class="input-wrapper">
+                  <input     pInputText formControlName="degreeStarted" />
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12 md:col-6 lg:col-3">
+              <div class="field-wrapper">
+                <label>Degree Ended</label>
+                <div class="input-wrapper">
+                  <input     pInputText formControlName="degreeEnded" />
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12 md:col-6 lg:col-3">
+              <div class="field-wrapper">
+                <label>Percentage</label>
+                <div class="input-wrapper">
+                  <input     pInputText formControlName="percentage" />
+                </div>
+              </div>
+            </div>
+    
+           
+          </div>
+          <div class="col-12 md:col-6 lg:col-3" style="padding-left: 15px;" *ngIf="i>0">
+            <p-button type="button" label="Remove Qualification"  (click)="removeQualification(i)"></p-button>
+          </div>
+        </div>
+      </div>
+    
+      <div class="col-12 md:col-6 lg:col-3">
+        <p-button type="button" label="+ Add Qualifications" (click)="addQualication()"></p-button>
+      </div>
+
+  </form>
+
+ </div> 
+</div> 
