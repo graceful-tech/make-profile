@@ -1,19 +1,21 @@
-import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { CommonModule } from "@angular/common";
+import { MakeProfileDividerComponent } from "./components/make-profile-divider/make-profile-divider.component";
+import { PrimengModule } from "../primeng/primeng.module";
+import { HttpClientModule } from "@angular/common/http";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { NgxUiLoaderModule } from "ngx-ui-loader";
 import { ClipboardModule } from 'ngx-clipboard';
-import { NgxUiLoaderModule } from 'ngx-ui-loader';
-import { MakeProfileDividerComponent } from './components/make-profile-divider/make-profile-divider.component';
-import { CheckboxModule } from 'primeng/checkbox';
-import { PrimengModule } from '../primeng/primeng.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AddCandidatesComponent } from '../features/candidates/add-candidates/add-candidates.component';
+import { NgModule } from "@angular/core";
+import { MessageComponent } from "./message/message.component";
+import { ClickedOutsideDirective } from "./directives/clicked-outside.directive";
 
-
-
+ 
 @NgModule({
   declarations: [
-    MakeProfileDividerComponent,
+   MakeProfileDividerComponent,
+   ClickedOutsideDirective,
+   MessageComponent
+   
    
   ],
   imports: [
@@ -22,15 +24,18 @@ import { AddCandidatesComponent } from '../features/candidates/add-candidates/ad
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    NgxUiLoaderModule
+    NgxUiLoaderModule,
   ],
   exports: [
-    PrimengModule,
-    HttpClientModule,
+    CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    HttpClientModule,
     ClipboardModule,
+    PrimengModule,
     MakeProfileDividerComponent,
+    ClickedOutsideDirective,
+    MessageComponent
   ]
 })
 export class SharedModule { }
