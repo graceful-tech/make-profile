@@ -1,0 +1,64 @@
+<div class="align">
+    <div class="register-wrapper">
+        <div class="heading">
+            <span>Create Account</span>
+            <span class="login"><a routerLink="/login">Login</a></span>
+        </div>
+        <form [formGroup]="createAccountForm">
+            <div class="grid">
+                <div class="col-12 ">
+                    <div class="field-wrapper">
+                        <label class="required">Name</label>
+                        <div class="input-wrapper">
+                            <input type="text" pInputText formControlName="name" />
+                        </div>
+                    </div>
+                    <small class="error-message" *ngIf="createAccountForm.controls['name'].invalid && showError">
+                        Name is required</small>
+                </div>
+                <div class="col-12 ">
+                    <div class="field-wrapper">
+                        <label class="required">Mobile Number</label>
+                        <div class="input-wrapper">
+                            <input type="text" maxlength="10" pInputText formControlName="mobileNumber" />
+                        </div>
+                    </div>
+                    <small class="error-message"
+                        *ngIf="createAccountForm.controls['mobileNumber'].invalid && showError">
+                        Mobile Number is required</small>
+                </div>
+                <div class="col-12 ">
+                    <div class="field-wrapper">
+                        <label class="required">Email</label>
+                        <div class="input-wrapper">
+                            <input type="text" pInputText formControlName="email" />
+                        </div>
+                    </div>
+                    <small class="error-message" *ngIf="createAccountForm.controls['email'].invalid && showError">
+                        Email is required</small>
+                </div>
+                <div class="col-12 ">
+                    <div class="field-wrapper">
+                        <label class="required">Password</label>
+                        <div class="input-wrapper">
+                            <p-password formControlName="password" [toggleMask]="true" autocomplete="one-time-code">
+                            </p-password>
+                        </div>
+                    </div>
+
+                    <small class="error-message" *ngIf="createAccountForm.controls['password'].invalid && showError">
+                        Password is required</small>
+                </div>
+            </div>
+            <div class="grid">
+                <div class="col-12">
+                    <div class="field-wrapper">
+                        <p-button
+                            (onClick)="createAccount()">Create Account
+                        </p-button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

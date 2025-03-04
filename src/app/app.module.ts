@@ -1,4 +1,4 @@
-import { DatePipe, HashLocationStrategy, LocationStrategy, PathLocationStrategy, PlatformLocation } from '@angular/common';
+import { CommonModule, DatePipe, HashLocationStrategy, LocationStrategy, PathLocationStrategy, PlatformLocation } from '@angular/common';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -7,13 +7,16 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared/shared.module';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgIdleModule } from '@ng-idle/core';
 import { AppComponent } from './app.component';
 import { AddCandidatesComponent } from './features/candidates/add-candidates/add-candidates.component';
 import { LayoutModule } from './layout/layout.module';
 import { InterceptorService } from './services/interceptor.service';
 import { LandingPageComponent } from './layout/landing-page/landing-page.component';
+import { ButtonModule } from 'primeng/button';
+import { PasswordModule } from 'primeng/password';
+import { DropdownModule } from 'primeng/dropdown';
 
 
 
@@ -21,7 +24,7 @@ import { LandingPageComponent } from './layout/landing-page/landing-page.compone
   declarations: [
     AppComponent,
     LandingPageComponent,
-    AddCandidatesComponent
+    AddCandidatesComponent,
    
     
   ],
@@ -30,8 +33,13 @@ import { LandingPageComponent } from './layout/landing-page/landing-page.compone
     AppRoutingModule,
     SharedModule,
     BrowserAnimationsModule,
+    FormsModule,
     ReactiveFormsModule,
     LayoutModule,
+    ButtonModule,
+    PasswordModule,
+    DropdownModule,
+    CommonModule,
     NgIdleModule.forRoot()
   ],
   providers: [

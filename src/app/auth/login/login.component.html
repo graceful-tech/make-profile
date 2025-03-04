@@ -1,0 +1,51 @@
+<div class="login-wrapper">
+    <div style="width: 350px;background: #fff; padding: 25px;">
+        <div class="heading">
+            <span>Login</span>
+            <span class="create-account"><a routerLink="/create-account">Create Account</a></span>
+        </div>
+        <form [formGroup]="loginForm">
+            <div class="grid">
+                <div class="col-12">
+                    <div class="field-wrapper">
+                        <label class="required">Mobile Number</label>
+                        <div class="input-wrapper">
+                            <input type="text" maxlength="10" pInputText formControlName="mobileNumber" />
+                        </div>
+                    </div>
+                    <small class="error-message"
+                        *ngIf="loginForm.controls['mobileNumber'].invalid && showError">
+                        Mobile Number is required</small>
+                </div>
+            </div>
+            <div class="grid">
+                <div class="col-12">
+                    <div class="field-wrapper">
+                        <label class="required">Password</label>
+                        <div class="input-wrapper">
+                            <p-password formControlName="password" [toggleMask]="true" autocomplete="one-time-code">
+                            </p-password>
+                        </div>
+                    </div>
+                    <small class="error-message" *ngIf="loginForm.controls['password'].invalid && showError">
+                        Password is required</small>
+                </div>
+            </div>
+            <div class="grid">
+                <div class="col-6">
+                    <div class="field-wrapper">
+                        <p-button type="submit" [label]="loadingFlag ? 'Please Wait..' : 'Login'"
+                            [disabled]="loadingFlag" (onClick)="login()">
+                        </p-button>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="forgot-password">
+                        <a href="javascript:void(0)" routerLink="/request-password-reset">Forgot Password</a>
+                    </div>
+                </div>
+            </div>
+            <small class="error-message" *ngIf="error">{{error}}</small>
+        </form>
+    </div>
+</div>

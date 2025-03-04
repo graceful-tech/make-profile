@@ -20,4 +20,6 @@ goToCandidatePage(){
 
   this.router.navigate(['/candidate']);
 }
+
+
 }

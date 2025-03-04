@@ -6,6 +6,9 @@ import { DialogService } from 'primeng/dynamicdialog';
 import { BehaviorSubject } from 'rxjs';
 // import { MessageComponent } from '../shared/message/message.component';
 import { ApiService } from './api.service';
+import { MessageComponent } from '../shared/message/message.component';
+import { LoginComponent } from '../auth/login/login.component';
+import { LoginPopupComponent } from '../shared/popup/login-popup/login-popup.component';
 
 @Injectable({
   providedIn: 'root',
@@ -55,7 +58,7 @@ export class GlobalService {
   performanceConfiguration: Array<any> = [];
   dashboardConfiguration: Array<any> = [];
   statusCategory: any;
-  idleTimoutsUserId:any
+  idleTimoutsUserId: any
   taskBar$: any;
 
   constructor(
@@ -64,7 +67,7 @@ export class GlobalService {
     private api: ApiService,
     private datePipe: DatePipe,
     private messageService: MessageService
-  ) {}
+  ) { }
 
   public setDuplicateJobAppliedId(data: any) {
     this.duplicateJobApplied.next(data);
@@ -111,15 +114,25 @@ export class GlobalService {
     this.taskbar.next(data);
   }
 
-  // showMessage(status: string, message: string) {
-  //   this.dialog.open(MessageComponent, {
-  //     data: {
-  //       message: message,
-  //     },
-  //     closable: false,
-  //     header: status,
-  //   });
-  // }
+  showMessage(status: string, message: string) {
+    this.dialog.open(MessageComponent, {
+      data: {
+        message: message,
+      },
+      closable: false,
+      header: status,
+    });
+  }
+
+  openLogin(status: string, message: string) {
+    this.dialog.open(LoginPopupComponent, {
+      data: {
+        message: message,
+      },
+      closable: false,
+      header: status,
+    });
+  }
 
   parseTimeToString(time: any) {
     const date = new Date(time);
@@ -142,7 +155,7 @@ export class GlobalService {
   }
 
   loadData() {
-    this.getCustomerDetails();
+    // this.getCustomerDetails();
     this.getRequirementCustomFields();
     this.getStatusList();
     this.getAmountStatusList();
@@ -150,16 +163,16 @@ export class GlobalService {
     this.getTodayEvents();
   }
 
-  getCustomerDetails() {
-    const route = 'customers/customer-details';
-    const payload = { tenant: localStorage.getItem('tenant') };
-    this.api.retrieveFromHurecom(route, payload).subscribe({
-      next: (response) => {
-        const customer = response as any;
-        this.setCustomer(customer);
-      },
-    });
-  }
+  // getCustomerDetails() {
+  //   const route = 'customers/customer-details';
+  //   const payload = { tenant: localStorage.getItem('tenant') };
+  //   this.api.retrieveFromHurecom(route, payload).subscribe({
+  //     next: (response) => {
+  //       const customer = response as any;
+  //       this.setCustomer(customer);
+  //     },
+  //   });
+  // }
 
   getStatusList() {
     const route = 'status/all';

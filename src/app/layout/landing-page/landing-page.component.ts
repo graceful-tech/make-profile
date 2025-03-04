@@ -28,4 +28,8 @@ export class LandingPageComponent {
         { relativeTo: this.route });
     }
 
+    goToLoginPage(){
+      this.router.navigate(['/login']);
+    }
+
 }
