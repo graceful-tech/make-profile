@@ -874,7 +874,6 @@ table::-webkit-scrollbar-thumb {
 } */
 
 .p-buttonFailure {
-
     background: #e83939;
 }
 
@@ -933,5 +932,11 @@ table::-webkit-scrollbar-thumb {
 .p-toast-message {
     background:#42d177;
     opacity: 1;
+}
+.p-resumebButton{
+    background: rgb(228, 179, 179);
+}
+.p-resumebButton:enabled:hover {
+    background: rgb(228, 179, 179);
 }
  

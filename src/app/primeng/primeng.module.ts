@@ -41,7 +41,10 @@ import { AccordionModule } from 'primeng/accordion';
 @NgModule({
   declarations: [],
   imports: [
-    CommonModule
+    CommonModule,
+    InputTextModule,
+    DropdownModule,
+    KeyFilterModule
   ],
   exports: [
     InputTextModule,

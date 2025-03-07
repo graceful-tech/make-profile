@@ -6,6 +6,7 @@ import { DialogService } from 'primeng/dynamicdialog';
 import { BehaviorSubject } from 'rxjs';
 // import { MessageComponent } from '../shared/message/message.component';
 import { ApiService } from './api.service';
+import { MessageComponent } from '../shared/message/message.component';
 
 @Injectable({
   providedIn: 'root',
@@ -111,15 +112,15 @@ export class GlobalService {
     this.taskbar.next(data);
   }
 
-  // showMessage(status: string, message: string) {
-  //   this.dialog.open(MessageComponent, {
-  //     data: {
-  //       message: message,
-  //     },
-  //     closable: false,
-  //     header: status,
-  //   });
-  // }
+  showMessage(status: string, message: string) {
+    this.dialog.open(MessageComponent, {
+      data: {
+        message: message,
+      },
+      closable: false,
+      header: status,
+    });
+  }
 
   parseTimeToString(time: any) {
     const date = new Date(time);
@@ -142,61 +143,9 @@ export class GlobalService {
   }
 
   loadData() {
-    this.getCustomerDetails();
-    this.getRequirementCustomFields();
-    this.getStatusList();
-    this.getAmountStatusList();
     this.getNotifications();
     this.getTodayEvents();
   }
-
-  getCustomerDetails() {
-    const route = 'customers/customer-details';
-    const payload = { tenant: localStorage.getItem('tenant') };
-    this.api.retrieveFromHurecom(route, payload).subscribe({
-      next: (response) => {
-        const customer = response as any;
-        this.setCustomer(customer);
-      },
-    });
-  }
-
-  getStatusList() {
-    const route = 'status/all';
-    this.api.get(route).subscribe({
-      next: (response: any) => {
-        this.statusList = response;
-      },
-    });
-  }
-
-  getAmountStatusList() {
-    const route = 'status/amount';
-    this.api.get(route).subscribe({
-      next: (response: any) => {
-        this.amountStatusList = response;
-      },
-    });
-  }
-
-  getRequirementCustomFields() {
-    const route = 'custom-fields/requirement-linked-fields';
-    this.api.get(route).subscribe({
-      next: (response: any) => {
-        this.requirementCustomFields = response;
-      },
-    });
-  }
-
-  // getNotifications() {
-  //   this.retrieveNotifications();
-  //   setInterval(() => {
-  //     const currentHour = new Date().getHours();
-  //     if (currentHour >= 9 && currentHour < 19) {
-  //     this.retrieveNotifications();
-  //     }
-  //   }, 300000)
-  // }
 
   getNotifications() {
     this.retrieveNotifications();
@@ -260,16 +209,5 @@ export class GlobalService {
     audio.play();
   }
 
-  idleTimeoutLogin() {
-    const route = 'idle-timeout/idle-login';
-    const payload = { userName: localStorage.getItem('userName') };
-    this.api.retrieve(route, payload).subscribe({
-      next: (response: any) => {
-        this.idleTimoutsUserId = response as any;
-        localStorage.setItem('sessionId', response?.sessionId);
-        console.log(response?.sessionId);
-        console.log(localStorage.getItem('sessionId'));
-      },
-    });
-  }
+   
 }

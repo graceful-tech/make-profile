@@ -133,8 +133,7 @@ export class PaymentService {
     payload['tenant'] = localStorage.getItem('tenant');
     this.api.create(route, payload).subscribe({
       next: response => {
-        this.gs.getCustomerDetails();
-        this.gs.setPaymentStatus(payload?.paymentStatus);
+         this.gs.setPaymentStatus(payload?.paymentStatus);
       },
       error: error => { }
     });
