@@ -1,0 +1,36 @@
+.login-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 90vh;
+}
+
+.button-wrapper {
+    width: 100%;
+}
+
+.create-account a {
+    font-size: 14px;
+    color: #2196F3;
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: normal;
+}
+
+.create-account a:hover {
+    text-decoration: underline;
+}
+
+.forgot-password {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    height: 100%;
+
+}
+
+.forgot-password a {
+    color: #2196F3;
+    text-decoration: none;
+}

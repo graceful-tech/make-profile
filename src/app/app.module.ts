@@ -18,8 +18,8 @@ import { AddCandidatesComponent } from './features/candidates/add-candidates/add
 @NgModule({
   declarations: [
     AppComponent,
-    
-   
+
+
   ],
   imports: [
     BrowserModule,
@@ -36,7 +36,7 @@ import { AddCandidatesComponent } from './features/candidates/add-candidates/add
     DynamicDialogRef,
     DynamicDialogConfig,
     DatePipe,
-  
+
   //  { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true },
    { provide: LocationStrategy, useClass: HashLocationStrategy },
   ],

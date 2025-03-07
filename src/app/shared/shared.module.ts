@@ -8,13 +8,16 @@ import { ClipboardModule } from 'ngx-clipboard';
 import { NgModule } from "@angular/core";
 import { MessageComponent } from "./message/message.component";
 import { ClickedOutsideDirective } from "./directives/clicked-outside.directive";
+import { LoginPopupComponent } from "./popup/login-popup/login-popup.component";
 
  
 @NgModule({
   declarations: [
    MakeProfileDividerComponent,
    ClickedOutsideDirective,
-   MessageComponent
+   MessageComponent,
+   LoginPopupComponent
+   
    
    
   ],
@@ -35,7 +38,8 @@ import { ClickedOutsideDirective } from "./directives/clicked-outside.directive"
     PrimengModule,
     MakeProfileDividerComponent,
     ClickedOutsideDirective,
-    MessageComponent
+    MessageComponent,
+    LoginPopupComponent
   ]
 })
 export class SharedModule { }

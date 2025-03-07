@@ -68,7 +68,7 @@ export class ApiService {
     return this.http.get(this.createCompleteRoute(route), this.setGlobalRequestContext());
   }
 
-  public retrieveFromHurecom(route: String, body: any) {
+  public retrieveFromMakeProfile(route: String, body: any) {
     return this.http.post(this.createCompleteRoute(route), body, this.setGlobalRequestContext());
   }
 
