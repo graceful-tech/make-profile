@@ -9,6 +9,7 @@ import { NgModule } from "@angular/core";
 import { MessageComponent } from "./message/message.component";
 import { ClickedOutsideDirective } from "./directives/clicked-outside.directive";
 import { LoginPopupComponent } from "./popup/login-popup/login-popup.component";
+import { MatIconModule } from '@angular/material/icon';
 
  
 @NgModule({
@@ -28,6 +29,8 @@ import { LoginPopupComponent } from "./popup/login-popup/login-popup.component";
     FormsModule,
     ReactiveFormsModule,
     NgxUiLoaderModule,
+    MatIconModule
+    
   ],
   exports: [
     CommonModule,
@@ -39,7 +42,8 @@ import { LoginPopupComponent } from "./popup/login-popup/login-popup.component";
     MakeProfileDividerComponent,
     ClickedOutsideDirective,
     MessageComponent,
-    LoginPopupComponent
+    LoginPopupComponent,
+    MatIconModule
   ]
 })
 export class SharedModule { }

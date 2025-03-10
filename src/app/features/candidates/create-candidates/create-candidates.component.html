@@ -1,5 +1,5 @@
  <div class="wrapper">
-    <div class="hurecom-wrapper">
+    <div class="profile-wrapper">
        
 
         <form [formGroup]="candidateForm">
@@ -333,7 +333,7 @@
                       <div class="field-wrapper">
                         <label>Field Of Study</label>
                         <div class="input-wrapper">
-                          <input type="text" pInputText formControlName="department" />
+                          <input type="text" pInputText formControlName="fieldOfStudy" />
                         </div>
                       </div>
                     </div>
@@ -342,8 +342,8 @@
                       <div class="field-wrapper">
                         <label>Qualification</label>
                         <div class="input-wrapper">
-                          <p-dropdown [options]="fieldOfStudy" optionLabel="displayValue" optionValue="dataValue"  placeholder="Select Gender"
-                         formControlName="fieldOfStudy" [filter]="true">
+                          <p-dropdown [options]="fieldOfStudy" optionLabel="displayValue" optionValue="dataValue"  placeholder="Select Qualification"
+                         formControlName="department" [filter]="true">
                         </p-dropdown>
                         </div>
                       </div>

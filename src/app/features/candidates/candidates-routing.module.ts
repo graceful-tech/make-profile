@@ -6,8 +6,9 @@ import { CreateCandidatesComponent } from './create-candidates/create-candidates
  
 const routes: Routes = [
   
-  { path: '', component: AddCandidatesComponent },
-  { path: 'candidate', component: CreateCandidatesComponent },
+  { path: '', component: CreateCandidatesComponent },
+  { path: 'candidate', component: AddCandidatesComponent },
+  
  
 ];
 

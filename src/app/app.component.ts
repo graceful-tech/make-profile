@@ -13,7 +13,7 @@ export class AppComponent {
   constructor(private router: Router) {}
 
 goToLandingPage() {
-  this.router.navigate(['/account']);
+  this.router.navigate(['/landing']);
 }  
 
 goToCandidatePage(){

@@ -15,7 +15,6 @@ import { CreateCandidatesComponent } from './create-candidates/create-candidates
     CommonModule,
     CandidatesRoutingModule,
     SharedModule
-    
   ],
 })
 export class CandidatesModule { }

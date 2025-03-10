@@ -431,7 +431,7 @@ p-inputnumber,
     padding: 0.8rem 0.8rem 0.5rem 0.8rem;
 }
 
-.hurecom-wrapper {
+.profile-wrapper {
     background: #fff;
     padding: 1.2rem 1.5rem 1.5rem 1.5rem;
     border-radius: 5px;
@@ -553,12 +553,12 @@ p-inputnumber,
     padding: 0.5rem;
 }
 
-.hurecom-card {
+.profile-card {
     background: #fff;
     border-radius: 5px;
 }
 
-.hurecom-card-header {
+.profile-card-header {
     border-bottom: 1px dotted #e5e7eb;
     padding: 0.8rem;
     font-weight: 600;
@@ -568,7 +568,7 @@ p-inputnumber,
     align-items: center;
 }
 
-.hurecom-card-details {
+.profile-card-details {
     padding: 1rem 1.5rem;
 }
 
@@ -718,7 +718,7 @@ table::-webkit-scrollbar-thumb {
     font-family: "Roboto", sans-serif;
 }
 
-.hurecom-divider {
+.profile-divider {
     border-bottom: 1px dashed #e5e7eb;
 }
 
@@ -939,4 +939,31 @@ table::-webkit-scrollbar-thumb {
 .p-resumebButton:enabled:hover {
     background: rgb(228, 179, 179);
 }
+
+.p-dropdown .p-dropdown-label{
+    background: rgb(233, 240, 242) !important;  
+}
  
+.p-calendar .p-inputtext {
+    flex: 1 1 auto;
+    width: 1%;
+    text-overflow: ellipsis;
+    background: rgb(233, 240, 242) !important; 
+  }
+  .p-chips .p-chips-multiple-container .p-chips-input-token input {
+    font-family: var(--font-family);
+    font-feature-settings: var(--font-feature-settings, normal);
+    font-size: 1rem;
+    color: #464f59;
+    padding: 0;
+    margin: 0;
+    background-color: rgb(233, 240, 242) !important; 
+}
+
+.p-multiselect-label-container {
+    overflow: hidden;
+    flex: 1 1 auto;
+    cursor: pointer;
+    display: flex;
+    background:  rgb(233, 240, 242) !important; 
+}

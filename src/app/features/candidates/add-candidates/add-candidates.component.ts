@@ -83,7 +83,6 @@ export class AddCandidatesComponent {
       mobileNumber: ['', Validators.compose([Validators.required, Validators.minLength(10)]),],
       email: ['', Validators.compose([Validators.required, Validators.email])],
       gender: [''],
-      alternateMobileNumber: [''],
       nationality: [''],
       languagesKnown: [[]],
       isFresher: [''],

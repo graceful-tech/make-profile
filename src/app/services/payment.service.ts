@@ -96,7 +96,7 @@ export class PaymentService {
     this.razorPayOptions = {
       key: 'rzp_live_dZo8UMBHgAcaDU',
       currency: 'INR',
-      name: 'Hurecom',
+      name: 'profile',
       description: '',
       order_id: '',
       modal: {

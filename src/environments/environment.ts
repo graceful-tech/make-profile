@@ -1,3 +1,3 @@
 export const environment = {
-    restUrl: '/hurecomv2rest'
+    restUrl: '/profilev2rest'
 };

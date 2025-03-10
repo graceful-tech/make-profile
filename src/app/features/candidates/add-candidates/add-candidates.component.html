@@ -1,96 +1,4 @@
-
-<!-- <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Responsive Form</title>
-    
-    <style>
-      @media screen and (max-width:700px){
-      .hurecom-wrapper{
-       width: 100%;
-       padding: 1.2rem 1.5rem 1.5rem 1.5rem;
-       border-radius: 5px;
-       box-shadow: 0 1px 2px 0 rgb(0 0 0/8%);
-       background: linear-gradient(to bottom, #bcdeda, #aebfbd , #a0b4b0);  
-      }
-        .input-wrapper {
-       margin-top: 0%;
-       width: 80%;
-       display: grid;
-       margin-right: 10px;
-       justify-self: center;
-       margin-top: 5px; 
-          }  
-
-         .field-wrapper {
-         padding: 0.5rem;
-       }
-
-       .field-wrapper label {
-        color: #212121;
-        font-size: 16px;
-        padding: 0 0 0 4rem;
-        }
-        .wrapper {
-         margin-top: 2.8rem;
-         padding: 0.5rem;
-         /* position: fixed; */
-         width: 100%;
-         max-width: 100%;
-         background: none;
-        padding: 30px;
-        margin: 0;
-        border-radius: 10px;
-        box-shadow: none;
-       }
-       .wrapper::before {
-        content: "";
-       /* position:fixed; */
-       top: 0px;
-       left: 0px;
-       width: 0%;
-       height: 0%;
-       background:none;  
-       border-radius: 0px;
-       box-shadow: 0;
-       transform: none;
-       z-index: 0;
-       }
-       .wrapper::after {
-        content: "";
-       /* position: fixed; */
-       top: 0px;
-       left: 0px;
-       width: 0%;
-       height: 0%;
-       background:none; 
-       border-radius: 0px;
-       box-shadow: 0;
-       transform: none;
-       z-index: 0;
-       }
-
-       .experience-container {
-       border: 1px solid #ddd;
-       padding: 15px;
-       margin-bottom: 20px;
-       border-radius: 8px;
-       background: linear-gradient(to bottom, #74bbcf, #474d4c);  
-      }
-
-      .project-container {
-       border: 1px dashed #bbb;
-       padding: 10px;
-       margin-top: 15px;
-       background: linear-gradient(to bottom, #9cb9c1, #6c7071);  
-       }
-
-
-      }
-    </style>
-</head> -->
+ 
 <div class="background-wrapper"></div>
 
 <div class="main-container">
@@ -99,7 +7,7 @@
    
  <div class="wrapper">
 
-  <div class="hurecom-wrapper">
+  <div class="profile-wrapper">
    <form [formGroup]="candidateForm">
 
     <div class="form-heading">
@@ -131,13 +39,6 @@
           <label class="required">Mobile Number</label>
           <div class="input-wrapper">
             <input type="text"  pKeyFilter="int"  [maxlength]="10"  pInputText formControlName="mobileNumber" />
-            <!--
-                      <p-autoComplete pKeyFilter="int" [maxlength]="10" formControlName="mobileNumber"
-                          [suggestions]="mobileNumbers" (completeMethod)="searchMobileNumbers($event)"
-                          (onSelect)="getCandidateDetailsByMobileNumber($event)"
-                          (onBlur)="checkIfDetailsExists(candidateForm.value.mobileNumber)" [lazy]="true">
-                      </p-autoComplete>
-                      -->
           </div>
         </div>
         <small class="error-message" *ngIf="candidateForm.controls['mobileNumber'].invalid && showError">
@@ -177,18 +78,6 @@
         <small class="error-message" *ngIf="candidateForm.controls['gender'].invalid && showError">
           Gender is required</small>
       </div>
-  
-      <!-- <div class="col-12 md:col-6 lg:col-3">
-        <div class="field-wrapper">
-          <label>Alt Mobile Number</label>
-          <div class="input-wrapper">
-            <input type="text"pKeyFilter="int" [maxlength]="10" pInputText formControlName="alternateMobileNumber"/>
-          </div>
-        </div>
-        <small class="error-message" *ngIf="candidateForm.controls['alternateMobileNumber'].invalid && showError">
-          Alt Mobile Number is required</small>
-      </div> -->
-  
   
       <div class="col-12 md:col-6 lg:col-3">
         <div class="field-wrapper">

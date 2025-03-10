@@ -314,6 +314,7 @@ export class CreateCandidatesComponent {
       qualificationStartYear: [''],
       qualificationEndYear: [''],
       percentage: [''],
+      fieldOfStudy: [''],
     });
   }
 
