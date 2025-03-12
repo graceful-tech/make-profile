@@ -1,6 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { DialogService } from 'primeng/dynamicdialog';
@@ -13,7 +19,6 @@ import { GlobalService } from 'src/app/services/global.service';
   standalone: false,
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
-
 })
 export class LoginComponent {
   loginForm!: FormGroup;
@@ -21,58 +26,55 @@ export class LoginComponent {
   showError = false;
   loadingFlag: boolean = false;
 
-  constructor(private fb: FormBuilder,
+  constructor(
+    private fb: FormBuilder,
     private api: ApiService,
     private gs: GlobalService,
     private router: Router,
-    private dialog: DialogService) { }
+    private dialog: DialogService
+  ) {}
 
   ngOnInit() {
     this.createLoginForm();
 
-    this.gs.paymentStatus$.subscribe(response => {
+    this.gs.paymentStatus$.subscribe((response) => {
       if (response == 'Completed') {
-        // this.gs.showMessage('Success', 'Payment completed successfully.');
+        this.gs.showMessage('Success', 'Payment completed successfully.');
         this.gs.setPaymentStatus(null);
       }
     });
-
   }
 
   createLoginForm() {
     this.loginForm = this.fb.group({
       mobileNumber: ['', Validators.required],
       password: ['', Validators.required],
-    })
+    });
   }
 
   login() {
+    this.loadingFlag = true;
     if (this.loginForm.valid) {
       this.loadingFlag = true;
-      const route = 'users/login';
+      const route = 'user/login';
       const postData = this.loginForm.value;
       localStorage.setItem('tenant', postData.code);
 
       this.api.retrieve(route, postData).subscribe({
-        next: response => {
-          // const user = response as Users;
-          // this.gs.setUser(user);
-          // this.loadingFlag = false;
-          // localStorage.setItem('userName', user.userName.toString());
-          // localStorage.setItem('userId', user.id.toString());
-          // this.router.navigate(['/dashboard']);
+        next: (response) => {
+          this.router.navigate(['/candidate']);
           // this.gs.loadData();
           // this.gs.idleTimeoutLogin();
         },
-        error: error => {
+        error: (error) => {
           if (error.error?.code == 'HM_0128') {
             // this.openPaymentOptionDialog();
           } else {
-            this.error = error.error?.message
+            this.error = error.error?.message;
           }
           this.loadingFlag = false;
-        }
-      })
+        },
+      });
     } else {
       this.showError = true;
     }
@@ -91,6 +93,4 @@ export class LoginComponent {
   //     width: '40%'
   //   });
   // }
-
-
 }
