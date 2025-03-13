@@ -12,6 +12,14 @@ export class AppComponent {
 
   constructor(private router: Router) {}
 
+  ngOnInit() {
+    if (this.isMobile()) {
+      this.router.navigate(['/mobile']); 
+    } else {
+      this.router.navigate(['/landing']); 
+    }
+  }
+
 goToLandingPage() {
   this.router.navigate(['/landing']);
 }  
@@ -21,5 +29,13 @@ goToCandidatePage(){
   this.router.navigate(['/candidate']);
 }
 
+goToLandingPageMobile(){
 
+  this.router.navigate(['/mobile']);
+}
+
+isMobile(): boolean {
+  return window.innerWidth <= 768; 
+
+}
 }
