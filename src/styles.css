@@ -967,3 +967,9 @@ table::-webkit-scrollbar-thumb {
     display: flex;
     background:  rgb(233, 240, 242) !important; 
 }
+
+.p-table {
+    display: flex !important;
+    border-collapse: collapse;
+    width: 100%;
+  }

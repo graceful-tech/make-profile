@@ -1,5 +1,11 @@
 import { DatePipe } from '@angular/common';
-import {ChangeDetectorRef, Component,EventEmitter,Input,Output,} from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+} from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
@@ -14,12 +20,10 @@ import { Lookup } from '../../../models/master/lookup.model';
   standalone: false,
   selector: 'app-create-candidates',
   templateUrl: './create-candidates.component.html',
-  styleUrl: './create-candidates.component.css'
+  styleUrl: './create-candidates.component.css',
 })
 export class CreateCandidatesComponent {
-  @Output() savedCandidate = new EventEmitter();
-  @Input() codeValue!: any;
-  @Input() candidateUrl!: any;
+  
 
   candidateForm!: FormGroup;
   genderList: Array<ValueSet> = [];
@@ -50,10 +54,9 @@ export class CreateCandidatesComponent {
   candidateImageUrl: any;
   multipartFile: any;
   candidateImageAttachments: any;
-  makeProfileUrl:any;
+  makeProfileUrl: any;
   fieldOfStudy: any;
   inputBgColor = 'lightblue';
-
 
   constructor(
     private api: ApiService,
@@ -81,7 +84,10 @@ export class CreateCandidatesComponent {
     this.candidateForm = this.fb.group({
       id: [''],
       name: ['', Validators.required],
-      mobileNumber: ['', Validators.compose([Validators.required, Validators.minLength(10)]),],
+      mobileNumber: [
+        '',
+        Validators.compose([Validators.required, Validators.minLength(10)]),
+      ],
       email: ['', Validators.compose([Validators.required, Validators.email])],
       gender: [''],
       alternateMobileNumber: [''],
@@ -90,9 +96,9 @@ export class CreateCandidatesComponent {
       isFresher: [''],
       skills: ['', Validators.required],
       linkedIn: [''],
-      dob:[''],
-      address:[''],
-      maritalStatus:[''],
+      dob: [''],
+      address: [''],
+      maritalStatus: [''],
       experiences: this.fb.array([this.createExperience()]),
       qualification: this.fb.array([this.createQualification()]),
       certificates: this.fb.array([this.createCertificates()]),
@@ -140,8 +146,10 @@ export class CreateCandidatesComponent {
   generatingResume() {
     this.dataLoaded = false;
 
-    const route = 'candidate/create';
+    const route = 'create/resume';
     const payload = this.candidateForm.getRawValue();
+
+    payload['candidateLogo'] = this.multipartFile;
 
     if (payload.lastWorkingDate) {
       payload['lastWorkingDate'] = this.datePipe.transform(
@@ -149,11 +157,10 @@ export class CreateCandidatesComponent {
         'yyyy-MM-dd'
       );
     }
-    if(payload.isFresher !=null && payload.isFresher){
-      payload['isFresher'] = true
-    }
-    else{
-      payload['isFresher'] = false
+    if (payload.isFresher != null && payload.isFresher) {
+      payload['isFresher'] = true;
+    } else {
+      payload['isFresher'] = false;
     }
 
     if (
@@ -225,7 +232,7 @@ export class CreateCandidatesComponent {
       error: (error) => {
         this.dataLoaded = true;
         this.gs.showMessage('Error', 'Error in Creating Resume');
-   
+
         console.log(error);
       },
     });
@@ -385,7 +392,13 @@ export class CreateCandidatesComponent {
       'Are you sure you want to remove this achievements?'
     );
     if (confirmDelete && this.achievementsControls.length > 1) {
-      this.achievementsControls.removeAt(index);
+      const achievement = this.achievementsControls.at(index).value;
+
+      if (achievement.id) {
+        this.achievementsControls.at(index).patchValue({ isDeleted: true });
+      } else {
+        this.achievementsControls.removeAt(index);
+      }
     }
   }
 
@@ -393,9 +406,9 @@ export class CreateCandidatesComponent {
     return this.fb.group({
       achievementsName: [''],
       achievementsDate: [''],
+      isDeleted: [false],
     });
   }
-
 
   getLanguages() {
     const route = 'value-sets/search-by-code';
@@ -427,7 +440,7 @@ export class CreateCandidatesComponent {
     });
   }
 
-  addCandidateImage(event :any){
+  addCandidateImage(event: any) {
     this.candidateImageAttachments = [];
     this.multipartFile = event.target.files[0];
     const candidateImageAttachment = { fileName: this.multipartFile.name };
@@ -435,7 +448,7 @@ export class CreateCandidatesComponent {
     this.updateCandidateImage();
   }
 
-  updateCandidateImage(){
+  updateCandidateImage() {
     var reader = new FileReader();
     reader.onload = () => {
       this.candidateImageUrl = reader.result;
@@ -445,13 +458,11 @@ export class CreateCandidatesComponent {
 
   uploadCandidateImage() {
     this.dataLoaded = false;
-    const route = 'candiate/update-profile';
+    const route = 'candiate/logo';
     const formData = new FormData();
     formData.append('attachment', this.multipartFile);
-    formData.append('candidateId', '1');
     this.api.upload(route, formData).subscribe({
       next: (response) => {
-       
         this.dataLoaded = true;
         this.reset();
       },
@@ -461,7 +472,4 @@ export class CreateCandidatesComponent {
       },
     });
   }
-
-  
-
 }

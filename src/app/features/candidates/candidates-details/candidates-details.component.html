@@ -1,0 +1,585 @@
+<div class="header-image">
+<img class="header-images" src="assets/img/make-profile.svg" alt="Header Image" />
+ 
+    <p-button label="Login" class="right-align"    ></p-button> 
+     
+</div>
+
+
+<div class="wrapper">
+ <div class="left-section">
+    <div class="profile-wrapper">
+      <h5 class="section-heading">Upload Resume</h5>
+      <div class="grid grid-nogutter">
+        <div class="col-12">
+          <div class="px-1">
+            <input type="file" #attachment style="display: none;" (change)="addAttachment($event)" accept=".doc, .docx, .pdf" />
+            <div class="file-wrapper d-flex align-items-center">
+              
+              <i class="pi pi-cloud-upload" (click)="attachment.click()" style="font-size: 50px; color: #007bff; cursor: pointer; padding-left: 100px;"></i>  
+               
+              <div class="ml-3">
+                <span *ngIf="resume?.fileName">
+                  <i class="pi pi-paperclip mr-2"></i>
+                  <span>{{ resume?.fileName }}</span>
+                </span>
+                <span *ngIf="!resume?.fileName" style="color: #5c5c5c;">
+                  No resume added.
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+
+        <div class="table-header">
+          
+          <div class="grid grid-nogutter">
+            <div class="col-12">
+                <div class="file-wrapper mt-2 d-flex justify-content-between">
+                  <div class="pl-2">
+                     
+                    <h5 class="styled-text">Your Resume</h5>
+                  </div>
+                  <div>
+                    <p-button class="mr-2" (onClick)="attachment.click()" label="Create Resume"></p-button>
+                  </div>
+                </div>
+               
+            </div>
+          </div>
+        <!-- <h5 class="styled-text">Your Resume</h5>
+        <div>
+          <p-button class="mr-2" (onClick)="attachment.click()" label="Create"></p-button>
+        </div> -->
+        <div class="table-container">
+            <p-table class="mobile" [value]="yourResume">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 5%;">ID</th>
+                        <th style="width: 10%;">RESUME NAME</th>
+                        <th style="width: 10%;">REMAINING EDITED</th>
+                        <th style="width: 10%;">AMOUNT PAID</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-resume>
+                    <tr>
+                        <td>{{ resume.id }}</td>
+                        <td>{{ resume.name }}</td>
+                        <td>{{ resume.remainingEdits }}</td>
+                        <td>{{ resume.amountPaid }}</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    
+        <h5 class="styled-text">Applied Jobs</h5>
+        <div class="table-container">
+            <p-table   [value]="yourResume">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 5%;">JOB ID</th>
+                        <th style="width: 10%;">SKILLS</th>
+                        <th style="width: 10%;">LOCATION</th>
+                        <th style="width: 10%;">SOURCE</th>
+                        <th style="width: 10%;">STATUS</th>
+                        <th style="width: 10%;">ACTION</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-resume>
+                    <tr>
+                        <td>{{ resume.id }}</td>
+                        <td>{{ resume.name }}</td>
+                        <td>{{ resume.remainingEdits }}</td>
+                        <td>{{ resume.amountPaid }}</td>
+                        <td>{{ resume.amountPaid }}</td>
+                        <td>
+                          <i class="pi pi-pencil" style="cursor: pointer;" (click)="onEdit(resume.id)" title="Edit"></i>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+
+        <h5 class="styled-text">Suggest Jobs</h5>
+        <div class="table-container">
+            <p-table    [value]="yourResume">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 5%;">JOB ID</th>
+                        <th style="width: 10%;">SKILLS</th>
+                        <th style="width: 10%;">LOCATION</th>
+                        <th style="width: 10%;">SOURCE</th>
+                        <th style="width: 10%;">ENVIRONMENT</th>
+                        <th style="width: 10%;">CTC</th>
+                        <th style="width: 5%;">SCORE</th>
+                        <th style="width: 10%;">SUITE</th>
+                        <th style="width: 10%;">GET SCORE</th>
+                        <th style="width: 10%;">APPLY</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-resume>
+                    <tr>
+                        <td>{{ resume.id }}</td>
+                        <td>{{ resume.name }}</td>
+                        <td>{{ resume.remainingEdits }}</td>
+                        <td>{{ resume.amountPaid }}</td>
+                        <td>{{ resume.amountPaid }}</td>
+                        <td>{{ resume.amountPaid }}</td>
+                        <td>{{ resume.amountPaid }}</td>
+                        <td>{{ resume.amountPaid }}</td>
+                        <td>
+                          <button   class="small-btn" (click)="getScore()" >Get Score</button>
+                        </td>
+                        <td>
+                          <button   class="apply-btn" (click)="applyJob()" >Apply</button>
+                        </td>
+
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+      </div>  
+    </div>
+ </div>
+ 
+ <div class="right-section">
+    <div class="profile-wrapper">
+       
+        <form [formGroup]="candidateForm">
+  
+            <!-- <div class="form-heading">
+              <div>   
+                 
+              </div>  
+                  <input type="file" #attachment1  (change)="addCandidateImage($event)" style="display: none"/>
+        
+              <div *ngIf="candidateImageUrl;else other_content">
+                <img class="image" [src]="candidateImageUrl"/>
+              </div> 
+              <ng-template #other_content> 
+                <img class="image" src="assets/img/no-profile-picture.svg"/>
+              </ng-template>
+        
+            </div>
+        
+            <div class="flex-end mt-3">
+              <button type="button" class="custom-btn" (click)="attachment1.click()">Upload Profile</button>
+            </div> -->
+        
+        
+            <app-make-profile-divider></app-make-profile-divider>
+        
+            <div class="section-heading">Personal Details</div>
+              <div class="grid">
+              <div class="col-12 md:col-6 lg:col-3">
+                <div class="field-wrapper">
+                  <label class="required">Mobile Number</label>
+                  <div class="input-wrapper">
+                    <input type="text"  pKeyFilter="int"  [maxlength]="10"  pInputText formControlName="mobileNumber" />
+                  </div>
+                </div>
+                <small class="error-message" *ngIf="candidateForm.controls['mobileNumber'].invalid && showError">
+                  Mobile Number is required</small>
+              </div>
+          
+              <div class="col-12 md:col-6 lg:col-3">
+                <div class="field-wrapper">
+                  <label class="required">Name</label>
+                  <div class="input-wrapper">
+                    <input type="text" pInputText    formControlName="name"  />
+                  </div>
+                </div>
+                <small  class="error-message" *ngIf="candidateForm.controls['name'].invalid && showError"> Candidate Name is required</small>
+              </div>
+          
+              <div class="col-12 md:col-6 lg:col-3">
+                <div class="field-wrapper">
+                  <label class="required">Email</label>
+                  <div class="input-wrapper">
+                    <div class="hover-box" *ngIf="candidateForm.controls['email'].value">
+                        {{ candidateForm.controls['email'].value }}
+                      </div>
+                    <input type="text" pInputText formControlName="email" />
+                  </div>
+                </div>
+                <small class="error-message" *ngIf="candidateForm.controls['email'].invalid && showError" >
+                  Email is required</small>
+              </div>
+          
+              <div class="col-12 md:col-6 lg:col-3">
+                <div class="field-wrapper">
+                  <label class="required">Gender</label>
+                  <div class="input-wrapper">
+                    <p-dropdown [options]="genderList" optionLabel="displayValue" optionValue="dataValue"  placeholder="Select Gender"
+                      formControlName="gender">
+                    </p-dropdown>
+                  </div>
+                </div>
+                <small class="error-message" *ngIf="candidateForm.controls['gender'].invalid && showError">
+                  Gender is required</small>
+              </div>
+          
+              <div class="col-12 md:col-6 lg:col-3">
+                <div class="field-wrapper">
+                  <label [ngClass]="{ required: isRequired('languagesKnown') }">Languages</label>
+                  <div class="input-wrapper">
+                    <p-multiSelect [options]="languages" defaultLabel="Select Languages" [showHeader]="false" optionLabel="displayValue"
+                      optionValue="dataValue" formControlName="languagesKnown">
+                    </p-multiSelect>
+                  </div>
+                </div>
+              </div>
+        
+              <div class="col-12 md:col-6 lg:col-3">
+                <div class="field-wrapper">
+                  <label>DOB</label>
+                  <div class="input-wrapper">
+                    <p-calendar formControlName="dob" placeholder="Select From Date"></p-calendar>
+                  </div>
+                </div>
+              </div>
+        
+              <div class="col-12 md:col-6 lg:col-3">
+                <div class="field-wrapper">
+                  <label>LinkedIn</label>
+                  <div class="input-wrapper">
+                    <input type="text" pInputText formControlName="linkedIn" />
+                  </div>
+                </div>
+              </div>
+        
+              <div class="col-12 md:col-6 lg:col-3">
+                <div class="field-wrapper">
+                  <label>Marital Status</label>
+                  <div class="input-wrapper">
+                   
+                    <p-dropdown [options]="maritalStatus" optionLabel="displayValue" optionValue="dataValue" placeholder="Select Marital" formControlName="maritalStatus"></p-dropdown>
+                  </div>
+                </div>
+              </div>
+    
+                <div class="col-12 md:col-6">
+                 <div class="field-wrapper">
+                  <label>Address</label>
+                   <div class="input-wrapper">
+                    <textarea rows="5" type="text" pInputText formControlName="address"></textarea>
+                   </div>
+                 </div>
+                </div>
+
+                <div class="col-12 md:col-6">
+                    <div class="field-wrapper">
+                        <input type="file" #attachment1 (change)="addCandidateImage($event)" style="display: none" />
+                        <div class="image-container">
+                            <ng-container *ngIf="candidateImageUrl; else other_content">
+                                <img class="image" [src]="candidateImageUrl" />
+                                <span class="edit-icon" (click)="attachment1.click()">
+                                    <i class="fas fa-pencil-alt" Style="font-size: 18px;"></i>
+                                </span> 
+                            </ng-container>
+                            <ng-template #other_content>
+                                <img class="image" src="assets/img/dummy-profile-pic.jpg" />
+                                <span class="edit-icon" (click)="attachment1.click()">
+                                    <i class="fas fa-pencil-alt" Style="font-size: 18px;"></i>
+                                </span>
+                            </ng-template>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+
+            <!-- <div class="section-heading mt-3">
+              <div>Skills</div>
+            </div> -->
+        
+            <div class="grid">
+               <div class="col-12">
+                <div class="field-wrapper">
+                 <label>Skills</label>
+                  <div class="input-wrapper">
+                   <p-chips separator="," formControlName="skills" [addOnBlur]="true" [addOnTab]="true"></p-chips>
+                  </div>
+                </div>
+               </div>
+            </div>
+        
+        
+            <app-make-profile-divider></app-make-profile-divider>
+            <div class="section-heading mt-3">
+              <div>Professional Details</div>
+            </div>
+          
+            <div class="grid">
+              <div class="col-12 md:col-6 lg:col-3">
+                <div class="fresher-checkbox pb-3">
+                  <p-checkbox
+                    [binary]="true"
+                    inputId="fresher"
+                    formControlName="isFresher" Style="padding-right: 5px;"
+                  ></p-checkbox>    
+                  <label>Fresher</label>
+                </div>
+              </div>
+            </div>
+          
+            <ng-container *ngIf="!candidateForm.get('isFresher')?.value">
+              <div formArrayName="experiences">
+                <div *ngFor="let experience of experienceControls.controls; let i = index" [formGroupName]="i" class="experience-container">
+                  
+                  <!-- Experience Details -->
+                  <div class="grid">
+                    <div class="col-12 md:col-6 lg:col-3">
+                      <div class="field-wrapper">
+                        <label>Company Name</label>
+                        <div class="input-wrapper">
+                          <input type="text" pInputText formControlName="companyName" />
+                        </div>
+                      </div>
+                    </div>
+            
+                    <div class="col-12 md:col-6 lg:col-3">
+                      <div class="field-wrapper">
+                        <label>Role Name</label>
+                        <div class="input-wrapper">
+                          <input type="text" pInputText formControlName="role" />
+                        </div>
+                      </div>
+                    </div>
+            
+                    <div class="col-12 md:col-6 lg:col-3">
+                      <div class="field-wrapper">
+                        <label>Year Started</label>
+                        <div class="input-wrapper">
+                          <p-calendar formControlName="experienceYearStartDate" placeholder="Select From Date"></p-calendar>
+                        </div>
+                      </div>
+                    </div>
+        
+                    <div class="col-12 md:col-6 lg:col-3">
+                      <div class="field-wrapper">
+                        <label>Year Ended</label>
+                        <div class="input-wrapper">
+                          <p-calendar formControlName="experienceYearEndDate" placeholder="Select From Date"></p-calendar>
+                        </div>
+                      </div>
+                    </div>
+        
+                    <div class="col-12 md:col-6 lg:col-3">
+                      <div class="field-wrapper">
+                        <div class="input-wrapper">
+                          <p-checkbox [binary]="true" label="CurrentlyWorking" formControlName="currentlyWorking"></p-checkbox>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+            
+                  <!-- Project Details -->
+                  <div formArrayName="projects">
+                    <div class="bysection-heading mt-4">
+                      <div>Project Details</div>
+                    </div>
+            
+                    <div *ngFor="let project of getProjects(i).controls; let j = index" [formGroupName]="j" class="project-container">
+                      
+                      <div class="grid">
+                        <div class="col-12 md:col-6 lg:col-3">
+                          <div class="field-wrapper">
+                            <label>Project Name</label>
+                            <div class="input-wrapper">
+                              <input type="text" pInputText formControlName="projectName" />
+                            </div>
+                          </div>
+                        </div>
+  
+                        <div class="col-12 md:col-6 lg:col-3">
+                            <div class="field-wrapper">
+                              <label>Project Role</label>
+                              <div class="input-wrapper">
+                                <input type="text" pInputText formControlName="projectRole" />
+                              </div>
+                            </div>
+                          </div>
+            
+                        <div class="col-12 md:col-6">
+                          <div class="field-wrapper">
+                            <label>Project Skills</label>
+                            <div class="input-wrapper textarea-like">
+                              <p-chips separator=","  formControlName="projectSkills" [addOnBlur]="true" [addOnTab]="true"></p-chips>
+                            </div>
+                          </div>
+                        </div>
+        
+                        <div class="col-12">
+                          <div class="field-wrapper">
+                            <label>Project Description</label>
+                            <div class="input-wrapper">
+                              <textarea rows="2" type="text" pInputText formControlName="projectDescription"></textarea>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <hr class="sub-section-divider" />
+        
+                    </div>
+                  </div>
+                </div>
+                
+              </div>
+            </ng-container>
+        
+            <app-make-profile-divider></app-make-profile-divider>
+            <div class="section-heading mt-3">
+              <div>Qualification Details</div>
+            </div>
+           
+              <div formArrayName="qualification">
+                <div *ngFor="let qualifications of qualificationControls.controls; let i = index" [formGroupName]="i" class="experience-container">
+                  
+                  <div class="grid">
+                    <div class="col-12 md:col-6 lg:col-3">
+                      <div class="field-wrapper">
+                        <label>Instution Name</label>
+                        <div class="input-wrapper">
+                          <input type="text" pInputText formControlName="instutionName" />
+                        </div>
+                      </div>
+                    </div>
+        
+        
+                    <div class="col-12 md:col-6 lg:col-3">
+                      <div class="field-wrapper">
+                        <label>Field Of Study</label>
+                        <div class="input-wrapper">
+                          <input type="text" pInputText formControlName="fieldOfStudy" />
+                        </div>
+                      </div>
+                    </div>
+        
+                    <div class="col-12 md:col-6 lg:col-3">
+                      <div class="field-wrapper">
+                        <label>Qualification</label>
+                        <div class="input-wrapper">
+                          <p-dropdown [options]="fieldOfStudy" optionLabel="displayValue" optionValue="dataValue"  placeholder="Select Qualification"
+                         formControlName="department" [filter]="true">
+                        </p-dropdown>
+                        </div>
+                      </div>
+                    </div>
+            
+                    
+            
+                    <div class="col-12 md:col-6 lg:col-3">
+                      <div class="field-wrapper">
+                        <label>Start Year</label>
+                        <div class="input-wrapper">
+                          <p-calendar formControlName="qualificationStartYear" placeholder="Select Year"></p-calendar>
+                        </div>
+                      </div>
+                    </div>
+        
+                    <div class="col-12 md:col-6 lg:col-3">
+                      <div class="field-wrapper">
+                        <label>End year</label>
+                        <div class="input-wrapper">
+                          <p-calendar formControlName="qualificationEndYear" placeholder="Select Year"></p-calendar>
+                         </div>
+                      </div>
+                    </div>
+        
+                    <div class="col-12 md:col-6 lg:col-3">
+                      <div class="field-wrapper">
+                        <label>Percentage</label>
+                        <div class="input-wrapper">
+                          <input placeholder="Ex:88.8" pKeyFilter="num" [maxLength]="4" type="number" [min]="0.0" 
+                          [max]="99.99" pInputText formControlName="percentage" />
+                        </div>
+                      </div>
+                    </div>
+            
+                   
+                  </div>
+                </div>
+              </div>
+            
+              <app-make-profile-divider></app-make-profile-divider>
+              <div class="section-heading mt-3">
+                <div>Course & Certificates</div>
+              </div>
+        
+              <div formArrayName="certificates">
+                <div *ngFor="let certificate of certificateControls.controls; let i = index" [formGroupName]="i" class="experience-container">
+        
+                  <div class="grid">
+                     <div class="col-12 md:col-6 lg:col-3">
+                        <div class="field-wrapper">
+                          <label>Course Name</label>
+                        <div class="input-wrapper">
+                           <input type="text" pInputText formControlName="courseName" />
+                      </div>
+                    </div>
+                  </div>
+          
+                   <div class="col-12 md:col-6 lg:col-3">
+                      <div class="field-wrapper">
+                         <label>Start Year</label>
+                           <div class="input-wrapper">
+                            <p-calendar formControlName="courseStartDate" placeholder="Select From Date"></p-calendar>
+                            
+                           </div>
+                      </div>
+                   </div>
+        
+                    <div class="col-12 md:col-6 lg:col-3">
+                        <div class="field-wrapper">
+                            <label>End year</label>
+                               <div class="input-wrapper">
+                                <p-calendar formControlName="courseEndDate" placeholder="Select From Date"></p-calendar>
+                              </div>
+                        </div>
+                    </div>
+        
+                 </div>
+                 </div>
+               </div>
+        
+        
+               <app-make-profile-divider></app-make-profile-divider>
+              <div class="section-heading mt-3">
+                <div>Achievements & Awards</div>
+              </div>
+        
+              <div formArrayName="achievements">
+                 <div *ngFor="let certificate of achievementsControls.controls; let i = index" [formGroupName]="i" class="experience-container">
+        
+                   <div class="grid">
+                      <div class="col-12 md:col-6">
+                        <div class="field-wrapper">
+                         <label>Awards Name</label>
+                          <div class="input-wrapper">
+                            <input type="text" pInputText formControlName="achievementsName" />
+                          </div>
+                        </div>
+                      </div>
+         
+                     <div class="col-12 md:col-6">
+                      <div class="field-wrapper">
+                        <label>Awarded Year</label>
+                           <div class="input-wrapper">
+                            <p-calendar formControlName="achievementsDate" placeholder="Select Year"></p-calendar>
+                           </div>
+                       </div>
+                     </div>
+             
+                   </div>
+                </div>
+              </div>       
+           </form>
+  
+           <app-make-profile-divider></app-make-profile-divider>        
+    </div>
+    
+ </div>
+</div>  
