@@ -941,14 +941,14 @@ table::-webkit-scrollbar-thumb {
 }
 
 .p-dropdown .p-dropdown-label{
-    background: rgb(233, 240, 242) !important;  
+    background: rgb(252, 252, 252) !important;  
 }
  
 .p-calendar .p-inputtext {
     flex: 1 1 auto;
     width: 1%;
     text-overflow: ellipsis;
-    background: rgb(233, 240, 242) !important; 
+    background: rgb(255, 255, 255) !important; 
   }
   .p-chips .p-chips-multiple-container .p-chips-input-token input {
     font-family: var(--font-family);
@@ -957,7 +957,7 @@ table::-webkit-scrollbar-thumb {
     color: #464f59;
     padding: 0;
     margin: 0;
-    background-color: rgb(233, 240, 242) !important; 
+    background-color: rgb(255, 255, 255) !important; 
 }
 
 .p-multiselect-label-container {
@@ -965,7 +965,7 @@ table::-webkit-scrollbar-thumb {
     flex: 1 1 auto;
     cursor: pointer;
     display: flex;
-    background:  rgb(233, 240, 242) !important; 
+    background:  rgb(252, 252, 252) !important; 
 }
 
 .p-table {
@@ -973,3 +973,33 @@ table::-webkit-scrollbar-thumb {
     border-collapse: collapse;
     width: 100%;
   }
+
+.custom-dialog-header .p-dialog-header {
+    padding: 0rem !important;
+}
+    
+@media (max-width: 740px) {
+    .p-dialog.p-dynamic-dialog.p-component {
+      width: 90% !important;
+      height: 70% !important;
+      z-index: 1102 !important;
+    }
+
+    .p-dialog .p-dialog-content {
+        padding: 0 0.1rem 0.1rem 0.1rem;
+    }
+}
+
+.p-checkbox .p-checkbox-box {
+    border: 2px solid #222324;
+    background: #badb92;
+    width: 40px;
+    height: 23px;
+    color: #495057;
+    border-radius: 3px;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+    outline-color: transparent;
+    border-radius: 6px;
+  
+  }
+  

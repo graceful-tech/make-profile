@@ -1,20 +1,26 @@
+import { Achievements } from "./achievements";
+import { Certificates } from "./certificates";
+import { Experience } from "./experiences";
+import { Qualification } from "./qualification";
+
 export interface Candidate {
      
     id: number;
     name: string;
     mobileNumber: string;
-    alternateMobileNumber: string
     email: string;
     nationality: string;
     gender: string;
     languagesKnown: string;
     isFresher: boolean;
     skills: string;
-    linkedIn:string,
-    experiences:  Array<any>;
-    qualification: Array<any>;
-    certificates:  Array<any>;
-    achievements:  Array<any>;
-    volunteerExperience:  Array<any>;
+    linkedIn:string;
+    dob:any;
+    address:any;
+    experiences:  Array<Experience>;
+    qualification: Array<Qualification>;
+    certificates:  Array<Certificates>;
+    achievements:  Array<Achievements>;
+    maritalStatus:any;
 
 }

@@ -5,13 +5,18 @@ import { AddCandidatesComponent } from './add-candidates/add-candidates.componen
 import { SharedModule } from 'src/app/shared/shared.module';
 import { CreateCandidatesComponent } from './create-candidates/create-candidates.component';
 import { CandidatesDetailsComponent } from './candidates-details/candidates-details.component';
- 
+import { ViewTemplatesComponent } from './Templates/view-templates/view-templates.component';
+import { ChooseTemplateComponent } from './Templates/choose-template/choose-template.component';
+  
 
 @NgModule({
   declarations: [
     AddCandidatesComponent,
     CreateCandidatesComponent,
-    CandidatesDetailsComponent
+    CandidatesDetailsComponent,
+    ViewTemplatesComponent,
+    ChooseTemplateComponent
+    
   ],
   imports: [
     CommonModule,

@@ -1,0 +1,72 @@
+.wrapper {
+    margin-top: 0.1rem;
+    padding: 0.5rem;
+}
+
+.header-section {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #fff;
+}
+  
+h1 {
+    font-size: 48px;
+    color: #2b2e4a;
+}
+  
+.experience-text {
+    color: #7a7a7a;
+    font-size: 16px;
+}
+  
+.content-card {
+    background: linear-gradient(to bottom, #fff, #69e0c2);
+    padding: 40px;
+    margin: 40px auto;
+    border-radius: 16px;
+    width: 100%;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  }
+  
+  h2 {
+    color: #2b2e4a;
+  }
+  
+  .highlight {
+    color: #2b2e4a;
+    font-weight: bold;
+  }
+  
+  p {
+    color: #555;
+    line-height: 1.6;
+  }
+  
+  .start-btn {
+    background-color: #3ecf8e;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 25px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 20px;
+  }
+  
+  .start-btn:hover {
+    background-color: #2dbb7d;
+  }
+  
+  .headers{
+    text-align: center;
+    padding: 20px 20px;
+  }
+
+  .message{
+    padding: 10px;
+  }
+
+  .para{
+  align-items: center;
+  }

@@ -9,12 +9,16 @@ import {
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
-import { DialogService } from 'primeng/dynamicdialog';
+import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ApiService } from '../../../services/api.service';
 import { GlobalService } from '../../../services/global.service';
 import { ValueSet } from '../../../models/admin/value-set.model';
 import { elementAt, Subscription } from 'rxjs';
 import { Lookup } from '../../../models/master/lookup.model';
+import { Candidate } from 'src/app/models/candidates/candidate.model';
+import { Qualification } from 'src/app/models/candidates/qualification';
+import { Certificates } from 'src/app/models/candidates/certificates';
+import { Achievements } from 'src/app/models/candidates/achievements';
 
 @Component({
   standalone: false,
@@ -57,6 +61,7 @@ export class CreateCandidatesComponent {
   makeProfileUrl: any;
   fieldOfStudy: any;
   inputBgColor = 'lightblue';
+  candidates: any;
 
   constructor(
     private api: ApiService,
@@ -66,8 +71,13 @@ export class CreateCandidatesComponent {
     private dialog: DialogService,
     private route: ActivatedRoute,
     private cdr: ChangeDetectorRef,
-    private router: Router
-  ) {}
+    private router: Router,
+    public ref: DynamicDialogRef,
+    private config: DynamicDialogConfig
+  ) 
+  {
+    this.candidates = this.config.data?.candidates;
+  }
 
   ngOnInit() {
     this.createCandidateForm();
@@ -76,6 +86,10 @@ export class CreateCandidatesComponent {
     this.getLanguages();
     this.getMaritalStatus();
     this.getFieldOfStudy();
+
+    if (this.candidates?.id) {
+      this.patchCandidateForm(this.candidates);
+    }
   }
 
   ngAfterViewInit() {}
@@ -84,13 +98,9 @@ export class CreateCandidatesComponent {
     this.candidateForm = this.fb.group({
       id: [''],
       name: ['', Validators.required],
-      mobileNumber: [
-        '',
-        Validators.compose([Validators.required, Validators.minLength(10)]),
-      ],
+      mobileNumber: ['',Validators.compose([Validators.required, Validators.minLength(10)]),],
       email: ['', Validators.compose([Validators.required, Validators.email])],
       gender: [''],
-      alternateMobileNumber: [''],
       nationality: [''],
       languagesKnown: [[]],
       isFresher: [''],
@@ -146,7 +156,7 @@ export class CreateCandidatesComponent {
   generatingResume() {
     this.dataLoaded = false;
 
-    const route = 'create/resume';
+    const route = 'candidate/create';
     const payload = this.candidateForm.getRawValue();
 
     payload['candidateLogo'] = this.multipartFile;
@@ -225,9 +235,10 @@ export class CreateCandidatesComponent {
 
     this.api.retrieve(route, payload).subscribe({
       next: (response) => {
-        this.gs.showMessage('Success', 'Successfully Created Resume');
+       // this.gs.showMessage('Success', 'Successfully Created Resume');
         this.dataLoaded = true;
         this.uploadCandidateImage();
+        this.close(response)
       },
       error: (error) => {
         this.dataLoaded = true;
@@ -251,6 +262,7 @@ export class CreateCandidatesComponent {
 
   createExperience(): FormGroup {
     return this.fb.group({
+      id:[''],
       companyName: ['', Validators.required],
       role: ['', Validators.required],
       experienceYearStartDate: [''],
@@ -262,6 +274,7 @@ export class CreateCandidatesComponent {
 
   createProject(): FormGroup {
     return this.fb.group({
+      id:[''],
       projectName: [''],
       projectSkills: [[]],
       projectRole: [''],
@@ -316,6 +329,7 @@ export class CreateCandidatesComponent {
 
   createQualification(): FormGroup {
     return this.fb.group({
+      id:[''],
       instutionName: [''],
       department: [''],
       qualificationStartYear: [''],
@@ -371,6 +385,7 @@ export class CreateCandidatesComponent {
 
   createCertificates(): FormGroup {
     return this.fb.group({
+      id:[''],
       courseName: [''],
       courseStartDate: [''],
       courseEndDate: [''],
@@ -404,6 +419,7 @@ export class CreateCandidatesComponent {
 
   createAchievements(): FormGroup {
     return this.fb.group({
+      id:[''],
       achievementsName: [''],
       achievementsDate: [''],
       isDeleted: [false],
@@ -472,4 +488,115 @@ export class CreateCandidatesComponent {
       },
     });
   }
-}
+
+  close(response: any) {
+    this.ref.close(response);
+  }
+
+
+  patchCandidateForm(candidate: Candidate) {
+      const certificateFormArray = this.candidateForm.get('certificates') as FormArray;
+     
+      candidate.certificates?.forEach(certificate => {
+        certificateFormArray.push(this.createCertificateFormGroup(certificate));
+      });
+  
+      this.patchExperiences(candidate.experiences);
+  
+      const qualificationFormArray = this.candidateForm.get('qualification') as FormArray;
+    
+      candidate.qualification?.forEach(qualification => {
+        qualificationFormArray.push(this.createQualificationFormGroup(qualification));
+      });
+  
+      const achievementFormArray = this.candidateForm.get('achievements') as FormArray;
+     
+      candidate.achievements?.forEach(achievement => {
+        certificateFormArray.push(this.createAchievementsFormGroup(achievement));
+      });
+  
+      const candidateDob = candidate.dob ? new Date(candidate.dob) : null;
+
+      this.candidateForm.patchValue({
+        id: candidate?.id,
+        name: candidate?.name,
+        mobileNumber:candidate?.mobileNumber,
+        email: candidate?.email,
+        gender: candidate?.gender,
+        nationality:candidate?.nationality,
+        languagesKnown: candidate?.languagesKnown,
+        isFresher: candidate?.isFresher,
+        skills: candidate?.skills,
+        linkedIn: candidate?.linkedIn,
+        dob: candidateDob,  
+        address: candidate?.address,
+        maritalStatus: candidate?.maritalStatus,
+      });
+    }
+  
+    createCertificateFormGroup(certificate: Certificates): FormGroup {
+      return this.fb.group({
+        id: [certificate.id || null],
+        courseName: [certificate.courseName || ''],
+        courseStartDate: [certificate.courseStartDate || ''],
+        courseEndDate: [certificate.courseEndDate || ''],
+      });
+    }
+  
+    patchExperiences(experiences: any[]) {
+      const experienceFormArray = this.candidateForm.get('experiences') as FormArray;
+    
+      experiences?.forEach((experience) => {
+  
+        const experienceForm = this.createExperience();
+        experienceForm.patchValue({
+          id:experience.id,
+          companyName: experience.companyName,
+          role: experience.role,
+          experienceYearStartDate:  experience.experienceYearStartDate ? new Date(experience.experienceYearStartDate) : null,
+          experienceYearEndDate:  experience.experienceYearEndDate ? new Date(experience.experienceYearEndDate) : null,
+          currentlyWorking: experience.currentlyWorking,
+        });
+    
+        const projectFormArray = experienceForm.get('projects') as FormArray; 
+    
+        
+        experience.projects?.forEach((project:any) => {
+          const projectForm = this.createProject();
+          projectForm.patchValue({
+            id:project.id,
+            projectName: project.projectName,
+            projectSkills: project.projectSkills,
+            projectRole: project.projectRole,
+            projectDescription: project.projectDescription,
+          });
+          projectFormArray.push(projectForm);
+        });
+        experienceFormArray.push(experienceForm);
+      });
+    }
+  
+    createQualificationFormGroup(qualification: Qualification){
+      return this.fb.group({
+        id:qualification.id,
+        instutionName: qualification.instutionName,
+        department: qualification.department,
+        qualificationStartYear: qualification.qualificationStartYear ? new Date(qualification.qualificationStartYear) : null,
+        qualificationEndYear: qualification.qualificationEndYear ? new Date(qualification.qualificationEndYear) : null,
+        percentage: qualification.percentage,
+        fieldOfStudy: qualification.percentage,
+      });
+    }
+  
+    createAchievementsFormGroup(achievement: Achievements){
+      const formattedStartDate = this.datePipe.transform(achievement.achievementsDate, 'yyyy-MM-dd');
+      return this.fb.group({
+        id:achievement.id,
+        achievementsName: achievement.achievementsName,
+        achievementsDate:  achievement.achievementsDate ? new Date(achievement.achievementsDate) : null,
+        isDeleted: achievement.isDeleted,
+      });
+    }
+  }
+   
+

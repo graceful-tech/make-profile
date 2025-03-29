@@ -1,10 +1,7 @@
 <div class="header-image">
 <img class="header-images" src="assets/img/make-profile.svg" alt="Header Image" />
- 
-    <p-button label="Login" class="right-align"    ></p-button> 
-     
+    <p-button label="Login" class="right-align"></p-button> 
 </div>
-
 
 <div class="wrapper">
  <div class="left-section">
@@ -14,27 +11,30 @@
         <div class="col-12">
           <div class="px-1">
             <input type="file" #attachment style="display: none;" (change)="addAttachment($event)" accept=".doc, .docx, .pdf" />
-            <div class="file-wrapper d-flex align-items-center">
-              
-              <i class="pi pi-cloud-upload" (click)="attachment.click()" style="font-size: 50px; color: #007bff; cursor: pointer; padding-left: 100px;"></i>  
-               
-              <div class="ml-3">
+            <div class="file-wrapper d-flex align-items-center">       
+              <i class="icon pi pi-cloud-upload" (click)="attachment.click()"></i>  
+              <div class="ml-2">
                 <span *ngIf="resume?.fileName">
                   <i class="pi pi-paperclip mr-2"></i>
                   <span>{{ resume?.fileName }}</span>
                 </span>
-                <span *ngIf="!resume?.fileName" style="color: #5c5c5c;">
-                  No resume added.
+                <span *ngIf="!resume?.fileName" style="color: #171717;">
+                  Upload Your Resume
                 </span>
+                <span class="header-middle">
+                  OR
+                 </span>
+                 <span class="header-button">
+                  <p-button *ngIf="!candidateId"  (onClick)="createCandidate()" label="Enter Details"></p-button>
+                  <p-button *ngIf="candidateId" (onClick)="createCandidate()" label="Update Details"></p-button>
+                 </span>
               </div>
             </div>
           </div>
         </div>
       </div>
       
-
         <div class="table-header">
-          
           <div class="grid grid-nogutter">
             <div class="col-12">
                 <div class="file-wrapper mt-2 d-flex justify-content-between">
@@ -43,17 +43,16 @@
                     <h5 class="styled-text">Your Resume</h5>
                   </div>
                   <div>
-                    <p-button class="mr-2" (onClick)="attachment.click()" label="Create Resume"></p-button>
+                    <p-button class="mr-2"  (onClick)="createCandidate()" label="Create Resume"></p-button>
                   </div>
                 </div>
-               
             </div>
           </div>
-        <!-- <h5 class="styled-text">Your Resume</h5>
-        <div>
+          <!-- <h5 class="styled-text">Your Resume</h5>
+          <div>
           <p-button class="mr-2" (onClick)="attachment.click()" label="Create"></p-button>
-        </div> -->
-        <div class="table-container">
+          </div> -->
+         <div class="table-container">
             <p-table class="mobile" [value]="yourResume">
                 <ng-template pTemplate="header">
                     <tr>
@@ -73,7 +72,8 @@
                 </ng-template>
             </p-table>
         </div>
-    
+
+        
         <h5 class="styled-text">Applied Jobs</h5>
         <div class="table-container">
             <p-table   [value]="yourResume">
@@ -102,16 +102,52 @@
             </p-table>
         </div>
 
+
+        <div>
+          <form [formGroup]="requirementForm" class="search-form">
+            <div class="search-wrapper">
+              <div class="col-12 md:col-6 lg:col-3">
+                <div class="field-wrapper">
+                    <div class="input-wrapper">
+                       <input  pInputText type="text" formControlName="designation" placeholder="Search by designation...">
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 md:col-6 lg:col-3">
+                <div class="field-wrapper">
+                    <div class="input-wrapper">
+                        <input pInputText placeholder="Search by location..." formControlName="locations" />
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-12 md:col-6 lg:col-3">
+                <div class="field-wrapper">
+                    <div class="input-wrapper">
+                        <p-chips separator="," formControlName="skills" [addOnBlur]="true" [addOnTab]="true"  placeholder="Skills Are Separated By Comma"></p-chips>
+                    </div>
+                </div>
+            </div>
+                  <div style="margin-top: 14px;">
+                    <p-button label="Search" class="mr-2" (onClick)="getRequirements()"></p-button>
+                    <p-button label="Reset" class="mr-2" styleClass="p-button-secondary" (onClick)="resetRequirement()"></p-button>
+                  </div>
+            </div>
+          </form>
+        </div>
+        
+     
+
         <h5 class="styled-text">Suggest Jobs</h5>
         <div class="table-container">
-            <p-table    [value]="yourResume">
+            <p-table    [value]="requirements">
                 <ng-template pTemplate="header">
                     <tr>
                         <th style="width: 5%;">JOB ID</th>
                         <th style="width: 10%;">SKILLS</th>
                         <th style="width: 10%;">LOCATION</th>
                         <th style="width: 10%;">SOURCE</th>
-                        <th style="width: 10%;">ENVIRONMENT</th>
+                        <th style="width: 10%;">EXPERIENCE</th>
                         <th style="width: 10%;">CTC</th>
                         <th style="width: 5%;">SCORE</th>
                         <th style="width: 10%;">SUITE</th>
@@ -119,26 +155,45 @@
                         <th style="width: 10%;">APPLY</th>
                     </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-resume>
+                <ng-template pTemplate="body" let-requirement>
                     <tr>
-                        <td>{{ resume.id }}</td>
-                        <td>{{ resume.name }}</td>
-                        <td>{{ resume.remainingEdits }}</td>
-                        <td>{{ resume.amountPaid }}</td>
-                        <td>{{ resume.amountPaid }}</td>
-                        <td>{{ resume.amountPaid }}</td>
-                        <td>{{ resume.amountPaid }}</td>
-                        <td>{{ resume.amountPaid }}</td>
+                        <td>{{ requirement.jobId }}</td>
+                        <td>{{ requirement.skills }}</td>
+                        <td>{{ requirement.locations }}</td>
+                        <td>{{ requirement.source }}</td>
+                        <td>{{ requirement.minExperience }} - {{ requirement.maxExperience }}</td>
+                        <td>{{ requirement.maxCostToCompany }}</td>
+                        <td *ngIf="requirement.jobId === this.candidateScore?.jobId; else noScore">
+                          <span [ngClass]="{'green' : this.candidateScore?.score > '59','red': this.candidateScore?.score <= 59}"> 
+                            {{ this.candidateScore?.score !== null ? this.candidateScore?.score : '-' }} </span> 
+                        </td>
+                          
+                        <td *ngIf="requirement.jobId === this.candidateScore?.jobId; else noRelated">
+                            <span [ngClass]="{'green' : this.candidateScore?.related === true,   
+                            'red': this.candidateScore?.related === false }"> {{ this.candidateScore?.score !== null 
+                               && this.candidateScore?.related === true ? 'MATCHED' : this.candidateScore?.score === null ? '-'  : 'NOT MATCHED' }}</span>
+                        </td>
+                         <ng-template #noScore>
+                          <td>-</td>
+                        </ng-template>
+                        <ng-template #noRelated>
+                          <td>-</td>
+                        </ng-template>
                         <td>
-                          <button   class="small-btn" (click)="getScore()" >Get Score</button>
+                          <button   class="small-btn" (click)="getScore(requirement.jobId,requirement.tenant)" >Get Score</button>
                         </td>
                         <td>
-                          <button   class="apply-btn" (click)="applyJob()" >Apply</button>
+                          <button   class="apply-btn" [disabled]="!(this.candidateScore?.related && this.candidateScore?.score !== null && requirement.jobId === this.candidateScore?.jobId)"  (click)="applyJob(requirement.jobId,requirement.tenant)" >Apply</button>
                         </td>
 
                     </tr>
                 </ng-template>
             </p-table>
+            <div class="pagination-wrapper">
+              <p-paginator (onPageChange)="onPageChange($event)" [totalRecords]="totalRecords"
+                  [rowsPerPageOptions]="[10, 20, 30]" [rows]="maxLimitPerPage">
+              </p-paginator>
+          </div>
         </div>
       </div>  
     </div>
@@ -148,34 +203,14 @@
     <div class="profile-wrapper">
        
         <form [formGroup]="candidateForm">
-  
-            <!-- <div class="form-heading">
-              <div>   
-                 
-              </div>  
-                  <input type="file" #attachment1  (change)="addCandidateImage($event)" style="display: none"/>
-        
-              <div *ngIf="candidateImageUrl;else other_content">
-                <img class="image" [src]="candidateImageUrl"/>
-              </div> 
-              <ng-template #other_content> 
-                <img class="image" src="assets/img/no-profile-picture.svg"/>
-              </ng-template>
-        
-            </div>
-        
-            <div class="flex-end mt-3">
-              <button type="button" class="custom-btn" (click)="attachment1.click()">Upload Profile</button>
-            </div> -->
-        
-        
+
             <app-make-profile-divider></app-make-profile-divider>
         
             <div class="section-heading">Personal Details</div>
               <div class="grid">
               <div class="col-12 md:col-6 lg:col-3">
                 <div class="field-wrapper">
-                  <label class="required">Mobile Number</label>
+                  <label class="required">Mobile</label>
                   <div class="input-wrapper">
                     <input type="text"  pKeyFilter="int"  [maxlength]="10"  pInputText formControlName="mobileNumber" />
                   </div>
@@ -290,10 +325,6 @@
                 </div>
                 
             </div>
-
-            <!-- <div class="section-heading mt-3">
-              <div>Skills</div>
-            </div> -->
         
             <div class="grid">
                <div class="col-12">
@@ -362,15 +393,15 @@
                       <div class="field-wrapper">
                         <label>Year Ended</label>
                         <div class="input-wrapper">
-                          <p-calendar formControlName="experienceYearEndDate" placeholder="Select From Date"></p-calendar>
+                          <p-calendar formControlName="experienceYearEndDate" [disabled]="experience.get('currentlyWorking')?.value" placeholder="Select From Date"></p-calendar>
                         </div>
                       </div>
                     </div>
         
-                    <div class="col-12 md:col-6 lg:col-3">
+                    <div class="col-12">
                       <div class="field-wrapper">
-                        <div class="input-wrapper">
-                          <p-checkbox [binary]="true" label="CurrentlyWorking" formControlName="currentlyWorking"></p-checkbox>
+                        <div class="input-wrapper"   style="display: flex; align-items: left; white-space: nowrap;"> 
+                          <p-checkbox [binary]="true" formControlName="currentlyWorking" label="Working Here"></p-checkbox>
                         </div>
                       </div>
                     </div>

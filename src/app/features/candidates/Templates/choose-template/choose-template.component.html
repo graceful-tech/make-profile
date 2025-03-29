@@ -1,0 +1,32 @@
+
+
+<div #resumeContainer class="resume-container"
+     (mousedown)="startDragging($event)"
+     (touchstart)="startDragging($event)"
+     (mouseup)="stopDragging()"
+     (touchend)="stopDragging()"
+     (mousemove)="dragResume($event)"
+     (touchmove)="dragResume($event)"
+     (dblclick)="onDoubleClick()">
+  
+  <img #resumeImage [src]="currentResume"    [ngClass]="{'selected-border': isWorkingHere}" class="resume-image">
+
+ 
+  <div class="arrow-controls">
+    <button (click)="prevResume()" class="arrow-btn">⬅️</button>
+    <button (click)="nextResume()" class="arrow-btn">➡️</button>
+  </div>
+</div>
+
+<div class="zoom-controls">
+  <button pButton class="zoom-btn" (click)="zoomIn()" icon="pi pi-search-plus" aria-label="Zoom In"></button>
+  <button pButton class="zoom-btn" (click)="zoomOut()" icon="pi pi-search-minus" aria-label="Zoom Out"></button>
+</div>
+
+<div class="tick-icon">
+  <span>&nbsp;Choose Template&nbsp;</span>
+</div>
+
+<button class="create-resume-btn" (click)="createResume(currentResume)">Select</button>
+
+

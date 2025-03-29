@@ -92,7 +92,7 @@ p-table th {
   }
   
   .p-inputtext {
-    background-color: rgb(233, 240, 242) !important;
+    background-color: rgb(255, 255, 255) !important;
   }
   
   
@@ -203,101 +203,11 @@ p-table th {
     margin-left: 80%; 
 }
 
-  
-  @media screen and (max-width: 768px) {
-
-
-     .header-image {
-        position: relative;
-        top: 0;
-        left: 0;
-        /* width: 100%; */
-        background: #fff;
-        z-index: 1000;
-        display: flex;  
-        align-items: center;  
-        justify-content: space-between; 
-        padding: 10px 10px;
-        
-    }
-    
-    
-    .header-images {
-        width: 100px;
-        height: auto;
-        
-    }
-    
-    .right-align {
-        margin-left: auto;  
-        padding: 8px;
-    }
-    .wrapper {
-        display: flex;
-        flex-direction: column;
-        position: relative;
-    }
-
-    .left-section{
-     max-width: 100%; 
-    flex: none;
-    }
-    
-    
-    .right-section {
-         max-width: 100%; 
-        flex: none;
-
-    }
-    .right-section {
-        margin-top: auto;  
-    }
-
-    .mobile {
-      display: flex;
-      border-collapse: collapse;
-      width: 100%;
-    }
-
-    .applied-jobs{
-      display: flex;
-      border-collapse: collapse;
-      width: 10%
-    }
-
-    .styled-text{
-      padding-left: 10px;
-      display: flex;
-  }  
-
-  .custom-btn:hover {
-    background-color: #3716dc;  
-    padding-right: 50px;
-  }
-
-  .custom-btn {
-    background-color: #366fe0;  
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    font-size: 15px;
-    border-radius: 8px;
-    cursor: pointer;
-    margin-right: 15px;
-    font-style: italic;
-    
-  }
-  
-}
-
 .image-container {
     position: relative;
     display: inline-block;
     margin-top: 20px;
-   
 }
-
- 
 
 .edit-icon {
     position: absolute;
@@ -369,7 +279,155 @@ p-table th {
   cursor: pointer;
   margin-right: 15px;
   font-style: italic;
-  
+}
+
+.header-middle{
+  color: #000;
+  padding-left: 2rem;
+}
+
+.header-button{
+  padding-left: 2rem;
+}
+
+.icon{
+  font-size: 50px; 
+  color: #007bff; 
+  cursor: pointer; 
+  padding-left: 100px;
+}
+
+.search-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.search-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.field-wrapper {
+  flex: 1 1 calc(25% - 10px);  
+  min-width: 150px;
+}
+
+
+.green {
+  color: #0f9640;
+  font-weight: 500;
+}
+
+.orange {
+  color: #dc5512;
+  font-weight: 500;
+}
+
+.red {
+  color: #d11111;
+  font-weight: 500;
+}
+
+@media screen and (max-width: 768px) {
+
+  .header-image {
+     position: relative;
+     top: 0;
+     left: 0;
+     /* width: 100%; */
+     background: #fff;
+     z-index: 1000;
+     display: flex;  
+     align-items: center;  
+     justify-content: space-between; 
+     padding: 10px 10px;
+     
+ }
+ 
+ 
+ .header-images {
+     width: 100px;
+     height: auto;
+     
+ }
+ 
+ .right-align {
+     margin-left: auto;  
+     padding: 8px;
+ }
+ .wrapper {
+     display: flex;
+     flex-direction: column;
+     position: relative;
+ }
+
+ .left-section{
+    max-width: 100%; 
+    flex: none;
+ }
+ 
+ 
+ .right-section {
+     max-width: 100%; 
+     flex: none;
+
+ }
+ .right-section {
+     margin-top: auto;  
+ }
+
+ .mobile {
+    display: flex;
+    border-collapse: collapse;
+    width: 100%;
+ }
+
+ .applied-jobs{
+    display: flex;
+    border-collapse: collapse;
+    width: 10%
+ }
+
+ .styled-text{
+    padding-left: 10px;
+    display: flex;
+    margin-top: 20px;
+}  
+
+.custom-btn:hover {
+    background-color: #3716dc;  
+   padding-right: 50px;
+}
+
+.custom-btn {
+ background-color: #366fe0;  
+ color: white;
+ border: none;
+ padding: 8px 12px;
+ font-size: 15px;
+ border-radius: 8px;
+ cursor: pointer;
+ margin-right: 15px;
+ font-style: italic;
+ 
+}
+.header-middle{
+ color: #000;
+ padding-left: 0rem;
+}
+
+.header-button{
+ padding-left: 0rem;
+}
+.icon{
+ font-size: 50px; 
+ color: #007bff; 
+ cursor: pointer; 
+ padding-left: 0px;
 }
 
  
+}
