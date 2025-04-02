@@ -12,24 +12,29 @@ import { GlobalService } from 'src/app/services/global.service';
   styleUrl: './landing-page-mobile.component.css'
 })
 export class LandingPageMobileComponent {
-   
 
- 
+
+
   constructor(private fb: FormBuilder, private api: ApiService, private gs: GlobalService, private router: Router,
     private dialog: DialogService, private route: ActivatedRoute,) { }
 
-    ngOnInit() {
-       
-  
-    }
+  ngOnInit() {
 
-    candidate(){
-      this.router.navigate(['/candidates'], 
-        { relativeTo: this.route });
-    }
 
-    goToLoginPage(){
-      this.router.navigate(['/login']);
-    }
+  }
+
+  candidate() {
+    this.router.navigate(['/candidates'],
+      { relativeTo: this.route });
+  }
+
+  goToLoginPage() {
+    this.router.navigate(['/login']);
+  }
+
+  loginWithGoogle() {
+    window.location.href = '${environment.restUrl}/oauth2/authorization/google';
+
+  }
 
 }

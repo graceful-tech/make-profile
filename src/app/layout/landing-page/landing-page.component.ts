@@ -32,4 +32,9 @@ export class LandingPageComponent {
       this.router.navigate(['/login']);
     }
 
+    loginWithGoogle() {
+      window.location.href = '${environment.restUrl}/oauth2/authorization/google';
+  }
+  
+
 }

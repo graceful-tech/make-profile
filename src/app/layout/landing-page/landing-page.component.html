@@ -1,10 +1,7 @@
 <div class="login-container">
     <p-button (click)="goToLoginPage()" class="bt">SignUp</p-button>
     <h3>(Or)</h3>
-    <a href="/oauth2/authorization/google" class="google-btn">
-        <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google Logo">
-        Sign in with Google
-    </a>
+    <p-button label="Login with Google" (click)="loginWithGoogle()"></p-button>
 </div> 
 <!-- <div class="hero-section" src="assets/images/background.jpg" alt="Background">
     <div class="background-overlay">
