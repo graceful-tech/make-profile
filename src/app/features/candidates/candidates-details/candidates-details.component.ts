@@ -14,6 +14,8 @@ import { Experience } from 'src/app/models/candidates/experiences';
 import { Qualification } from 'src/app/models/candidates/qualification';
 import { Achievements } from 'src/app/models/candidates/achievements';
 import { Requirement } from 'src/app/models/candidates/requirement.model';
+import { LocalStorage } from '@ng-idle/core';
+import { ChooseTemplateComponent } from '../Templates/choose-template/choose-template.component';
  
 
 @Component({
@@ -24,39 +26,45 @@ import { Requirement } from 'src/app/models/candidates/requirement.model';
 })
 export class CandidatesDetailsComponent {
 
-    yourResume:Array<any> = [];
-    candidateForm!: FormGroup;
-    genderList: Array<ValueSet> = [];
-    languages: Array<ValueSet> = [];
-    showError: boolean = false;
-    currentRequest!: Subscription;
-    fieldDetails: Array<any> = [];
-    dialogRef: any;
-    resumeDetails: Array<any> = [];
-    resumeDetailsSubscription!: Subscription;
-    loaderImagePreview: any;
-    userName: any;
-    isFresher: boolean = false;
-    yearsList: any[] = [];
-    dataLoaded: boolean = true;
-    maritalStatus: Array<ValueSet> = [];
-    candidateImageUrl: any;
-    multipartFile: any;
-    candidateImageAttachments: any;
-    makeProfileUrl: any;
-    fieldOfStudy: any;
-    inputBgColor = 'lightblue';
-    resume:any;
-    candidates: Array<Candidate> = [];
-    candidateId: any;
-    requirements: any;
-    totalRecords!: number;
-    currentPage: number = 1;
-    maxLimitPerPage: number = 10;
-    requirementForm!: FormGroup;
-  candidateScore: any;
-  candidateRelated: any;
-    
+yourResume:Array<any> = [];
+candidateForm!: FormGroup;
+genderList: Array<ValueSet> = [];
+languages: Array<ValueSet> = [];
+showError: boolean = false;
+currentRequest!: Subscription;
+fieldDetails: Array<any> = [];
+dialogRef: any;
+resumeDetails: Array<any> = [];
+resumeDetailsSubscription!: Subscription;
+loaderImagePreview: any;
+userName: any;
+isFresher: boolean = false;
+yearsList: any[] = [];
+dataLoaded: boolean = true;
+maritalStatus: Array<ValueSet> = [];
+candidateImageUrl: any;
+multipartFile: any;
+candidateImageAttachments: any;
+makeProfileUrl: any;
+fieldOfStudy: any;
+inputBgColor = 'lightblue';
+resume:any;
+candidates: Array<Candidate> = [];
+candidateId: any;
+requirements: any;
+totalRecords!: number;
+currentPage: number = 1;
+maxLimitPerPage: number = 10;
+requirementForm!: FormGroup;
+candidateScore: any;
+candidateRelated: any;
+experienceDeletedArray: Array<any> = [];
+qualificationDeletedArray: Array<any> = [];
+certificatesDeletedArray: Array<any> = [];
+achievementsDeletedArray: Array<any> = [];
+returnImage: any;
+collegeProjectDeletedArray: Array<any> = []
+
 
 
   constructor(
@@ -115,6 +123,9 @@ export class CandidatesDetailsComponent {
         qualification: this.fb.array([this.createQualification()]),
         certificates: this.fb.array([this.createCertificates()]),
         achievements: this.fb.array([this.createAchievements()]),
+        softSkills:[''],
+        coreCompentencies:[''],
+        collegeProject: this.fb.array([this.createCollegeProject()]),
       });
     }
 
@@ -232,21 +243,26 @@ export class CandidatesDetailsComponent {
   
     createExperience(): FormGroup {
       return this.fb.group({
+        id:[''],
         companyName: ['', Validators.required],
         role: ['', Validators.required],
         experienceYearStartDate: [''],
         experienceYearEndDate: [''],
         projects: this.fb.array([this.createProject()]),
         currentlyWorking: [''],
+        responsibilities:[''],
+        isDeleted:false,
       });
     }
   
     createProject(): FormGroup {
       return this.fb.group({
+        id:[''],
         projectName: [''],
         projectSkills: [[]],
         projectRole: [''],
         projectDescription: [''],
+        isDeleted:false
       });
     }
   
@@ -259,7 +275,15 @@ export class CandidatesDetailsComponent {
         'Are you sure you want to remove this Experience?'
       );
       if (confirmDelete && this.experienceControls.length > 1) {
-        this.experienceControls.removeAt(index);
+        const removedExperience = this.experienceControls.at(index).value;
+        console.log('Removed Experience:', removedExperience);
+        if (removedExperience.id) {
+          removedExperience.isDeleted = true; 
+         this.experienceDeletedArray.push(removedExperience);
+         this.experienceControls.removeAt(index);
+        } else {
+          this.experienceControls.removeAt(index);
+        }
       }
     }
   
@@ -299,6 +323,7 @@ export class CandidatesDetailsComponent {
         qualificationEndYear: [''],
         percentage: [''],
         fieldOfStudy: [''],
+        isDeleted:false,
       });
     }
   
@@ -315,8 +340,14 @@ export class CandidatesDetailsComponent {
         'Are you sure you want to remove this qualification?'
       );
       if (confirmDelete && this.qualificationControls.length > 1) {
-        this.qualificationControls.removeAt(index);
-        this.cdr.detectChanges();
+        const removedQualification = this.qualificationControls.at(index).value;
+         if (removedQualification.id) {
+          removedQualification.isDeleted = true; 
+            this.qualificationDeletedArray.push(removedQualification);
+            this.qualificationControls.removeAt(index);
+        } else {
+          this.qualificationControls.removeAt(index);
+        }
       }
     }
   
@@ -342,7 +373,14 @@ export class CandidatesDetailsComponent {
         'Are you sure you want to remove this certificates?'
       );
       if (confirmDelete && this.certificateControls.length > 1) {
-        this.certificateControls.removeAt(index);
+      const removedCertificate = this.certificateControls.at(index).value;
+         if (removedCertificate.id) {
+            removedCertificate.isDeleted = true; 
+            this.certificatesDeletedArray.push(removedCertificate);
+            this.certificateControls.removeAt(index);
+        } else {
+          this.certificateControls.removeAt(index);
+        }
       }
     }
   
@@ -351,6 +389,7 @@ export class CandidatesDetailsComponent {
         courseName: [''],
         courseStartDate: [''],
         courseEndDate: [''],
+        isDeleted:false,
       });
     }
   
@@ -369,11 +408,12 @@ export class CandidatesDetailsComponent {
         'Are you sure you want to remove this achievements?'
       );
       if (confirmDelete && this.achievementsControls.length > 1) {
-        const achievement = this.achievementsControls.at(index).value;
-  
-        if (achievement.id) {
-          this.achievementsControls.at(index).patchValue({ isDeleted: true });
-        } else {
+        const removedAchievement = this.achievementsControls.at(index).value;
+         if (removedAchievement.id) {
+          removedAchievement.isDeleted =true;
+          this.achievementsDeletedArray.push(removedAchievement);
+          this.achievementsControls.removeAt(index);
+         } else {
           this.achievementsControls.removeAt(index);
         }
       }
@@ -383,7 +423,7 @@ export class CandidatesDetailsComponent {
       return this.fb.group({
         achievementsName: [''],
         achievementsDate: [''],
-        isDeleted: [false],
+        isDeleted:false,
       });
     }
   
@@ -434,20 +474,22 @@ export class CandidatesDetailsComponent {
     }
   
     uploadCandidateImage() {
+     
       this.dataLoaded = false;
-      const route = 'candiate/logo';
+      const route = 'candidate/upload-image';
       const formData = new FormData();
       formData.append('attachment', this.multipartFile);
-      this.api.upload(route, formData).subscribe({
+      formData.append('candidateId', this.candidateId);
+       this.api.downloadFile(route, formData).subscribe({
         next: (response) => {
-          this.dataLoaded = true;
-          this.reset();
+          this.candidateImageUrl = URL.createObjectURL(response);
         },
         error: (error) => {
           this.dataLoaded = true;
           this.gs.showMessage('Error', 'Error in updating logo.');
         },
       });
+     
     }
 
     onEdit(id:any){
@@ -517,7 +559,7 @@ export class CandidatesDetailsComponent {
       });
     }
 
-    createCandidate(){
+    enterDetails(){
       const ref = this.dialog.open(CreateCandidatesComponent, {
         data: { 
             candidates:this.candidates
@@ -530,123 +572,190 @@ export class CandidatesDetailsComponent {
    
      ref.onClose.subscribe(response => {
       if (response) {
+
+        localStorage.setItem('candidateId', response.id);
         this.candidates = response;  
         this.candidateId = response.id;
         const candidate =response as Candidate
         this.patchCandidateForm(candidate);
+        this.candidateImageUrl = response.candidateLogo;
+        
       }
     });
   }
 
-  patchCandidateForm(candidate: Candidate) {
-    const certificateFormArray = this.candidateForm.get('certificates') as FormArray;
-    certificateFormArray.clear();
-  
-    candidate.certificates?.forEach(certificate => {
-      certificateFormArray.push(this.createCertificateFormGroup(certificate));
+  UpdateCandidate(){
+    const ref = this.dialog.open(CreateCandidatesComponent, {
+      data: { 
+          candidates:this.candidates,
+          candidateImage:this.candidateImageUrl
+      },
+      closable: true,
+      width: '70%',
+      height:'90%',
+      header: 'Update Your Resume',
     });
+ 
+   ref.onClose.subscribe(response => {
+    if (response) {
+      this.candidates = response;  
+      this.candidateId = response.id;
+      const candidate =response as Candidate
+      this.patchCandidateForm(candidate);
 
-    this.patchExperiences(candidate.experiences);
-
-    const qualificationFormArray = this.candidateForm.get('qualification') as FormArray;
-    qualificationFormArray.clear();
-  
-    candidate.qualification?.forEach(qualification => {
-      qualificationFormArray.push(this.createQualificationFormGroup(qualification));
-    });
-
-    const achievementFormArray = this.candidateForm.get('achievements') as FormArray;
-    achievementFormArray.clear();
-  
-    candidate.achievements?.forEach(achievement => {
-      certificateFormArray.push(this.createAchievementsFormGroup(achievement));
-    });
-
-    const candidateDob = candidate.dob ? new Date(candidate.dob) : null;
-
-
-    this.candidateForm.patchValue({
-      id: candidate?.id,
-      name: candidate?.name,
-      mobileNumber:candidate?.mobileNumber,
-      email: candidate?.email,
-      gender: candidate?.gender,
-      nationality:candidate?.nationality,
-      languagesKnown: candidate?.languagesKnown,
-      isFresher: candidate?.isFresher,
-      skills: candidate?.skills,
-      linkedIn: candidate?.linkedIn,
-      dob: candidateDob,  
-      address: candidate?.address,
-      maritalStatus: candidate?.maritalStatus,
-    });
-  }
-
-  createCertificateFormGroup(certificate: Certificates): FormGroup {
-    return this.fb.group({
-      id: [certificate.id || null],
-      courseName: [certificate.courseName || ''],
-      courseStartDate: [certificate.courseStartDate || ''],
-      courseEndDate: [certificate.courseEndDate || ''],
-    });
-  }
-
-  patchExperiences(experiences: any[]) {
-    const experienceFormArray = this.candidateForm.get('experiences') as FormArray;
-    experienceFormArray.clear(); 
-  
-    experiences?.forEach((experience) => {
-
-      const experienceForm = this.createExperience();
-      experienceForm.patchValue({
-        id:experience.id,
-        companyName: experience.companyName,
-        role: experience.role,
-        experienceYearStartDate:  experience.experienceYearStartDate ? new Date(experience.experienceYearStartDate) : null,
-        experienceYearEndDate:  experience.experienceYearEndDate ? new Date(experience.experienceYearEndDate) : null,
-        currentlyWorking: experience.currentlyWorking,
-      });
-  
-      const projectFormArray = experienceForm.get('projects') as FormArray;
-      projectFormArray.clear();  
-  
+      this.candidateImageUrl = response.candidateLogo;
       
-      experience.projects?.forEach((project:any) => {
-        const projectForm = this.createProject();
-        projectForm.patchValue({
-          id:project.id,
-          projectName: project.projectName,
-          projectSkills: project.projectSkills,
-          projectRole: project.projectRole,
-          projectDescription: project.projectDescription,
+      console.log(this.candidateImageUrl)
+    }
+  });
+  }
+
+  createResume() {
+    const ref = this.dialog.open(ChooseTemplateComponent, {
+        data: { 
+          candidates:this.candidates,
+          candidateImage :this.candidateImageUrl
+
+        },
+        closable: true,
+        width: '40%',
+        height:'90%',
+        styleClass: 'custom-dialog-header',
+          });
+       
+       ref.onClose.subscribe(response => {
+        if (response) {      
+          this.candidateImageUrl =response.candidateLogo;
+          console.log(this.candidateImageUrl)
+          }
         });
-        projectFormArray.push(projectForm);
+  }
+
+  patchCandidateForm(candidate: Candidate) {
+      
+     
+    if(candidate.certificates?.length >0){
+      const certificateFormArray = this.candidateForm.get('certificates') as FormArray;
+      certificateFormArray.clear();
+  
+      candidate.certificates?.forEach(certificate => {
+        certificateFormArray.push(this.createCertificateFormGroup(certificate));
       });
-      experienceFormArray.push(experienceForm);
-    });
-  }
+    }
+      this.patchExperiences(candidate.experiences);
+  
+      if(candidate.qualification?.length > 0){
+        const qualificationFormArray = this.candidateForm.get('qualification') as FormArray;
+        qualificationFormArray.clear();
 
-  createQualificationFormGroup(qualification: Qualification){
-    return this.fb.group({
-      id:qualification.id,
-      instutionName: qualification.instutionName,
-      department: qualification.department,
-      qualificationStartYear: qualification.qualificationStartYear ? new Date(qualification.qualificationStartYear) : null,
-      qualificationEndYear: qualification.qualificationEndYear ? new Date(qualification.qualificationEndYear) : null,
-      percentage: qualification.percentage,
-      fieldOfStudy: qualification.percentage,
-    });
-  }
+        candidate.qualification?.forEach(qualification => {
+        qualificationFormArray.push(this.createQualificationFormGroup(qualification));
+      });
+    }
+  
+    if(candidate.achievements?.length > 0){
+      const achievementFormArray = this.candidateForm.get('achievements') as FormArray;
+        achievementFormArray.clear();
 
-  createAchievementsFormGroup(achievement: Achievements){
-    const formattedStartDate = this.datePipe.transform(achievement.achievementsDate, 'yyyy-MM-dd');
-    return this.fb.group({
-      id:achievement.id,
-      achievementsName: achievement.achievementsName,
-      achievementsDate:  achievement.achievementsDate ? new Date(achievement.achievementsDate) : null,
-      isDeleted: achievement.isDeleted,
-    });
-  }
+      candidate.achievements?.forEach(achievement => {
+      achievementFormArray.push(this.createAchievementsFormGroup(achievement));
+      });
+    }
+  
+      const candidateDob = candidate.dob ? new Date(candidate.dob) : null;
+
+      this.candidateForm.patchValue({
+        id: candidate?.id,
+        name: candidate?.name,
+        mobileNumber:candidate?.mobileNumber,
+        email: candidate?.email,
+        gender: candidate?.gender,
+        nationality:candidate?.nationality,
+        languagesKnown: candidate?.languagesKnown,
+        isFresher: candidate?.isFresher,
+        skills: candidate?.skills,
+        linkedIn: candidate?.linkedIn,
+        dob: candidateDob,  
+        address: candidate?.address,
+        maritalStatus: candidate?.maritalStatus,
+        softSkills:candidate?.softSkills,
+        coreCompentencies:candidate?.coreCompentencies
+      });
+    }
+
+    createCertificateFormGroup(certificate: Certificates): FormGroup {
+      return this.fb.group({
+        id: certificate.id,
+        courseName: certificate.courseName,
+        courseStartDate: certificate.courseStartDate ? new Date(certificate.courseStartDate) : null,
+        courseEndDate: certificate.courseEndDate ? new Date(certificate.courseEndDate) : null,
+        isDeleted:['']
+      });
+    }
+  
+    patchExperiences(experiences: any[]) {
+      
+      if(experiences?.length > 0){
+        const experienceFormArray = this.candidateForm.get('experiences') as FormArray;
+        experienceFormArray.clear();
+        experiences?.forEach((experience) => {
+        
+          const experienceForm = this.createExperience();
+          experienceForm.patchValue({
+            id:experience.id,
+            companyName: experience.companyName,
+            role: experience.role,
+            experienceYearStartDate:  experience.experienceYearStartDate ? new Date(experience.experienceYearStartDate) : null,
+            experienceYearEndDate:  experience.experienceYearEndDate ? new Date(experience.experienceYearEndDate) : null,
+            currentlyWorking: experience.currentlyWorking,
+            responsibilities:experience.responsibilities,
+            isDeleted:false
+          });
+         
+          if(experience.projects?.length > 0){
+            const projectFormArray = experienceForm.get('projects') as FormArray; 
+            projectFormArray.clear();
+           experience.projects?.forEach((project:any) => {
+          
+            const projectForm = this.createProject();
+            projectForm.patchValue({
+              id:project.id,
+              projectName: project.projectName,
+              projectSkills: project.projectSkills,
+              projectRole: project.projectRole,
+              projectDescription: project.projectDescription,
+              isDeleted:false
+            });
+            projectFormArray.push(projectForm);
+          });
+        }
+          experienceFormArray.push(experienceForm);
+        });
+      }
+      }
+  
+    createQualificationFormGroup(qualification: Qualification){
+      return this.fb.group({
+        id:qualification.id,
+        instutionName: qualification.instutionName,
+        department: qualification.department,
+        qualificationStartYear: qualification.qualificationStartYear ? new Date(qualification.qualificationStartYear) : null,
+        qualificationEndYear: qualification.qualificationEndYear ? new Date(qualification.qualificationEndYear) : null,
+        percentage: qualification.percentage,
+        fieldOfStudy: qualification.fieldOfStudy,
+        isDeleted:false,
+      });
+    }
+  
+    createAchievementsFormGroup(achievement: Achievements){
+      const formattedStartDate = this.datePipe.transform(achievement.achievementsDate, 'yyyy-MM-dd');
+      return this.fb.group({
+        id:achievement.id,
+        achievementsName: achievement.achievementsName,
+        achievementsDate:  achievement.achievementsDate ? new Date(achievement.achievementsDate) : null,
+        isDeleted:false,
+      });
+    }
 
   getRequirements(){
 
@@ -672,6 +781,45 @@ else{
  
 }
 
+
+get collegeProjectControls() {
+  return this.candidateForm.get('collegeProject') as FormArray;
+}
+
+addCollegeProject(){
+  this.collegeProjectControls.push(this.createCollegeProject());
+}
+
+getCollegeProjectCount(collegeProjectIndex: number): number {
+  return (this.candidateForm.get('collegeProject') as FormArray).length;
+}
+
+removeCollegeProject(index: number){
+ const confirmDelete = window.confirm(
+    'Are you sure you want to remove this project?'
+  );
+  if (confirmDelete && this.collegeProjectControls.length > 1) {
+    const removeCollegeProject = this.collegeProjectControls.at(index).value;
+     if (removeCollegeProject.id) {
+      removeCollegeProject.isDeleted =true;
+       this.collegeProjectDeletedArray.push(removeCollegeProject);
+       this.collegeProjectControls.removeAt(index);
+     } else {
+      this.collegeProjectControls.removeAt(index);
+    }
+  }
+}
+
+  createCollegeProject(): FormGroup {
+    return this.fb.group({
+      id:[''],
+      collegeProjectName: [''],
+      collegeProjectSkills: [[]],
+      collegeProjectDescription: [''],
+      isDeleted:false
+    });
+  }
+
 onPageChange(event: any) {
   this.currentPage = event.page + 1;
   this.maxLimitPerPage = event.rows;
@@ -682,5 +830,8 @@ resetRequirement(){
   this.requirementForm.reset();
   window.location.reload();
 }
+ 
+
+
 
 }

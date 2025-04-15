@@ -1,5 +1,6 @@
 import { Achievements } from "./achievements";
 import { Certificates } from "./certificates";
+import { CollegeProject } from "./college-project";
 import { Experience } from "./experiences";
 import { Qualification } from "./qualification";
 
@@ -21,6 +22,9 @@ export interface Candidate {
     qualification: Array<Qualification>;
     certificates:  Array<Certificates>;
     achievements:  Array<Achievements>;
+    collegeProject:  Array<CollegeProject>;
     maritalStatus:any;
+    softSkills:any;
+    coreCompentencies:any;
 
 }

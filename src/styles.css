@@ -990,16 +990,7 @@ table::-webkit-scrollbar-thumb {
     }
 }
 
-.p-checkbox .p-checkbox-box {
-    border: 2px solid #222324;
-    background: #badb92;
-    width: 40px;
-    height: 23px;
-    color: #495057;
-    border-radius: 3px;
-    transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
-    outline-color: transparent;
-    border-radius: 6px;
-  
-  }
-  
+.payment-dialog-header .p-dialog-header {
+    padding: 0rem !important;
+}
+   

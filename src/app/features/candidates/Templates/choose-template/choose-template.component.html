@@ -9,9 +9,8 @@
      (touchmove)="dragResume($event)"
      (dblclick)="onDoubleClick()">
   
-  <img #resumeImage [src]="currentResume"    [ngClass]="{'selected-border': isWorkingHere}" class="resume-image">
+  <img #resumeImage [src]="currentResume"  class="resume-image">
 
- 
   <div class="arrow-controls">
     <button (click)="prevResume()" class="arrow-btn">⬅️</button>
     <button (click)="nextResume()" class="arrow-btn">➡️</button>

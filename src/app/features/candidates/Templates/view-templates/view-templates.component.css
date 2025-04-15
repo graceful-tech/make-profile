@@ -70,3 +70,17 @@ h1 {
   .para{
   align-items: center;
   }
+ 
+  .create-resume-btn {
+    position: fixed;
+    top: 10px;
+    left: 20px;
+    background-color: #6a6b64;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  

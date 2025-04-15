@@ -8,4 +8,5 @@ export interface Experience  {
     experienceYearEndDate: any;
     projects: Array<Project>;
     currentlyWorking: any;
+    responsibilities:any;
 }

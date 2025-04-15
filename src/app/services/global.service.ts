@@ -7,6 +7,7 @@ import { BehaviorSubject } from 'rxjs';
 // import { MessageComponent } from '../shared/message/message.component';
 import { ApiService } from './api.service';
 import { MessageComponent } from '../shared/message/message.component';
+import { Candidate } from '../models/candidates/candidate.model';
 
 @Injectable({
   providedIn: 'root',
@@ -21,9 +22,6 @@ export class GlobalService {
   private user = new BehaviorSubject(null);
   public user$ = this.user.asObservable();
 
-  private customer = new BehaviorSubject(null);
-  public customer$ = this.customer.asObservable();
-
   private breadcrumb = new BehaviorSubject(null);
   public breadcrumb$ = this.breadcrumb.asObservable();
 
@@ -36,14 +34,13 @@ export class GlobalService {
   private paymentStatus = new BehaviorSubject(null);
   public paymentStatus$ = this.paymentStatus.asObservable();
 
-  private sidebar = new BehaviorSubject(false);
-  public sidebar$ = this.sidebar.asObservable();
-
   private resumeDetails = new BehaviorSubject(null);
   public resumeDetails$ = this.resumeDetails.asObservable();
 
-  private taskbar = new BehaviorSubject(false);
-  public taskbar$ = this.taskbar.asObservable();
+  private candidateDetails = new BehaviorSubject(null);
+  public candidateDetails$ = this.candidateDetails.asObservable();
+
+
 
   todayEvents: Array<any> = [];
   statusList: Array<any> = [];
@@ -56,8 +53,9 @@ export class GlobalService {
   performanceConfiguration: Array<any> = [];
   dashboardConfiguration: Array<any> = [];
   statusCategory: any;
-  idleTimoutsUserId:any
+  idleTimoutsUserId: any;
   taskBar$: any;
+  candidates: Array<Candidate> = [];
 
   constructor(
     private dialog: DialogService,
@@ -79,10 +77,6 @@ export class GlobalService {
     this.user.next(data);
   }
 
-  public setCustomer(data: any) {
-    this.customer.next(data);
-  }
-
   public setBreadcrumb(data: any) {
     this.breadcrumb.next(data);
   }
@@ -100,16 +94,12 @@ export class GlobalService {
     this.paymentStatus.next(data);
   }
 
-  public setSidebar(data: boolean) {
-    this.sidebar.next(data);
-  }
-
   public setResumeDetails(data: any) {
     this.resumeDetails.next(data);
   }
 
-  public setTaskbar(data: boolean) {
-    this.taskbar.next(data);
+  public setCandidateDetails(data: any) {
+    this.candidateDetails.next(data);
   }
 
   showMessage(status: string, message: string) {
@@ -143,10 +133,11 @@ export class GlobalService {
   }
 
   loadData() {
+    this.getCandidateById();
     this.getNotifications();
     this.getTodayEvents();
   }
-  
+
   // getNotifications() {
   //   this.retrieveNotifications();
   //   setInterval(() => {
@@ -219,5 +210,15 @@ export class GlobalService {
     audio.play();
   }
 
-  
+  getCandidateById() {
+    const id = localStorage.getItem('candidateId')
+    const route = `candidate/${id}`;
+
+    this.api.get(route).subscribe({
+      next: (response) => {
+        const candidates = response as any;
+        this.setCandidateId(candidates);
+      },
+    });
+  }
 }

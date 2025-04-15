@@ -1,0 +1,116 @@
+.header-images {
+    width: 60%;
+    height: auto;
+    border: 1px solid black;
+    align-items: center;
+}
+
+.image{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+
+.container {
+    text-align: center;
+    width: 100%;
+}
+
+.payment-options {
+    display: flex;
+    flex-direction: column;  
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+    position: relative;
+}
+
+.option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+   
+}
+.rupees{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+     
+}
+
+ 
+.divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 55%;
+    height: 20px;
+    margin-left: 25%;
+}
+ 
+.divider::before,
+.divider::after {
+    content: "";
+    flex-grow: 1;
+    height: 10px;
+    background: linear-gradient(to right, #ccc 10%, #777 50%, #ccc 90%);
+    border-radius: 10px;
+    width: 80px;
+}
+
+ 
+.or-text {
+    position: absolute;
+    background: white;
+    padding: 5px 10px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.hand {
+    font-size: 18px;
+    margin-left: 5px;
+    color: black;
+}
+
+.custom-link {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.custom-link:hover {
+    color: #060606;
+    background-color: #92a2a7;
+    padding: 2px;
+    border-radius: 10px;
+}
+.content{
+    color: rgb(0, 0, 0);
+    font-size: medium;
+}
+ 
+ 
+@media screen and (max-width: 768px) {
+
+    .header-images {
+     width: 70%;
+     height: auto;
+     border: 1px solid black;
+     align-items: center;
+    }
+   }
+   
+@media screen and (max-width: 380px) {
+
+    .header-images {
+     width: 40%;
+     height: auto;
+     border: 1px solid black;
+     align-items: center;
+    }
+   }
+   

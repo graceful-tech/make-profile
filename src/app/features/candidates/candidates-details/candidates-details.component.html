@@ -25,8 +25,8 @@
                   OR
                  </span>
                  <span class="header-button">
-                  <p-button *ngIf="!candidateId"  (onClick)="createCandidate()" label="Enter Details"></p-button>
-                  <p-button *ngIf="candidateId" (onClick)="createCandidate()" label="Update Details"></p-button>
+                  <p-button *ngIf="!candidateId"  (onClick)="enterDetails()" label="Enter Details"></p-button>
+                  <p-button *ngIf="candidateId" (onClick)="UpdateCandidate()" label="Update Details"></p-button>
                  </span>
               </div>
             </div>
@@ -43,7 +43,7 @@
                     <h5 class="styled-text">Your Resume</h5>
                   </div>
                   <div>
-                    <p-button class="mr-2"  (onClick)="createCandidate()" label="Create Resume"></p-button>
+                    <p-button class="mr-2"  (onClick)="createResume()" label="Create Resume"></p-button>
                   </div>
                 </div>
             </div>
@@ -456,6 +456,44 @@
         
                     </div>
                   </div>
+                </div>
+                
+              </div>
+            </ng-container>
+
+            <ng-container *ngIf="candidateForm.get('isFresher')?.value">
+              <div formArrayName="collegeProject">
+                <div *ngFor="let collegeProject of collegeProjectControls.controls; let i = index" [formGroupName]="i" class="experience-container">
+                  
+                  <div class="grid">
+                    <div class="col-12 md:col-6">
+                      <div class="field-wrapper">
+                        <label>Project Name</label>
+                        <div class="input-wrapper">
+                          <input type="text" pInputText formControlName="collegeProjectName" />
+                        </div>
+                      </div>
+                    </div>
+  
+        
+                    <div class="col-12 md:col-6">
+                      <div class="field-wrapper">
+                        <label>Project Skills</label>
+                        <div class="input-wrapper">
+                          <p-chips separator=","  formControlName="collegeProjectSkills" [addOnBlur]="true" [addOnTab]="true"></p-chips>
+                        </div>
+                      </div>
+                    </div>
+    
+                    <div class="col-12">
+                      <div class="field-wrapper">
+                        <label>Project Description</label>
+                        <div class="input-wrapper">
+                          <textarea rows="2" type="text" pInputText formControlName="collegeProjectDescription"></textarea>
+                        </div>
+                      </div>
+                    </div>
+                   </div>
                 </div>
                 
               </div>

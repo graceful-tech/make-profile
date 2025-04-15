@@ -47,4 +47,8 @@ export class ViewTemplatesComponent {
     });
   }
 
+  goBack(){
+    window.history.back();
+  }
+
 }

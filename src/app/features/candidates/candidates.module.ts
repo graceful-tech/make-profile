@@ -7,6 +7,8 @@ import { CreateCandidatesComponent } from './create-candidates/create-candidates
 import { CandidatesDetailsComponent } from './candidates-details/candidates-details.component';
 import { ViewTemplatesComponent } from './Templates/view-templates/view-templates.component';
 import { ChooseTemplateComponent } from './Templates/choose-template/choose-template.component';
+import { PaymentOptionComponent } from './payments/payment-option/payment-option.component';
+import { PaymentDetailsComponent } from './payments/payment-details/payment-details.component';
   
 
 @NgModule({
@@ -15,7 +17,9 @@ import { ChooseTemplateComponent } from './Templates/choose-template/choose-temp
     CreateCandidatesComponent,
     CandidatesDetailsComponent,
     ViewTemplatesComponent,
-    ChooseTemplateComponent
+    ChooseTemplateComponent,
+    PaymentOptionComponent,
+    PaymentDetailsComponent
     
   ],
   imports: [

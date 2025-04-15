@@ -19,6 +19,9 @@ import { Candidate } from 'src/app/models/candidates/candidate.model';
 import { Qualification } from 'src/app/models/candidates/qualification';
 import { Certificates } from 'src/app/models/candidates/certificates';
 import { Achievements } from 'src/app/models/candidates/achievements';
+import { PaymentService } from 'src/app/services/payment.service';
+import { PaymentOptionComponent } from '../payments/payment-option/payment-option.component';
+import { CollegeProject } from 'src/app/models/candidates/college-project';
 
 @Component({
   standalone: false,
@@ -62,6 +65,16 @@ export class CreateCandidatesComponent {
   fieldOfStudy: any;
   inputBgColor = 'lightblue';
   candidates: any;
+  isDeleted:boolean = false;
+  payments: boolean = false;
+  candidatesDetails: Array<Candidate> = [];
+  experienceDeletedArray:Array<any> = [];
+  qualificationDeletedArray:Array<any> = [];
+  certificatesDeletedArray:Array<any> = [];
+  achievementsDeletedArray:Array<any> = [];
+  imageName: any;
+  returnImage:any;
+  collegeProjectDeletedArray:Array<any> = [];
 
   constructor(
     private api: ApiService,
@@ -73,10 +86,14 @@ export class CreateCandidatesComponent {
     private cdr: ChangeDetectorRef,
     private router: Router,
     public ref: DynamicDialogRef,
-    private config: DynamicDialogConfig
+    private config: DynamicDialogConfig,
+    private ps: PaymentService,
   ) 
   {
     this.candidates = this.config.data?.candidates;
+    this.payments = this.config.data?.payments;
+    this.candidateImageUrl = this.config.data?.candidateImage;
+    
   }
 
   ngOnInit() {
@@ -113,6 +130,10 @@ export class CreateCandidatesComponent {
       qualification: this.fb.array([this.createQualification()]),
       certificates: this.fb.array([this.createCertificates()]),
       achievements: this.fb.array([this.createAchievements()]),
+      softSkills:[''],
+      coreCompentencies:[''],
+      collegeProject: this.fb.array([this.createCollegeProject()]),
+
     });
   }
 
@@ -159,7 +180,7 @@ export class CreateCandidatesComponent {
     const route = 'candidate/create';
     const payload = this.candidateForm.getRawValue();
 
-    payload['candidateLogo'] = this.multipartFile;
+   // payload['candidateLogo'] = this.multipartFile;
 
     if (payload.lastWorkingDate) {
       payload['lastWorkingDate'] = this.datePipe.transform(
@@ -167,19 +188,30 @@ export class CreateCandidatesComponent {
         'yyyy-MM-dd'
       );
     }
+
+   if(payload.dob !=null){
+    payload.dob = this.datePipe.transform(payload.dob,'yyyy-MM-dd');
+   }
+
     if (payload.isFresher != null && payload.isFresher) {
       payload['isFresher'] = true;
     } else {
       payload['isFresher'] = false;
     }
 
-    if (
-      Object.is(payload.experiences[0].companyName, '') &&
-      Object.is(payload.experiences[0].projects[0].projectName, '')
+    if (Object.is(payload.experiences[0].companyName, '')
     ) {
+      if(this.experienceDeletedArray.length > 0){
+        this.experienceDeletedArray.forEach( exp => {
+          payload.experiences.push(exp);
+        });
+      }
+      else{
       payload.experiences = [];
+      payload.experiences.projects =[];
+      }
     } else {
-      payload.qualification.forEach((ele: any) => {
+      payload.experiences.forEach((ele: any) => {
         ele.experienceYearStartDate = this.datePipe.transform(
           ele.experienceYearStartDate,
           'yyyy-MM-dd'
@@ -188,11 +220,32 @@ export class CreateCandidatesComponent {
           ele.experienceYearEndDate,
           'yyyy-MM-dd'
         );
+         
+        const hasEmptyProjectName = ele.projects?.some((proj: any) => proj.projectName === '');
+        if (hasEmptyProjectName) {
+          ele.projects = [];
+        }        
+
       });
+
+      if(this.experienceDeletedArray.length > 0){
+      this.experienceDeletedArray.forEach( exp => {
+        payload.experiences.push(exp);
+      });
+    }
     }
 
     if (Object.is(payload.qualification[0].instutionName, '')) {
-      payload.qualification = [];
+     
+
+      if(this.qualificationDeletedArray.length > 0){
+        this.qualificationDeletedArray.forEach( exp => {
+          payload.qualification.push(exp);
+        });
+      }
+      else{
+        payload.qualification = [];
+      }
     } else {
       payload.qualification.forEach((ele: any) => {
         ele.qualificationStartYear = this.datePipe.transform(
@@ -204,14 +257,44 @@ export class CreateCandidatesComponent {
           'yyyy-MM-dd'
         );
       });
+
+      if(this.qualificationDeletedArray.length > 0){
+        this.qualificationDeletedArray.forEach( exp => {
+          payload.qualification.push(exp);
+        });
+      }
     }
 
     if (Object.is(payload.achievements[0].achievementsName, '')) {
-      payload.achievements = [];
+     
+      if(this.achievementsDeletedArray.length > 0){
+        this.achievementsDeletedArray.forEach( exp => {
+          payload.achievements.push(exp);
+        });
+      }
+      else{
+        payload.achievements = [];
+      }
+    }
+    else{
+      if(this.achievementsDeletedArray.length > 0){
+        this.achievementsDeletedArray.forEach( exp => {
+          payload.achievements.push(exp);
+        });
+      }
     }
 
     if (Object.is(payload.certificates[0].courseName, '')) {
-      payload.certificates = [];
+
+      if(this.certificatesDeletedArray.length > 0){
+        this.certificatesDeletedArray.forEach( exp => {
+          payload.certificates.push(exp);
+        });
+      }
+      else{
+        payload.certificates = [];
+      }
+     
     } else {
       payload.certificates.forEach((ele: any) => {
         ele.courseStartDate = this.datePipe.transform(
@@ -223,6 +306,12 @@ export class CreateCandidatesComponent {
           'yyyy-MM-dd'
         );
       });
+
+      if(this.certificatesDeletedArray.length > 0){
+        this.certificatesDeletedArray.forEach( exp => {
+          payload.certificates.push(exp);
+        });
+      }
     }
 
     if (Object.is(payload.languagesKnown, '')) {
@@ -233,12 +322,52 @@ export class CreateCandidatesComponent {
       payload.skills = [];
     }
 
+    if (Object.is(payload.softSkills, '')) {
+      payload.softSkills = [];
+    }
+
+    if (Object.is(payload.coreCompentencies, '')) {
+      payload.coreCompentencies = [];
+    }
+
+    if(payload.isFresher){
+     
+      if(Object.is(payload.collegeProject[0].collegeProjectName, '')){
+        
+        if(this.collegeProjectDeletedArray.length > 0){
+          this.collegeProjectDeletedArray.forEach( pro => {
+            payload.collegeProject.push(pro);
+          }); 
+        }
+        else{
+          payload.collegeProject = [];
+       }
+      }
+      else{
+        if(this.collegeProjectDeletedArray.length > 0){
+          this.collegeProjectDeletedArray.forEach( pro => {
+            payload.collegeProject.push(pro);
+          }); 
+        }
+      }
+    }
+    else{
+      payload.collegeProject = [];
+    }
+
+
     this.api.retrieve(route, payload).subscribe({
       next: (response) => {
        // this.gs.showMessage('Success', 'Successfully Created Resume');
+       this.candidateId = response?.id;
         this.dataLoaded = true;
+        localStorage.setItem('candidateId',this.candidateId);
         this.uploadCandidateImage();
-        this.close(response)
+        response.softSkills = response?.softSkills || [];
+        response.coreCompentencies = response?.coreCompentencies || [];
+        response.candidateLogo = this.candidateImageUrl; 
+        this.close(response);
+      
       },
       error: (error) => {
         this.dataLoaded = true;
@@ -269,6 +398,8 @@ export class CreateCandidatesComponent {
       experienceYearEndDate: [''],
       projects: this.fb.array([this.createProject()]),
       currentlyWorking: [''],
+      responsibilities:[''],
+      isDeleted:false,
     });
   }
 
@@ -279,6 +410,7 @@ export class CreateCandidatesComponent {
       projectSkills: [[]],
       projectRole: [''],
       projectDescription: [''],
+      isDeleted:false
     });
   }
 
@@ -291,7 +423,15 @@ export class CreateCandidatesComponent {
       'Are you sure you want to remove this Experience?'
     );
     if (confirmDelete && this.experienceControls.length > 1) {
-      this.experienceControls.removeAt(index);
+      const removedExperience = this.experienceControls.at(index).value;
+      console.log('Removed Experience:', removedExperience);
+      if (removedExperience.id) {
+        removedExperience.isDeleted = true; 
+       this.experienceDeletedArray.push(removedExperience);
+       this.experienceControls.removeAt(index);
+      } else {
+        this.experienceControls.removeAt(index);
+      }
     }
   }
 
@@ -319,12 +459,22 @@ export class CreateCandidatesComponent {
     const confirmDelete = window.confirm(
       'Are you sure you want to remove this Project?'
     );
+  
     const projectArray = this.getProjects(experienceIndex);
+  
     if (confirmDelete && projectArray.length > 1) {
+      const removedProject = projectArray.at(projectIndex).value;
+
+      if (removedProject.id) {
+        removedProject.isDeleted = true;
+        const experienceGroup = this.experienceControls.at(experienceIndex);
+        const projectsControl = experienceGroup.get('projects') as FormArray;
+        projectsControl.at(projectIndex).patchValue(removedProject);
+      }
       projectArray.removeAt(projectIndex);
     }
   }
-
+  
   //For qualification
 
   createQualification(): FormGroup {
@@ -336,6 +486,7 @@ export class CreateCandidatesComponent {
       qualificationEndYear: [''],
       percentage: [''],
       fieldOfStudy: [''],
+      isDeleted:false,
     });
   }
 
@@ -352,8 +503,14 @@ export class CreateCandidatesComponent {
       'Are you sure you want to remove this qualification?'
     );
     if (confirmDelete && this.qualificationControls.length > 1) {
-      this.qualificationControls.removeAt(index);
-      this.cdr.detectChanges();
+      const removedQualification = this.qualificationControls.at(index).value;
+       if (removedQualification.id) {
+        removedQualification.isDeleted = true; 
+          this.qualificationDeletedArray.push(removedQualification);
+          this.qualificationControls.removeAt(index);
+      } else {
+        this.qualificationControls.removeAt(index);
+      }
     }
   }
 
@@ -379,7 +536,14 @@ export class CreateCandidatesComponent {
       'Are you sure you want to remove this certificates?'
     );
     if (confirmDelete && this.certificateControls.length > 1) {
-      this.certificateControls.removeAt(index);
+    const removedCertificate = this.certificateControls.at(index).value;
+       if (removedCertificate.id) {
+          removedCertificate.isDeleted = true; 
+          this.certificatesDeletedArray.push(removedCertificate);
+          this.certificateControls.removeAt(index);
+      } else {
+        this.certificateControls.removeAt(index);
+      }
     }
   }
 
@@ -389,6 +553,7 @@ export class CreateCandidatesComponent {
       courseName: [''],
       courseStartDate: [''],
       courseEndDate: [''],
+      isDeleted:false
     });
   }
 
@@ -407,11 +572,12 @@ export class CreateCandidatesComponent {
       'Are you sure you want to remove this achievements?'
     );
     if (confirmDelete && this.achievementsControls.length > 1) {
-      const achievement = this.achievementsControls.at(index).value;
-
-      if (achievement.id) {
-        this.achievementsControls.at(index).patchValue({ isDeleted: true });
-      } else {
+      const removedAchievement = this.achievementsControls.at(index).value;
+       if (removedAchievement.id) {
+        removedAchievement.isDeleted =true;
+        this.achievementsDeletedArray.push(removedAchievement);
+        this.achievementsControls.removeAt(index);
+       } else {
         this.achievementsControls.removeAt(index);
       }
     }
@@ -422,7 +588,7 @@ export class CreateCandidatesComponent {
       id:[''],
       achievementsName: [''],
       achievementsDate: [''],
-      isDeleted: [false],
+      isDeleted: [''],
     });
   }
 
@@ -459,6 +625,7 @@ export class CreateCandidatesComponent {
   addCandidateImage(event: any) {
     this.candidateImageAttachments = [];
     this.multipartFile = event.target.files[0];
+    this.imageName = this.multipartFile.name;
     const candidateImageAttachment = { fileName: this.multipartFile.name };
     this.candidateImageAttachments.push(candidateImageAttachment);
     this.updateCandidateImage();
@@ -473,20 +640,22 @@ export class CreateCandidatesComponent {
   }
 
   uploadCandidateImage() {
+    if(this.imageName !== null && this.imageName !== ''){
     this.dataLoaded = false;
-    const route = 'candiate/logo';
+    const route = 'candidate/upload-image';
     const formData = new FormData();
     formData.append('attachment', this.multipartFile);
-    this.api.upload(route, formData).subscribe({
+    formData.append('candidateId', this.candidateId);
+     this.api.downloadFile(route, formData).subscribe({
       next: (response) => {
-        this.dataLoaded = true;
-        this.reset();
+        this.candidateImageUrl = URL.createObjectURL(response);
       },
       error: (error) => {
         this.dataLoaded = true;
-        this.gs.showMessage('Error', 'Error in updating logo.');
+        //this.gs.showMessage('Error', 'Error in updating logo.');
       },
     });
+  }
   }
 
   close(response: any) {
@@ -495,25 +664,43 @@ export class CreateCandidatesComponent {
 
 
   patchCandidateForm(candidate: Candidate) {
+
+    if(candidate.certificates?.length >0){
       const certificateFormArray = this.candidateForm.get('certificates') as FormArray;
-     
+      certificateFormArray.clear();
+  
       candidate.certificates?.forEach(certificate => {
         certificateFormArray.push(this.createCertificateFormGroup(certificate));
       });
-  
+    }
       this.patchExperiences(candidate.experiences);
   
-      const qualificationFormArray = this.candidateForm.get('qualification') as FormArray;
-    
-      candidate.qualification?.forEach(qualification => {
+      if(candidate.qualification?.length > 0){
+        const qualificationFormArray = this.candidateForm.get('qualification') as FormArray;
+        qualificationFormArray.clear();
+
+        candidate.qualification?.forEach(qualification => {
         qualificationFormArray.push(this.createQualificationFormGroup(qualification));
       });
+    }
   
+    if(candidate.achievements?.length > 0){
       const achievementFormArray = this.candidateForm.get('achievements') as FormArray;
-     
+        achievementFormArray.clear();
+
       candidate.achievements?.forEach(achievement => {
-        certificateFormArray.push(this.createAchievementsFormGroup(achievement));
+      achievementFormArray.push(this.createAchievementsFormGroup(achievement));
       });
+    }
+
+    if(candidate.collegeProject?.length > 0){
+      const collegeProjectFromArray = this.candidateForm.get('collegeProject') as FormArray;
+      collegeProjectFromArray.clear();
+
+      candidate.collegeProject?.forEach(collegeProject => {
+        collegeProjectFromArray.push(this.createCollegeProjectFormGroup(collegeProject));
+      });
+    }
   
       const candidateDob = candidate.dob ? new Date(candidate.dob) : null;
 
@@ -531,50 +718,61 @@ export class CreateCandidatesComponent {
         dob: candidateDob,  
         address: candidate?.address,
         maritalStatus: candidate?.maritalStatus,
+        softSkills:candidate?.softSkills ? candidate?.softSkills :[],
+        coreCompentencies:candidate?.coreCompentencies ? candidate?.coreCompentencies :[]
       });
     }
   
     createCertificateFormGroup(certificate: Certificates): FormGroup {
       return this.fb.group({
-        id: [certificate.id || null],
-        courseName: [certificate.courseName || ''],
-        courseStartDate: [certificate.courseStartDate || ''],
-        courseEndDate: [certificate.courseEndDate || ''],
+        id: certificate.id,
+        courseName: certificate.courseName,
+        courseStartDate: certificate.courseStartDate ? new Date(certificate.courseStartDate) : null,
+        courseEndDate: certificate.courseEndDate ? new Date(certificate.courseEndDate) : null,
+        isDeleted:['']
       });
     }
   
     patchExperiences(experiences: any[]) {
-      const experienceFormArray = this.candidateForm.get('experiences') as FormArray;
-    
-      experiences?.forEach((experience) => {
-  
-        const experienceForm = this.createExperience();
-        experienceForm.patchValue({
-          id:experience.id,
-          companyName: experience.companyName,
-          role: experience.role,
-          experienceYearStartDate:  experience.experienceYearStartDate ? new Date(experience.experienceYearStartDate) : null,
-          experienceYearEndDate:  experience.experienceYearEndDate ? new Date(experience.experienceYearEndDate) : null,
-          currentlyWorking: experience.currentlyWorking,
-        });
-    
-        const projectFormArray = experienceForm.get('projects') as FormArray; 
-    
+      
+      if(experiences?.length > 0){
+        const experienceFormArray = this.candidateForm.get('experiences') as FormArray;
+        experienceFormArray.clear();
+        experiences?.forEach((experience) => {
         
-        experience.projects?.forEach((project:any) => {
-          const projectForm = this.createProject();
-          projectForm.patchValue({
-            id:project.id,
-            projectName: project.projectName,
-            projectSkills: project.projectSkills,
-            projectRole: project.projectRole,
-            projectDescription: project.projectDescription,
+          const experienceForm = this.createExperience();
+          experienceForm.patchValue({
+            id:experience.id,
+            companyName: experience.companyName,
+            role: experience.role,
+            experienceYearStartDate:  experience.experienceYearStartDate ? new Date(experience.experienceYearStartDate) : null,
+            experienceYearEndDate:  experience.experienceYearEndDate ? new Date(experience.experienceYearEndDate) : null,
+            currentlyWorking: experience.currentlyWorking,
+            responsibilities:experience.responsibilities,
+            isDeleted:false
           });
-          projectFormArray.push(projectForm);
+         
+          if(experience.projects?.length > 0){
+            const projectFormArray = experienceForm.get('projects') as FormArray; 
+            projectFormArray.clear();
+           experience.projects?.forEach((project:any) => {
+          
+            const projectForm = this.createProject();
+            projectForm.patchValue({
+              id:project.id,
+              projectName: project.projectName,
+              projectSkills: project.projectSkills,
+              projectRole: project.projectRole,
+              projectDescription: project.projectDescription,
+              isDeleted:false
+            });
+            projectFormArray.push(projectForm);
+          });
+        }
+          experienceFormArray.push(experienceForm);
         });
-        experienceFormArray.push(experienceForm);
-      });
-    }
+      }
+      }
   
     createQualificationFormGroup(qualification: Qualification){
       return this.fb.group({
@@ -584,7 +782,8 @@ export class CreateCandidatesComponent {
         qualificationStartYear: qualification.qualificationStartYear ? new Date(qualification.qualificationStartYear) : null,
         qualificationEndYear: qualification.qualificationEndYear ? new Date(qualification.qualificationEndYear) : null,
         percentage: qualification.percentage,
-        fieldOfStudy: qualification.percentage,
+        fieldOfStudy: qualification.fieldOfStudy,
+        isDeleted:false,
       });
     }
   
@@ -594,9 +793,73 @@ export class CreateCandidatesComponent {
         id:achievement.id,
         achievementsName: achievement.achievementsName,
         achievementsDate:  achievement.achievementsDate ? new Date(achievement.achievementsDate) : null,
-        isDeleted: achievement.isDeleted,
+        isDeleted:false,
       });
     }
+
+    createCollegeProjectFormGroup(collegeProject: CollegeProject){
+      return this.fb.group({
+        id:collegeProject.id,
+        collegeProjectName:  collegeProject.collegeProjectName,
+        collegeProjectSkills: collegeProject.collegeProjectSkills,
+        collegeProjectDescription:collegeProject.collegeProjectDescription,
+        isDeleted:false,
+      });
+    }
+
+    next(){
+      this.ref.close();
+      const ref = this.dialog.open(PaymentOptionComponent, {
+           
+            data: {
+              candidates: this.candidates,
+              candidateId: this.candidates?.id
+            },
+            closable: true,
+            width: '30%',
+            height: '90%',
+            styleClass: 'payment-dialog-header',
+          });
+    }
+
+   get collegeProjectControls() {
+    return this.candidateForm.get('collegeProject') as FormArray;
+  }
+
+  addCollegeProject(){
+    this.collegeProjectControls.push(this.createCollegeProject());
+  }
+
+  getCollegeProjectCount(collegeProjectIndex: number): number {
+    return (this.candidateForm.get('collegeProject') as FormArray).length;
+  }
+
+  removeCollegeProject(index: number){
+   const confirmDelete = window.confirm(
+      'Are you sure you want to remove this project?'
+    );
+    if (confirmDelete && this.collegeProjectControls.length > 1) {
+      const removeCollegeProject = this.collegeProjectControls.at(index).value;
+       if (removeCollegeProject.id) {
+        removeCollegeProject.isDeleted =true;
+         this.collegeProjectDeletedArray.push(removeCollegeProject);
+         this.collegeProjectControls.removeAt(index);
+       } else {
+        this.collegeProjectControls.removeAt(index);
+      }
+    }
+  }
+
+    createCollegeProject(): FormGroup {
+      return this.fb.group({
+        id:[''],
+        collegeProjectName: [''],
+        collegeProjectSkills: [[]],
+        collegeProjectDescription: [''],
+        isDeleted:false
+      });
+    }
+
   }
    
 

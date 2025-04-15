@@ -8,9 +8,12 @@ import {
 } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ApiService } from 'src/app/services/api.service';
 import { GlobalService } from 'src/app/services/global.service';
+import { CreateCandidatesComponent } from '../../create-candidates/create-candidates.component';
+import { Candidate } from 'src/app/models/candidates/candidate.model';
+import { LocalStorage } from '@ng-idle/core';
 
 @Component({
   selector: 'app-choose-template',
@@ -28,8 +31,8 @@ export class ChooseTemplateComponent {
   startY = 0;
   translateX = 0;
   translateY = 0;
-  isWorkingHere: boolean = false;  
-
+  isWorkingHere: boolean = false;
+  candidatesArray: Array<Candidate> = [];
 
   // Array of Resume Paths
   resumePaths: string[] = [
@@ -40,8 +43,10 @@ export class ChooseTemplateComponent {
   ];
   currentIndex = 0;
   currentResume = this.resumePaths[this.currentIndex];
-  isSelected: boolean =false;
-   
+  isSelected: boolean = false;
+  candidates: Array<Candidate> = [];
+  candidateId: any;
+  candidateImageUrl: any;
 
   constructor(
     private api: ApiService,
@@ -52,8 +57,13 @@ export class ChooseTemplateComponent {
     private route: ActivatedRoute,
     private cdr: ChangeDetectorRef,
     private router: Router,
-    public ref: DynamicDialogRef
-  ) {}
+    public ref: DynamicDialogRef,
+    private config: DynamicDialogConfig,
+  ) {
+    this.candidates = this.config.data?.candidates;
+    this.candidateImageUrl = this.config.data?.candidateImage;
+
+  }
 
   ngOnInit() {}
 
@@ -143,9 +153,41 @@ export class ChooseTemplateComponent {
     this.resetPosition();
   }
 
-   
-
   createResume(resume: any) {
-    console.log('Selected Resume:', resume);
+    this.ref.close();
+    const candidateId = localStorage.getItem('candidateId');
+   // this.getCandidateById(candidateId);
+
+   console.log(this.candidates)
+    const ref = this.dialog.open(CreateCandidatesComponent, {
+      data: {
+        candidates: this.candidates,
+        payments:true,
+        candidateImage :this.candidateImageUrl
+      },
+      closable: true,
+      width: '70%',
+      height: '90%',
+      header: 'Check Your Details',
+    });
+
+    ref.onClose.subscribe((response) => {
+      if (response) {
+        this.candidates = response;
+        this.candidateId = response.id;
+        const candidate = response as Candidate;
+        // this.patchCandidateForm(candidate);
+      }
+    });
+  }
+
+  getCandidateById(id: any) {
+    const route = `candidate/${id}`;
+
+    this.api.get(route).subscribe({
+      next: (response) => {
+        this.candidatesArray = response as any;
+      },
+    });
   }
 }
