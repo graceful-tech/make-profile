@@ -862,7 +862,7 @@ export class CreateCandidatesComponent {
     }
 
     getCandidates() {
-      const route = 'candidates';
+      const route = 'candidate';
       this.api.get(route).subscribe({
         next: (response) => {
           const candidate = response as Candidate;
@@ -875,7 +875,7 @@ export class CreateCandidatesComponent {
     }
   
     getCandidateImage(id:any){
-      const route ='candidates/get-image'
+      const route ='candidate/get-image'
   
       const formData = new FormData();
       formData.append('candidateId',id)
