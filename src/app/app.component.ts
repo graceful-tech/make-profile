@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { DeviceServiceService } from './services/device.service.service';
 @Component({
   standalone: false, 
   selector: 'app-root',
@@ -10,7 +11,7 @@ export class AppComponent {
   title = 'make-profile';
   
 
-  constructor(private router: Router) {}
+  constructor(private router: Router,private deviceServiceService:DeviceServiceService) {}
 
   ngOnInit() {
     if (this.isMobile()) {
@@ -26,7 +27,7 @@ goToLandingPage() {
 
 goToCandidatePage(){
 
-  this.router.navigate(['/candidate']);
+  this.deviceServiceService.directlyTo('candidate');
 }
 
 goToLandingPageMobile(){

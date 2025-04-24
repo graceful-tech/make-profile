@@ -1,11 +1,4 @@
-import { DatePipe } from '@angular/common';
-import {
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  Input,
-  Output,
-} from '@angular/core';
+import {ChangeDetectorRef,Component} from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
@@ -13,26 +6,25 @@ import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dy
 import { ApiService } from '../../../services/api.service';
 import { GlobalService } from '../../../services/global.service';
 import { ValueSet } from '../../../models/admin/value-set.model';
-import { elementAt, Subscription } from 'rxjs';
+import {Subscription } from 'rxjs';
 import { Lookup } from '../../../models/master/lookup.model';
 import { Candidate } from 'src/app/models/candidates/candidate.model';
 import { Qualification } from 'src/app/models/candidates/qualification';
 import { Certificates } from 'src/app/models/candidates/certificates';
 import { Achievements } from 'src/app/models/candidates/achievements';
 import { PaymentService } from 'src/app/services/payment.service';
-import { PaymentOptionComponent } from '../payments/payment-option/payment-option.component';
 import { CollegeProject } from 'src/app/models/candidates/college-project';
+import { DatePipe } from '@angular/common';
+import { PaymentOptionComponent } from '../../candidates/payments/payment-option/payment-option.component';
 
 @Component({
+  selector: 'app-mobile-edit-candidates',
   standalone: false,
-  selector: 'app-create-candidates',
-  templateUrl: './create-candidates.component.html',
-  styleUrl: './create-candidates.component.css',
+  templateUrl: './mobile-edit-candidates.component.html',
+  styleUrl: './mobile-edit-candidates.component.css'
 })
-export class CreateCandidatesComponent {
-  
-
-  candidateForm!: FormGroup;
+export class MobileEditCandidatesComponent {
+candidateForm!: FormGroup;
   genderList: Array<ValueSet> = [];
   languages: Array<ValueSet> = [];
   noticePeriodList: Array<ValueSet> = [];
@@ -75,6 +67,8 @@ export class CreateCandidatesComponent {
   imageName: any;
   returnImage:any;
   collegeProjectDeletedArray:Array<any> = [];
+  candidatesUpdateData: any;
+  resumeName:any;
 
   constructor(
     private api: ApiService,
@@ -90,9 +84,10 @@ export class CreateCandidatesComponent {
     private ps: PaymentService,
   ) 
   {
-    this.candidates = this.config.data?.candidates;
-    this.payments = this.config.data?.payments;
-    this.candidateImageUrl = this.config.data?.candidateImage;
+    // this.candidates = this.config.data?.candidates;
+    // this.payments = this.config.data?.payments;
+    // this.candidateImageUrl = this.config.data?.candidateImage;
+
     
   }
 
@@ -103,11 +98,30 @@ export class CreateCandidatesComponent {
     this.getLanguages();
     this.getMaritalStatus();
     this.getFieldOfStudy();
-    this.getCandidates();
 
-    if (this.candidates?.id) {
-      this.patchCandidateForm(this.candidates);
+    // if (this.candidates?.id) {
+    //   this.patchCandidateForm(this.candidates);
+    // }
+
+    this.gs.candidateDetails$.subscribe(response => {
+      this.candidatesUpdateData = response;
+    });
+
+    if(this.candidatesUpdateData !== null && this.candidatesUpdateData !== undefined){
+      // this.candidateId = this.candidatesUpdateData?.id;
+      this.candidates = this.candidatesUpdateData;
+      this.patchCandidateForm(this.candidatesUpdateData);
     }
+
+    this.gs.candidateImage$.subscribe(response =>{
+      if(response !== null){
+      this.candidateImageUrl = response
+      }
+    })
+
+    this.gs.resumeName$.subscribe(response =>{
+      this.resumeName = response
+    })
   }
 
   ngAfterViewInit() {}
@@ -362,12 +376,13 @@ export class CreateCandidatesComponent {
        // this.gs.showMessage('Success', 'Successfully Created Resume');
        this.candidateId = response?.id;
         this.dataLoaded = true;
+        this.candidates = response as Candidate
         localStorage.setItem('candidateId',this.candidateId);
         this.uploadCandidateImage();
         response.softSkills = response?.softSkills || [];
         response.coreCompentencies = response?.coreCompentencies || [];
         response.candidateLogo = this.candidateImageUrl; 
-        this.close(response);
+        // this.close(response);
       
       },
       error: (error) => {
@@ -809,18 +824,13 @@ export class CreateCandidatesComponent {
     }
 
     next(){
-      this.ref.close();
-      const ref = this.dialog.open(PaymentOptionComponent, {
-           
-            data: {
-              candidates: this.candidates,
-              candidateId: this.candidates?.id
-            },
-            closable: true,
-            width: '30%',
-            height: '90%',
-            styleClass: 'payment-dialog-header',
-          });
+      // if(this.candidates.length !== 0 || this.candidates.length === undefined){
+      this.gs.setCandidateDetails(this.candidates);
+      this.router.navigate(['mob-candidate/mobile-payment']);
+      // }
+      // else{
+      //   this.gs.showMessage('Note..!','Please Fill out your details');
+      // }
     }
 
    get collegeProjectControls() {
@@ -861,34 +871,12 @@ export class CreateCandidatesComponent {
       });
     }
 
-    getCandidates() {
-      const route = 'candidates';
-      this.api.get(route).subscribe({
-        next: (response) => {
-          const candidate = response as Candidate;
-          if(candidate !== null){
-          this.patchCandidateForm(candidate);
-          this.getCandidateImage(candidate?.id);
-        }
-        },
-      });
+    goBack(){
+      this.gs.setCandidateDetails(this.candidates);
+      if(this.candidateImageUrl !== null){
+      this.gs.setCandidateImage(this.candidateImageUrl);
+      }
+      this.gs.setResumeName(this.resumeName);
+      this.router.navigate(['mob-candidate/choose-Template']);
     }
-  
-    getCandidateImage(id:any){
-      const route ='candidates/get-image'
-  
-      const formData = new FormData();
-      formData.append('candidateId',id)
-  
-      this.api.upload(route,formData).subscribe({
-        next: (response) =>{
-          this.candidateImageUrl = URL.createObjectURL(response);
-          this.dataLoaded = true;
-        }
-      });
-  
-    }
-
-  }
-   
-
+}

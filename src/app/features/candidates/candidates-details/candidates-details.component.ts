@@ -64,7 +64,7 @@ certificatesDeletedArray: Array<any> = [];
 achievementsDeletedArray: Array<any> = [];
 returnImage: any;
 collegeProjectDeletedArray: Array<any> = []
-
+appliedJobs: any;
 
 
   constructor(
@@ -88,6 +88,9 @@ collegeProjectDeletedArray: Array<any> = []
     this.getLanguages();
     this.getMaritalStatus();
     this.getFieldOfStudy();
+
+    this.getCandidates();
+    // this.getAppliedJobs();
    
   }
 
@@ -547,13 +550,20 @@ collegeProjectDeletedArray: Array<any> = []
     }
 
     parseResume() {
-      const route = 'resume/parsing';
+      const route = 'resume-ai/upload';
       const formData = new FormData();
       formData.append('resume', this.multipartFile);
       this.api.upload(route, formData).subscribe({
         next: (response) => {
           if (response) {
+            this.candidates = response;  
+            this.candidateId = response.id;
+            const candidate =response as Candidate
+            this.patchCandidateForm(candidate);
+      
+            this.candidateImageUrl = response.candidateLogo;
             
+            console.log(this.candidateImageUrl)
           }
         },
       });
@@ -582,6 +592,8 @@ collegeProjectDeletedArray: Array<any> = []
         
       }
     });
+
+    // this.router.navigate(['candidate/mob-create/view-templates'])
   }
 
   UpdateCandidate(){
@@ -830,8 +842,29 @@ resetRequirement(){
   this.requirementForm.reset();
   window.location.reload();
 }
- 
 
+getAppliedJobs() {
+  const id = 23;
+  const route = `applied-jobs/${id}`;
 
+  this.api.get(route).subscribe({
+    next: (response) => {
+      this.appliedJobs = response;
+    },
+  });
+}
+
+getCandidates() {
+  const route = 'candidates';
+  this.api.get(route).subscribe({
+    next: (response) => {
+      const candidate = response as Candidate;
+      if(candidate !== null){
+      this.patchCandidateForm(candidate);
+      
+    }
+    },
+  });
+}
 
 }

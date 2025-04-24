@@ -993,4 +993,15 @@ table::-webkit-scrollbar-thumb {
 .payment-dialog-header .p-dialog-header {
     padding: 0rem !important;
 }
-   
+
+.custom-mobile-dialog  {
+    width: 10vw !important;
+    max-width: 70% !important;
+    max-height: 25% !important;
+    border-radius: 12px;
+    
+}
+  
+ 
+  
+ 

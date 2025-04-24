@@ -1,0 +1,29 @@
+ 
+
+ 
+<div class="header">
+  <div class="tick-icon text-center">
+    <span>&nbsp;Choose Template&nbsp;</span>
+  </div>
+  <div class="backButton text-center">
+    <button class="goBackButton" (click)="backToCandidates()">Back</button>
+  </div>  
+</div>
+
+<div class="template-container">
+  <div class="grid justify-content-center w-full md:w-10 lg:w-8">
+
+    <div class="col-12 md:col-6 lg:col-3 flex justify-content-center">
+      <button (click)="prevResume()" class="arrow-btn">⬅️</button>
+        <img #resumeImage [src]="currentResume" class="resume-image" />
+        <div class="arrow-controls">
+        <button (click)="nextResume()" class="arrow-btn">➡️</button>
+      </div>
+    </div>
+    
+
+    <div class="col-12 md:col-6 lg:col-3 flex justify-content-center mt-2 gap-2">
+      <button class="create-resume-btn" (click)="createResume(currentResume)">Select</button>
+    </div>
+  </div>
+</div>

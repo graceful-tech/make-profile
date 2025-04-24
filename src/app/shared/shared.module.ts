@@ -10,17 +10,17 @@ import { MessageComponent } from "./message/message.component";
 import { ClickedOutsideDirective } from "./directives/clicked-outside.directive";
 import { LoginPopupComponent } from "./popup/login-popup/login-popup.component";
 import { MatIconModule } from '@angular/material/icon';
-
+import { HammerModule } from '@angular/platform-browser';
+ 
+ 
  
 @NgModule({
   declarations: [
    MakeProfileDividerComponent,
    ClickedOutsideDirective,
    MessageComponent,
-   LoginPopupComponent
-   
-   
-   
+   LoginPopupComponent,
+    
   ],
   imports: [
     CommonModule,
@@ -29,7 +29,8 @@ import { MatIconModule } from '@angular/material/icon';
     FormsModule,
     ReactiveFormsModule,
     NgxUiLoaderModule,
-    MatIconModule
+    MatIconModule,
+   
     
   ],
   exports: [
@@ -43,7 +44,8 @@ import { MatIconModule } from '@angular/material/icon';
     ClickedOutsideDirective,
     MessageComponent,
     LoginPopupComponent,
-    MatIconModule
+    MatIconModule,
+     
   ]
 })
 export class SharedModule { }

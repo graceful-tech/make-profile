@@ -17,10 +17,7 @@ const routes: Routes = [
 
   { path: 'template', component: ViewTemplatesComponent },
 
-  // { path: 'view', component: ChooseTemplateComponent },
 
-  
- 
 ];
 
 @NgModule({

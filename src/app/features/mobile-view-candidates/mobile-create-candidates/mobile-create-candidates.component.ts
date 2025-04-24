@@ -1,11 +1,4 @@
-import { DatePipe } from '@angular/common';
-import {
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  Input,
-  Output,
-} from '@angular/core';
+import {ChangeDetectorRef,Component, ElementRef, ViewChild} from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
@@ -13,24 +6,25 @@ import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dy
 import { ApiService } from '../../../services/api.service';
 import { GlobalService } from '../../../services/global.service';
 import { ValueSet } from '../../../models/admin/value-set.model';
-import { elementAt, Subscription } from 'rxjs';
+import {Subscription } from 'rxjs';
 import { Lookup } from '../../../models/master/lookup.model';
 import { Candidate } from 'src/app/models/candidates/candidate.model';
 import { Qualification } from 'src/app/models/candidates/qualification';
 import { Certificates } from 'src/app/models/candidates/certificates';
 import { Achievements } from 'src/app/models/candidates/achievements';
 import { PaymentService } from 'src/app/services/payment.service';
-import { PaymentOptionComponent } from '../payments/payment-option/payment-option.component';
 import { CollegeProject } from 'src/app/models/candidates/college-project';
+import { DatePipe } from '@angular/common';
+import { PaymentOptionComponent } from '../../candidates/payments/payment-option/payment-option.component';
 
 @Component({
+  selector: 'app-mobile-create-candidates',
   standalone: false,
-  selector: 'app-create-candidates',
-  templateUrl: './create-candidates.component.html',
-  styleUrl: './create-candidates.component.css',
+  templateUrl: './mobile-create-candidates.component.html',
+  styleUrl: './mobile-create-candidates.component.css'
 })
-export class CreateCandidatesComponent {
-  
+export class MobileCreateCandidatesComponent {
+  @ViewChild('chipInput', { static: false }) chipInputRef!: ElementRef;
 
   candidateForm!: FormGroup;
   genderList: Array<ValueSet> = [];
@@ -75,6 +69,8 @@ export class CreateCandidatesComponent {
   imageName: any;
   returnImage:any;
   collegeProjectDeletedArray:Array<any> = [];
+  candidatesUpdateData: any;
+  skill: Array<any> = [];
 
   constructor(
     private api: ApiService,
@@ -90,9 +86,10 @@ export class CreateCandidatesComponent {
     private ps: PaymentService,
   ) 
   {
-    this.candidates = this.config.data?.candidates;
-    this.payments = this.config.data?.payments;
-    this.candidateImageUrl = this.config.data?.candidateImage;
+    // this.candidates = this.config.data?.candidates;
+    // this.payments = this.config.data?.payments;
+    // this.candidateImageUrl = this.config.data?.candidateImage;
+
     
   }
 
@@ -103,11 +100,27 @@ export class CreateCandidatesComponent {
     this.getLanguages();
     this.getMaritalStatus();
     this.getFieldOfStudy();
-    this.getCandidates();
+    this. getCandidates();
 
-    if (this.candidates?.id) {
-      this.patchCandidateForm(this.candidates);
+    // if (this.candidates?.id) {
+    //   this.patchCandidateForm(this.candidates);
+    // }
+
+    this.gs.candidateDetails$.subscribe(response => {
+      this.candidatesUpdateData = response;
+    });
+
+    if(this.candidatesUpdateData !== null && this.candidatesUpdateData !== undefined){
+      // this.candidateId = this.candidatesUpdateData?.id;
+      this.candidates = this.candidatesUpdateData;
+      this.patchCandidateForm(this.candidatesUpdateData);
     }
+
+    this.gs.candidateImage$.subscribe(response =>{
+      if(response !== null){
+      this.candidateImageUrl = response
+      }
+    })
   }
 
   ngAfterViewInit() {}
@@ -362,12 +375,13 @@ export class CreateCandidatesComponent {
        // this.gs.showMessage('Success', 'Successfully Created Resume');
        this.candidateId = response?.id;
         this.dataLoaded = true;
+        this.candidates = response as Candidate
         localStorage.setItem('candidateId',this.candidateId);
         this.uploadCandidateImage();
         response.softSkills = response?.softSkills || [];
         response.coreCompentencies = response?.coreCompentencies || [];
         response.candidateLogo = this.candidateImageUrl; 
-        this.close(response);
+        // this.close(response);
       
       },
       error: (error) => {
@@ -650,6 +664,7 @@ export class CreateCandidatesComponent {
      this.api.downloadFile(route, formData).subscribe({
       next: (response) => {
         this.candidateImageUrl = URL.createObjectURL(response);
+        this.dataLoaded = true;
       },
       error: (error) => {
         this.dataLoaded = true;
@@ -861,6 +876,30 @@ export class CreateCandidatesComponent {
       });
     }
 
+    goBack(){
+      this.gs.setCandidateDetails(this.candidates);
+      if( this.candidateImageUrl !== null && this.candidateImageUrl !== undefined){
+      this.gs.setCandidateImage(this.candidateImageUrl);
+      }
+      this.router.navigate(['mob-candidate']);
+    }
+
+    addSkill() {
+      const inputEl = document.getElementById('chipInput') as HTMLInputElement;
+      const value = inputEl?.value?.trim();
+    
+      if (value) {
+        const control = this.candidateForm.get('skills');
+        const current = control?.value || [];
+    
+        if (!current.includes(value)) {
+          control?.setValue([...current, value]);
+        }
+    
+        inputEl.value = '';  
+      } 
+    }
+    
     getCandidates() {
       const route = 'candidates';
       this.api.get(route).subscribe({
@@ -888,7 +927,5 @@ export class CreateCandidatesComponent {
       });
   
     }
-
-  }
-   
-
+    
+}

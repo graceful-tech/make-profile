@@ -4,11 +4,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { BehaviorSubject } from 'rxjs';
-// import { MessageComponent } from '../shared/message/message.component';
 import { ApiService } from './api.service';
 import { MessageComponent } from '../shared/message/message.component';
 import { Candidate } from '../models/candidates/candidate.model';
-
+ 
 @Injectable({
   providedIn: 'root',
 })
@@ -39,6 +38,12 @@ export class GlobalService {
 
   private candidateDetails = new BehaviorSubject(null);
   public candidateDetails$ = this.candidateDetails.asObservable();
+
+  private candidateImage = new BehaviorSubject(null);
+  public candidateImage$ = this.candidateImage.asObservable();
+
+  private resumeName = new BehaviorSubject(null);
+  public resumeName$ = this.resumeName.asObservable();
 
 
 
@@ -100,6 +105,14 @@ export class GlobalService {
 
   public setCandidateDetails(data: any) {
     this.candidateDetails.next(data);
+  }
+
+  public setCandidateImage(data: any) {
+    this.candidateImage.next(data);
+  }
+
+  public setResumeName(data: any) {
+    this.resumeName.next(data);
   }
 
   showMessage(status: string, message: string) {
@@ -221,4 +234,7 @@ export class GlobalService {
       },
     });
   }
+
+ 
+
 }
