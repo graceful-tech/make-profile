@@ -7,32 +7,27 @@ import { IS_APPLY_JOB_REQUEST, IS_GLOBAL_REQUEST } from './api.service';
   providedIn: 'root'
 })
 export class InterceptorService implements HttpInterceptor {
-  defaultTenant = '00000';
-
+ 
   constructor() { }
 
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-    if (req.context.get(IS_GLOBAL_REQUEST)) {
-      req = req.clone({
-        setHeaders: {
-          tenant: this.defaultTenant
-        },
-      });
-    } else if (req.context.get(IS_APPLY_JOB_REQUEST)) {
-      // do nothing
+    if (request.url.includes('/login') || request.url.includes('/google-login')||request.url.includes('/user/create')) {
+      console.log('Skipping interceptor for login request');
+      return next.handle(request);
     }
-    else {
-      const username: any = localStorage.getItem('userName');
-      let tenant: any = localStorage.getItem('tenant');
-      req = req.clone({
+    const token = sessionStorage.getItem('token'); 
+
+
+    if (token) {
+      const clonedRequest = request.clone({
         setHeaders: {
-          username: username ? username : '',
-          tenant: tenant
-        },
+          Authorization: `Bearer ${token}`
+        }
       });
+      return next.handle(clonedRequest);
     }
 
-    return next.handle(req);
+    return next.handle(request);
   }
 }

@@ -2,7 +2,7 @@ body {
     margin: 20px;
     padding: 0;
     height: 100vh;
-    
+
     background: none;
     /* background: url('/assets/images/background.jpg'); */
     display: flex;
@@ -11,29 +11,39 @@ body {
     color: #fff;
     text-shadow: 2px 2px 4px rgba(248, 246, 246, 0.8);
 }
-.features-section, .how-it-works, .cta-section {
-    background: url('/assets/images/background.png') ;
-    background-size: contain; 
+
+.features-section,
+.how-it-works,
+.cta-section {
+    background: url('/assets/images/background.png');
+    background-size: contain;
     background-attachment: fixed;
     width: 100%;
     text-align: center;
     color: #fff;
 }
+
 .hero-section {
     text-align: center;
     padding: 60px 20px;
 }
+
 .background {
     position: relative;
-    top: auto; left: auto; width: 25%; height: 25%;
+    top: auto;
+    left: auto;
+    width: 25%;
+    height: 25%;
     /* z-index: 1; */
 }
+
 .content {
     text-align: center;
     color: #fff;
     position: relative;
-   
+
 }
+
 .cta-button {
     background-color: #4CAF50;
     color: #fff;
@@ -45,18 +55,22 @@ body {
     margin-top: 20px;
 }
 
-.features img, .steps img {
+.features img,
+.steps img {
     width: 70%;
     display: block;
-    margin: 0 auto; /* Center the images */
+    margin: 0 auto;
+    /* Center the images */
     /* border-radius: 10px; */
     /* box-shadow: 0 2px 15px #fff; */
 }
+
 .ats-section {
     background: #1d303e;
     width: 70%;
     display: block;
-    margin: 0 auto; /* Center the images */
+    margin: 0 auto;
+    /* Center the images */
     border-radius: 10px;
     padding: 40px;
     text-align: center;
@@ -66,7 +80,8 @@ body {
     font-family: 'Orbitron', sans-serif;
 }
 
-h1, h2 {
+h1,
+h2 {
     color: #fff;
     text-shadow: 0px 0px 8px #32f9fa;
     font-family: 'Orbitron', sans-serif;
@@ -103,7 +118,7 @@ p {
 .at-section {
     background-color: #121b26;
     color: #91ebf7;
-    padding: 10px 30px; 
+    padding: 10px 30px;
     border-radius: 20px 20px 0 0;
     cursor: pointer;
     font-size: 14px;
@@ -111,11 +126,25 @@ p {
     margin: 0 auto;
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
     width: 40%;
-    position: relative; /* Ensures layering */
+    position: relative;
+    /* Ensures layering */
     z-index: 10;
 }
 
 /* .cta-button:hover {
     background-color: #45a049;
 } */
+.bt{
+    padding-left: 47%;
+    
+}
+.btn {
+    width: 200px;
+    /* or any value you're using */
+    display: block;
+    margin: 0 auto;
+}
 
+.google {
+    padding-left: 42.8%;
+}

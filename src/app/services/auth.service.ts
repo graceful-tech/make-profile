@@ -1,5 +1,7 @@
+declare var google: any;
 import { Injectable } from '@angular/core';
 import { GlobalService } from './global.service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -7,7 +9,7 @@ import { GlobalService } from './global.service';
 export class AuthService {
   user: any;
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
   }
@@ -15,6 +17,15 @@ export class AuthService {
   isAuthenticated(): boolean {
     const userName = localStorage.getItem('userName');
     return userName ? true : false;
+  }
+
+  signOut() {
+    if (confirm('Are you sure you want to sign out?')) {
+      google.accounts.id.disableAutoSelect();
+      localStorage.clear();
+      sessionStorage.clear();
+      this.router.navigate(['/landing']);
+    }
   }
 
 }

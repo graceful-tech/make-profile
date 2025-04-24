@@ -19,6 +19,7 @@ export class CreateAccountComponent {
   countries: Array<Lookup> = [];
   states: Array<Lookup> = [];
   cities: Array<Lookup> = [];
+  error!: string;
 
   constructor(private fb: FormBuilder,
     private api: ApiService,
@@ -44,12 +45,16 @@ export class CreateAccountComponent {
       const route = 'user/create';
       const postData = this.createAccountForm.value;
 
-      this.api.retrieveFromMakeProfile(route, postData).subscribe({
+      this.api.retrieve(route, postData).subscribe({
         next: response => {
           const customer = response as any;
           this.gs.openLogin('Success', 'Your Acoount Created Successfully');
           console.log(customer);
         },
+        error: (error) => {
+          this.error = error.error?.message;
+          this.loadingFlag = false;
+        }
       })
     } else {
       this.showError = true;

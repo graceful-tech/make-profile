@@ -72,6 +72,10 @@ export class ApiService {
     return this.http.post(this.createCompleteRoute(route), body, this.setGlobalRequestContext());
   }
 
+  public createGoogleUser(route: string, body: any) {
+    return this.http.post(this.createCompleteRoute(route), body, this.generateHeaders());
+  }
+
   public apply(route: String, body: any, username: string, tenant: string) {
     return this.http.post(this.createCompleteRoute(route), body, this.setApplyJobRequestContext(username, tenant));
   }
@@ -82,10 +86,21 @@ export class ApiService {
   }
 
   private generateHeaders() {
-    return {
-      headers: new HttpHeaders({ 'content-type': 'application/json' })
-    };
+    const token = sessionStorage.getItem('token');
+    const userName = sessionStorage.getItem('userName');
+    const id = sessionStorage.getItem('userId');
+
+    let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+
+    if (token) {
+      headers = headers.set('Authorization', `Bearer ${token}`);
+      headers = headers.set('userName', String(userName));
+      headers = headers.set('userId', String(id));
+    }
+
+    return { headers };
   }
+
 
   private setGlobalRequestContext() {
     return {

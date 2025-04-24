@@ -7,6 +7,7 @@ import { BehaviorSubject } from 'rxjs';
 import { ApiService } from './api.service';
 import { MessageComponent } from '../shared/message/message.component';
 import { Candidate } from '../models/candidates/candidate.model';
+import { LoginPopupComponent } from '../shared/popup/login-popup/login-popup.component';
  
 @Injectable({
   providedIn: 'root',
@@ -124,6 +125,21 @@ export class GlobalService {
       header: status,
     });
   }
+
+  openLogin(status:string,message:string){
+    this.dialog.open(LoginPopupComponent,{
+      data:{
+        message:message,
+      },
+      closable:false,
+      header:status,
+    });
+  }
+
+
+
+
+
 
   parseTimeToString(time: any) {
     const date = new Date(time);
