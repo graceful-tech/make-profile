@@ -15,13 +15,17 @@ import { AddCandidatesComponent } from './features/candidates/add-candidates/add
 import { LoginComponent } from './auth/login/login.component';
 import { CreateAccountComponent } from './auth/create-account/create-account.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { MobileCreateAccountComponent } from './auth-mobile/mobile-create-account/mobile-create-account.component';
+import { MobileLoginComponent } from './auth-mobile/mobile-login/mobile-login.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    CreateAccountComponent
+    CreateAccountComponent,
+    MobileCreateAccountComponent,
+    MobileLoginComponent
 
   ],
   imports: [

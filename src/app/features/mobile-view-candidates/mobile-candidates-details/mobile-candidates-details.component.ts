@@ -75,7 +75,7 @@ export class MobileCandidatesDetailsComponent {
     private cdr: ChangeDetectorRef,
     private router: Router,
     public ref: DynamicDialogRef
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.createCandidateForm();
@@ -129,7 +129,7 @@ export class MobileCandidatesDetailsComponent {
     this.cdr.detectChanges(); // Ensures UI updates properly
   }
 
-  ngAfterViewInit() {}
+  ngAfterViewInit() { }
 
   createCandidateForm() {
     this.candidateForm = this.fb.group({
@@ -159,7 +159,10 @@ export class MobileCandidatesDetailsComponent {
       collegeProject: this.fb.array([this.createCollegeProject()]),
     });
   }
-
+  signOut() {
+    sessionStorage.clear();
+    this.router.navigate(['/mobile']);
+  }
   createRequirementForm() {
     this.requirementForm = this.fb.group({
       id: [''],
@@ -566,7 +569,7 @@ export class MobileCandidatesDetailsComponent {
     });
   }
 
-  onEdit(id: any) {}
+  onEdit(id: any) { }
 
   getScore(jobId: any, tenant: any) {
     const candidateIds = '23';
@@ -900,22 +903,22 @@ export class MobileCandidatesDetailsComponent {
     this.api.get(route).subscribe({
       next: (response) => {
         const candidate = response as Candidate;
-        if(candidate !== null){
-        this.patchCandidateForm(candidate);
-        this.getCandidateImage(candidate?.id);
-      }
+        if (candidate !== null) {
+          this.patchCandidateForm(candidate);
+          this.getCandidateImage(candidate?.id);
+        }
       },
     });
   }
 
-  getCandidateImage(id:any){
-    const route ='candidates/get-image'
+  getCandidateImage(id: any) {
+    const route = 'candidates/get-image'
 
     const formData = new FormData();
-    formData.append('candidateId',id)
+    formData.append('candidateId', id)
 
-    this.api.upload(route,formData).subscribe({
-      next: (response) =>{
+    this.api.upload(route, formData).subscribe({
+      next: (response) => {
         this.candidateImageUrl = URL.createObjectURL(response);
         this.dataLoaded = true;
       }

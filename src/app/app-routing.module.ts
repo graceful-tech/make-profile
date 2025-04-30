@@ -5,6 +5,8 @@ import { LandingPageComponent } from './layout/landing-page/landing-page.compone
 import { CandidatesDetailsComponent } from './features/candidates/candidates-details/candidates-details.component';
 import { LoginComponent } from './auth/login/login.component';
 import { CreateAccountComponent } from './auth/create-account/create-account.component';
+import { MobileLoginComponent } from './auth-mobile/mobile-login/mobile-login.component';
+import { MobileCreateAccountComponent } from './auth-mobile/mobile-create-account/mobile-create-account.component';
 
 const routes: Routes = [
 
@@ -12,13 +14,12 @@ const routes: Routes = [
   { path: 'mobile', component: LandingPageMobileComponent },
   { path: 'login', component: LoginComponent },
   { path: 'create-account', component: CreateAccountComponent },
-
-
+  { path: 'mobile-create', component: MobileCreateAccountComponent },
+  { path: 'mobile-login', component: MobileLoginComponent },
   {
     path: 'candidate',
     loadChildren: () => import('./features/candidates/candidates.module').then((m) => m.CandidatesModule),
   },
-
   {
     path: 'mob-candidate',
     loadChildren: () => import('./features/mobile-view-candidates/mobile-view-candidates.module').then((m) => m.MobileViewCandidatesModule),

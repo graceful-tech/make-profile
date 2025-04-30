@@ -97,6 +97,7 @@ export class ApiService {
       headers = headers.set('userName', String(userName));
       headers = headers.set('userId', String(id));
     }
+    console.log(id)
 
     return { headers };
   }

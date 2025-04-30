@@ -1,19 +1,17 @@
-declare var google: any;
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+ import { Router } from '@angular/router';
 import { DialogService } from 'primeng/dynamicdialog';
 import { ApiService } from 'src/app/services/api.service';
 import { GlobalService } from 'src/app/services/global.service';
 
 @Component({
-  selector: 'app-login',
+  selector: 'app-mobile-login',
   standalone: false,
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.css',
+  templateUrl: './mobile-login.component.html',
+  styleUrl: './mobile-login.component.css'
 })
-export class LoginComponent {
+export class MobileLoginComponent {
   loginForm!: FormGroup;
   error!: String;
   showError = false;
@@ -36,19 +34,6 @@ export class LoginComponent {
         this.gs.setPaymentStatus(null);
       }
     });
-
-    // google.accounts.id.initialize({
-    //   client_id: '763124424966-6n5res8rbmhnmshnqvjnv7t2kkbnleib.apps.googleusercontent.com',
-    //   callback: (resp: any) => this.handleLogin(resp)
-    // })
-    // google.accounts.id.renderButton(document.getElementById("google-btn"), {
-    //   theme: 'filled_blue',
-    //   size: 'large',
-    //   shape: 'rectangle',
-    //   width: 240
-    // })
-
-
   }
 
   createLoginForm() {
@@ -73,7 +58,7 @@ export class LoginComponent {
           sessionStorage.setItem('token', response.token);
           sessionStorage.setItem('userName', response.name);
           sessionStorage.setItem('userId', response.id);
-          this.router.navigate(['/candidate']);
+          this.router.navigate(['/mob-candidate']);
         },
         error: (error) => {
           this.error = error.error?.message;
@@ -91,46 +76,9 @@ export class LoginComponent {
   //     width: '25%'
   //   });
   // }
-
-
   onGoogleLogin() {
-    window.location.href = 'http://localhost:8080/oauth2/authorization/google?redirect_uri=http://localhost:4200/candidate';
+    window.location.href = 'http://localhost:8080/oauth2/authorization/google?redirect_uri=http://localhost:4200/mob-candidate';
   }
 
-
-  private decodeToken(token: String) {
-    return JSON.parse(atob(token.split(".")[1]));
-  }
-
-  handleLogin(response: any) {
-    if (response) {
-      const token = response.credential;
-      const payload = this.decodeToken(token);
-      const email = payload.email;
-      const name = payload.name;
-
-      const dataToSend = {
-        name: name,
-        email: email,
-        signInAccess: 'google'
-      };
-      this.api.createGoogleUser('auth/google-login', dataToSend).subscribe({
-        next: (res: any) => {
-          console.log(res)
-          // Success - set session storage
-          sessionStorage.setItem('authType', 'google');
-          sessionStorage.setItem('token', token);
-          sessionStorage.setItem('userName', res.name);
-          sessionStorage.setItem('userId', res.id);
-
-          this.router.navigate(['/candidate']);
-        },
-        error: (err) => {
-          console.error('Login failed:', err);
-
-        }
-      });
-    }
-  }
 
 }

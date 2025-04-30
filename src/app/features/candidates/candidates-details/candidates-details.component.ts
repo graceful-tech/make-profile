@@ -80,6 +80,19 @@ export class CandidatesDetailsComponent {
   ) { }
 
   ngOnInit() {
+    if (sessionStorage.getItem('userId') == null) {
+      this.route.queryParams.subscribe(params => {
+        const token = params['token'];
+        const username = params['username'];
+        const email = params['email'];
+        const id = params['id'];
+
+        sessionStorage.setItem('token', token);
+        sessionStorage.setItem('userName', username);
+        sessionStorage.setItem('email', email);
+        sessionStorage.setItem('userId', id);
+      });
+    }
     this.createCandidateForm();
     this.createRequirementForm();
     this.loadDummyData();

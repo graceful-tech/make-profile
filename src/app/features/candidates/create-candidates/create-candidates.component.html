@@ -64,7 +64,7 @@
               <div class="field-wrapper">
                 <label>DOB</label>
                 <div class="input-wrapper">
-                  <p-calendar formControlName="dob" placeholder="Select From Date"></p-calendar>
+                  <p-calendar appendTo="body" formControlName="dob" placeholder="Select From Date"></p-calendar>
                 </div>
               </div>
             </div>
@@ -189,7 +189,7 @@
                     <div class="field-wrapper">
                       <label>Year Ended</label>
                       <div class="input-wrapper">
-                        <p-calendar formControlName="experienceYearEndDate"  [disabled]="experience.get('currentlyWorking')?.value" placeholder="Select From Date"></p-calendar>
+                        <p-calendar appendTo="body" formControlName="experienceYearEndDate"  [disabled]="experience.get('currentlyWorking')?.value" placeholder="Select From Date"></p-calendar>
                       </div>
                     </div>
                   </div>

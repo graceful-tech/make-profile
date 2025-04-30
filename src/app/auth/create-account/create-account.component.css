@@ -1,4 +1,4 @@
-.register-wrapper {
+/* .register-wrapper {
     background: #fff;
     width: 30%;
     padding: 1.5rem;
@@ -6,7 +6,9 @@
 }
 
 .align {
+    flex: 1;
     display: flex;
+    justify-content: space-between;
     align-items: center;
     height: 100vh;
 }
@@ -23,3 +25,141 @@
 }
 
 
+.vertical-line {
+    width: 2px;
+    background-color: black;
+    height: 80px;
+    margin: 0 20px; 
+  }
+  .vertical-line1 {
+    width: 2px;
+    background-color: black;
+    height: 80px;
+    margin: 0 20px; 
+    padding-bottom: 20px;
+  }
+  */
+  .align {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    padding: 1rem;
+    margin-top: 1.5rem;
+}
+
+.register-wrapper {
+    background: #fff;
+    width: 50%;
+    max-width: 1000px;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.form-layout {
+    display: flex;
+    align-items: flex-start;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.form-section {
+    flex: 1;
+    min-width: 20px;
+}
+
+.center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 140px;
+}
+
+.vertical-line,
+.vertical-line1 {
+    width: 2px;
+    background-color: #178be9;
+    height: 80px;
+}
+
+.login-google {
+    width: 250px;
+    height: 300px;
+    background-color: white;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    position: relative;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+.top-right-login {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.google-signup-section {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.sign-with {
+    margin-top: 100px;
+    font-weight: 500;
+}
+
+.heading {
+    display: flex;
+    margin-left: 33%;
+}
+
+.create {
+    padding-bottom: 25px;
+}
+
+.error-message {
+    color: red;
+    font-size: 0.8rem;
+}
+
+.grid {
+    width: 100%;
+}
+
+.login a:hover {
+    text-decoration: underline;
+  }
+
+  .login a {
+    color: #2196F3;
+    text-decoration: none;
+    font-size: large;
+  }
+
+/* Responsive stacking */
+@media (max-width: 768px) {
+    .form-layout {
+        flex-direction: column;
+        align-items: center;
+        padding-bottom: 20px;
+    }
+
+    .login-google {
+        width: 100%;
+        max-width: 400px;
+        height: auto;
+        padding: 2rem;
+    }
+
+    .center {
+        flex-direction: row;
+        margin: 1rem 0;
+    }
+}

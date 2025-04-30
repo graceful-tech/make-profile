@@ -1,0 +1,25 @@
+.register-wrapper {
+    background: #fff;
+    width: 75%;
+    padding: 1.5rem;
+    margin: 0 auto;
+}
+
+.align {
+    display: flex;
+    align-items: center;
+    height: 100vh;
+}
+
+.login a {
+    font-size: 14px;
+    color: #0443a7;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.login a:hover {
+    text-decoration: underline;
+}
+
+

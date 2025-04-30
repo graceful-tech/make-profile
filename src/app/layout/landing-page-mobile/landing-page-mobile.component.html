@@ -1,8 +1,4 @@
-<div class="login-container">
-    <p-button (click)="goToLoginPage()" class="bt">SignUp</p-button>
-    <h3>(Or)</h3>
-    <p-button label="Login with Google" (click)="loginWithGoogle()"></p-button>
-</div> 
+
 <!-- <div class="hero-section" src="assets/images/background.jpg" alt="Background">
     <div class="background-overlay">
     <img src="assets/images/background.jpg" alt="Background" class="background-image"> 
@@ -13,7 +9,25 @@
     </div> -->
 
 <div class="features-section">
-    <img src="assets/images/logo.svg" alt="Background" class="background">
+    <div class="login-container">
+        <img src="assets/images/logo.svg" alt="Background" class="background">
+        <p-button (click)="goToLoginPage()" class="bt">SignUp</p-button>
+    
+        <div class="btn" style="margin: 10px auto;">
+            <div style="display: flex; align-items: center; text-align: center;">
+              <hr style="flex: 1; color: rgb(5, 5, 5);">
+              <span style="padding: 0 8px; white-space: nowrap; color: rgb(211, 226, 236);">(Or)</span>
+              <hr style="flex: 1; color:rgb(5, 5, 5);">
+            </div>
+        </div>
+         <!-- <div class="google"   id="google-btn"></div> -->
+        <!-- Wrapper for proper spacing and centering -->
+        <div style="display: flex; justify-content: center; padding: 1rem;">
+            <div id="google-btn"></div>
+        </div>
+    
+        <!-- <p-button label="Login with Google" (click)="loginWithGoogle()"></p-button> -->
+    </div>
     <!-- <div class="ats-section">
         <div class="ats-content">
             <h1>What is an ATS?</h1>
@@ -45,14 +59,16 @@
             <img src="assets/images/whatAts.svg" alt="Resume Builder">
             <h3></h3>
             <h3 class="at-section">Detailing on Your Profile</h3>
-            <h3 class="cta-button">Our MakeProfiles Intelligence Will Review Your Details/Resume and Create an Enhanced Resume</h3>
+            <h3 class="cta-button">Our MakeProfiles Intelligence Will Review Your Details/Resume and Create an Enhanced
+                Resume</h3>
             <h3></h3>
         </div>
         <div class="feature-item">
             <img src="assets/images/resumebuilder.jpg" alt="Resume Builder">
             <h3></h3>
             <h3 class="at-section">Your Resume Will Get More Stronger</h3>
-            <h3 class="cta-button">It Will Check your Skills and Suggest You or Add and Remove Skills Based on You Experience ,<br> If Fresher it will check Education and Additional Courses  </h3>
+            <h3 class="cta-button">It Will Check your Skills and Suggest You or Add and Remove Skills Based on You
+                Experience ,<br> If Fresher it will check Education and Additional Courses </h3>
             <h3></h3>
         </div>
         <div class="feature-item">
@@ -66,23 +82,25 @@
             <img src="assets/images/checking missing content-Mobile.jpg" alt="Resume Sharing">
             <h3></h3>
             <h3 class="at-section">Re-Structure your Existing Resume</h3>
-            <h3 class="cta-button">It Will Assemble Your Existing Resume And Properly Organize The Content, <br> Placing Each Detail In The Correct Section.</h3>
+            <h3 class="cta-button">It Will Assemble Your Existing Resume And Properly Organize The Content, <br> Placing
+                Each Detail In The Correct Section.</h3>
             <h3></h3>
-         </div>
-         <div class="feature-item">
+        </div>
+        <div class="feature-item">
             <img src="assets/images/analyzingResume.jpg" alt="Resume Sharing">
             <h3></h3>
             <h3 class="at-section">Finally Your Resume Will Get Ready</h3>
             <h3 class="cta-button">Just Pay Indian Rupees: 10/- and Download your Resume </h3>
             <h4> You can Modify You Resume upto 5 Times on Single Format</h4>
-         </div>
-         <div class="feature-item">
+        </div>
+        <div class="feature-item">
             <img src="assets/images/assembling.jpg" alt="Resume Sharing">
             <h3></h3>
             <h3 class="at-section">Resume Sharing Made Easy</h3>
-            <h3 class="cta-button">Instantly It Share Your Resume To HURECOM (Our Own ATS) and <BR> You Can Also Apply Directly to Jobs on Naukri, Monster, and more.</h3>
+            <h3 class="cta-button">Instantly It Share Your Resume To HURECOM (Our Own ATS) and <BR> You Can Also Apply
+                Directly to Jobs on Naukri, Monster, and more.</h3>
             <h3></h3>
-         </div>
+        </div>
         <div class="feature-item">
             <img src="assets/images/resumeSharing-mobile.jpg" alt="Resume Sharing">
             <h3></h3>
@@ -95,7 +113,7 @@
     </div>
 
 
-<!-- <div class="how-it-works">
+    <!-- <div class="how-it-works">
      <h2>How It Works</h2> 
     <div class="steps">
          <div class="step">

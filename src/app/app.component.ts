@@ -14,11 +14,11 @@ export class AppComponent {
   constructor(private router: Router,private deviceServiceService:DeviceServiceService) {}
 
   ngOnInit() {
-    if (this.isMobile()) {
-      this.router.navigate(['/mobile']); 
-    } else {
-      this.router.navigate(['/landing']); 
-    }
+    // if (this.isMobile()) {
+    //   this.router.navigate(['/mobile']); 
+    // } else {
+    //   this.router.navigate(['/landing']); 
+    // }
   }
 
 goToLandingPage() {
