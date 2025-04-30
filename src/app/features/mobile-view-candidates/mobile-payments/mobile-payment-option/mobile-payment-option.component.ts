@@ -67,16 +67,21 @@ export class MobilePaymentOptionComponent {
   async payRupees() {
     const amount = 1 * 100;
     const paymentType = 'Resume';
-    const status =   this.ps.payWithRazorPay(amount, this.candidateId);
-      this.createResume();  
+   // const status =   this.ps.payWithRazorPay(amount);
+    this.createResume();  
   }
   
   
 
   redeem() {
-    const route = `credits?candidateId=${this.candidateId}`;
+    
+    const route = 'credits/redeem';
 
-    this.api.get(route).subscribe({
+    const userIds = sessionStorage.getItem('userId');
+    const  payload = {
+      userId:userIds
+    }
+    this.api.retrieve(route,payload).subscribe({
       next: (response) => {
         this.credits = response as any;
       },

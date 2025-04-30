@@ -188,7 +188,7 @@ export class MobileCreateCandidatesComponent {
     );
   }
 
-  generatingResume() {
+  createCandidate() {
     this.dataLoaded = false;
 
     const route = 'candidate/create';
@@ -899,7 +899,7 @@ export class MobileCreateCandidatesComponent {
         inputEl.value = '';  
       } 
     }
-    
+
     getCandidates() {
       const route = 'candidates';
       this.api.get(route).subscribe({
@@ -913,19 +913,22 @@ export class MobileCreateCandidatesComponent {
       });
     }
   
-    getCandidateImage(id:any){
-      const route ='candidates/get-image'
+     getCandidateImage(id: any) {
+    const route = `candidate/get-image?candidateId=${id}`;
   
-      const formData = new FormData();
-      formData.append('candidateId',id)
-  
-      this.api.upload(route,formData).subscribe({
-        next: (response) =>{
-          this.candidateImageUrl = URL.createObjectURL(response);
-          this.dataLoaded = true;
+    this.api.getImage(route).subscribe({
+      next: (response) => {
+        if(response.size > 0){
+        this.candidateImageUrl = URL.createObjectURL(response);
+        this.dataLoaded = true;
         }
-      });
+      },
+      error: (err) => {
+        console.error('Error fetching candidate image:', err);
+        this.dataLoaded = false;
+      }
+    });
+  }
   
-    }
     
 }

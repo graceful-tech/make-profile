@@ -12,9 +12,9 @@ export interface Candidate {
     email: string;
     nationality: string;
     gender: string;
-    languagesKnown: string;
+    languagesKnown: any;
     isFresher: boolean;
-    skills: string;
+    skills: any;
     linkedIn:string;
     dob:any;
     address:any;

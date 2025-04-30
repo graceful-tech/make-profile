@@ -45,7 +45,7 @@ import { HammerModule } from '@angular/platform-browser';
     MessageComponent,
     LoginPopupComponent,
     MatIconModule,
-     
+    NgxUiLoaderModule
   ]
 })
 export class SharedModule { }

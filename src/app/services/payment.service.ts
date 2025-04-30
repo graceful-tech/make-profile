@@ -18,11 +18,15 @@ export class PaymentService {
   candidateId: any;
   candidates: any;
   status:any;
+  userId:any;
 
   constructor(private winRef: WindowRefService, private api: ApiService, private gs: GlobalService, private zone: NgZone) {
-    this.gs.candidateId$.subscribe(response => {
-      this.candidates = response;
-    });
+    // this.gs.candidateId$.subscribe(response => {
+    //   this.candidates = response;
+    // });
+
+    const userIds = sessionStorage.getItem('userId');
+    this.userId=userIds;
   }
 
   payOnAccountCreation(customerDetails: any) {
@@ -61,19 +65,22 @@ export class PaymentService {
     });
   }
 
-  payWithRazorPay(amount: number,candidateId:any){
-    this.amount = amount / 100;
-   // this.paymentType = paymentType;
-    this.initRazorPay();
-    this.getCandidateById(candidateId);
+  payWithRazorPay(amount: number){
+    const userIds = sessionStorage.getItem('userId');
+    this.userId=userIds;
     
+    this.amount = amount / 100;
+    this.initRazorPay();
+   
+
     const route = 'payment/generate-order';
-    const postData = { amount: amount, candidateId: candidateId };
+    const postData = { amount: amount, userId: userIds };
     this.api.create(route, postData).subscribe({
       next: response => {
         const orderId = response.orderId;
         this.paymentOrderId = response.id;
-        this.candidateId = response.candiateId;
+      // this.candidateId = response.candiateId;
+        this.userId= response.userId
         this.razorPayOptions['order_id'] = orderId;
         this.razorPayOptions.prefill['name'] = this.candidates?.name;
         this.razorPayOptions.prefill['email'] = this.candidates?.email;
@@ -83,8 +90,7 @@ export class PaymentService {
         rzp1.open();
         rzp1.on('payment.failed', (response: any) => {
           const payload = {
-            //customerId: this.customerDetails.id,
-            candidateId: this.candidates.id,
+            userId:this.userId,
             orderId: response?.error?.metadata?.order_id,
             paymentId: response?.error?.metadata?.payment_id,
             paymentOrderId: this.paymentOrderId,
@@ -121,7 +127,7 @@ export class PaymentService {
       handler: (response: any) => {
         this.zone.run(() => {
           const payload = {
-            candidateId: this.candidates.id,
+            userId:this.userId,
             orderId: response?.razorpay_order_id,
             paymentId: response?.razorpay_payment_id,
             paymentOrderId: this.paymentOrderId,
@@ -137,12 +143,14 @@ export class PaymentService {
 
   savePayment(payload: any) {
     const route = 'payment/save';
-    payload['candidateId'] = localStorage.getItem('candidateId');
+   // payload['userId'] = localStorage.getItem('candidateId');
     this.api.create(route, payload).subscribe({
       next: response => {
          this.gs.setPaymentStatus(payload?.paymentStatus);
       },
-      error: error => { }
+      error: error => { 
+
+      }
     });
   }
 
@@ -152,65 +160,7 @@ export class PaymentService {
   }
 
 
-  payWithRazorPays(amount: number, candidateId: any): Promise<boolean> {
-    return new Promise((resolve, reject) => {
-      this.amount = amount / 100;
-      this.initRazorPay();
-      this.getCandidateById(candidateId);
   
-      const route = 'payment/generate-order';
-      const postData = { amount: amount, candidateId: candidateId };
-  
-      this.api.create(route, postData).subscribe({
-        next: response => {
-          const orderId = response.orderId;
-          this.paymentOrderId = response.id;
-          this.candidateId = response.candiateId;
-  
-          this.razorPayOptions['order_id'] = orderId;
-          this.razorPayOptions.prefill['name'] = this.candidates?.name;
-          this.razorPayOptions.prefill['email'] = this.candidates?.email;
-          this.razorPayOptions.prefill['contact'] = this.candidates?.email;
-  
-          
-          this.razorPayOptions.handler = (response: any) => {
-            this.zone.run(() => {
-              const payload = {
-                candidateId: this.candidates.id,
-                orderId: response?.razorpay_order_id,
-                paymentId: response?.razorpay_payment_id,
-                paymentOrderId: this.paymentOrderId,
-                amount: this.amount,
-                paymentStatus: 'Completed',
-              };
-              this.savePayment(payload);
-              resolve(true);
-            });
-          };
-  
-          const rzp1 = new Razorpay(this.razorPayOptions);
-  
-          rzp1.on('payment.failed', (response: any) => {
-            const payload = {
-              candidateId: this.candidates.id,
-              orderId: response?.error?.metadata?.order_id,
-              paymentId: response?.error?.metadata?.payment_id,
-              paymentOrderId: this.paymentOrderId,
-              amount: this.amount,
-              paymentStatus: 'Failed',
-            };
-            this.savePayment(payload);
-            resolve(false);
-          });
-  
-          rzp1.open();
-        },
-        error: error => {
-          resolve(false);
-        }
-      });
-    });
-  }
   
 
   getCandidateById(candidateId:any) {

@@ -9,6 +9,7 @@ import { ViewTemplatesComponent } from './Templates/view-templates/view-template
 import { ChooseTemplateComponent } from './Templates/choose-template/choose-template.component';
 import { PaymentOptionComponent } from './payments/payment-option/payment-option.component';
 import { PaymentDetailsComponent } from './payments/payment-details/payment-details.component';
+import { NgxUiLoaderModule } from 'ngx-ui-loader';
 
 
 @NgModule({
@@ -24,7 +25,7 @@ import { PaymentDetailsComponent } from './payments/payment-details/payment-deta
   imports: [
     CommonModule,
     CandidatesRoutingModule,
-    SharedModule,
+    SharedModule
   ],
 })
 export class CandidatesModule { }

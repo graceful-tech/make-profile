@@ -1,3 +1,14 @@
+ 
+<div *ngIf="isUploading" class="custom-loader-backdrop">
+  <div class="custom-loader-container">
+    <div class="dotted-spinner"></div>
+    <div class="loader-text">
+      Please Wait&nbsp;<span class="dots"></span>
+    </div>
+  </div>
+</div>
+ 
+
 <div class="header-image">
   <img class="header-images" src="assets/img/make-profile.svg" alt="Header Image" />
   <p-button (onClick)="signOut()" label="Logout" class="right-align"></p-button>
@@ -22,12 +33,15 @@
                 <span *ngIf="!resume?.fileName" style="color: #171717;">
                   Upload Your Resume
                 </span>
-                <span class="header-middle">
+                <span class="header-middle" *ngIf="!resume?.fileName">
                   OR
                 </span>
-                <span class="header-button">
+                <span class="header-button" *ngIf="!resume?.fileName">
                   <p-button *ngIf="!candidateId" (onClick)="enterDetails()" label="Enter Details"></p-button>
                   <p-button *ngIf="candidateId" (onClick)="UpdateCandidate()" label="Update Details"></p-button>
+                </span>
+                <span class="header-button" *ngIf="resume?.fileName">
+                  <button class="resume-btn" (click)="parseResume()">Next Step</button>
                 </span>
               </div>
             </div>
@@ -54,7 +68,7 @@
           <p-button class="mr-2" (onClick)="attachment.click()" label="Create"></p-button>
           </div> -->
         <div class="table-container">
-          <p-table class="mobile" [value]="yourResume">
+          <p-table class="mobile" [value]="availableCredits">
             <ng-template pTemplate="header">
               <tr>
                 <th style="width: 5%;">ID</th>
@@ -63,44 +77,54 @@
                 <th style="width: 10%;">AMOUNT PAID</th>
               </tr>
             </ng-template>
-            <ng-template pTemplate="body" let-resume>
+            <ng-template pTemplate="body" let-credits>
               <tr>
-                <td>{{ resume.id }}</td>
-                <td>{{ resume.name }}</td>
-                <td>{{ resume.remainingEdits }}</td>
-                <td>{{ resume.amountPaid }}</td>
+                <td>{{ credits.id }}</td>
+                <td>{{ credits.name }}</td>
+                <td>{{ credits.remainingEdits }}</td>
+                <td>{{ credits.amountPaid }}</td>
               </tr>
             </ng-template>
+            <ng-template pTemplate="emptymessage">
+              <tr>
+                  <td colspan="4">No records found.</td>
+              </tr>
+          </ng-template>
           </p-table>
         </div>
 
 
         <h5 class="styled-text">Applied Jobs</h5>
         <div class="table-container">
-          <p-table [value]="yourResume">
-            <ng-template pTemplate="header">
-              <tr>
-                <th style="width: 5%;">JOB ID</th>
-                <th style="width: 10%;">SKILLS</th>
-                <th style="width: 10%;">LOCATION</th>
-                <th style="width: 10%;">SOURCE</th>
-                <th style="width: 10%;">STATUS</th>
-                <th style="width: 10%;">ACTION</th>
-              </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-resume>
-              <tr>
-                <td>{{ resume.id }}</td>
-                <td>{{ resume.name }}</td>
-                <td>{{ resume.remainingEdits }}</td>
-                <td>{{ resume.amountPaid }}</td>
-                <td>{{ resume.amountPaid }}</td>
-                <td>
-                  <i class="pi pi-pencil" style="cursor: pointer;" (click)="onEdit(resume.id)" title="Edit"></i>
-                </td>
-              </tr>
-            </ng-template>
-          </p-table>
+            <p-table   [value]="appliedJobs">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 5%;">JOB ID</th>
+                        <th style="width: 10%;">SKILLS</th>
+                        <th style="width: 10%;">LOCATION</th>
+                        <th style="width: 10%;">SOURCE</th>
+                        <th style="width: 10%;">STATUS</th>
+                        <th style="width: 10%;">ACTION</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-jobs>
+                    <tr>
+                        <td>{{ jobs.id }}</td>
+                        <td>{{ jobs.name }}</td>
+                        <td>{{ jobs.remainingEdits }}</td>
+                        <td>{{ jobs.amountPaid }}</td>
+                        <td>{{ jobs.amountPaid }}</td>
+                        <td>
+                          <i class="pi pi-pencil" style="cursor: pointer;" (click)="onEdit(resume.id)" title="Edit"></i>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                  <tr>
+                      <td colspan="6">No records found.</td>
+                  </tr>
+              </ng-template>
+            </p-table>
         </div>
 
 
@@ -219,7 +243,7 @@
             <div class="field-wrapper">
               <label class="required">Mobile</label>
               <div class="input-wrapper">
-                <input type="text" pKeyFilter="int" [maxlength]="10" pInputText formControlName="mobileNumber" />
+                <input type="text"  pKeyFilter="int"  [maxlength]="10"  [disabled]="candidateId" pInputText formControlName="mobileNumber" />
               </div>
             </div>
             <small class="error-message" *ngIf="candidateForm.controls['mobileNumber'].invalid && showError">
@@ -661,6 +685,27 @@
             </div>
           </div>
         </div>
+
+        <div class="grid">
+          <div class="col-12 md:col-6">
+           <div class="field-wrapper">
+            <label>Soft Skills</label>
+             <div class="input-wrapper">
+              <p-chips separator="," formControlName="softSkills" [addOnBlur]="true" [addOnTab]="true"></p-chips>
+             </div>
+           </div>
+          </div>
+
+          <div class="col-12 md:col-6">
+            <div class="field-wrapper">
+             <label>Core Competencies</label>
+              <div class="input-wrapper">
+               <p-chips separator="," formControlName="coreCompentencies" [addOnBlur]="true" [addOnTab]="true"></p-chips>
+              </div>
+            </div>
+           </div>
+       </div>
+        
       </form>
 
       <app-make-profile-divider></app-make-profile-divider>

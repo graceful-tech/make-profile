@@ -16,6 +16,27 @@
             <app-make-profile-divider></app-make-profile-divider>
             <div class="section-heading">Personal Details</div>
               <div class="grid">
+              
+                <div class="col-12 md:col-6">
+                  <div class="field-wrapper">
+                      <input type="file" #attachment1 (change)="addCandidateImage($event)" style="display: none" />
+                      <div class="image-container">
+                          <ng-container *ngIf="candidateImageUrl; else other_content">
+                              <img class="image" [src]="candidateImageUrl" />
+                              <span class="edit-icon" (click)="attachment1.click()">
+                                  <i class="fas fa-pencil-alt" Style="font-size: 18px;"></i>
+                              </span> 
+                          </ng-container>
+                          <ng-template #other_content>
+                              <img class="image" src="assets/img/dummy-profile-pic.jpg" />
+                              <span class="edit-icon" (click)="attachment1.click()">
+                                  <i class="fas fa-pencil-alt" Style="font-size: 18px;"></i>
+                              </span>
+                          </ng-template>
+                      </div>
+                  </div>
+              </div>
+
               <div class="col-12 md:col-6 lg:col-3">
                 <div class="field-wrapper">
                   <label class="required">Mobile Number</label>
@@ -108,29 +129,7 @@
                       <textarea rows="5" type="text" pInputText formControlName="address"></textarea>
                      </div>
                    </div>
-                  </div>
-  
-                <div class="col-12 md:col-6">
-                    <div class="field-wrapper">
-                        <input type="file" #attachment1 (change)="addCandidateImage($event)" style="display: none" />
-                        <div class="image-container">
-                            <ng-container *ngIf="candidateImageUrl; else other_content">
-                                <img class="image" [src]="candidateImageUrl" />
-                                <span class="edit-icon" (click)="attachment1.click()">
-                                    <i class="fas fa-pencil-alt" Style="font-size: 18px;"></i>
-                                </span> 
-                            </ng-container>
-                            <ng-template #other_content>
-                                <img class="image" src="assets/img/dummy-profile-pic.jpg" />
-                                <span class="edit-icon" (click)="attachment1.click()">
-                                    <i class="fas fa-pencil-alt" Style="font-size: 18px;"></i>
-                                </span>
-                            </ng-template>
-                        </div>
-                    </div>
-                </div>
-            
-        
+                  </div>      
             </div>
   
             <app-make-profile-divider></app-make-profile-divider>
@@ -555,7 +554,7 @@
            <div class="button-wrapper" *ngIf="!payments">
             <p-button class="mr-2" [label]="dataLoaded ? 'Generate' : 'Generating..'"
                 [icon]="dataLoaded ? '' : 'pi pi-spin pi-spinner'" [disabled]="!dataLoaded"
-                (onClick)="generatingResume()"></p-button>
+                (onClick)="createCandidate()"></p-button>
         
             <p-button  styleClass="p-button-secondary" label="Reset"
                 (onClick)="reset()">

@@ -1,3 +1,4 @@
+
 import { HttpClient, HttpContext, HttpContextToken, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -53,7 +54,7 @@ export class ApiService {
   }
 
   public export(route: String, body: any): Observable<any> {
-    return this.http.post(this.createCompleteRoute(route), body, { responseType: 'blob', reportProgress: true });
+    return this.http.post(this.createCompleteRoute(route), body,{ responseType: 'blob', reportProgress: true });
   }
 
   public upload(route: String, body: any): Observable<any> {
@@ -80,6 +81,10 @@ export class ApiService {
     return this.http.post(this.createCompleteRoute(route), body, this.setApplyJobRequestContext(username, tenant));
   }
 
+  public getImage(route: String) {
+    return this.http.post(this.createCompleteRoute(route), this.generateHeaders(),{ responseType: 'blob', reportProgress: true });
+  }
+
   private createCompleteRoute(route: String) {
     const restUrl = environment.restUrl;
     return `${restUrl}/${route}`;
@@ -97,7 +102,6 @@ export class ApiService {
       headers = headers.set('userName', String(userName));
       headers = headers.set('userId', String(id));
     }
-    console.log(id)
 
     return { headers };
   }

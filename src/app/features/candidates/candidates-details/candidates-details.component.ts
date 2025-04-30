@@ -16,6 +16,7 @@ import { Achievements } from 'src/app/models/candidates/achievements';
 import { Requirement } from 'src/app/models/candidates/requirement.model';
 import { LocalStorage } from '@ng-idle/core';
 import { ChooseTemplateComponent } from '../Templates/choose-template/choose-template.component';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 
 @Component({
@@ -65,6 +66,9 @@ export class CandidatesDetailsComponent {
   returnImage: any;
   collegeProjectDeletedArray: Array<any> = []
   appliedJobs: any;
+  availableCredits:any;
+  isUploading: boolean=false;
+  customLoaderMessage:any;
 
 
   constructor(
@@ -77,10 +81,12 @@ export class CandidatesDetailsComponent {
     private cdr: ChangeDetectorRef,
     private router: Router,
     public ref: DynamicDialogRef,
+    private ngxLoader: NgxUiLoaderService
   ) { }
 
   ngOnInit() {
-    if (sessionStorage.getItem('userId') == null) {
+  
+   if (sessionStorage.getItem('userId') == null) {
       this.route.queryParams.subscribe(params => {
         const token = params['token'];
         const username = params['username'];
@@ -93,9 +99,9 @@ export class CandidatesDetailsComponent {
         sessionStorage.setItem('userId', id);
       });
     }
+     
     this.createCandidateForm();
     this.createRequirementForm();
-    this.loadDummyData();
     this.generateYearList();
     this.getGenderList();
     this.getLanguages();
@@ -104,17 +110,10 @@ export class CandidatesDetailsComponent {
 
     this.getCandidates();
     // this.getAppliedJobs();
+    //this.getAvailableCredits();
+     
+    
 
-  }
-
-  loadDummyData() {
-    this.yourResume = [
-      { id: 1, name: 'Professional Resume', remainingEdits: 3, amountPaid: '$10' },
-      { id: 2, name: 'Fresher Resume', remainingEdits: 5, amountPaid: '$5' },
-      { id: 3, name: 'Senior Engineer Resume', remainingEdits: 2, amountPaid: '$15' },
-      { id: 4, name: 'Designer Resume', remainingEdits: 4, amountPaid: '$8' }
-    ];
-    this.cdr.detectChanges(); // Ensures UI updates properly
   }
 
   ngAfterViewInit() { }
@@ -246,7 +245,9 @@ export class CandidatesDetailsComponent {
       next: (response) => {
         this.gs.showMessage('Success', 'Successfully Created Resume');
         this.dataLoaded = true;
-        this.uploadCandidateImage();
+        if(this.resume !== null && this.resume !== undefined){
+          this.uploadCandidateImage();
+          }
       },
       error: (error) => {
         this.dataLoaded = true;
@@ -566,31 +567,55 @@ export class CandidatesDetailsComponent {
   }
 
   addAttachment(event: any) {
+    if(this.candidateId !== null && this.candidateId !== undefined) {
+    const confirmDelete = window.confirm('your existing details will modify based on uploading resume' ); 
+    
+    if ( confirmDelete && event.target.files[0]) {
+      this.multipartFile = event.target.files[0];
+      this.resume = { fileName: this.multipartFile?.name };
+     // this.parseResume();
+    }
+  }
+  else{
     if (event.target.files[0]) {
       this.multipartFile = event.target.files[0];
       this.resume = { fileName: this.multipartFile?.name };
-      this.parseResume();
+     // this.parseResume();
     }
+  }
   }
 
   parseResume() {
+    
+    this.ngxLoaderStart('Resume is getting ready, please wait...');
+
     const route = 'resume-ai/upload';
+
+    const username = sessionStorage.getItem('userName');
+    
     const formData = new FormData();
-    formData.append('resume', this.multipartFile);
+    formData.append('resume', this.multipartFile); 
+    formData.append('userName', String(username)); 
+    
     this.api.upload(route, formData).subscribe({
       next: (response) => {
         if (response) {
           this.candidates = response;
           this.candidateId = response.id;
-          const candidate = response as Candidate
+          const candidate = response as Candidate;
           this.patchCandidateForm(candidate);
 
-          this.candidateImageUrl = response.candidateLogo;
-
-          console.log(this.candidateImageUrl)
+          this.getCandidateImage(this.candidateId);
         }
+        this.ngxLoaderStop();
       },
+      error: error => {
+        this.ngxLoaderStop();
+        this.gs.showToast('error', 'Error in uploading resume please reupload it ');
+      }
+      
     });
+    this.ngxLoaderStop();
   }
 
   enterDetails() {
@@ -868,9 +893,9 @@ export class CandidatesDetailsComponent {
   }
 
   getAppliedJobs() {
-    const id = 23;
-    const route = `applied-jobs/${id}`;
+    const id = localStorage.getItem('candidateId')
 
+    const route = `applied-jobs/candidateId=${id}`;
     this.api.get(route).subscribe({
       next: (response) => {
         this.appliedJobs = response;
@@ -878,17 +903,77 @@ export class CandidatesDetailsComponent {
     });
   }
 
+  getAvailableCredits() {
+    const id = sessionStorage.getItem('userId');
+    
+    const route = `credits?candidateId=${id}`;
+    this.api.get(route).subscribe({
+      next: (response) => {
+        this.availableCredits = response;
+      },
+    });
+  }
+
   getCandidates() {
+   // this.ngxLoaderStart('Resume is getting ready, please wait...');
+
     const route = 'candidate';
     this.api.get(route).subscribe({
       next: (response) => {
         const candidate = response as Candidate;
         if (candidate !== null) {
           this.candidateId = candidate?.id;
+          candidate.languagesKnown = candidate?.languagesKnown ? candidate.languagesKnown .split(',').map((skill: string) => skill.trim()) : [];
+          candidate.skills = candidate?.skills ? candidate.skills.split(',').map((skill: string) => skill.trim()) : [];
+          candidate.softSkills = candidate?.softSkills ? candidate.softSkills.split(',').map((skill: string) => skill.trim()) : [];
+          candidate.coreCompentencies = candidate?.coreCompentencies ? candidate.coreCompentencies.split(',').map((skill: string) => skill.trim()) : [];
           this.patchCandidateForm(candidate);
+
+          if (this.candidateId !== null && this.candidateId !== undefined) {
+            this.candidateForm.controls['mobileNumber'].disable();
+          }
+          
+          this.getCandidateImage(candidate?.id)
+        }
+       // this.ngxLoaderStop();
+      },
+      error: (err) => {
+       // this.ngxLoaderStop();
+        console.error('Error fetching candidate image:', err);
+        this.dataLoaded = false;
+      }
+    });
+  //  this.ngxLoaderStop();
+  }
+
+  getCandidateImage(id: any) {
+    const route = `candidate/get-image?candidateId=${id}`;
+  
+    this.api.getImage(route).subscribe({
+      next: (response) => {
+        if(response.size >0){
+        this.candidateImageUrl = URL.createObjectURL(response);
+        this.dataLoaded = true;
         }
       },
+      error: (err) => {
+        console.error('Error fetching candidate image:', err);
+        this.dataLoaded = false;
+      }
     });
+  }
+  
+  ngxLoaderStop(){
+    this.ngxLoader.stop();  
+    setTimeout(() => {
+      this.isUploading = false;
+    }, 2000);
+  }
+
+  ngxLoaderStart(message:any){
+      this.isUploading = true;
+     this.ngxLoader.start();
+    this.customLoaderMessage = message;
   }
 
 }

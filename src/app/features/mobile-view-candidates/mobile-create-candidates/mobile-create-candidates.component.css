@@ -132,13 +132,13 @@
   .image{
     width: 130px; 
     height: 130px;
-    margin-left: 25%;
+    
   }
   .edit-icon {
     position: absolute;
     bottom: -5px;
     right: 0px;
-    left: 150px;
+    left: 110px;
     /* background: white; */
     border-radius: 50%;
     padding: 3px;

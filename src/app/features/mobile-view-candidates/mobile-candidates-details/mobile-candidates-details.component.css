@@ -37,10 +37,10 @@ p-table th {
 }   
 
 .wrapper {
-    margin-top: 1.5rem;
+    margin-top: 1rem;
     padding: 0.5rem;
     display: flex;
-    gap: 20px; 
+    gap: 20px;
     /* background: #fff; */
 }
 
@@ -52,7 +52,7 @@ p-table th {
   .image{
     width: 130px; 
     height: 130px;
-    margin-left: 25%;
+    /* margin-left: 50%; */
   }
   
   img {
@@ -207,13 +207,14 @@ p-table th {
     position: relative;
     display: inline-block;
     margin-top: 20px;
+    
 }
 
 .edit-icon {
     position: absolute;
     bottom: -5px;
     right: 0px;
-    left: 150px;
+    left: 110px;
     /* background: white; */
     border-radius: 50%;
     padding: 3px;
@@ -394,7 +395,7 @@ p-table th {
  .styled-text{
     padding-left: 10px;
     display: flex;
-    margin-top: 20px;
+    margin-top: 9px;
 }  
 
 .custom-btn:hover {
@@ -428,6 +429,103 @@ p-table th {
  cursor: pointer; 
  padding-left: 0px;
 }
+}
 
- 
+.page-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+}
+
+.top-section,
+.bottom-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.middle-text {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.custom-loader-backdrop {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+  background: rgba(108, 103, 103, 0.427);
+}
+
+.custom-loader-container {
+  text-align: center;
+}
+
+.dotted-spinner {
+  width: 60px;
+  height: 60px;
+  border: 6px dotted #0059ff;  
+  border-radius: 80%;
+  animation: spin 3s linear infinite;
+  margin: 0 auto 16px;
+  margin-top: 40px;
+}
+
+.loader-text {
+  color: rgb(5, 5, 5);
+  font-size: 19px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  position: relative;
+  padding-left: 20px;
+   
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes dots {
+  0% {
+    content: "";
+  }
+  33% {
+    content: ".";
+  }
+  66% {
+    content: "..";
+  }
+  100% {
+    content: "...";
+  }
+}
+
+.loader-text .dots {
+  display: inline-block;
+  width: 1.5em;  
+  text-align: left;
+}
+
+.loader-text .dots::after {
+  content: "";
+  animation: dots 1.5s steps(3, end) infinite;
+}
+
+.resume-btn{
+  background-color: #1f883d;;  
+  color: white;
+  border: none;
+  padding: 8px 10px;
+  font-size: 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-right: 15px;
+  font-style: italic;
 }

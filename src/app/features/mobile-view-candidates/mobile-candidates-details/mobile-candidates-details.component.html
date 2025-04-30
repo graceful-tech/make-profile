@@ -1,3 +1,14 @@
+<div *ngIf="isUploading" class="custom-loader-backdrop">
+  <div class="custom-loader-container">
+    <div class="dotted-spinner"></div>
+    <div class="loader-text">
+      Please Wait&nbsp;<span class="dots"></span>
+    </div>
+  </div>
+</div>
+
+
+
 <div class="header-image">
     <img class="header-images" src="assets/img/make-profile.svg" alt="Header Image" />
     <p-button (onClick)="signOut()" label="Logout" class="right-align"></p-button>
@@ -7,30 +18,33 @@
      <div class="left-section">
         <div class="profile-wrapper">
           <h5 class="section-heading">Upload Resume</h5>
-          <div class="grid grid-nogutter">
-            <div class="col-12">
-              <div class="px-1">
-                <input type="file" #attachment style="display: none;" (change)="addAttachment($event)" accept=".doc, .docx, .pdf" />
-                <div class="file-wrapper d-flex align-items-center">       
-                  <i class="icon pi pi-cloud-upload" (click)="attachment.click()"></i>  
-                  <div class="ml-2">
-                    <span *ngIf="resume?.fileName">
-                      <i class="pi pi-paperclip mr-2"></i>
-                      <span>{{ resume?.fileName }}</span>
-                    </span>
-                    <span *ngIf="!resume?.fileName" style="color: #171717;">
-                      Upload Your Resume
-                    </span>
-                    <span class="header-middle">
-                      OR
-                     </span>
-                     <span class="header-button">
-                      <p-button *ngIf="!candidateId"  (onClick)="enterDetails()" label="Enter Details"></p-button>
-                      <p-button *ngIf="candidateId" (onClick)="UpdateCandidate()" label="Update Details"></p-button>
-                     </span>
-                  </div>
+          <div class="page-container">
+            <div class="top-section">
+              <input type="file" #attachment style="display: none;" (change)="addAttachment($event)" accept=".doc, .docx, .pdf" />
+              <div class="file-wrapper d-flex align-items-center justify-content-center">
+                <i class="icon pi pi-cloud-upload" (click)="attachment.click()"></i>
+                <div class="ml-2">
+                  <span *ngIf="resume?.fileName">
+                    <i class="pi pi-paperclip mr-2"></i>
+                    <span>{{ resume?.fileName }}</span>
+                  </span>
+                  <span *ngIf="!resume?.fileName" style="color: #171717;">
+                    Upload Your Resume
+                  </span>
                 </div>
               </div>
+            </div>
+          
+            <div class="middle-text">
+              <span>OR</span>
+            </div>
+          
+            <div class="bottom-section" *ngIf="!resume?.fileName">
+              <p-button *ngIf="!candidateId" (onClick)="enterDetails()" label="Enter Details"></p-button>
+              <p-button *ngIf="candidateId" (onClick)="UpdateCandidate()" label="Update Details"></p-button>
+            </div>
+            <div class="bottom-section" *ngIf="resume?.fileName">
+              <button class="resume-btn" (click)="parseResume()">Next Step</button>
             </div>
           </div>
           
@@ -53,7 +67,7 @@
               <p-button class="mr-2" (onClick)="attachment.click()" label="Create"></p-button>
               </div> -->
              <div class="table-container">
-                <p-table class="mobile" [value]="yourResume">
+                <p-table class="mobile" [value]="availableCredits">
                     <ng-template pTemplate="header">
                         <tr>
                             <th style="width: 5%;">ID</th>
@@ -62,18 +76,23 @@
                             <th style="width: 10%;">AMOUNT PAID</th>
                         </tr>
                     </ng-template>
-                    <ng-template pTemplate="body" let-resume>
+                    <ng-template pTemplate="body" let-credits>
                         <tr>
-                            <td>{{ resume.id }}</td>
-                            <td>{{ resume.name }}</td>
-                            <td>{{ resume.remainingEdits }}</td>
-                            <td>{{ resume.amountPaid }}</td>
+                            <td>{{ credits.id }}</td>
+                            <td>{{ credits.name }}</td>
+                            <td>{{ credits.remainingEdits }}</td>
+                            <td>{{ credits.amountPaid }}</td>
                         </tr>
                     </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                      <tr>
+                          <td colspan="4">No records found.</td>
+                      </tr>
+                  </ng-template>
                 </p-table>
             </div>
-    
-            
+
+
             <h5 class="styled-text">Applied Jobs</h5>
             <div class="table-container">
                 <p-table   [value]="appliedJobs">
@@ -218,7 +237,28 @@
             
                 <div class="section-heading">Personal Details</div>
                   <div class="grid">
-                  <div class="col-12 md:col-6 lg:col-3">
+              
+                    <div class="col-12 md:col-6">
+                      <div class="field-wrapper">
+                          <input type="file" #attachment1 (change)="addCandidateImage($event)" style="display: none" />
+                          <div class="image-container">
+                              <ng-container *ngIf="candidateImageUrl; else other_content">
+                                  <img class="image" [src]="candidateImageUrl" />
+                                  <span class="edit-icon" (click)="attachment1.click()">
+                                      <i class="fas fa-pencil-alt" Style="font-size: 18px;"></i>
+                                  </span> 
+                              </ng-container>
+                              <ng-template #other_content>
+                                  <img class="image" src="assets/img/dummy-profile-pic.jpg" />
+                                  <span class="edit-icon" (click)="attachment1.click()">
+                                      <i class="fas fa-pencil-alt" Style="font-size: 18px;"></i>
+                                  </span>
+                              </ng-template>
+                          </div>
+                      </div>
+                  </div>
+                
+                   <div class="col-12 md:col-6 lg:col-3">
                     <div class="field-wrapper">
                       <label class="required">Mobile</label>
                       <div class="input-wrapper">
@@ -227,7 +267,7 @@
                     </div>
                     <small class="error-message" *ngIf="candidateForm.controls['mobileNumber'].invalid && showError">
                       Mobile Number is required</small>
-                  </div>
+                   </div>
               
                   <div class="col-12 md:col-6 lg:col-3">
                     <div class="field-wrapper">
@@ -314,7 +354,7 @@
                      </div>
                     </div>
     
-                    <div class="col-12 md:col-6">
+                    <!-- <div class="col-12 md:col-6">
                         <div class="field-wrapper">
                             <input type="file" #attachment1 (change)="addCandidateImage($event)" style="display: none" />
                             <div class="image-container">
@@ -332,7 +372,7 @@
                                 </ng-template>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     
                 </div>
             
