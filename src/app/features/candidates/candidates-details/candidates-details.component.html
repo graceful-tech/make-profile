@@ -72,24 +72,24 @@
             <ng-template pTemplate="header">
               <tr>
                 <th style="width: 5%;">ID</th>
-                <th style="width: 10%;">RESUME NAME</th>
-                <th style="width: 10%;">REMAINING EDITED</th>
-                <th style="width: 10%;">AMOUNT PAID</th>
+                <th style="width: 10%;">CREDIT USED</th>
+                <th style="width: 10%;">CREDIT AVAILABLE</th>
+                <th style="width: 15%;">PAYMENT DATE</th>
               </tr>
             </ng-template>
             <ng-template pTemplate="body" let-credits>
               <tr>
                 <td>{{ credits.id }}</td>
-                <td>{{ credits.name }}</td>
-                <td>{{ credits.remainingEdits }}</td>
-                <td>{{ credits.amountPaid }}</td>
+                <td>{{ credits.creditUsed ?? 'N/A' }}</td>
+                <td>{{ credits.creditAvailable }}</td>
+                <td>{{ credits.paymentDate }}</td>
               </tr>
             </ng-template>
             <ng-template pTemplate="emptymessage">
               <tr>
-                  <td colspan="4">No records found.</td>
+                <td colspan="4">No records found.</td>
               </tr>
-          </ng-template>
+            </ng-template>
           </p-table>
         </div>
 
@@ -533,6 +533,8 @@
               </div>
             </div>
 
+            <hr class="sub-section-divider" />
+
           </div>
         </ng-container>
 
@@ -555,7 +557,6 @@
                 </div>
               </div>
 
-
               <div class="col-12 md:col-6 lg:col-3">
                 <div class="field-wrapper">
                   <label>Field Of Study</label>
@@ -575,8 +576,6 @@
                   </div>
                 </div>
               </div>
-
-
 
               <div class="col-12 md:col-6 lg:col-3">
                 <div class="field-wrapper">
@@ -606,8 +605,10 @@
                 </div>
               </div>
 
-
+             
+            
             </div>
+            <hr class="sub-section-divider" />
           </div>
         </div>
 
@@ -649,7 +650,10 @@
                 </div>
               </div>
 
+           
+
             </div>
+            <hr class="sub-section-divider" />
           </div>
         </div>
 
@@ -682,9 +686,14 @@
                 </div>
               </div>
 
+              
+
             </div>
+            <hr class="sub-section-divider" />
           </div>
         </div>
+
+      <app-make-profile-divider></app-make-profile-divider>
 
         <div class="grid">
           <div class="col-12 md:col-6">
@@ -709,7 +718,13 @@
       </form>
 
       <app-make-profile-divider></app-make-profile-divider>
-    </div>
 
+      <div class="button-wrapper" >
+        <p-button class="mr-2" [label]="dataLoaded ? 'Generate' : 'Generating..'" [icon]="dataLoaded ? '' : 'pi pi-spin pi-spinner'" [disabled]="!dataLoaded"
+            (onClick)="createCandidate()"></p-button>
+    
+        <p-button  styleClass="p-button-secondary" label="Reset" (onClick)="reset()"> </p-button>
+        </div>
+    </div>
   </div>
 </div>

@@ -107,7 +107,7 @@ export class PaymentService {
 
   initRazorPay() {
     this.razorPayOptions = {
-      key: 'rzp_live_dZo8UMBHgAcaDU',
+      key: 'rzp_test_RIGcQeTSoyI0qg',
       currency: 'INR',
       name: 'Make Profile',
       description: '',

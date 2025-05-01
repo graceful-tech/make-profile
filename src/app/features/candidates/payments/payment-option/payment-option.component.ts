@@ -49,7 +49,7 @@ export class PaymentOptionComponent {
     const amount = 1 * 100;
     const paymentType = 'Resume';
   
-   // const status =   this.ps.payWithRazorPay(amount);
+    const status =   this.ps.payWithRazorPay(amount);
     this.ref.close();
     this.createResume();  
   }

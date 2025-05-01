@@ -67,7 +67,7 @@ export class MobilePaymentOptionComponent {
   async payRupees() {
     const amount = 1 * 100;
     const paymentType = 'Resume';
-   // const status =   this.ps.payWithRazorPay(amount);
+    const status =   this.ps.payWithRazorPay(amount);
     this.createResume();  
   }
   

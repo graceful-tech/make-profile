@@ -203,7 +203,7 @@
                     </div>
                   </div>
 
-                  <div class="col-12 md:col-6 ">
+                  <div class="col-12">
                     <div class="field-wrapper">
                       <label>Responsibilities</label>
                       <div class="input-wrapper">
@@ -212,11 +212,10 @@
                     </div>
                   </div>
           
-                  <div class="col-12 md:col-6 lg:col-3" *ngIf="i>0">
+                  <!-- <div class="col-12 md:col-6 lg:col-3" *ngIf="i>0">
                     <button type="button" class="remove-btn" (click)="removeExperience(i)">Remove Experience</button>
       
-                    <!-- <p-button type="button"  label="Remove Experience" styleClass="p-buttonFailure" (click)="removeExperience(i)"></p-button> -->
-                  </div>
+                   </div> -->
                 </div>
           
                 <!-- Project Details -->
@@ -255,7 +254,7 @@
                         </div>
                       </div>
       
-                      <div class="col-12 md:col-6 ">
+                      <div class="col-12">
                         <div class="field-wrapper">
                           <label>Project Description</label>
                           <div class="input-wrapper">
@@ -264,7 +263,7 @@
                         </div>
                       </div>
           
-                      <div class="col-12 md:col-6 lg:col-3" *ngIf="j>0">
+                      <div class="col-12 md:col-6 lg:col-3" *ngIf="j>0" style="padding-top: 20px;">
                         <button type="button" class="remove-btn" (click)="removeProject(i, j)">Remove Project</button>
       
                         <!-- <p-button type="button" label="Remove Project" styleClass="p-buttonFailure" (click)="removeProject(i, j)"></p-button> -->
@@ -280,6 +279,10 @@
                     <hr class="sub-section-divider" />
       
                   </div>
+                </div>
+
+                <div class="col-12 md:col-6 lg:col-3" *ngIf="i>0">
+                  <button type="button" class="remove-btn" (click)="removeExperience(i)">Remove Experience</button>
                 </div>
                  
                 <div class="col-12 md:col-6 lg:col-3" *ngIf="i === getExperienceCount(i) -1" >
@@ -330,6 +333,8 @@
                   </div>
                 </div>
           
+                <hr class="sub-section-divider" />
+
                 <div class="col-12 md:col-6 lg:col-3" *ngIf="i === getCollegeProjectCount(i) -1" >
                   <button type="button" class="custom-btn" (click)="addCollegeProject()">+ Add Project</button>
                 </div>
@@ -406,9 +411,12 @@
                       </div>
                     </div>
                   </div>
-          
+                 
                  
                 </div>
+
+                <hr class="sub-section-divider" />
+
                 <div class="col-12 md:col-6 lg:col-3" style="padding-left: 15px;" *ngIf="i>0">
                   <button type="button" class="remove-btn" (click)="removeQualification(i)">Remove Qualification</button>
       
@@ -460,6 +468,9 @@
                   </div>
       
                </div>
+             
+               <hr class="sub-section-divider" />
+
                 <div class="col-12 md:col-6 lg:col-3" style="padding-left: 15px;" *ngIf="i>0">
                   <button type="button" class="remove-btn" (click)="removeCertificates(i)">Remove Course</button>
       
@@ -501,6 +512,9 @@
                    </div>
            
                  </div>
+
+                 <hr class="sub-section-divider" />
+
                      <div class="col-12 md:col-6 lg:col-3" style="padding-left: 15px;" *ngIf="i>0">
                       <button type="button" class="remove-btn" icon="pi pi-trash" (click)="removeaddAchievements(i)">Remove Achievements</button>
                         <!-- <p-button type="button" label="Remove Achievements" styleClass="p-buttonFailure" (click)="removeaddAchievements(i)"></p-button> -->
@@ -538,20 +552,14 @@
          <app-make-profile-divider></app-make-profile-divider>
 
          <div class="button-wrapper" *ngIf="!payments">
-          <p-button class="mr-2" [label]="dataLoaded ? 'Generate' : 'Generating..'"
-              [icon]="dataLoaded ? '' : 'pi pi-spin pi-spinner'" [disabled]="!dataLoaded"
+          <p-button class="mr-2" [label]="dataLoaded ? 'Generate' : 'Generating..'"  [icon]="dataLoaded ? '' : 'pi pi-spin pi-spinner'" [disabled]="!dataLoaded"
               (onClick)="createCandidate()"></p-button>
       
-          <p-button  styleClass="p-button-secondary" label="Reset"
-              (onClick)="reset()">
-          </p-button>
-          
+          <p-button  styleClass="p-button-secondary" label="Reset" (onClick)="reset()"> </p-button>
           </div>
           <div class="button-wrapper" *ngIf="payments">
-            <p-button class="mr-2" label="Next"
-                (onClick)="next()"></p-button>
-        
-            </div>
+            <p-button class="mr-2" label="Next"  (onClick)="next()"></p-button>
+          </div>
           
   </div>
   <!-- <section class="preview-resume" >
