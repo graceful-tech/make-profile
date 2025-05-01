@@ -185,8 +185,6 @@ export class CreateCandidatesComponent {
     const route = 'candidate/create';
     const payload = this.candidateForm.getRawValue();
 
-   // payload['candidateLogo'] = this.multipartFile;
-
     if (payload.lastWorkingDate) {
       payload['lastWorkingDate'] = this.datePipe.transform(
         payload.lastWorkingDate,
@@ -204,53 +202,14 @@ export class CreateCandidatesComponent {
       payload['isFresher'] = false;
     }
 
-    // if (Object.is(payload.experiences[0].companyName, '')
-    // ) {
-    //   if(this.experienceDeletedArray.length > 0){
-    //     this.experienceDeletedArray.forEach( exp => {
-    //       payload.experiences.push(exp);
-    //     });
-    //   }
-    //   else{
-    //   payload.experiences = [];
-    //   payload.experiences.projects =[];
-    //   }
-    // } else {
-    //   payload.experiences.forEach((ele: any) => {
-    //     ele.experienceYearStartDate = this.datePipe.transform(
-    //       ele.experienceYearStartDate,
-    //       'yyyy-MM-dd'
-    //     );
-    //     ele.experienceYearEndDate = this.datePipe.transform(
-    //       ele.experienceYearEndDate,
-    //       'yyyy-MM-dd'
-    //     );
-         
-    //     const hasEmptyProjectName = ele.projects?.some((proj: any) => proj.projectName === '');
-    //     if (hasEmptyProjectName) {
-    //       ele.projects = [];
-    //     }        
-
-    //   });
-
-    //   if(this.experienceDeletedArray.length > 0){
-    //   this.experienceDeletedArray.forEach( exp => {
-    //     payload.experiences.push(exp);
-    //   });
-    // }
-    // }
+  
 
     if (payload.isFresher) {
-      // Fresher: clear both arrays immediately
       payload.experiences = [];
-      payload.collegeProject = [];
-    } else {
-      // --- Process College Projects ---
-      const hasValidCollegeProject = payload.collegeProject?.some((proj: any) =>
-        proj.collegeProjectName && proj.collegeProjectName.trim() !== ''
-      );
-    
-      if (Object.is(payload.collegeProject[0].collegeProjectName, '')) {
+    }  
+     
+    if (payload.isFresher) {
+    if (Object.is(payload.collegeProject[0].collegeProjectName, '')) {
         payload.collegeProject = [];
       } else {
         payload.collegeProject = payload.collegeProject.map((proj: any) => ({
@@ -260,11 +219,10 @@ export class CreateCandidatesComponent {
             : proj.collegeProjectSkills
         }));
       }
-    
-      const hasValidExperience = payload.experiences?.some((exp: any) =>
-        exp.companyName && exp.companyName.trim() !== ''
-      );
-    
+    } 
+
+  
+    if (!payload.isFresher) {
       if (Object.is(payload.experiences[0].companyName, '')) {
         payload.experiences = [];
       } else {
@@ -278,11 +236,9 @@ export class CreateCandidatesComponent {
             'yyyy-MM-dd'
           );
     
-          const hasValidProject = exp.projects?.some(
-            (proj: any) => proj.projectName && proj.projectName.trim() !== ''
-          );
+          const hasEmptyProjectName = exp.projects?.some((proj: any) => proj.projectName === '');
     
-          if (!hasValidProject) {
+          if (hasEmptyProjectName) {
             exp.projects = [];
           } else {
             exp.projects = exp.projects.map((proj: any) => ({
@@ -295,43 +251,7 @@ export class CreateCandidatesComponent {
         });
       }
     }
-    
-
-    // if (Object.is(payload.qualification[0].instutionName, '')) {
      
-
-    //   if(this.qualificationDeletedArray.length > 0){
-    //     this.qualificationDeletedArray.forEach( exp => {
-    //       payload.qualification.push(exp);
-    //     });
-    //   }
-    //   else{
-    //     payload.qualification = [];
-    //   }
-    // } else {
-    //   payload.qualification.forEach((ele: any) => {
-    //     ele.qualificationStartYear = this.datePipe.transform(
-    //       ele.qualificationStartYear,
-    //       'yyyy-MM-dd'
-    //     );
-    //     ele.qualificationEndYear = this.datePipe.transform(
-    //       ele.qualificationEndYear,
-    //       'yyyy-MM-dd'
-    //     );
-    //   });
-
-    //   if(this.qualificationDeletedArray.length > 0){
-    //     this.qualificationDeletedArray.forEach( exp => {
-    //       payload.qualification.push(exp);
-    //     });
-    //   }
-    // }
-
-
-    const hasValidQualification = payload.qualification?.some((q: any) =>
-      q.instutionName && q.instutionName.trim() !== ''
-    );
-    
     if (Object.is(payload.qualification[0].instutionName, '')) {
       payload.qualification = [];
     } else {
@@ -347,30 +267,6 @@ export class CreateCandidatesComponent {
       });
     }
     
-
-    // if (Object.is(payload.achievements[0].achievementsName, '')) {
-     
-    //   if(this.achievementsDeletedArray.length > 0){
-    //     this.achievementsDeletedArray.forEach( exp => {
-    //       payload.achievements.push(exp);
-    //     });
-    //   }
-    //   else{
-    //     payload.achievements = [];
-    //   }
-    // }
-    // else{
-    //   if(this.achievementsDeletedArray.length > 0){
-    //     this.achievementsDeletedArray.forEach( exp => {
-    //       payload.achievements.push(exp);
-    //     });
-    //   }
-    // }
-
-    const hasValidAchievements = payload.achievements?.some((ach: any) =>
-      ach.achievementsName && ach.achievementsName.trim() !== ''
-    );
-    
     if (Object.is(payload.achievements[0].achievementsName, '')) {
         payload.achievements = [];
     } else{
@@ -382,43 +278,6 @@ export class CreateCandidatesComponent {
       });
     }
    
-    
-
-    // if (Object.is(payload.certificates[0].courseName, '')) {
-
-    //   if(this.certificatesDeletedArray.length > 0){
-    //     this.certificatesDeletedArray.forEach( exp => {
-    //       payload.certificates.push(exp);
-    //     });
-    //   }
-    //   else{
-    //     payload.certificates = [];
-    //   }
-     
-    // } else {
-    //   payload.certificates.forEach((ele: any) => {
-    //     ele.courseStartDate = this.datePipe.transform(
-    //       ele.courseStartDate,
-    //       'yyyy-MM-dd'
-    //     );
-    //     ele.courseEndDate = this.datePipe.transform(
-    //       ele.courseEndDate,
-    //       'yyyy-MM-dd'
-    //     );
-    //   });
-
-    //   if(this.certificatesDeletedArray.length > 0){
-    //     this.certificatesDeletedArray.forEach( exp => {
-    //       payload.certificates.push(exp);
-    //     });
-    //   }
-    // }
-
-
-    const hasValidCertificate = payload.certificates?.some((cert: any) =>
-      cert.courseName && cert.courseName.trim() !== ''
-    );
-    
     if (Object.is(payload.certificates[0].courseName, ''))  {
       payload.certificates = [];
     } else {
@@ -436,7 +295,7 @@ export class CreateCandidatesComponent {
     
 
     if (Object.is(payload.languagesKnown, '')) {
-      payload.languagesKnown = [];
+      payload.languagesKnown = '';
     }
     else{
       const stringList: string[] = payload.languagesKnown;
@@ -445,7 +304,7 @@ export class CreateCandidatesComponent {
     }
 
     if (Object.is(payload.skills, '')) {
-      payload.skills = [];
+      payload.skills = '';
     }else{
       const stringList: string[] = payload.skills;
       const commaSeparatedString: string = stringList.join(', ');
@@ -453,7 +312,7 @@ export class CreateCandidatesComponent {
     }
 
     if (Object.is(payload.softSkills, '')) {
-      payload.softSkills = [];
+      payload.softSkills = '';
     }
     else{
       const stringList: string[] = payload.softSkills;
@@ -462,38 +321,14 @@ export class CreateCandidatesComponent {
     }
 
     if (Object.is(payload.coreCompentencies, '')) {
-      payload.coreCompentencies = [];
+      payload.coreCompentencies = '';
     }
     else{
       const stringList: string[] = payload.coreCompentencies;
       const commaSeparatedString: string = stringList.join(', ');
       payload.coreCompentencies = commaSeparatedString;
     }
-
-    // if(payload.isFresher){
-     
-    //   if(Object.is(payload.collegeProject[0].collegeProjectName, '')){
-        
-    //     if(this.collegeProjectDeletedArray.length > 0){
-    //       this.collegeProjectDeletedArray.forEach( pro => {
-    //         payload.collegeProject.push(pro);
-    //       }); 
-    //     }
-    //     else{
-    //       payload.collegeProject = [];
-    //    }
-    //   }
-    //   else{
-    //     if(this.collegeProjectDeletedArray.length > 0){
-    //       this.collegeProjectDeletedArray.forEach( pro => {
-    //         payload.collegeProject.push(pro);
-    //       }); 
-    //     }
-    //   }
-    // }
-    // else{
-    //   payload.collegeProject = [];
-    // }
+ 
 
     if (payload.isFresher) {
       const hasValidProject = payload.collegeProject.some((project: { collegeProjectName: string; }) =>
@@ -518,8 +353,8 @@ export class CreateCandidatesComponent {
 
     this.api.retrieve(route, payload).subscribe({
       next: (response) => {
-       // this.gs.showMessage('Success', 'Successfully Created Resume');
-       this.candidateId = response?.id;
+
+        this.candidateId = response?.id;
         this.dataLoaded = true;
         localStorage.setItem('candidateId',this.candidateId);
         this.uploadCandidateImage();
@@ -532,6 +367,7 @@ export class CreateCandidatesComponent {
         response.candidateLogo = this.candidateImageUrl; 
         this.close(response);
       
+        this.gs.showMessage('Success', 'Create Successfully');
       },
       error: (error) => {
         this.dataLoaded = true;
@@ -804,7 +640,7 @@ export class CreateCandidatesComponent {
   }
 
   uploadCandidateImage() {
-    if(this.imageName !== null && this.imageName !== ''){
+    if(this.candidateImageUrl !== undefined && this.multipartFile !== undefined ){
     this.dataLoaded = false;
     const route = 'candidate/upload-image';
     const formData = new FormData();
@@ -816,7 +652,7 @@ export class CreateCandidatesComponent {
       },
       error: (error) => {
         this.dataLoaded = true;
-        //this.gs.showMessage('Error', 'Error in updating logo.');
+        this.gs.showMessage('Error', 'Error in updating logo.');
       },
     });
   }
