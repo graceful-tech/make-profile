@@ -1,3 +1,4 @@
 export const environment = {
-    restUrl: 'http://192.168.1.3:8080'
+    production:false,
+    restUrl: 'http://localhost:8080'
 };

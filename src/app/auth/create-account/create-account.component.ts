@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 import { Lookup } from 'src/app/models/master/lookup.model';
 import { ApiService } from 'src/app/services/api.service';
 import { GlobalService } from 'src/app/services/global.service';
+import { environment } from 'src/environments/environment';
+
 
 @Component({
   selector: 'app-create-account',
@@ -14,8 +16,6 @@ import { GlobalService } from 'src/app/services/global.service';
   styleUrl: './create-account.component.css'
 })
 export class CreateAccountComponent {
-
-  // @ViewChild('googleImage') googleImage!: ElementRef;
 
   createAccountForm!: FormGroup;
   showError = false;
@@ -30,45 +30,19 @@ export class CreateAccountComponent {
     private gs: GlobalService,
     private router: Router) { }
 
-    // ngAfterViewInit(): void {
-    //   google.accounts.id.initialize({
-    //     client_id: '763124424966-6n5res8rbmhnmshnqvjnv7t2kkbnleib.apps.googleusercontent.com',
-    //     callback: (resp: any) => this.handleLogin(resp)
-    //   });
-    // }
-    
-   
 
   ngOnInit() {
     this.createRegisterForm();
     // this.getCountries();
+  }
 
-    google.accounts.id.initialize({
-      client_id: '763124424966-6n5res8rbmhnmshnqvjnv7t2kkbnleib.apps.googleusercontent.com',
-      callback: (resp: any) => this.handleLogin(resp)
-    })
-
-
- 
-    // google.accounts.id.initialize({
-    //   client_id: '763124424966-6n5res8rbmhnmshnqvjnv7t2kkbnleib.apps.googleusercontent.com',
-    //   callback: (resp: any) => this.handleLogin(resp)  // Custom callback for handling the login response
-    //    });
-    
-    // // Attach click event listener to the custom button
-    // document.getElementById('google-btn')?.addEventListener('click', () => {
-    //   // Redirect to your OAuth2 login URL
-    //   window.location.href = 'http://localhost:8080/oauth2/authorization/google';
-    // });
-}
-  
 
   createRegisterForm() {
     this.createAccountForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', Validators.required],
       mobileNumber: ['', Validators.required],
-      userName:['',Validators.required],
+      userName: ['', Validators.required],
       password: ['', Validators.required],
     })
   }
@@ -100,69 +74,19 @@ export class CreateAccountComponent {
     this.router.navigate(['/login']);
   }
 
-  onGoogleLogin(){
-    // Initialize Google OAuth
-    // google.accounts.id.initialize({
-    //   client_id: '763124424966-6n5res8rbmhnmshnqvjnv7t2kkbnleib.apps.googleusercontent.com',
-    //   callback: (resp: any) => this.handleLogin(resp)  // Your custom callback
-    // });
-  
-    // Redirect to your OAuth2 login URL
-    window.location.href = 'http://localhost:8080/oauth2/authorization/google';
-  }
-  
-
-
-  // onGoogleLogin(): void {
-  //   google.accounts.id.initialize({
-  //     client_id: '763124424966-6n5res8rbmhnmshnqvjnv7t2kkbnleib.apps.googleusercontent.com',
-  //     callback: (resp: any) => this.handleLogin(resp)
-  //   })
-  //    window.location.href = 'http://localhost:8080/oauth2/authorization/google';
-  // }
-
-  // Initialize the Google Accounts SDK
-  
-
-
-  // onGoogleLogin() {
-  //   // On click, directly open Google Login popup
-  //   google.accounts.id.prompt();
-  // }
-  private decodeToken(token: String) {
-    return JSON.parse(atob(token.split(".")[1]));
+  onGoogleLogin() {
+    const restUrl = environment.restUrl;
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    const baseUrl = window.location.origin;
+    const redirectUri = isMobile ? `${baseUrl}/#/mob-candidate` : `${baseUrl}/#/candidate`;
+    document.cookie = `redirect_uri=${encodeURIComponent(redirectUri)}; path=/`;
+    const url = `${restUrl}/oauth2/authorization/google`;
+    window.location.href = url;
   }
 
-  handleLogin(response: any) {
-    console.log(response)
-    if (response) {
-      const token = response.credential;
-      const payload = this.decodeToken(token);
-      const email = payload.email;
-      const name = payload.name;
-
-      const dataToSend = {
-        name: name,
-        email: email,
-        signInAccess: 'google'
-      };
-      this.api.createGoogleUser('auth/google-login', dataToSend).subscribe({
-        next: (res: any) => {
-          sessionStorage.setItem('authType', 'google');
-          sessionStorage.setItem('token', token);
-          sessionStorage.setItem('userName', res.name);
-          sessionStorage.setItem('userId', res.id);
-
-          this.router.navigate(['/candidate']);
-        },
-        error: (err) => {
-          console.error('Login failed:', err);
-
-        }
-      });
-    }
+  goBack() {
+    this.router.navigate(['/landing']);
   }
-
 
 
 

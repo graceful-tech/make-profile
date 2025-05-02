@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { DialogService } from 'primeng/dynamicdialog';
 import { ApiService } from 'src/app/services/api.service';
 import { GlobalService } from 'src/app/services/global.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -36,19 +37,6 @@ export class LoginComponent {
         this.gs.setPaymentStatus(null);
       }
     });
-
-    // google.accounts.id.initialize({
-    //   client_id: '763124424966-6n5res8rbmhnmshnqvjnv7t2kkbnleib.apps.googleusercontent.com',
-    //   callback: (resp: any) => this.handleLogin(resp)
-    // })
-    // google.accounts.id.renderButton(document.getElementById("google-btn"), {
-    //   theme: 'filled_blue',
-    //   size: 'large',
-    //   shape: 'rectangle',
-    //   width: 240
-    // })
-
-
   }
 
   createLoginForm() {
@@ -64,7 +52,6 @@ export class LoginComponent {
       this.loadingFlag = true;
       const route = 'auth/login';
       const postData = this.loginForm.value;
-      localStorage.setItem('tenant', postData.code);
 
       this.api.retrieve(route, postData).subscribe({
         next: (response) => {
@@ -94,43 +81,17 @@ export class LoginComponent {
 
 
   onGoogleLogin() {
-    window.location.href = 'http://localhost:8080/oauth2/authorization/google?redirect_uri=http://localhost:4200/candidate';
+    const restUrl = environment.restUrl;
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    const baseUrl = window.location.origin;
+    const redirectUri = isMobile ? `${baseUrl}/#/mob-candidate` : `${baseUrl}/#/candidate`;
+    document.cookie = `redirect_uri=${encodeURIComponent(redirectUri)}; path=/`;
+    const url = `${restUrl}/oauth2/authorization/google`;
+    window.location.href = url;
   }
 
-
-  private decodeToken(token: String) {
-    return JSON.parse(atob(token.split(".")[1]));
-  }
-
-  handleLogin(response: any) {
-    if (response) {
-      const token = response.credential;
-      const payload = this.decodeToken(token);
-      const email = payload.email;
-      const name = payload.name;
-
-      const dataToSend = {
-        name: name,
-        email: email,
-        signInAccess: 'google'
-      };
-      this.api.createGoogleUser('auth/google-login', dataToSend).subscribe({
-        next: (res: any) => {
-          console.log(res)
-          // Success - set session storage
-          sessionStorage.setItem('authType', 'google');
-          sessionStorage.setItem('token', token);
-          sessionStorage.setItem('userName', res.name);
-          sessionStorage.setItem('userId', res.id);
-
-          this.router.navigate(['/candidate']);
-        },
-        error: (err) => {
-          console.error('Login failed:', err);
-
-        }
-      });
-    }
+  goBack() {
+    this.router.navigate(['/landing']);
   }
 
 }

@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Lookup } from 'src/app/models/master/lookup.model';
 import { ApiService } from 'src/app/services/api.service';
 import { GlobalService } from 'src/app/services/global.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-mobile-create-account',
@@ -12,6 +13,7 @@ import { GlobalService } from 'src/app/services/global.service';
   styleUrl: './mobile-create-account.component.css'
 })
 export class MobileCreateAccountComponent {
+
   createAccountForm!: FormGroup;
   showError = false;
   loadingFlag: boolean = false;
@@ -39,6 +41,20 @@ export class MobileCreateAccountComponent {
     })
   }
 
+  goBack() {
+    this.router.navigate(['/mobile']);
+  }
+
+  onGoogleSignup() {
+    const restUrl = environment.restUrl;
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    const baseUrl = window.location.origin;
+    const redirectUri = isMobile ? `${baseUrl}/#/mob-candidate` : `${baseUrl}/#/candidate`;
+    document.cookie = `redirect_uri=${encodeURIComponent(redirectUri)}; path=/`;
+    const url = `${restUrl}/oauth2/authorization/google`;
+    window.location.href = url;
+  }
+
   createAccount() {
     if (this.createAccountForm.valid) {
       this.loadingFlag = true;
@@ -49,7 +65,6 @@ export class MobileCreateAccountComponent {
         next: response => {
           this.loadingFlag = false;
           const customer = response as any;
-          // this.gs.openLogin('Success', 'Your Acoount Created Successfully');
           this.router.navigate(['/mobiel-login']);
           console.log(customer);
         },

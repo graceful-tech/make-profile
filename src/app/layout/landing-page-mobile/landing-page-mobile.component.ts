@@ -20,16 +20,16 @@ export class LandingPageMobileComponent {
     private dialog: DialogService, private route: ActivatedRoute,) { }
 
   ngOnInit() {
-    google.accounts.id.initialize({
-      client_id: '763124424966-6n5res8rbmhnmshnqvjnv7t2kkbnleib.apps.googleusercontent.com',
-      callback: (resp: any) => this.handleLogin(resp)
-    })
-    google.accounts.id.renderButton(document.getElementById("google-btn"), {
-      theme: 'filled_blue',
-      size: 'large',
-      shape: 'pill',
-      width: 50
-    })
+    // google.accounts.id.initialize({
+    //   client_id: '763124424966-6n5res8rbmhnmshnqvjnv7t2kkbnleib.apps.googleusercontent.com',
+    //   callback: (resp: any) => this.handleLogin(resp)
+    // })
+    // google.accounts.id.renderButton(document.getElementById("google-btn"), {
+    //   theme: 'filled_blue',
+    //   size: 'large',
+    //   shape: 'pill',
+    //   width: 50
+    // })
   }
 
   candidate() {
@@ -37,9 +37,7 @@ export class LandingPageMobileComponent {
       { relativeTo: this.route });
   }
 
-  goToLoginPage() {
-    this.router.navigate(['/mobile-login']);
-  }
+  
 
   // loginWithGoogle() {
   //   window.location.href = '${environment.restUrl}/oauth2/authorization/google';

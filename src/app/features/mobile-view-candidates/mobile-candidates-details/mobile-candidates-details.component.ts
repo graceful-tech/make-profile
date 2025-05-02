@@ -1,5 +1,3 @@
-
-
 import { DatePipe } from '@angular/common';
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -68,9 +66,9 @@ export class MobileCandidatesDetailsComponent {
   collegeProjectDeletedArray: Array<any> = [];
   candidatesUpdateData: any;
   appliedJobs: any;
-  availableCredits:any;
-  isUploading:boolean=false;
-    
+  availableCredits: any;
+  isUploading: boolean = false;
+
 
   constructor(
     private api: ApiService,
@@ -83,9 +81,22 @@ export class MobileCandidatesDetailsComponent {
     private router: Router,
     public ref: DynamicDialogRef,
     private ngxLoader: NgxUiLoaderService
-  ) {}
+  ) { }
 
   ngOnInit() {
+    if (sessionStorage.getItem('userId') == null) {
+      this.route.queryParams.subscribe(params => {
+        const token = params['token'];
+        const username = params['username'];
+        const email = params['email'];
+        const id = params['id'];
+
+        sessionStorage.setItem('token', token);
+        sessionStorage.setItem('userName', username);
+        sessionStorage.setItem('email', email);
+        sessionStorage.setItem('userId', id);
+      });
+    }
     this.createCandidateForm();
     this.createRequirementForm();
     this.loadDummyData();
@@ -137,7 +148,7 @@ export class MobileCandidatesDetailsComponent {
     this.cdr.detectChanges(); // Ensures UI updates properly
   }
 
-  ngAfterViewInit() {}
+  ngAfterViewInit() { }
 
   createCandidateForm() {
     this.candidateForm = this.fb.group({
@@ -299,8 +310,8 @@ export class MobileCandidatesDetailsComponent {
       next: (response) => {
         this.gs.showMessage('Success', 'Successfully Created Resume');
         this.dataLoaded = true;
-        if(this.resume !== null && this.resume !== undefined){
-        this.uploadCandidateImage();
+        if (this.resume !== null && this.resume !== undefined) {
+          this.uploadCandidateImage();
         }
       },
       error: (error) => {
@@ -571,7 +582,7 @@ export class MobileCandidatesDetailsComponent {
       },
       error: (error) => {
         this.dataLoaded = true;
-        
+
         window.confirm(
           'Error in updating logo.'
         );
@@ -579,7 +590,7 @@ export class MobileCandidatesDetailsComponent {
     });
   }
 
-  onEdit(id: any) {}
+  onEdit(id: any) { }
 
   getScore(jobId: any, tenant: any) {
     const candidateIds = '23';
@@ -631,45 +642,45 @@ export class MobileCandidatesDetailsComponent {
     if (event.target.files[0]) {
       this.multipartFile = event.target.files[0];
       this.resume = { fileName: this.multipartFile?.name };
-     // this.parseResume();
+      // this.parseResume();
     }
   }
 
   parseResume() {
-       
+
     this.ngxLoaderStart();
 
-      const route = 'resume-ai/upload';
-  
-      const username = sessionStorage.getItem('userName');
-      
-      const formData = new FormData();
-      formData.append('resume', this.multipartFile); 
-      formData.append('userName', String(username)); 
-      
-      this.api.upload(route, formData).subscribe({
-        next: (response) => {
-          if (response) {
-            this.candidates = response;
-            this.candidateId = response.id;
-            const candidate = response as Candidate;
-            this.patchCandidateForm(candidate);
-  
-            this.getCandidateImage(this.candidateId)
-  
-           
-            this.ngxLoaderStop();
-          }
+    const route = 'resume-ai/upload';
+
+    const username = sessionStorage.getItem('userName');
+
+    const formData = new FormData();
+    formData.append('resume', this.multipartFile);
+    formData.append('userName', String(username));
+
+    this.api.upload(route, formData).subscribe({
+      next: (response) => {
+        if (response) {
+          this.candidates = response;
+          this.candidateId = response.id;
+          const candidate = response as Candidate;
+          this.patchCandidateForm(candidate);
+
+          this.getCandidateImage(this.candidateId)
+
+
           this.ngxLoaderStop();
-        },
-        error: error => {
-          this.ngxLoaderStop();
-          window.confirm(
-            'Error in uploading resume please reupload it'
-          );
         }
-      });
-    }
+        this.ngxLoaderStop();
+      },
+      error: error => {
+        this.ngxLoaderStop();
+        window.confirm(
+          'Error in uploading resume please reupload it'
+        );
+      }
+    });
+  }
 
   enterDetails() {
     this.router.navigate(['mob-candidate/create-candidate']);
@@ -857,7 +868,7 @@ export class MobileCandidatesDetailsComponent {
         },
       });
     } else {
-       
+
       window.confirm(
         'Please enter the both skills and locations for Searching the job'
       );
@@ -914,7 +925,7 @@ export class MobileCandidatesDetailsComponent {
   }
 
   getAppliedJobs() {
-    const id =  localStorage.getItem('candidateId');
+    const id = localStorage.getItem('candidateId');
 
     const route = `applied-jobs/${id}`;
 
@@ -930,16 +941,16 @@ export class MobileCandidatesDetailsComponent {
     this.api.get(route).subscribe({
       next: (response) => {
         const candidate = response as Candidate;
-        if(candidate !== null){
-        this.patchCandidateForm(candidate);
-        this.getCandidateImage(candidate?.id);
-      }
+        if (candidate !== null) {
+          this.patchCandidateForm(candidate);
+          this.getCandidateImage(candidate?.id);
+        }
       },
     });
   }
 
   getAvailableCredits() {
-    const id =  localStorage.getItem('candidateId');
+    const id = localStorage.getItem('candidateId');
     const route = `credits?candidateId=${id}`;
 
     this.api.get(route).subscribe({
@@ -951,7 +962,7 @@ export class MobileCandidatesDetailsComponent {
 
   getCandidateImage(id: any) {
     const route = `candidate/get-image?candidateId=${id}`;
-  
+
     this.api.getImage(route).subscribe({
       next: (response) => {
         this.candidateImageUrl = URL.createObjectURL(response);
@@ -964,22 +975,22 @@ export class MobileCandidatesDetailsComponent {
     });
   }
 
-  ngxLoaderStop(){
-    this.ngxLoader.stop();  
+  ngxLoaderStop() {
+    this.ngxLoader.stop();
     setTimeout(() => {
       this.isUploading = false;
     }, 2000);
   }
 
-  ngxLoaderStart(){
-      this.isUploading = true;
-      this.ngxLoader.start();
-   // this.customLoaderMessage = message;
+  ngxLoaderStart() {
+    this.isUploading = true;
+    this.ngxLoader.start();
+    // this.customLoaderMessage = message;
   }
 
   signOut() {
-   sessionStorage.clear();
-   this.router.navigate(['/landing']);
-    }
-  
+    sessionStorage.clear();
+    this.router.navigate(['/mobile']);
+  }
+
 }

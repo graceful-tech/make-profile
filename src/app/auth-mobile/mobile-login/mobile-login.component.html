@@ -1,86 +1,18 @@
-<!-- <div class="login-wrapper">
-
-    <div style="width: 350px;background: #fff; padding: 25px; border-radius: 12px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);">
-        <div class="login-google">
-            <div class="top-right-login">
-                <span class="create-account"><a routerLink="/create-account">Create Account</a></span>
-            </div>
-            <div class="google-signup-section" style="text-align: center;">
-                <div class="sign-with" style="font-size: 15px;">
-                    Easy Login
-                </div>
-                <div style="font-size: 20px; ">
-                    👇
-                </div>
-                <img #googleImage src="assets/img/google.PNG" alt="Google Login" id="google-btn"
-                    style="width: 160px; height: 50px; cursor: pointer; ">
-            </div>
-            <div class="center">
-                <div class="vertical-line"></div>
-                <h5 style="color: #178be9; padding: 8px 0; padding-left: 25px;">♦</h5>
-                <div class="vertical-line1"></div>
-            </div>
-
-            <div class="heading">
-                <span>Login</span>
-                <span class="create-account"><a routerLink="/mobile-create">Create Account</a></span>
-            </div>
-            <form [formGroup]="loginForm">
-                <div class="grid">
-                    <div class="col-12">
-                        <div class="field-wrapper">
-                            <label class="required">Mobile Number</label>
-                            <div class="input-wrapper">
-                                <input type="text" maxlength="10" pInputText formControlName="mobileNumber" />
-                            </div>
-                        </div>
-                        <small class="error-message" *ngIf="loginForm.controls['mobileNumber'].invalid && showError">
-                            Mobile Number is required</small>
-                    </div>
-                </div>
-                <div class="grid">
-                    <div class="col-12">
-                        <div class="field-wrapper">
-                            <label class="required">Password</label>
-                            <div class="input-wrapper">
-                                <p-password formControlName="password" [toggleMask]="true" autocomplete="one-time-code">
-                                </p-password>
-                            </div>
-                        </div>
-                        <small class="error-message" *ngIf="loginForm.controls['password'].invalid && showError">
-                            Password is required</small>
-                    </div>
-                </div>
-                <div class="grid">
-                    <div class="col-6">
-                        <div class="field-wrapper">
-                            <p-button type="submit" [label]="loadingFlag ? 'Please Wait..' : 'Login'"
-                                [disabled]="loadingFlag" (onClick)="login()">
-                            </p-button>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="forgot-password">
-                            <a href="javascript:void(0)" routerLink="/request-password-reset">Forgot Password</a>
-                        </div>
-                    </div>
-                </div>
-                <small class="error-message" *ngIf="error">{{error}}</small>
-            </form>
-        </div>
-    </div> -->
-
+<div class="header-image">
+    <img class="header-images" src="assets/img/make-profile.svg" alt="Header Image" />
+    <p-button (onClick)="goBack()" label="Back" class="right-align"></p-button>
+</div>
 <div class="login-wrapper">
     <div class="login-card">
         <div class="top-section">
             <div class="top-links">
-                <span class="create-account"><a routerLink="/create-account">Create Account</a></span>
+                <span class="create-account"><a routerLink="/mobile-create">Create Account</a></span>
             </div>
             <div class="google-section">
                 <p class="easy-login">Easy Login</p>
                 <p class="arrow-down">👇</p>
-                <img #googleImage src="assets/img/google.PNG" alt="Google Login" id="google-btn" class="google-img" (click)="onGoogleLogin()">
+                <img #googleImage src="assets/img/google.PNG" alt="Google Login" id="google-btn" class="google-img"
+                    (click)="onGoogleLogin()">
             </div>
 
             <div class="horizontal-divider">

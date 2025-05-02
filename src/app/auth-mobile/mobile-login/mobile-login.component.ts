@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
- import { Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { DialogService } from 'primeng/dynamicdialog';
 import { ApiService } from 'src/app/services/api.service';
 import { GlobalService } from 'src/app/services/global.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-mobile-login',
@@ -12,6 +13,7 @@ import { GlobalService } from 'src/app/services/global.service';
   styleUrl: './mobile-login.component.css'
 })
 export class MobileLoginComponent {
+
   loginForm!: FormGroup;
   error!: String;
   showError = false;
@@ -36,6 +38,11 @@ export class MobileLoginComponent {
     });
   }
 
+  goBack() {
+    this.router.navigate(['mobile'])
+  }
+
+
   createLoginForm() {
     this.loginForm = this.fb.group({
       mobileNumber: ['', Validators.required],
@@ -49,8 +56,6 @@ export class MobileLoginComponent {
       this.loadingFlag = true;
       const route = 'auth/login';
       const postData = this.loginForm.value;
-      localStorage.setItem('tenant', postData.code);
-
       this.api.retrieve(route, postData).subscribe({
         next: (response) => {
           console.log(response)
@@ -70,14 +75,14 @@ export class MobileLoginComponent {
     }
   }
 
-  // openSendPasswordResetEmailModal() {
-  //   this.dialog.open(SendPasswordResetMailComponent, {
-  //     header: 'Forgot Password',
-  //     width: '25%'
-  //   });
-  // }
   onGoogleLogin() {
-    window.location.href = 'http://localhost:8080/oauth2/authorization/google?redirect_uri=http://localhost:4200/mob-candidate';
+    const restUrl = environment.restUrl;
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    const baseUrl = window.location.origin;
+    const redirectUri = isMobile ? `${baseUrl}/#/mob-candidate` : `${baseUrl}/#/candidate`;
+    document.cookie = `redirect_uri=${encodeURIComponent(redirectUri)}; path=/`;
+    const url = `${restUrl}/oauth2/authorization/google`;
+    window.location.href = url;
   }
 
 

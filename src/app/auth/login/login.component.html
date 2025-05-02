@@ -1,58 +1,7 @@
-<!-- <div class="login-wrapper">
-    <div style="width: 350px;background: #fff; padding: 25px;">
-        <div class="heading">
-            <span>Login</span>
-            <span class="create-account"><a routerLink="/create-account">Create Account</a></span>
-        </div>
-        <form [formGroup]="loginForm">
-            <div class="grid">
-                <div class="col-12">
-                    <div class="field-wrapper">
-                        <label class="required">Mobile Number</label>
-                        <div class="input-wrapper">
-                            <input type="text" maxlength="10" pInputText formControlName="mobileNumber" />
-                        </div>
-                    </div>
-                    <small class="error-message"
-                        *ngIf="loginForm.controls['mobileNumber'].invalid && showError">
-                        Mobile Number is required</small>
-                </div>
-            </div>
-            <div class="grid">
-                <div class="col-12">
-                    <div class="field-wrapper">
-                        <label class="required">Password</label>
-                        <div class="input-wrapper">
-                            <p-password formControlName="password" [toggleMask]="true" autocomplete="one-time-code">
-                            </p-password>
-                        </div>
-                    </div>
-                    <small class="error-message" *ngIf="loginForm.controls['password'].invalid && showError">
-                        Password is required</small>
-                </div>
-            </div>
-            <div class="grid">
-                <div class="col-6">
-                    <div class="field-wrapper">
-                        <p-button type="submit" 
-                        [label]="loadingFlag ? 'Please Wait..' : 'Login'"
-                        [disabled]="loadingFlag" (onClick)="login()">
-                        </p-button>
-                    </div>
-                </div>
-                <div class="col-6">
-                    <div class="forgot-password">
-                        <a href="javascript:void(0)" routerLink="/request-password-reset">Forgot Password</a>
-                    </div>
-                </div>
-            </div>
-            <small class="error-message" *ngIf="error">{{error}}</small>
-        </form>
-        <div class="line ">(Or)</div>
-
-      <div class="login" id="google-btn"></div>
-    </div>
-</div> -->
+<div class="header-image">
+    <img class="header-images" src="assets/img/make-profile.svg" alt="Header Image" />
+    <p-button (onClick)="goBack()" label="Back" class="right-align"></p-button>
+  </div>
 <div class="main-wrapper">
     <div class="login-form">
          <form [formGroup]="loginForm">
@@ -64,7 +13,7 @@
                     <div class="field-wrapper">
                         <label class="required">Mobile Number</label>
                         <div class="input-wrapper">
-                            <input type="text" maxlength="10" pInputText formControlName="mobileNumber" />
+                            <input type="text" maxlength="10" pInputText formControlName="mobileNumber">
                         </div>
                     </div>
                     <small class="error-message" *ngIf="loginForm.controls['mobileNumber'].invalid && showError">
@@ -102,7 +51,7 @@
     </div>
 
     <div class="center">
-        /<div class="vertical-line"></div>
+        <div class="vertical-line"></div>
         <h5 style="color: #178be9; padding: 8px 0; padding-left: 25px;">♦</h5>
         <div class="vertical-line1"></div>
     </div>

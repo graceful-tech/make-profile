@@ -11,9 +11,9 @@ export class InterceptorService implements HttpInterceptor {
   constructor() { }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    // ||request.url.includes('/user/create')
 
-    if (request.url.includes('/login') || request.url.includes('/google-login')) {
+    if (request.url.includes('/login') || request.url.includes('/google-login') ||request.url.includes('/user/create')
+) {
       console.log('Skipping interceptor for login request');
       return next.handle(request);
     }
