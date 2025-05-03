@@ -7,12 +7,14 @@ import { LoginComponent } from './auth/login/login.component';
 import { CreateAccountComponent } from './auth/create-account/create-account.component';
 import { MobileLoginComponent } from './auth-mobile/mobile-login/mobile-login.component';
 import { MobileCreateAccountComponent } from './auth-mobile/mobile-create-account/mobile-create-account.component';
+import { ViewAccountComponent } from './view-account/view-account.component';
 
 const routes: Routes = [
 
   { path: 'landing', component: LandingPageComponent },
   { path: 'mobile', component: LandingPageMobileComponent },
   { path: 'login', component: LoginComponent },
+  { path: 'viewUser', component: ViewAccountComponent },
   { path: 'create-account', component: CreateAccountComponent },
   { path: 'mobile-create', component: MobileCreateAccountComponent },
   { path: 'mobile-login', component: MobileLoginComponent },

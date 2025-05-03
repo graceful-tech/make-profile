@@ -885,7 +885,10 @@ export class CandidatesDetailsComponent {
       isDeleted: ['']
     });
   }
-
+  viewUser() {
+    this.router.navigate(['viewUser']);
+  
+  }
   patchExperiences(experiences: any[]) {
 
     if (experiences?.length > 0) {
