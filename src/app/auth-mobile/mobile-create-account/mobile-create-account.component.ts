@@ -42,7 +42,7 @@ export class MobileCreateAccountComponent {
   }
 
   goBack() {
-    this.router.navigate(['/mobile']);
+    this.router.navigate(['mob-landing']);
   }
 
   onGoogleSignup() {

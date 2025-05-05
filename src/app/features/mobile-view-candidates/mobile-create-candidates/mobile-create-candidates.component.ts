@@ -100,11 +100,7 @@ export class MobileCreateCandidatesComponent {
     this.getLanguages();
     this.getMaritalStatus();
     this.getFieldOfStudy();
-    this. getCandidates();
-
-    // if (this.candidates?.id) {
-    //   this.patchCandidateForm(this.candidates);
-    // }
+    
 
     this.gs.candidateDetails$.subscribe(response => {
       this.candidatesUpdateData = response;
@@ -114,13 +110,18 @@ export class MobileCreateCandidatesComponent {
       // this.candidateId = this.candidatesUpdateData?.id;
       this.candidates = this.candidatesUpdateData;
       this.patchCandidateForm(this.candidatesUpdateData);
+
+      this.gs.candidateImage$.subscribe(response =>{
+        if(response !== null){
+        this.candidateImageUrl = response
+        }
+      })
+    }
+    else{
+      this.getCandidates();
     }
 
-    this.gs.candidateImage$.subscribe(response =>{
-      if(response !== null){
-      this.candidateImageUrl = response
-      }
-    })
+    
   }
 
   ngAfterViewInit() {}
@@ -194,8 +195,6 @@ export class MobileCreateCandidatesComponent {
     const route = 'candidate/create';
     const payload = this.candidateForm.getRawValue();
 
-   // payload['candidateLogo'] = this.multipartFile;
-
     if (payload.lastWorkingDate) {
       payload['lastWorkingDate'] = this.datePipe.transform(
         payload.lastWorkingDate,
@@ -213,161 +212,153 @@ export class MobileCreateCandidatesComponent {
       payload['isFresher'] = false;
     }
 
-    if (Object.is(payload.experiences[0].companyName, '')
-    ) {
-      if(this.experienceDeletedArray.length > 0){
-        this.experienceDeletedArray.forEach( exp => {
-          payload.experiences.push(exp);
-        });
-      }
-      else{
+  
+
+    if (payload.isFresher) {
       payload.experiences = [];
-      payload.experiences.projects =[];
+    }  
+     
+    if (payload.isFresher) {
+    if (Object.is(payload.collegeProject[0].collegeProjectName, '')) {
+        payload.collegeProject = [];
+      } else {
+        payload.collegeProject = payload.collegeProject.map((proj: any) => ({
+          ...proj,
+          collegeProjectSkills: Array.isArray(proj.collegeProjectSkills)
+            ? proj.collegeProjectSkills.join(', ')
+            : proj.collegeProjectSkills
+        }));
       }
-    } else {
-      payload.experiences.forEach((ele: any) => {
-        ele.experienceYearStartDate = this.datePipe.transform(
-          ele.experienceYearStartDate,
-          'yyyy-MM-dd'
-        );
-        ele.experienceYearEndDate = this.datePipe.transform(
-          ele.experienceYearEndDate,
-          'yyyy-MM-dd'
-        );
-         
-        const hasEmptyProjectName = ele.projects?.some((proj: any) => proj.projectName === '');
-        if (hasEmptyProjectName) {
-          ele.projects = [];
-        }        
+    } 
 
-      });
-
-      if(this.experienceDeletedArray.length > 0){
-      this.experienceDeletedArray.forEach( exp => {
-        payload.experiences.push(exp);
-      });
+  
+    if (!payload.isFresher) {
+      if (Object.is(payload.experiences[0].companyName, '')) {
+        payload.experiences = [];
+      } else {
+        payload.experiences.forEach((exp: any) => {
+          exp.experienceYearStartDate = this.datePipe.transform(
+            exp.experienceYearStartDate,
+            'yyyy-MM-dd'
+          );
+          exp.experienceYearEndDate = this.datePipe.transform(
+            exp.experienceYearEndDate,
+            'yyyy-MM-dd'
+          );
+    
+          const hasEmptyProjectName = exp.projects?.some((proj: any) => proj.projectName === '');
+    
+          if (hasEmptyProjectName) {
+            exp.projects = [];
+          } else {
+            exp.projects = exp.projects.map((proj: any) => ({
+              ...proj,
+              projectSkills: Array.isArray(proj.projectSkills)
+                ? proj.projectSkills.join(', ')
+                : proj.projectSkills
+            }));
+          }
+        });
+      }
     }
-    }
-
+     
     if (Object.is(payload.qualification[0].instutionName, '')) {
-     
-
-      if(this.qualificationDeletedArray.length > 0){
-        this.qualificationDeletedArray.forEach( exp => {
-          payload.qualification.push(exp);
-        });
-      }
-      else{
-        payload.qualification = [];
-      }
+      payload.qualification = [];
     } else {
-      payload.qualification.forEach((ele: any) => {
-        ele.qualificationStartYear = this.datePipe.transform(
-          ele.qualificationStartYear,
+      payload.qualification.forEach((q: any) => {
+        q.qualificationStartYear = this.datePipe.transform(
+          q.qualificationStartYear,
           'yyyy-MM-dd'
         );
-        ele.qualificationEndYear = this.datePipe.transform(
-          ele.qualificationEndYear,
+        q.qualificationEndYear = this.datePipe.transform(
+          q.qualificationEndYear,
           'yyyy-MM-dd'
         );
       });
-
-      if(this.qualificationDeletedArray.length > 0){
-        this.qualificationDeletedArray.forEach( exp => {
-          payload.qualification.push(exp);
-        });
-      }
     }
-
+    
     if (Object.is(payload.achievements[0].achievementsName, '')) {
-     
-      if(this.achievementsDeletedArray.length > 0){
-        this.achievementsDeletedArray.forEach( exp => {
-          payload.achievements.push(exp);
-        });
-      }
-      else{
         payload.achievements = [];
-      }
-    }
-    else{
-      if(this.achievementsDeletedArray.length > 0){
-        this.achievementsDeletedArray.forEach( exp => {
-          payload.achievements.push(exp);
-        });
-      }
-    }
-
-    if (Object.is(payload.certificates[0].courseName, '')) {
-
-      if(this.certificatesDeletedArray.length > 0){
-        this.certificatesDeletedArray.forEach( exp => {
-          payload.certificates.push(exp);
-        });
-      }
-      else{
-        payload.certificates = [];
-      }
-     
-    } else {
-      payload.certificates.forEach((ele: any) => {
-        ele.courseStartDate = this.datePipe.transform(
-          ele.courseStartDate,
-          'yyyy-MM-dd'
-        );
-        ele.courseEndDate = this.datePipe.transform(
-          ele.courseEndDate,
+    } else{
+      payload.achievements.forEach((cert: any) => {
+        cert.achievementsDate = this.datePipe.transform(
+          cert.achievementsDate,
           'yyyy-MM-dd'
         );
       });
-
-      if(this.certificatesDeletedArray.length > 0){
-        this.certificatesDeletedArray.forEach( exp => {
-          payload.certificates.push(exp);
-        });
-      }
     }
+   
+    if (Object.is(payload.certificates[0].courseName, ''))  {
+      payload.certificates = [];
+    } else {
+      payload.certificates.forEach((cert: any) => {
+        cert.courseStartDate = this.datePipe.transform(
+          cert.courseStartDate,
+          'yyyy-MM-dd'
+        );
+        cert.courseEndDate = this.datePipe.transform(
+          cert.courseEndDate,
+          'yyyy-MM-dd'
+        );
+      });
+    }
+    
 
     if (Object.is(payload.languagesKnown, '')) {
-      payload.languagesKnown = [];
+      payload.languagesKnown = '';
+    }
+    else{
+      const stringList: string[] = payload.languagesKnown;
+      const commaSeparatedString: string = stringList.join(', ');
+      payload.languagesKnown = commaSeparatedString;
     }
 
     if (Object.is(payload.skills, '')) {
-      payload.skills = [];
+      payload.skills = '';
+    }else{
+      const stringList: string[] = payload.skills;
+      const commaSeparatedString: string = stringList.join(', ');
+      payload.skills = commaSeparatedString;
     }
 
     if (Object.is(payload.softSkills, '')) {
-      payload.softSkills = [];
+      payload.softSkills = '';
+    }
+    else{
+      const stringList: string[] = payload.softSkills;
+      const commaSeparatedString: string = stringList.join(', ');
+      payload.softSkills = commaSeparatedString;
     }
 
     if (Object.is(payload.coreCompentencies, '')) {
-      payload.coreCompentencies = [];
-    }
-
-    if(payload.isFresher){
-     
-      if(Object.is(payload.collegeProject[0].collegeProjectName, '')){
-        
-        if(this.collegeProjectDeletedArray.length > 0){
-          this.collegeProjectDeletedArray.forEach( pro => {
-            payload.collegeProject.push(pro);
-          }); 
-        }
-        else{
-          payload.collegeProject = [];
-       }
-      }
-      else{
-        if(this.collegeProjectDeletedArray.length > 0){
-          this.collegeProjectDeletedArray.forEach( pro => {
-            payload.collegeProject.push(pro);
-          }); 
-        }
-      }
+      payload.coreCompentencies = '';
     }
     else{
+      const stringList: string[] = payload.coreCompentencies;
+      const commaSeparatedString: string = stringList.join(', ');
+      payload.coreCompentencies = commaSeparatedString;
+    }
+ 
+
+    if (payload.isFresher) {
+      const hasValidProject = payload.collegeProject.some((project: { collegeProjectName: string; }) =>
+        project.collegeProjectName && project.collegeProjectName.trim() !== ''
+      );
+    
+      if (!hasValidProject) {
+        payload.collegeProject = [];
+      } else {
+        payload.collegeProject = payload.collegeProject.map((project: { collegeProjectSkills: any[]; })  => ({
+          ...project,
+          collegeProjectSkills: Array.isArray(project.collegeProjectSkills)
+            ? project.collegeProjectSkills.join(', ')
+            : ''
+        }));
+      }
+    } else {
       payload.collegeProject = [];
     }
+    
 
 
     this.api.retrieve(route, payload).subscribe({
@@ -375,18 +366,22 @@ export class MobileCreateCandidatesComponent {
        // this.gs.showMessage('Success', 'Successfully Created Resume');
        this.candidateId = response?.id;
         this.dataLoaded = true;
+
+        response.languagesKnown = response?.languagesKnown ? response.languagesKnown .split(',').map((skill: string) => skill.trim()) : [];
+        response.skills = response?.skills ? response.skills.split(',').map((skill: string) => skill.trim()) : [];
+        response.softSkills = response?.softSkills ? response.softSkills.split(',').map((skill: string) => skill.trim()) : [];
+        response.coreCompentencies = response?.coreCompentencies ? response.coreCompentencies.split(',').map((skill: string) => skill.trim()) : [];
+
         this.candidates = response as Candidate
         localStorage.setItem('candidateId',this.candidateId);
         this.uploadCandidateImage();
-        response.softSkills = response?.softSkills || [];
-        response.coreCompentencies = response?.coreCompentencies || [];
-        response.candidateLogo = this.candidateImageUrl; 
-        // this.close(response);
-      
+
+        window.alert('Created Successfully');
+
       },
       error: (error) => {
         this.dataLoaded = true;
-        this.gs.showMessage('Error', 'Error in Creating Resume');
+        //this.gs.showMessage('Error', 'Error in Creating Resume');
 
         console.log(error);
       },
@@ -655,7 +650,7 @@ export class MobileCreateCandidatesComponent {
   }
 
   uploadCandidateImage() {
-    if(this.imageName !== null && this.imageName !== ''){
+    if(this.candidateImageUrl !== undefined && this.multipartFile !== undefined ){
     this.dataLoaded = false;
     const route = 'candidate/upload-image';
     const formData = new FormData();
@@ -884,30 +879,38 @@ export class MobileCreateCandidatesComponent {
       this.router.navigate(['mob-candidate']);
     }
 
-    addSkill() {
-      const inputEl = document.getElementById('chipInput') as HTMLInputElement;
-      const value = inputEl?.value?.trim();
+    // addSkill() {
+    //   const inputEl = document.getElementById('chipInput') as HTMLInputElement;
+    //   const value = inputEl?.value?.trim();
     
-      if (value) {
-        const control = this.candidateForm.get('skills');
-        const current = control?.value || [];
+    //   if (value) {
+    //     const control = this.candidateForm.get('skills');
+    //     const current = control?.value || [];
     
-        if (!current.includes(value)) {
-          control?.setValue([...current, value]);
-        }
+    //     if (!current.includes(value)) {
+    //       control?.setValue([...current, value]);
+    //     }
     
-        inputEl.value = '';  
-      } 
-    }
+    //     inputEl.value = '';  
+    //   } 
+    // }
 
     getCandidates() {
-      const route = 'candidates';
+      const route = 'candidate';
       this.api.get(route).subscribe({
         next: (response) => {
           const candidate = response as Candidate;
           if(candidate !== null){
+            candidate.languagesKnown = candidate?.languagesKnown ? candidate.languagesKnown .split(',').map((skill: string) => skill.trim()) : [];
+            candidate.skills = candidate?.skills ? candidate.skills.split(',').map((skill: string) => skill.trim()) : [];
+            candidate.softSkills = candidate?.softSkills ? candidate.softSkills.split(',').map((skill: string) => skill.trim()) : [];
+            candidate.coreCompentencies = candidate?.coreCompentencies ? candidate.coreCompentencies.split(',').map((skill: string) => skill.trim()) : [];
           this.patchCandidateForm(candidate);
           this.getCandidateImage(candidate?.id);
+
+          //set global
+          this.gs.setCandidateDetails(candidate);
+         
         }
         },
       });
@@ -921,14 +924,35 @@ export class MobileCreateCandidatesComponent {
         if(response.size > 0){
         this.candidateImageUrl = URL.createObjectURL(response);
         this.dataLoaded = true;
+
+        //set global image
+        if( this.candidateImageUrl !== null && this.candidateImageUrl !== undefined){
+          this.gs.setCandidateImage(this.candidateImageUrl);
+         }
         }
       },
       error: (err) => {
         console.error('Error fetching candidate image:', err);
+
         this.dataLoaded = false;
       }
     });
   }
   
+  addSkill(controlName: string, inputId: string) {
+    const inputEl = document.getElementById(inputId) as HTMLInputElement;
+    const value = inputEl?.value?.trim();
+  
+    if (value) {
+      const control = this.candidateForm.get(controlName);
+      const current = control?.value || [];
+  
+      if (!current.includes(value)) {
+        control?.setValue([...current, value]);
+      }
+  
+      inputEl.value = '';
+    }
+  }
     
 }

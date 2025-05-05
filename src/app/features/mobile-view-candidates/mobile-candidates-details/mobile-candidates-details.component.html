@@ -1,12 +1,14 @@
-<div *ngIf="isUploading" class="custom-loader-backdrop">
-  <div class="custom-loader-container">
-    <div class="dotted-spinner"></div>
-    <div class="loader-text">
-      Please Wait&nbsp;<span class="dots"></span>
-    </div>
-  </div>
-</div>
-
+<span *ngIf="isUploading">
+    <ngx-ui-loader
+    fgsColor="#1E90FF"
+    [fgsSize]="80"
+    [logoSize]="100"
+    [pbColor]="'#ffffff'"
+    [pbThickness]="0"
+    overlayColor="rgba(128, 128, 128, 0.8)">
+    
+</ngx-ui-loader>
+</span>
 
 
 <div class="header-image">
@@ -67,29 +69,29 @@
               <p-button class="mr-2" (onClick)="attachment.click()" label="Create"></p-button>
               </div> -->
              <div class="table-container">
-                <p-table class="mobile" [value]="availableCredits">
-                    <ng-template pTemplate="header">
-                        <tr>
-                            <th style="width: 5%;">ID</th>
-                            <th style="width: 10%;">RESUME NAME</th>
-                            <th style="width: 10%;">REMAINING EDITED</th>
-                            <th style="width: 10%;">AMOUNT PAID</th>
-                        </tr>
-                    </ng-template>
-                    <ng-template pTemplate="body" let-credits>
-                        <tr>
-                            <td>{{ credits.id }}</td>
-                            <td>{{ credits.name }}</td>
-                            <td>{{ credits.remainingEdits }}</td>
-                            <td>{{ credits.amountPaid }}</td>
-                        </tr>
-                    </ng-template>
-                    <ng-template pTemplate="emptymessage">
-                      <tr>
-                          <td colspan="4">No records found.</td>
-                      </tr>
-                  </ng-template>
-                </p-table>
+              <p-table class="mobile" [value]="availableCredits">
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th style="width: 5%;">ID</th>
+                    <th style="width: 10%;">CREDIT USED</th>
+                    <th style="width: 10%;">CREDIT AVAILABLE</th>
+                    <th style="width: 15%;">PAYMENT DATE</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-credits>
+                  <tr>
+                    <td>{{ credits.id }}</td>
+                    <td>{{ credits.creditUsed ?? 'N/A' }}</td>
+                    <td>{{ credits.creditAvailable }}</td>
+                    <td>{{ credits.paymentDate }}</td>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                  <tr>
+                    <td colspan="4">No records found.</td>
+                  </tr>
+                </ng-template>
+              </p-table>
             </div>
 
 
@@ -381,7 +383,9 @@
                     <div class="field-wrapper">
                      <label>Skills</label>
                       <div class="input-wrapper">
-                       <p-chips separator="," formControlName="skills" [addOnBlur]="true" [addOnTab]="true"></p-chips>
+                        <p-chips separator="," formControlName="skills" [addOnBlur]="true" [addOnTab]="true" inputId="chipInput"></p-chips>
+    
+                        <p-button type="button" (onClick)="addSkill('skills','chipInput')">Add</p-button>
                       </div>
                     </div>
                    </div>
@@ -488,7 +492,9 @@
                               <div class="field-wrapper">
                                 <label>Project Skills</label>
                                 <div class="input-wrapper textarea-like">
-                                  <p-chips separator=","  formControlName="projectSkills" [addOnBlur]="true" [addOnTab]="true"></p-chips>
+                                  <p-chips separator=","  formControlName="projectSkills" [addOnBlur]="true" [addOnTab]="true" inputId="projectInput"></p-chips>
+
+                                  <p-button type="button" (onClick)="addSkill('projectSkills','chipInput')">Add</p-button>
                                 </div>
                               </div>
                             </div>
@@ -530,7 +536,8 @@
                           <div class="field-wrapper">
                             <label>Project Skills</label>
                             <div class="input-wrapper">
-                              <p-chips separator=","  formControlName="collegeProjectSkills" [addOnBlur]="true" [addOnTab]="true"></p-chips>
+                              <p-chips separator=","  formControlName="collegeProjectSkills" [addOnBlur]="true" [addOnTab]="true" inputId="collegeProjectInput"></p-chips>
+                              <p-button type="button" (onClick)="addSkill('collegeProjectSkills','chipInput')">Add</p-button>
                             </div>
                           </div>
                         </div>
@@ -695,9 +702,46 @@
                        </div>
                     </div>
                   </div>       
+
+                  <app-make-profile-divider></app-make-profile-divider>
+  
+              <div class="grid">
+                <div class="col-12 md:col-6">
+                 <div class="field-wrapper">
+                  <label>Soft Skills</label>
+                   <div class="input-wrapper">
+                    <p-chips separator="," formControlName="softSkills" [addOnBlur]="true" [addOnTab]="true" inputId="softInput"></p-chips>
+                    <p-button type="button" (onClick)="addSkill('softSkills','softInput')">Add</p-button>
+
+                   </div>
+                 </div>
+                </div>
+  
+                <div class="col-12 md:col-6">
+                  <div class="field-wrapper">
+                   <label>Core Competencies</label>
+                    <div class="input-wrapper">
+                     <p-chips separator="," formControlName="coreCompentencies" [addOnBlur]="true" [addOnTab]="true" inputId="compentenciesInput"></p-chips>
+                     <p-button type="button" (onClick)="addSkill('coreCompentencies','compentenciesInput')">Add</p-button>
+                    </div>
+                  </div>
+                 </div>
+                </div>
+                
                </form>
       
-               <app-make-profile-divider></app-make-profile-divider>        
+               <app-make-profile-divider></app-make-profile-divider>    
+               
+               <div class="button-wrapper">
+                <p-button class="mr-2" [label]="dataLoaded ? 'Generate' : 'Generating..'"
+                    [icon]="dataLoaded ? '' : 'pi pi-spin pi-spinner'" [disabled]="!dataLoaded"
+                    (onClick)="createCandidate()"></p-button>
+            
+                <p-button  styleClass="p-button-secondary" label="Reset"
+                    (onClick)="reset()">
+                </p-button>
+                
+                </div>
         </div>
         
      </div>

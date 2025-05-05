@@ -19,8 +19,7 @@ import { HammerModule } from '@angular/platform-browser';
    MakeProfileDividerComponent,
    ClickedOutsideDirective,
    MessageComponent,
-   LoginPopupComponent,
-    
+   LoginPopupComponent    
   ],
   imports: [
     CommonModule,

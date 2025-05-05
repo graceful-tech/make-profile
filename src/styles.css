@@ -1001,7 +1001,19 @@ table::-webkit-scrollbar-thumb {
     border-radius: 12px;
     
 }
-  
+
+.responsive-dialog .p-dialog-header {
+    /* width: 10vw !important; */
+    height: 10vh !important;
+    max-width: 10% !important;
+    max-height: 15% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    pointer-events: auto !important;
+    max-height: 20% !important;
+    transform: scale(1) !important;
+    position: relative !important;
+}
  
   
  

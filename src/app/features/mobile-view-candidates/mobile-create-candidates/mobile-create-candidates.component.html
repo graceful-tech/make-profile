@@ -139,9 +139,9 @@
                 <div class="field-wrapper">
                  <label>Skills</label>
                   <div class="input-wrapper">
-                   <p-chips separator="," formControlName="skills" [addOnBlur]="true" [addOnTab]="true" inputId="chipInput"></p-chips>
+                   <p-chips separator="," formControlName="skills" [addOnBlur]="true" [addOnTab]="true" inputId="chipInput" placeholder="Add Skills"></p-chips>
     
-                   <p-button type="button" (onClick)="addSkill()">Add</p-button>
+                   <p-button type="button" (onClick)="addSkill('skills','chipInput')">Add</p-button>
             
                   </div>
                 </div>
@@ -264,7 +264,8 @@
                           <div class="field-wrapper">
                             <label>Project Skills</label>
                             <div class="input-wrapper">
-                              <p-chips separator=","  formControlName="projectSkills" [addOnBlur]="true" [addOnTab]="true"></p-chips>
+                              <p-chips separator=","  formControlName="projectSkills" [addOnBlur]="true" [addOnTab]="true" inputId="projectInput"></p-chips>
+                              <p-button type="button" (onClick)="addSkill('projectSkills','projectInput')">Add</p-button>
                             </div>
                           </div>
                         </div>
@@ -325,7 +326,8 @@
                       <div class="field-wrapper">
                         <label>Project Skills</label>
                         <div class="input-wrapper">
-                          <p-chips separator=","  formControlName="collegeProjectSkills" [addOnBlur]="true" [addOnTab]="true"></p-chips>
+                          <p-chips separator=","  formControlName="collegeProjectSkills" [addOnBlur]="true" [addOnTab]="true" inputId="collegeProjectInput"></p-chips>
+                          <p-button type="button" (onClick)="addSkill('collegeProjectSkills','collegeProjectInput')">Add</p-button>
                         </div>
                       </div>
                     </div>
@@ -533,7 +535,8 @@
                  <div class="field-wrapper">
                   <label>Soft Skills</label>
                    <div class="input-wrapper">
-                    <p-chips separator="," formControlName="softSkills" [addOnBlur]="true" [addOnTab]="true"></p-chips>
+                    <p-chips separator="," formControlName="softSkills" [addOnBlur]="true" [addOnTab]="true" inputId="softSkillsInput"></p-chips>
+                    <p-button type="button" (onClick)="addSkill('softSkills','softSkillsInput')">Add</p-button>
                    </div>
                  </div>
                 </div>
@@ -542,7 +545,8 @@
                   <div class="field-wrapper">
                    <label>Core Competencies</label>
                     <div class="input-wrapper">
-                     <p-chips separator="," formControlName="coreCompentencies" [addOnBlur]="true" [addOnTab]="true"></p-chips>
+                     <p-chips separator="," formControlName="coreCompentencies" [addOnBlur]="true" [addOnTab]="true" inputId="coreCompentenciesInput"></p-chips>
+                     <p-button type="button" (onClick)="addSkill('coreCompentencies','coreCompentenciesInput')">Add</p-button>
                     </div>
                   </div>
                  </div>
@@ -561,11 +565,11 @@
             </p-button>
             
             </div>
-            <div class="button-wrapper" *ngIf="payments">
+            <!-- <div class="button-wrapper" *ngIf="payments">
               <p-button class="mr-2" label="Next"
                   (onClick)="next()"></p-button>
           
-              </div>
+              </div> -->
 
               <div class="grid">
                 <div class="col-12 md:col-6 lg:col-3">
@@ -577,18 +581,5 @@
               </div>
             
     </div>
-    <!-- <section class="preview-resume" >
-      <div class="container">
-        <div class="row justify-content-center">
-          <div class="first-image" >
-            <img  src="assets/img/image2.jpg" alt="search" style="border-radius: 10px;"/>
-          </div> 
-          <div class="second-image">
-            <img src="assets/img/image3.jpg"/>
-          </div>
-        </div>
-      </div>
-    </section> -->
-    
   </div>
   

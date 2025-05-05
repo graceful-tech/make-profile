@@ -39,7 +39,7 @@ export class MobileLoginComponent {
   }
 
   goBack() {
-    this.router.navigate(['mobile'])
+    this.router.navigate(['mob-landing'])
   }
 
 

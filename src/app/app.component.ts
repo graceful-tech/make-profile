@@ -14,29 +14,7 @@ export class AppComponent {
   constructor(private router: Router,private deviceServiceService:DeviceServiceService) {}
 
   ngOnInit() {
-    // if (this.isMobile()) {
-    //   this.router.navigate(['/mobile']); 
-    // } else {
-    //   this.router.navigate(['/landing']); 
-    // }
+    
   }
 
-goToLandingPage() {
-  this.router.navigate(['/landing']);
-}  
-
-goToCandidatePage(){
-
-  this.deviceServiceService.directlyTo('candidate');
-}
-
-goToLandingPageMobile(){
-
-  this.router.navigate(['/mobile']);
-}
-
-isMobile(): boolean {
-  return window.innerWidth <= 768; 
-
-}
 }

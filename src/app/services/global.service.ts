@@ -8,6 +8,7 @@ import { ApiService } from './api.service';
 import { MessageComponent } from '../shared/message/message.component';
 import { Candidate } from '../models/candidates/candidate.model';
 import { LoginPopupComponent } from '../shared/popup/login-popup/login-popup.component';
+import { MobileMessageComponent } from '../shared/mobile-message/mobile-message.component';
  
 @Injectable({
   providedIn: 'root',
@@ -136,10 +137,15 @@ export class GlobalService {
     });
   }
 
-
-
-
-
+  mobileShowMessage(status: string, message: string) {
+    this.dialog.open(MobileMessageComponent, {
+    data: { message: message },
+    header: status,
+    width: '30%',
+    styleClass: 'responsive-dialog'
+  });
+}
+  
 
   parseTimeToString(time: any) {
     const date = new Date(time);

@@ -2,6 +2,7 @@ import { DatePipe } from '@angular/common';
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 import {DialogService,DynamicDialogConfig,DynamicDialogRef,} from 'primeng/dynamicdialog';
 import { Candidate } from 'src/app/models/candidates/candidate.model';
 import { ApiService } from 'src/app/services/api.service';
@@ -16,13 +17,15 @@ import { PaymentService } from 'src/app/services/payment.service';
   styleUrl: './mobile-payment-option.component.css'
 })
 export class MobilePaymentOptionComponent {
- balanceCredits: number = 0;
+  balanceCredits: number = 0;
   candidateId: any;
   credits: any;
   candidates: Array<Candidate> = [];
   candidatesUpdateData: any;
   candidateImageUrl: any;
   resumeName: any;
+  availableCredits: any;
+  isUploading:boolean=false;
   
 
   constructor(
@@ -36,13 +39,16 @@ export class MobilePaymentOptionComponent {
     private router: Router,
     public ref: DynamicDialogRef,
     private config: DynamicDialogConfig,
-    private ps: PaymentService
+    private ps: PaymentService,
+    private ngxLoader: NgxUiLoaderService
   ) {
     
   }
 
   ngOnInit() {
  
+    
+    
     this.gs.candidateDetails$.subscribe(response => {
       this.candidatesUpdateData = response;
     });
@@ -67,14 +73,19 @@ export class MobilePaymentOptionComponent {
   async payRupees() {
     const amount = 1 * 100;
     const paymentType = 'Resume';
-    const status =   this.ps.payWithRazorPay(amount);
-    this.createResume();  
+    
+    this.ps.initRazorPays(() => {
+       
+      this.redeem();
+    });
+    this.ps.payWithRazorPay(amount);
+    this.ref.close();
   }
   
   
 
-  redeem() {
-    
+    redeem() {
+    this.ngxLoaderStart();
     const route = 'credits/redeem';
 
     const userIds = sessionStorage.getItem('userId');
@@ -84,11 +95,19 @@ export class MobilePaymentOptionComponent {
     this.api.retrieve(route,payload).subscribe({
       next: (response) => {
         this.credits = response as any;
+        if( this.credits){
+          this.createResume();
+        }
+        else{
+          this.ngxLoaderStop();
+          window.alert('Please pay to create the resume')
+        }
       },
     });
   }
 
   createResume() {
+    this.ngxLoaderStart();
     const route = 'resume/create';
     const candidateId = localStorage.getItem('candidateId');
     
@@ -97,7 +116,11 @@ export class MobilePaymentOptionComponent {
     this.api.retrieve(route, payload).subscribe({
       next: (response) => {
 
+        this.ngxLoaderStop();
       },
+      error: (err) => {
+        this.ngxLoaderStop();
+      }
     });
   }
 
@@ -117,4 +140,28 @@ export class MobilePaymentOptionComponent {
       }
     this.router.navigate(['mob-candidate']);
   }
+
+  handleRedeemClick(event: Event): void {
+    console.log('keerthi')
+    if (this.balanceCredits === 0) {
+      this.redeem();
+    } else {
+      event.preventDefault();
+    }
+  }
+
+  ngxLoaderStop(){
+    this.ngxLoader.stop();  
+    setTimeout(() => {
+      this.isUploading = false;
+    }, 2000);
+  }
+
+  ngxLoaderStart(){
+      this.isUploading = true;
+      this.ngxLoader.start();
+   }
+
+  
+
 }

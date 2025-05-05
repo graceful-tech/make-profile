@@ -12,16 +12,19 @@ export class DeviceServiceService {
   
   constructor(private deviceDetectorService: DeviceDetectorService,private router: Router) {}
 
-  // Function to detect the current device type
-  getCurrentDevice(): DeviceType {
+   getCurrentDevice(): DeviceType {
     const isMobile = this.deviceDetectorService.isMobile();
     const isTablet = this.deviceDetectorService.isTablet();
 
     if (isMobile) {
       return 'mobile';
-    } else if (isTablet) {
-      return 'tablet';
-    } else {
+    } 
+    
+    // else if (isTablet) {
+    //   return 'tablet';
+    // } 
+    
+    else {
       return 'desktop';
     }
   }
@@ -45,9 +48,11 @@ export class DeviceServiceService {
     let fullPath = `${feature}`;
     if (device === 'mobile') {
       fullPath = `mob-${feature}`;
-    } else if (device === 'tablet') {
-      fullPath = `tab-${feature}`;
-    }
+    } 
+    
+    // else if (device === 'tablet') {
+    //   fullPath = `tab-${feature}`;
+    // }
 
     this.router.navigate([fullPath]);
   }

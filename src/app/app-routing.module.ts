@@ -12,16 +12,24 @@ import { ViewAccountComponent } from './view-account/view-account.component';
 const routes: Routes = [
 
   { path: 'landing', component: LandingPageComponent },
+
   { path: 'mobile', component: LandingPageMobileComponent },
+
   { path: 'login', component: LoginComponent },
+
   { path: 'viewUser', component: ViewAccountComponent },
+
   { path: 'create-account', component: CreateAccountComponent },
+
   { path: 'mobile-create', component: MobileCreateAccountComponent },
+
   { path: 'mobile-login', component: MobileLoginComponent },
+
   {
     path: 'candidate',
     loadChildren: () => import('./features/candidates/candidates.module').then((m) => m.CandidatesModule),
   },
+  
   {
     path: 'mob-candidate',
     loadChildren: () => import('./features/mobile-view-candidates/mobile-view-candidates.module').then((m) => m.MobileViewCandidatesModule),

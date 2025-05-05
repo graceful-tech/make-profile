@@ -1,4 +1,16 @@
- 
+<span *ngIf="isUploading">
+    <ngx-ui-loader
+    fgsColor="#1E90FF"
+    [fgsSize]="80"
+    [logoSize]="100"
+    [pbColor]="'#ffffff'"
+    [pbThickness]="0"
+    overlayColor="rgba(128, 128, 128, 0.8)">
+    
+</ngx-ui-loader>
+</span>
+
+
 <div class="header">
     <button class="go-back-btn btn btn-outline-primary" (click)="goBack()">Back</button>
 
@@ -21,8 +33,7 @@
            
             <div class="option">
                 <span class="fw-bold text-dark">Use your credits <span class="hand">👉</span></span>
-                <a class="custom-link" [class.disabled]="balanceCredits <= 0"
-                   (click)="balanceCredits > 0 ? redeem() : $event.preventDefault()">Redeem</a>
+                <a class="custom-link"  (click)="redeem()">Redeem</a>
             </div>
 
    

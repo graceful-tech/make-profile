@@ -458,8 +458,10 @@ p-table th {
   justify-content: center;
   align-items: center;
   z-index: 10000;
-  background: rgba(108, 103, 103, 0.427);
+  background: rgba(13, 13, 13, 0.427);
+  
 }
+
 
 .custom-loader-container {
   text-align: center;
@@ -528,4 +530,39 @@ p-table th {
   cursor: pointer;
   margin-right: 15px;
   font-style: italic;
+}
+
+.loader-message {
+  position: fixed;
+  top: 52%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #121212;
+  font-size: 18px;
+  font-weight: bold;
+  z-index: 10001;  
+  text-align: center;
+}
+
+ngx-ui-loader .ngx-ui-loader__fg {
+  animation: colorChange 1s infinite;
+}
+
+ 
+@keyframes colorChange {
+  0% {
+    border-color: #ff0000;  
+  }
+  25% {
+    border-color: #00ff00;  
+  }
+  50% {
+    border-color: #0000ff; 
+  }
+  75% {
+    border-color: #ff00ff;  
+  }
+  100% {
+    border-color: #ff0000;  
+  }
 }

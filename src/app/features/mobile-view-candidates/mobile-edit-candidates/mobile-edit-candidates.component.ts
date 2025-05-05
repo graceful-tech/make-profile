@@ -98,6 +98,7 @@ candidateForm!: FormGroup;
     this.getLanguages();
     this.getMaritalStatus();
     this.getFieldOfStudy();
+   // this.getCandidates();
 
     // if (this.candidates?.id) {
     //   this.patchCandidateForm(this.candidates);
@@ -108,9 +109,16 @@ candidateForm!: FormGroup;
     });
 
     if(this.candidatesUpdateData !== null && this.candidatesUpdateData !== undefined){
-      // this.candidateId = this.candidatesUpdateData?.id;
+     this.candidateId = this.candidatesUpdateData?.id;
       this.candidates = this.candidatesUpdateData;
+      // this.candidates.languagesKnown = this.candidates?.languagesKnown ? this.candidates.languagesKnown .split(',').map((skill: string) => skill.trim()) : [];
+      // this.candidates.skills = this.candidates?.skills ? this.candidates.skills.split(',').map((skill: string) => skill.trim()) : [];
+      // this.candidates.softSkills = this.candidates?.softSkills ? this.candidates.softSkills.split(',').map((skill: string) => skill.trim()) : [];
+      // this.candidates.coreCompentencies = this.candidates?.coreCompentencies ? this.candidates.coreCompentencies.split(',').map((skill: string) => skill.trim()) : [];
       this.patchCandidateForm(this.candidatesUpdateData);
+    }
+    else{
+      this.getCandidates();
     }
 
     this.gs.candidateImage$.subscribe(response =>{
@@ -824,13 +832,10 @@ candidateForm!: FormGroup;
     }
 
     next(){
-      // if(this.candidates.length !== 0 || this.candidates.length === undefined){
+    
       this.gs.setCandidateDetails(this.candidates);
       this.router.navigate(['mob-candidate/mobile-payment']);
-      // }
-      // else{
-      //   this.gs.showMessage('Note..!','Please Fill out your details');
-      // }
+       
     }
 
    get collegeProjectControls() {
@@ -878,5 +883,36 @@ candidateForm!: FormGroup;
       }
       this.gs.setResumeName(this.resumeName);
       this.router.navigate(['mob-candidate/choose-Template']);
+    }
+
+    getCandidates() {
+      const route = 'candidates';
+      this.api.get(route).subscribe({
+        next: (response) => {
+          const candidate = response as Candidate;
+          if(candidate !== null){
+          this.patchCandidateForm(candidate);
+          this.getCandidateImage(candidate?.id);
+        }
+        },
+      });
+    }
+
+    
+    getCandidateImage(id: any) {
+      const route = `candidate/get-image?candidateId=${id}`;
+    
+      this.api.getImage(route).subscribe({
+        next: (response) => {
+          if(response.size > 0){
+          this.candidateImageUrl = URL.createObjectURL(response);
+          this.dataLoaded = true;
+          }
+        },
+        error: (err) => {
+          console.error('Error fetching candidate image:', err);
+          this.dataLoaded = false;
+        }
+      });
     }
 }

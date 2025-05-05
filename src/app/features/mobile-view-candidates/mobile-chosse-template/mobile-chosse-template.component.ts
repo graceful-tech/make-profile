@@ -1,21 +1,30 @@
 import { DatePipe } from '@angular/common';
-import {ChangeDetectorRef,Component,ElementRef,OnInit,ViewChild,} from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import {
+  DialogService,
+  DynamicDialogConfig,
+  DynamicDialogRef,
+} from 'primeng/dynamicdialog';
 import { ApiService } from 'src/app/services/api.service';
 import { GlobalService } from 'src/app/services/global.service';
 import { Candidate } from 'src/app/models/candidates/candidate.model';
 
- 
 @Component({
   selector: 'app-mobile-chosse-template',
   standalone: false,
   templateUrl: './mobile-chosse-template.component.html',
-  styleUrl: './mobile-chosse-template.component.css'
+  styleUrl: './mobile-chosse-template.component.css',
 })
 export class MobileChosseTemplateComponent {
-@ViewChild('resumeImage', { static: false }) resumeImage!: ElementRef;
+  @ViewChild('resumeImage', { static: false }) resumeImage!: ElementRef;
   @ViewChild('resumeContainer', { static: false }) resumeContainer!: ElementRef;
 
   scale = 1;
@@ -52,28 +61,27 @@ export class MobileChosseTemplateComponent {
     private cdr: ChangeDetectorRef,
     private router: Router,
     public ref: DynamicDialogRef,
-    private config: DynamicDialogConfig,
-    
-  ) 
-  {}
-
-  
+    private config: DynamicDialogConfig
+  ) {}
 
   ngOnInit() {
-    this.gs.candidateDetails$.subscribe(response => {
+    this.gs.candidateDetails$.subscribe((response) => {
       this.candidatesDetails = response;
     });
 
-    if(this.candidatesDetails !== null && this.candidatesDetails !== undefined){
+    if (
+      this.candidatesDetails !== null &&
+      this.candidatesDetails !== undefined
+    ) {
       this.candidateId = this.candidatesDetails?.id;
       this.candidates = this.candidatesDetails;
     }
 
-    this.gs.candidateImage$.subscribe(response =>{
-      if(response !== null){
-      this.candidateImageUrl = response
+    this.gs.candidateImage$.subscribe((response) => {
+      if (response !== null) {
+        this.candidateImageUrl = response;
       }
-    })
+    });
   }
 
   ngAfterViewInit() {
@@ -163,14 +171,12 @@ export class MobileChosseTemplateComponent {
   }
 
   createResume(resume: any) {
- 
-  this.gs.setCandidateDetails(this.candidates);
-  this.gs.setResumeName(resume)
-  if(this.candidateImageUrl !=null && this.candidateImageUrl !== undefined){
-  this.gs.setCandidateImage(this.candidateImageUrl);
-  }
-  this.router.navigate(['mob-candidate/edit-candidate'])
-
+    this.gs.setCandidateDetails(this.candidates);
+    this.gs.setResumeName(resume);
+    if (this.candidateImageUrl != null &&this.candidateImageUrl !== undefined) {
+      this.gs.setCandidateImage(this.candidateImageUrl);
+    }
+    this.router.navigate(['mob-candidate/edit-candidate']);
   }
 
   getCandidateById(id: any) {
@@ -183,9 +189,12 @@ export class MobileChosseTemplateComponent {
     });
   }
 
+  backToCandidates() {
 
-backToCandidates(){
-  this.router.navigate(['mob-candidate'])
-}
-
+    this.gs.setCandidateDetails(this.candidates);
+    if (this.candidateImageUrl != null &&this.candidateImageUrl !== undefined) {
+      this.gs.setCandidateImage(this.candidateImageUrl);
+    }
+    this.router.navigate(['mob-candidate']);
+  }
 }
