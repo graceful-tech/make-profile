@@ -1,7 +1,7 @@
 .align {
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: top;
     height: 60%;
 }
 
@@ -9,7 +9,7 @@
     background: #fff;
     width: 50%;
     max-width: 1000px;
-    padding: 1.3rem;
+    padding: 1rem;
     border-radius: 12px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
