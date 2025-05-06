@@ -13,7 +13,7 @@ const routes: Routes = [
 
   { path: 'landing', component: LandingPageComponent },
 
-  { path: 'mobile', component: LandingPageMobileComponent },
+  { path: 'mob-landing', component: LandingPageMobileComponent },
 
   { path: 'login', component: LoginComponent },
 
@@ -21,9 +21,9 @@ const routes: Routes = [
 
   { path: 'create-account', component: CreateAccountComponent },
 
-  { path: 'mobile-create', component: MobileCreateAccountComponent },
+  { path: 'mob-create', component: MobileCreateAccountComponent },
 
-  { path: 'mobile-login', component: MobileLoginComponent },
+  { path: 'mob-login', component: MobileLoginComponent },
 
   {
     path: 'candidate',

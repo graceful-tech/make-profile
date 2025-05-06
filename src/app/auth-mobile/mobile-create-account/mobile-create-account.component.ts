@@ -37,6 +37,7 @@ export class MobileCreateAccountComponent {
       name: ['', Validators.required],
       email: ['', Validators.required],
       mobileNumber: ['', Validators.required],
+      userName: ['', Validators.required],
       password: ['', Validators.required],
     })
   }

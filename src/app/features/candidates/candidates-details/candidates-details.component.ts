@@ -67,9 +67,9 @@ export class CandidatesDetailsComponent {
   returnImage: any;
   collegeProjectDeletedArray: Array<any> = []
   appliedJobs: any;
-  availableCredits:any;
-  isUploading: boolean=false;
-  customLoaderMessage:any;
+  availableCredits: any;
+  isUploading: boolean = false;
+  customLoaderMessage: any;
 
 
   constructor(
@@ -86,8 +86,8 @@ export class CandidatesDetailsComponent {
   ) { }
 
   ngOnInit() {
-  
-   if (sessionStorage.getItem('userId') == null) {
+
+    if (sessionStorage.getItem('userId') == null || sessionStorage.getItem('userID') == 'undefined') {
       this.route.queryParams.subscribe(params => {
         const token = params['token'];
         const username = params['username'];
@@ -100,7 +100,7 @@ export class CandidatesDetailsComponent {
         sessionStorage.setItem('userId', id);
       });
     }
-     
+
     this.createCandidateForm();
     this.createRequirementForm();
     this.generateYearList();
@@ -109,17 +109,17 @@ export class CandidatesDetailsComponent {
     this.getMaritalStatus();
     this.getFieldOfStudy();
 
-   
+
     this.getCandidates();
     this.getAvailableCredits();
     // this.getAppliedJobs();
-    
 
-   
+
+
   }
 
-  ngAfterViewInit() { 
-   
+  ngAfterViewInit() {
+
 
   }
 
@@ -204,9 +204,9 @@ export class CandidatesDetailsComponent {
       );
     }
 
-   if(payload.dob !=null){
-    payload.dob = this.datePipe.transform(payload.dob,'yyyy-MM-dd');
-   }
+    if (payload.dob != null) {
+      payload.dob = this.datePipe.transform(payload.dob, 'yyyy-MM-dd');
+    }
 
     if (payload.isFresher != null && payload.isFresher) {
       payload['isFresher'] = true;
@@ -216,10 +216,10 @@ export class CandidatesDetailsComponent {
 
     if (payload.isFresher) {
       payload.experiences = [];
-    }  
-     
+    }
+
     if (payload.isFresher) {
-    if (Object.is(payload.collegeProject[0].collegeProjectName, '')) {
+      if (Object.is(payload.collegeProject[0].collegeProjectName, '')) {
         payload.collegeProject = [];
       } else {
         payload.collegeProject = payload.collegeProject.map((proj: any) => ({
@@ -229,7 +229,7 @@ export class CandidatesDetailsComponent {
             : proj.collegeProjectSkills
         }));
       }
-    } 
+    }
 
     if (!payload.isFresher) {
       if (Object.is(payload.experiences[0].companyName, '')) {
@@ -244,9 +244,9 @@ export class CandidatesDetailsComponent {
             exp.experienceYearEndDate,
             'yyyy-MM-dd'
           );
-    
+
           const hasEmptyProjectName = exp.projects?.some((proj: any) => proj.projectName === '');
-    
+
           if (hasEmptyProjectName) {
             exp.projects = [];
           } else {
@@ -260,7 +260,7 @@ export class CandidatesDetailsComponent {
         });
       }
     }
-     
+
     if (Object.is(payload.qualification[0].instutionName, '')) {
       payload.qualification = [];
     } else {
@@ -275,10 +275,10 @@ export class CandidatesDetailsComponent {
         );
       });
     }
-    
+
     if (Object.is(payload.achievements[0].achievementsName, '')) {
-        payload.achievements = [];
-    } else{
+      payload.achievements = [];
+    } else {
       payload.achievements.forEach((cert: any) => {
         cert.achievementsDate = this.datePipe.transform(
           cert.achievementsDate,
@@ -286,8 +286,8 @@ export class CandidatesDetailsComponent {
         );
       });
     }
-   
-    if (Object.is(payload.certificates[0].courseName, ''))  {
+
+    if (Object.is(payload.certificates[0].courseName, '')) {
       payload.certificates = [];
     } else {
       payload.certificates.forEach((cert: any) => {
@@ -301,12 +301,12 @@ export class CandidatesDetailsComponent {
         );
       });
     }
-    
+
 
     if (Object.is(payload.languagesKnown, '')) {
       payload.languagesKnown = '';
     }
-    else{
+    else {
       const stringList: string[] = payload.languagesKnown;
       const commaSeparatedString: string = stringList.join(', ');
       payload.languagesKnown = commaSeparatedString;
@@ -314,7 +314,7 @@ export class CandidatesDetailsComponent {
 
     if (Object.is(payload.skills, '')) {
       payload.skills = '';
-    }else{
+    } else {
       const stringList: string[] = payload.skills;
       const commaSeparatedString: string = stringList.join(', ');
       payload.skills = commaSeparatedString;
@@ -323,7 +323,7 @@ export class CandidatesDetailsComponent {
     if (Object.is(payload.softSkills, '')) {
       payload.softSkills = '';
     }
-    else{
+    else {
       const stringList: string[] = payload.softSkills;
       const commaSeparatedString: string = stringList.join(', ');
       payload.softSkills = commaSeparatedString;
@@ -332,22 +332,22 @@ export class CandidatesDetailsComponent {
     if (Object.is(payload.coreCompentencies, '')) {
       payload.coreCompentencies = '';
     }
-    else{
+    else {
       const stringList: string[] = payload.coreCompentencies;
       const commaSeparatedString: string = stringList.join(', ');
       payload.coreCompentencies = commaSeparatedString;
     }
- 
+
 
     if (payload.isFresher) {
       const hasValidProject = payload.collegeProject.some((project: { collegeProjectName: string; }) =>
         project.collegeProjectName && project.collegeProjectName.trim() !== ''
       );
-    
+
       if (!hasValidProject) {
         payload.collegeProject = [];
       } else {
-        payload.collegeProject = payload.collegeProject.map((project: { collegeProjectSkills: any[]; })  => ({
+        payload.collegeProject = payload.collegeProject.map((project: { collegeProjectSkills: any[]; }) => ({
           ...project,
           collegeProjectSkills: Array.isArray(project.collegeProjectSkills)
             ? project.collegeProjectSkills.join(', ')
@@ -357,7 +357,7 @@ export class CandidatesDetailsComponent {
     } else {
       payload.collegeProject = [];
     }
-    
+
 
 
     this.api.retrieve(route, payload).subscribe({
@@ -365,14 +365,14 @@ export class CandidatesDetailsComponent {
 
         this.candidateId = response?.id;
         this.dataLoaded = true;
-        localStorage.setItem('candidateId',this.candidateId);
+        localStorage.setItem('candidateId', this.candidateId);
         this.uploadCandidateImage();
 
-        response.languagesKnown = response?.languagesKnown ? response.languagesKnown .split(',').map((skill: string) => skill.trim()) : [];
+        response.languagesKnown = response?.languagesKnown ? response.languagesKnown.split(',').map((skill: string) => skill.trim()) : [];
         response.skills = response?.skills ? response.skills.split(',').map((skill: string) => skill.trim()) : [];
         response.softSkills = response?.softSkills ? response.softSkills.split(',').map((skill: string) => skill.trim()) : [];
         response.coreCompentencies = response?.coreCompentencies ? response.coreCompentencies.split(',').map((skill: string) => skill.trim()) : [];
-        this.dataLoaded = true;   
+        this.dataLoaded = true;
 
         this.gs.showMessage('Success', 'Create Successfully');
       },
@@ -630,25 +630,25 @@ export class CandidatesDetailsComponent {
 
   uploadCandidateImage() {
 
-    if(this.candidateImageUrl !== undefined && this.multipartFile !== undefined ){
-    this.dataLoaded = false;
-    const route = 'candidate/upload-image';
-    const formData = new FormData();
-    formData.append('attachment', this.multipartFile);
-    formData.append('candidateId', this.candidateId);
-    this.api.downloadFile(route, formData).subscribe({
-      next: (response) => {
-        
-        this.candidateImageUrl = URL.createObjectURL(response);
-        this.dataLoaded = true;
-      },
-      error: (error) => {
-        this.dataLoaded = true;
-        this.gs.showMessage('Error', 'Error in updating logo.');
-      },
-    });
-  }
-  this.dataLoaded = true;
+    if (this.candidateImageUrl !== undefined && this.multipartFile !== undefined) {
+      this.dataLoaded = false;
+      const route = 'candidate/upload-image';
+      const formData = new FormData();
+      formData.append('attachment', this.multipartFile);
+      formData.append('candidateId', this.candidateId);
+      this.api.downloadFile(route, formData).subscribe({
+        next: (response) => {
+
+          this.candidateImageUrl = URL.createObjectURL(response);
+          this.dataLoaded = true;
+        },
+        error: (error) => {
+          this.dataLoaded = true;
+          this.gs.showMessage('Error', 'Error in updating logo.');
+        },
+      });
+    }
+    this.dataLoaded = true;
   }
 
 
@@ -699,36 +699,36 @@ export class CandidatesDetailsComponent {
   }
 
   addAttachment(event: any) {
-    if(this.candidateId !== null && this.candidateId !== undefined) {
-    const confirmDelete = window.confirm('your existing details will modify based on uploading resume' ); 
-    
-    if ( confirmDelete && event.target.files[0]) {
-      this.multipartFile = event.target.files[0];
-      this.resume = { fileName: this.multipartFile?.name };
-     // this.parseResume();
+    if (this.candidateId !== null && this.candidateId !== undefined) {
+      const confirmDelete = window.confirm('your existing details will modify based on uploading resume');
+
+      if (confirmDelete && event.target.files[0]) {
+        this.multipartFile = event.target.files[0];
+        this.resume = { fileName: this.multipartFile?.name };
+        // this.parseResume();
+      }
     }
-  }
-  else{
-    if (event.target.files[0]) {
-      this.multipartFile = event.target.files[0];
-      this.resume = { fileName: this.multipartFile?.name };
-     // this.parseResume();
+    else {
+      if (event.target.files[0]) {
+        this.multipartFile = event.target.files[0];
+        this.resume = { fileName: this.multipartFile?.name };
+        // this.parseResume();
+      }
     }
-  }
   }
 
   parseResume() {
-    
+
     this.ngxLoaderStart('Resume is getting ready, please wait...');
 
     const route = 'resume-ai/upload';
 
     const username = sessionStorage.getItem('userName');
-    
+
     const formData = new FormData();
-    formData.append('resume', this.multipartFile); 
-    formData.append('userName', String(username)); 
-    
+    formData.append('resume', this.multipartFile);
+    formData.append('userName', String(username));
+
     this.api.upload(route, formData).subscribe({
       next: (response) => {
         if (response) {
@@ -745,7 +745,7 @@ export class CandidatesDetailsComponent {
         this.ngxLoaderStop();
         this.gs.showToast('error', 'Error in uploading resume please reupload it ');
       }
-      
+
     });
     this.ngxLoaderStop();
   }
@@ -887,7 +887,7 @@ export class CandidatesDetailsComponent {
   }
   viewUser() {
     this.router.navigate(['viewUser']);
-  
+
   }
   patchExperiences(experiences: any[]) {
 
@@ -1040,7 +1040,7 @@ export class CandidatesDetailsComponent {
 
   getAvailableCredits() {
     const id = sessionStorage.getItem('userId');
-    
+
     const route = `credits?userId=${id}`;
     this.api.get(route).subscribe({
       next: (response) => {
@@ -1050,7 +1050,7 @@ export class CandidatesDetailsComponent {
   }
 
   getCandidates() {
-   // this.ngxLoaderStart('Resume is getting ready, please wait...');
+    // this.ngxLoaderStart('Resume is getting ready, please wait...');
 
     const route = 'candidate';
     this.api.get(route).subscribe({
@@ -1058,7 +1058,7 @@ export class CandidatesDetailsComponent {
         const candidate = response as Candidate;
         if (candidate !== null) {
           this.candidateId = candidate?.id;
-          candidate.languagesKnown = candidate?.languagesKnown ? candidate.languagesKnown .split(',').map((skill: string) => skill.trim()) : [];
+          candidate.languagesKnown = candidate?.languagesKnown ? candidate.languagesKnown.split(',').map((skill: string) => skill.trim()) : [];
           candidate.skills = candidate?.skills ? candidate.skills.split(',').map((skill: string) => skill.trim()) : [];
           candidate.softSkills = candidate?.softSkills ? candidate.softSkills.split(',').map((skill: string) => skill.trim()) : [];
           candidate.coreCompentencies = candidate?.coreCompentencies ? candidate.coreCompentencies.split(',').map((skill: string) => skill.trim()) : [];
@@ -1067,28 +1067,28 @@ export class CandidatesDetailsComponent {
           if (this.candidateId !== null && this.candidateId !== undefined) {
             this.candidateForm.controls['mobileNumber'].disable();
           }
-          
+
           this.getCandidateImage(candidate?.id)
         }
-       // this.ngxLoaderStop();
+        // this.ngxLoaderStop();
       },
       error: (err) => {
-       // this.ngxLoaderStop();
+        // this.ngxLoaderStop();
         console.error('Error fetching candidate image:', err);
         this.dataLoaded = false;
       }
     });
-  //  this.ngxLoaderStop();
+    //  this.ngxLoaderStop();
   }
 
   getCandidateImage(id: any) {
     const route = `candidate/get-image?candidateId=${id}`;
-  
+
     this.api.getImage(route).subscribe({
       next: (response) => {
-        if(response.size >0){
-        this.candidateImageUrl = URL.createObjectURL(response);
-        this.dataLoaded = true;
+        if (response.size > 0) {
+          this.candidateImageUrl = URL.createObjectURL(response);
+          this.dataLoaded = true;
         }
       },
       error: (err) => {
@@ -1097,17 +1097,17 @@ export class CandidatesDetailsComponent {
       }
     });
   }
-  
-  ngxLoaderStop(){
-    this.ngxLoader.stop();  
+
+  ngxLoaderStop() {
+    this.ngxLoader.stop();
     setTimeout(() => {
       this.isUploading = false;
     }, 2000);
   }
 
-  ngxLoaderStart(message:any){
-      this.isUploading = true;
-     this.ngxLoader.start();
+  ngxLoaderStart(message: any) {
+    this.isUploading = true;
+    this.ngxLoader.start();
     this.customLoaderMessage = message;
   }
 
