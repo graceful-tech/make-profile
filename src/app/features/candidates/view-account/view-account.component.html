@@ -1,0 +1,55 @@
+ <div class="header-image">
+  <img class="header-images"src="assets/img/make-profile.svg" alt="Header Image"/>
+  <!-- <p-button (onClick)="signOut()" label="Back" class="right-align"></p-button> -->
+</div>
+<div class="align">
+  <div class="register-wrapper">
+    <div class="wrapper">
+      <div class="heading">
+        <span>My Account</span>
+          <p-button (onClick)="signOut()" label="Edit User" class="right-align"></p-button>
+        </div>
+      <div class="profile-wrapper">
+        <div class="grid grid-nogutter account-info">
+          <div class="col-3">
+            <label>Name</label>
+          </div>
+          <div class="col-9">
+            {{ user?.name }}
+          </div>
+        </div>
+        <div class="grid grid-nogutter account-info">
+          <div class="col-3">
+            <label>Email</label>
+          </div>
+          <div class="col-9">
+            {{ user?.email }}
+          </div>
+        </div>
+        <div class="grid grid-nogutter account-info">
+          <div class="col-3">
+            <label>Contact</label>
+          </div>
+          <div class="col-9">
+            {{ user?.mobileNumber }}
+          </div>
+        </div>
+
+        <div class="grid grid-nogutter account-info">
+          <div class="col-3">
+            <label>Location</label>
+          </div>
+          <div class="col-9">Chennai</div>
+        </div>
+
+        <div class="grid grid-nogutter account-info">
+          <div class="col-3">
+            <label>Education</label>
+          </div>
+
+          <div class="col-9">B.E</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

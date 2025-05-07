@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { GlobalService } from '../services/global.service';
-import { ApiService } from '../services/api.service';
+import { GlobalService } from '../../../services/global.service';
+import { ApiService } from '../../../services/api.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-view-account',
@@ -11,7 +12,7 @@ import { ApiService } from '../services/api.service';
 export class ViewAccountComponent {
   userId: any;
   user: any;
-  constructor(public gs: GlobalService, private api: ApiService) { }
+  constructor(public gs: GlobalService, private api: ApiService,private router:Router) { }
   ngOnInit() {
     this.gs.user$.subscribe((response: any) => {
       this.userId = response?.id;
@@ -22,7 +23,8 @@ export class ViewAccountComponent {
 
   getUserById() {
     // const route = `users/${this.userId}`;
-     const route = `user/get_user`
+    
+     const route = `user/get_user/${sessionStorage.getItem('userName') }`
     this.api.get(route).subscribe({
       
 
@@ -33,6 +35,8 @@ export class ViewAccountComponent {
     });
     
   }
-
+signOut(){
+  this.router.navigate(['editUser']);
+}
 
 }

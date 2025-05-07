@@ -10,6 +10,7 @@ import { ChooseTemplateComponent } from './Templates/choose-template/choose-temp
 import { PaymentOptionComponent } from './payments/payment-option/payment-option.component';
 import { PaymentDetailsComponent } from './payments/payment-details/payment-details.component';
 import { NgxUiLoaderModule } from 'ngx-ui-loader';
+import { ViewAccountComponent } from './view-account/view-account.component';
 
 
 @NgModule({
@@ -21,6 +22,7 @@ import { NgxUiLoaderModule } from 'ngx-ui-loader';
     ChooseTemplateComponent,
     PaymentOptionComponent,
     PaymentDetailsComponent,
+    ViewAccountComponent
   ],
   imports: [
     CommonModule,
