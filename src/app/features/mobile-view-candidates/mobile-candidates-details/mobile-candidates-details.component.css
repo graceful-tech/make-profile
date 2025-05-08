@@ -132,7 +132,7 @@ p-table th {
 } */
 
 .header-image {
-    position: relative;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
@@ -141,7 +141,7 @@ p-table th {
     display: flex;  
     align-items: center;  
     justify-content: space-around; 
-    padding: 10px 10px;
+    /* padding: 10px 10px; */
     
 }
 
@@ -335,7 +335,7 @@ p-table th {
 @media screen and (max-width: 768px) {
 
   .header-image {
-     position: relative;
+     position: fixed;
      top: 0;
      left: 0;
      /* width: 100%; */
@@ -344,7 +344,7 @@ p-table th {
      display: flex;  
      align-items: center;  
      justify-content: space-between; 
-     padding: 10px 10px;
+     /* padding: 10px 10px; */
      
  }
  
@@ -565,4 +565,9 @@ ngx-ui-loader .ngx-ui-loader__fg {
   100% {
     border-color: #ff0000;  
   }
+}
+
+
+.profile-wrapper{
+margin-top: 50px;
 }

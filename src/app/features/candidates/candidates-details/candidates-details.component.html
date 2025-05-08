@@ -1,4 +1,3 @@
- 
 <div *ngIf="isUploading" class="custom-loader-backdrop">
   <div class="custom-loader-container">
     <div class="dotted-spinner"></div>
@@ -7,13 +6,15 @@
     </div>
   </div>
 </div>
- 
 
-<div class="header-image">
-  <img class="header-images" src="assets/img/make-profile.svg" alt="Header Image" />
-  <p-button (onClick)="signOut()" label="Logout" class="right-align"></p-button>
-<p-button label="View User" (onClick)="viewUser()"> </p-button>
-</div>
+<header>
+  <div class="header-image">
+    <img class="header-images" src="assets/img/make-profile.png" alt="Header Image" />
+    <p-button  (onClick)="viewUser()" label="View User" class="right-align"></p-button>
+    <p-button label="Logout" (onClick)="signOut()"> </p-button>
+  </div>
+</header>
+
 <div class="wrapper">
   <div class="left-section">
     <div class="profile-wrapper">
@@ -96,35 +97,35 @@
 
         <h5 class="styled-text">Applied Jobs</h5>
         <div class="table-container">
-            <p-table   [value]="appliedJobs">
-                <ng-template pTemplate="header">
-                    <tr>
-                        <th style="width: 5%;">JOB ID</th>
-                        <th style="width: 10%;">SKILLS</th>
-                        <th style="width: 10%;">LOCATION</th>
-                        <th style="width: 10%;">SOURCE</th>
-                        <th style="width: 10%;">STATUS</th>
-                        <th style="width: 10%;">ACTION</th>
-                    </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-jobs>
-                    <tr>
-                        <td>{{ jobs.id }}</td>
-                        <td>{{ jobs.name }}</td>
-                        <td>{{ jobs.remainingEdits }}</td>
-                        <td>{{ jobs.amountPaid }}</td>
-                        <td>{{ jobs.amountPaid }}</td>
-                        <td>
-                          <i class="pi pi-pencil" style="cursor: pointer;" (click)="onEdit(resume.id)" title="Edit"></i>
-                        </td>
-                    </tr>
-                </ng-template>
-                <ng-template pTemplate="emptymessage">
-                  <tr>
-                      <td colspan="6">No records found.</td>
-                  </tr>
-              </ng-template>
-            </p-table>
+          <p-table [value]="appliedJobs">
+            <ng-template pTemplate="header">
+              <tr>
+                <th style="width: 5%;">JOB ID</th>
+                <th style="width: 10%;">SKILLS</th>
+                <th style="width: 10%;">LOCATION</th>
+                <th style="width: 10%;">SOURCE</th>
+                <th style="width: 10%;">STATUS</th>
+                <th style="width: 10%;">ACTION</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-jobs>
+              <tr>
+                <td>{{ jobs.id }}</td>
+                <td>{{ jobs.name }}</td>
+                <td>{{ jobs.remainingEdits }}</td>
+                <td>{{ jobs.amountPaid }}</td>
+                <td>{{ jobs.amountPaid }}</td>
+                <td>
+                  <i class="pi pi-pencil" style="cursor: pointer;" (click)="onEdit(resume.id)" title="Edit"></i>
+                </td>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+              <tr>
+                <td colspan="6">No records found.</td>
+              </tr>
+            </ng-template>
+          </p-table>
         </div>
 
 
@@ -243,7 +244,8 @@
             <div class="field-wrapper">
               <label class="required">Mobile</label>
               <div class="input-wrapper">
-                <input type="text"  pKeyFilter="int"  [maxlength]="10"  [disabled]="candidateId" pInputText formControlName="mobileNumber" />
+                <input type="text" pKeyFilter="int" [maxlength]="10" [disabled]="candidateId" pInputText
+                  formControlName="mobileNumber" />
               </div>
             </div>
             <small class="error-message" *ngIf="candidateForm.controls['mobileNumber'].invalid && showError">
@@ -605,8 +607,8 @@
                 </div>
               </div>
 
-             
-            
+
+
             </div>
             <hr class="sub-section-divider" />
           </div>
@@ -650,7 +652,7 @@
                 </div>
               </div>
 
-           
+
 
             </div>
             <hr class="sub-section-divider" />
@@ -686,45 +688,47 @@
                 </div>
               </div>
 
-              
+
 
             </div>
             <hr class="sub-section-divider" />
           </div>
         </div>
 
-      <app-make-profile-divider></app-make-profile-divider>
+        <app-make-profile-divider></app-make-profile-divider>
 
         <div class="grid">
           <div class="col-12 md:col-6">
-           <div class="field-wrapper">
-            <label>Soft Skills</label>
-             <div class="input-wrapper">
-              <p-chips separator="," formControlName="softSkills" [addOnBlur]="true" [addOnTab]="true"></p-chips>
-             </div>
-           </div>
+            <div class="field-wrapper">
+              <label>Soft Skills</label>
+              <div class="input-wrapper">
+                <p-chips separator="," formControlName="softSkills" [addOnBlur]="true" [addOnTab]="true"></p-chips>
+              </div>
+            </div>
           </div>
 
           <div class="col-12 md:col-6">
             <div class="field-wrapper">
-             <label>Core Competencies</label>
+              <label>Core Competencies</label>
               <div class="input-wrapper">
-               <p-chips separator="," formControlName="coreCompentencies" [addOnBlur]="true" [addOnTab]="true"></p-chips>
+                <p-chips separator="," formControlName="coreCompentencies" [addOnBlur]="true"
+                  [addOnTab]="true"></p-chips>
               </div>
             </div>
-           </div>
-       </div>
-        
+          </div>
+        </div>
+
       </form>
 
       <app-make-profile-divider></app-make-profile-divider>
 
-      <div class="button-wrapper" >
-        <p-button class="mr-2" [label]="dataLoaded ? 'Generate' : 'Generating..'" [icon]="dataLoaded ? '' : 'pi pi-spin pi-spinner'" [disabled]="!dataLoaded"
-            (onClick)="createCandidate()"></p-button>
-    
-        <p-button  styleClass="p-button-secondary" label="Reset" (onClick)="reset()"> </p-button>
-        </div>
+      <div class="button-wrapper">
+        <p-button class="mr-2" [label]="dataLoaded ? 'Generate' : 'Generating..'"
+          [icon]="dataLoaded ? '' : 'pi pi-spin pi-spinner'" [disabled]="!dataLoaded"
+          (onClick)="createCandidate()"></p-button>
+
+        <p-button styleClass="p-button-secondary" label="Reset" (onClick)="reset()"> </p-button>
+      </div>
     </div>
   </div>
 </div>

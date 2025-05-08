@@ -87,7 +87,7 @@ export class CandidatesDetailsComponent {
 
   ngOnInit() {
 
-    if (sessionStorage.getItem('userId') == null || sessionStorage.getItem('userID') == 'undefined') {
+    if (sessionStorage.getItem('userId') == null || sessionStorage.getItem('userId') == 'undefined') {
       this.route.queryParams.subscribe(params => {
         const token = params['token'];
         const username = params['username'];

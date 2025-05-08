@@ -7,6 +7,7 @@ import { Lookup } from 'src/app/models/master/lookup.model';
 import { ApiService } from 'src/app/services/api.service';
 import { GlobalService } from 'src/app/services/global.service';
 import { environment } from 'src/environments/environment';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 
 @Component({
@@ -28,6 +29,7 @@ export class CreateAccountComponent {
   constructor(private fb: FormBuilder,
     private api: ApiService,
     private gs: GlobalService,
+    private deviceDetectorService: DeviceDetectorService,
     private router: Router) { }
 
 
@@ -76,7 +78,7 @@ export class CreateAccountComponent {
 
   onGoogleLogin() {
     const restUrl = environment.restUrl;
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    const isMobile = this.deviceDetectorService.isMobile();
     const baseUrl = window.location.origin;
     const redirectUri = isMobile ? `${baseUrl}/#/mob-candidate` : `${baseUrl}/#/candidate`;
     document.cookie = `redirect_uri=${encodeURIComponent(redirectUri)}; path=/`;
