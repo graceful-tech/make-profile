@@ -60,17 +60,17 @@ export class PaymentOptionComponent  {
 
   
   async payRupees() {
-    const amount = 1 * 100;
+    const amount = 10 * 100;
     const paymentType = 'Resume';
   
-    //  this.ps.initRazorPays(() => {
+     this.ps.initRazorPays(() => {
        
-    //   this.redeem();
-    // });
-    // this.ps.payWithRazorPay(amount);
+      this.redeem();
+    });
+    this.ps.payWithRazorPay(amount);
    
     //remove after the tesing
-    this.createResume();
+    //this.createResume();
 
    // this.ref.close();
 
