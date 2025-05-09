@@ -26,5 +26,6 @@ export interface Candidate {
     maritalStatus:any;
     softSkills:any;
     coreCompentencies:any;
+    resumeFormatName:any;
 
 }

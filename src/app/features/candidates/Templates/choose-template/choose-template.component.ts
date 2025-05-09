@@ -35,18 +35,25 @@ export class ChooseTemplateComponent {
   candidatesArray: Array<Candidate> = [];
 
   // Array of Resume Paths
-  resumePaths: string[] = [
-    './assets/img/resume-template-11-w364x2.png',
-    './assets/img/resume-template-10-w364x2.png',
-    './assets/img/resume-template-9-w364x2.png',
-    './assets/img/resume-template-8-w364x2.png',
+  resumePaths: { path: string, name: string }[] = [
+    { path: './assets/img/Mercury.png', name: 'Mercury' },
+    { path: './assets/img/Venus.png', name: 'Venus' },
+    { path: './assets/img/Earth.png', name: 'Earth' },
+    { path: './assets/img/Mars.png', name: 'Mars' },
   ];
+  
+
+  
   currentIndex = 0;
-  currentResume = this.resumePaths[this.currentIndex];
+  currentResume = this.resumePaths[this.currentIndex].path;
   isSelected: boolean = false;
   candidates: Array<Candidate> = [];
   candidateId: any;
   candidateImageUrl: any;
+
+  get currentResumeName(): string {
+    return this.resumePaths[this.currentIndex].name;
+  }
 
   constructor(
     private api: ApiService,
@@ -65,7 +72,10 @@ export class ChooseTemplateComponent {
 
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+
+    localStorage.removeItem('resumeName');
+  }
 
   ngAfterViewInit() {
     this.resetPosition();
@@ -139,7 +149,7 @@ export class ChooseTemplateComponent {
     } else {
       this.currentIndex = this.resumePaths.length - 1;
     }
-    this.currentResume = this.resumePaths[this.currentIndex];
+    this.currentResume = this.resumePaths[this.currentIndex].path;
     this.resetPosition();
   }
 
@@ -149,21 +159,22 @@ export class ChooseTemplateComponent {
     } else {
       this.currentIndex = 0;
     }
-    this.currentResume = this.resumePaths[this.currentIndex];
+    this.currentResume = this.resumePaths[this.currentIndex].path;
     this.resetPosition();
   }
 
-  createResume(resume: any) {
+  createResume(resumeName: any) {
     this.ref.close();
     const candidateId = localStorage.getItem('candidateId');
-   // this.getCandidateById(candidateId);
+   
+    localStorage.setItem('resumeName',resumeName);
 
-   console.log(this.candidates)
     const ref = this.dialog.open(CreateCandidatesComponent, {
       data: {
         candidates: this.candidates,
         payments:true,
-        candidateImage :this.candidateImageUrl
+        candidateImage :this.candidateImageUrl,
+        resumeName:resumeName
       },
       closable: true,
       width: '70%',

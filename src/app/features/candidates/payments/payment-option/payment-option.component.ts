@@ -28,7 +28,7 @@ export class PaymentOptionComponent  {
   candidates: Array<Candidate> = [];
   userId:any;
   isUploading:boolean=false;
-  private paymentSuccessSubscription!: Subscription;
+ resumeName: any;
   
 
   constructor(
@@ -47,6 +47,7 @@ export class PaymentOptionComponent  {
   ) {
     this.candidates = this.config.data?.candidates;
     this.candidateId = this.config.data?.candidateId;
+    this.resumeName = this.config.data?.resumeName;
 
      const userId =   sessionStorage.getItem('userId')
 
@@ -62,13 +63,17 @@ export class PaymentOptionComponent  {
     const amount = 1 * 100;
     const paymentType = 'Resume';
   
-     this.ps.initRazorPays(() => {
+    //  this.ps.initRazorPays(() => {
        
-      this.redeem();
-    });
-    this.ps.payWithRazorPay(amount);
-    this.ref.close();
+    //   this.redeem();
+    // });
+    // this.ps.payWithRazorPay(amount);
    
+    //remove after the tesing
+    this.createResume();
+
+   // this.ref.close();
+
   }
   
   redeem() {
@@ -101,7 +106,12 @@ export class PaymentOptionComponent  {
     const route = 'resume/create';
     const candidateId = localStorage.getItem('candidateId');
     
-    const payload = this.candidates;
+    const payload = {
+      ...this.candidates,
+      resumeFormatName: this.resumeName,
+    };
+
+    
     
      this.api.retrieve(route, payload).subscribe({
       next: (response) => {

@@ -75,6 +75,8 @@ export class CreateCandidatesComponent {
   imageName: any;
   returnImage:any;
   collegeProjectDeletedArray:Array<any> = [];
+  returnCandidate:any;
+  resumeName: any;
 
   constructor(
     private api: ApiService,
@@ -93,7 +95,7 @@ export class CreateCandidatesComponent {
     this.candidates = this.config.data?.candidates;
     this.payments = this.config.data?.payments;
     this.candidateImageUrl = this.config.data?.candidateImage;
-    
+    this.resumeName = this.config.data?.resumeName;
   }
 
   ngOnInit() {
@@ -103,14 +105,18 @@ export class CreateCandidatesComponent {
     this.getLanguages();
     this.getMaritalStatus();
     this.getFieldOfStudy();
-    this.getCandidates();
+    //this.getCandidates();
+    
 
-    // if (this.candidates?.id) {
-    //   this.candidateId = this.candidates.id;
-    //   this.patchCandidateForm(this.candidates);
-    // }
-    
-    
+    if (this.candidates !== null ) {
+      this.candidateId = this.candidates.id;
+      const candidateClone = JSON.parse(JSON.stringify(this.candidates));
+      this.patchCandidateForm(candidateClone);
+    }
+    else{
+      this.getCandidates();
+    }
+
   }
   
 
@@ -222,35 +228,89 @@ export class CreateCandidatesComponent {
     } 
 
   
+    // if (!payload.isFresher) {
+    //   if (Object.is(payload.experiences[0].companyName, '')) {
+    //     payload.experiences = [];
+    //   } else {
+    //     payload.experiences.forEach((exp: any) => {
+    //       exp.experienceYearStartDate = this.datePipe.transform(
+    //         exp.experienceYearStartDate,
+    //         'yyyy-MM-dd'
+    //       );
+    //       exp.experienceYearEndDate = this.datePipe.transform(
+    //         exp.experienceYearEndDate,
+    //         'yyyy-MM-dd'
+    //       );
+
+    //       payload.experiences = payload.experiences.map((res: any) => ({
+    //         ...res,
+    //         responsibilities: Array.isArray(res.responsibilities)
+    //           ? res.responsibilities.join(', ')
+    //           : res.responsibilities
+    //       }));
+    
+    //       const hasEmptyProjectName = exp.projects?.some((proj: any) => proj.projectName === '');
+    
+    //       if (hasEmptyProjectName) {
+    //         exp.projects = [];
+    //       } else {
+    //         exp.projects = exp.projects.map((proj: any) => ({
+    //           ...proj,
+    //           projectSkills: Array.isArray(proj.projectSkills)
+    //             ? proj.projectSkills.join(', ')
+    //             : proj.projectSkills
+    //         }));
+    //       }
+    //     });
+    //   }
+    // }
+
+
     if (!payload.isFresher) {
-      if (Object.is(payload.experiences[0].companyName, '')) {
+      if (Object.is(payload.experiences?.[0]?.companyName, '')) {
         payload.experiences = [];
       } else {
-        payload.experiences.forEach((exp: any) => {
-          exp.experienceYearStartDate = this.datePipe.transform(
+        payload.experiences = payload.experiences.map((exp: any) => {
+          const experienceYearStartDate = this.datePipe.transform(
             exp.experienceYearStartDate,
             'yyyy-MM-dd'
           );
-          exp.experienceYearEndDate = this.datePipe.transform(
+          const experienceYearEndDate = this.datePipe.transform(
             exp.experienceYearEndDate,
             'yyyy-MM-dd'
           );
     
-          const hasEmptyProjectName = exp.projects?.some((proj: any) => proj.projectName === '');
+          const responsibilities = Array.isArray(exp.responsibilities)
+            ? exp.responsibilities.join(', ')
+            : exp.responsibilities;
+    
+          let projects = exp.projects || [];
+          const hasEmptyProjectName = projects.some(
+            (proj: any) => proj.projectName === ''
+          );
     
           if (hasEmptyProjectName) {
-            exp.projects = [];
+            projects = [];
           } else {
-            exp.projects = exp.projects.map((proj: any) => ({
+            projects = projects.map((proj: any) => ({
               ...proj,
               projectSkills: Array.isArray(proj.projectSkills)
                 ? proj.projectSkills.join(', ')
                 : proj.projectSkills
             }));
           }
+    
+          return {
+            ...exp,
+            experienceYearStartDate,
+            experienceYearEndDate,
+            responsibilities,
+            projects
+          };
         });
       }
     }
+    
      
     if (Object.is(payload.qualification[0].instutionName, '')) {
       payload.qualification = [];
@@ -359,13 +419,16 @@ export class CreateCandidatesComponent {
         localStorage.setItem('candidateId',this.candidateId);
         this.uploadCandidateImage();
 
+        this.returnCandidate = response;
+        this.returnCandidate.candidateLogo = this.candidateImageUrl;
+
         response.languagesKnown = response?.languagesKnown ? response.languagesKnown .split(',').map((skill: string) => skill.trim()) : [];
         response.skills = response?.skills ? response.skills.split(',').map((skill: string) => skill.trim()) : [];
         response.softSkills = response?.softSkills ? response.softSkills.split(',').map((skill: string) => skill.trim()) : [];
         response.coreCompentencies = response?.coreCompentencies ? response.coreCompentencies.split(',').map((skill: string) => skill.trim()) : [];
 
         response.candidateLogo = this.candidateImageUrl; 
-        this.close(response);
+        this.close(this.returnCandidate);
       
         this.gs.showMessage('Success', 'Create Successfully');
       },
@@ -665,6 +728,11 @@ export class CreateCandidatesComponent {
 
   patchCandidateForm(candidate: Candidate) {
 
+    candidate.languagesKnown = candidate?.languagesKnown ? candidate.languagesKnown .split(',').map((skill: string) => skill.trim()) : [];
+    candidate.skills = candidate?.skills ? candidate.skills.split(',').map((skill: string) => skill.trim()) : [];
+    candidate.softSkills = candidate?.softSkills ? candidate.softSkills.split(',').map((skill: string) => skill.trim()) : [];
+    candidate.coreCompentencies = candidate?.coreCompentencies ? candidate.coreCompentencies.split(',').map((skill: string) => skill.trim()) : [];
+
     if(candidate.certificates?.length >0){
       const certificateFormArray = this.candidateForm.get('certificates') as FormArray;
       certificateFormArray.clear();
@@ -741,6 +809,8 @@ export class CreateCandidatesComponent {
         experienceFormArray.clear();
         experiences?.forEach((experience) => {
         
+          const responsibilities = experience?.responsibilities ? experience.responsibilities.split(',').map((res: string) => res.trim()) : [];
+
           const experienceForm = this.createExperience();
           experienceForm.patchValue({
             id:experience.id,
@@ -749,7 +819,7 @@ export class CreateCandidatesComponent {
             experienceYearStartDate:  experience.experienceYearStartDate ? new Date(experience.experienceYearStartDate) : null,
             experienceYearEndDate:  experience.experienceYearEndDate ? new Date(experience.experienceYearEndDate) : null,
             currentlyWorking: experience.currentlyWorking,
-            responsibilities:experience.responsibilities,
+            responsibilities:responsibilities,
             isDeleted:false
           });
          
@@ -814,7 +884,8 @@ export class CreateCandidatesComponent {
            
             data: {
               candidates: this.candidates,
-              candidateId: this.candidates?.id
+              candidateId: this.candidates?.id,
+              resumeName:this.resumeName,
             },
             closable: true,
             width: '30%',
@@ -867,12 +938,12 @@ export class CreateCandidatesComponent {
         next: (response) => {
           const candidate = response as Candidate;
           if(candidate !== null){
+          this.candidates = candidate;
           this.candidateId=candidate?.id;
-          candidate.languagesKnown = candidate?.languagesKnown ? candidate.languagesKnown .split(',').map((skill: string) => skill.trim()) : [];
-          candidate.skills = candidate?.skills ? candidate.skills.split(',').map((skill: string) => skill.trim()) : [];
-          candidate.softSkills = candidate?.softSkills ? candidate.softSkills.split(',').map((skill: string) => skill.trim()) : [];
-          candidate.coreCompentencies = candidate?.coreCompentencies ? candidate.coreCompentencies.split(',').map((skill: string) => skill.trim()) : [];
-          this.patchCandidateForm(candidate);
+        
+          const candidateClone = JSON.parse(JSON.stringify(candidate)); 
+
+          this.patchCandidateForm(candidateClone);
           this.getCandidateImage(candidate?.id);
 
           if (this.candidateId !== null && this.candidateId !== undefined) {
@@ -880,6 +951,7 @@ export class CreateCandidatesComponent {
           }
         }
         },
+
       });
     }
   
