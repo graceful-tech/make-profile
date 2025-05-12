@@ -69,6 +69,7 @@ export class MobileCandidatesDetailsComponent {
   availableCredits: any;
   isUploading: boolean = false;
   loading: boolean = true;
+  user: any;
 
 
   constructor(
@@ -99,7 +100,7 @@ export class MobileCandidatesDetailsComponent {
         sessionStorage.setItem('userId', id);
       });
     }
-
+    this.getUserById();
     this.createCandidateForm();
     this.createRequirementForm();
     this.generateYearList();
@@ -109,6 +110,7 @@ export class MobileCandidatesDetailsComponent {
     this.getFieldOfStudy();
     //this.getAppliedJobs();
     this.getAvailableCredits();
+    this.toggleAccountMenu();
 
 
 
@@ -1125,5 +1127,31 @@ export class MobileCandidatesDetailsComponent {
     }
   }
 
+  toggleAccountMenu() {
+    const accountMenu = document.querySelector('.account-wrapper');
+
+    accountMenu?.addEventListener('click', (event: any) => {
+      accountMenu.classList.toggle('show-account-menu');
+    });
+  }
+
+  getUserById() {
+    // const route = `users/${this.userId}`;
+
+    const route = `user/get_user/${sessionStorage.getItem('userName')}`
+    this.api.get(route).subscribe({
+
+
+      next: response => {
+        this.user = response;
+
+      }
+    });
+  }
+
+  close() {
+    const accountMenu = document.querySelector('.account-wrapper');
+    accountMenu?.classList.remove('show-account-menu');
+  }
 
 }

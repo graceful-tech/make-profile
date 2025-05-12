@@ -45,6 +45,14 @@ p-table th {
   /* background: #fff; */
 }
 
+.wrapper1 {
+  padding: 0.5rem;
+  display: flex;
+  gap: 20px;
+  /* flex-direction: column; */
+  /* position: relative; */
+}
+
 .profile {
   width: 150px;
   height: 150px;
@@ -128,8 +136,8 @@ img {
   z-index: 1000;
   display: flex;
   height: 9%;
-  align-items: center;
-  justify-content: space-around;
+  /* align-items: center; */
+  justify-content: space-between;
   /* padding: 10px 10px; */
 
 }
@@ -334,7 +342,7 @@ img {
     z-index: 1000;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    /* justify-content: space-between; */
     /* padding: 10px 10px; */
 
   }
@@ -504,5 +512,116 @@ img {
 
 .profile-wrapper {
   margin-top: 40px;
+}
+
+
+.account-wrapper {
+  position: relative;
+  cursor: pointer;
+  /* margin-right: 2.5rem; */
+}
+
+.first-letter {
+  width: 2.5rem;
+  height: 2.5rem;
+  background: #EFF2F7;
+  color: #fff;
+  border-radius: 50%;
+  margin-right: 0.8rem;
+  color: #515c66;
+}
+
+.first-letter-flex {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-name {
+  text-transform: capitalize;
+  margin-left: 0.5rem;
+  color: #515c66;
+  /* padding: 0.5rem 1rem; */
+  border-radius: 5px;
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.menu-item {
+  text-decoration: none;
+  list-style-type: none;
+  color: #474749;
+  padding: 0.5rem 1rem;
+}
+
+.menu-icon {
+  font-size: 1rem;
+  color: #474749;
+  margin-right: 0.5rem;
+}
+
+.divider {
+  border-top: 1px dashed #eee;
+}
+
+.account-menu {
+  position: absolute;
+  background: #fff;
+  padding: 0;
+  padding-left: 15px;
+  min-width: 250px;
+  right: 0;
+  box-shadow: 0 1px 5px 0 rgb(0 0 0/8%);
+  border-radius: 5px;
+}
+
+.account-menu {
+  display: none;
+}
+
+.account-wrapper.show-account-menu .account-menu {
+  display: block;
+}
+
+.menu-link {
+  display: flex;
+  align-items: center;
+}
+
+.menu-item:hover {
+  background: #2196F3;
+  color: #fff;
+  cursor: pointer;
+}
+
+.menu-item:hover i {
+  color: #fff;
+}
+
+.today {
+  position: absolute;
+  right: 0;
+}
+
+.today-button {
+  border: none;
+  background: #64748A;
+  color: #fff;
+  padding: 0.3rem 0.5rem;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  font-weight: 500;
+  font-family: 'Roboto', sans-serif;
+  cursor: pointer;
+}
+
+.p-dropdown {
+  border-color: snow !important;
 }
 

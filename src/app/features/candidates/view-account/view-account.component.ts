@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 export class ViewAccountComponent {
   userId: any;
   user: any;
-  constructor(public gs: GlobalService, private api: ApiService,private router:Router) { }
+  constructor(public gs: GlobalService, private api: ApiService, private router: Router) { }
   ngOnInit() {
     this.gs.user$.subscribe((response: any) => {
       this.userId = response?.id;
@@ -23,20 +23,20 @@ export class ViewAccountComponent {
 
   getUserById() {
     // const route = `users/${this.userId}`;
-    
-     const route = `user/get_user/${sessionStorage.getItem('userName') }`
+
+    const route = `user/get_user/${sessionStorage.getItem('userName')}`
     this.api.get(route).subscribe({
-      
+
 
       next: response => {
         this.user = response;
-        
+
       }
     });
-    
+
   }
-signOut(){
-  this.router.navigate(['editUser']);
-}
+  signOut() {
+    this.router.navigate(['editUser']);
+  }
 
 }

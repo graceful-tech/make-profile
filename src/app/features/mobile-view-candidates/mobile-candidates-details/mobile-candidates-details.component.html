@@ -11,11 +11,52 @@
 </span>
 
 
-<div class="header-image">
+<!-- <div class="header-image">
     <img class="header-images" src="assets/img/make-profile.png" alt="Header Image" />
     <p-button (onClick)="signOut()" label="Logout" class="right-align"></p-button>
-    </div>
-    
+    </div> -->
+    <header>
+      <div class="header-image">
+        <div>
+          <img class="header-images" src="assets/img/make-profile.png" alt="Header Image" />
+        </div>
+        <div class="wrapper1">
+          <div class="account-wrapper" appClickedOutside (clickedOutside)="close()">
+            <span class="user-name flex flex-row">
+              <div class="first-letter">
+                <div class="first-letter-flex">
+                  <span> {{user.userName.charAt(0)}}</span>
+                </div>
+              </div>
+              <span class="flex flex-column align-items-start mr-2">
+                <span class="font-size: 12px;" style="padding-bottom: 1px;">
+                  {{user.userName}}
+                </span>
+                <span style="font-size: 12px;">Standard User</span>
+              </span>
+              <i class="pi pi-angle-down"></i>
+            </span>
+            <ul class="account-menu scalein fadeout">
+              <!-- (click)="setPanel('ACCOUNT')" -->
+              <li class="menu-item mt-2" routerLink="/viewUser">
+                <a class="menu-link">
+                  <i class="pi pi-user menu-icon"></i>
+                  <span>My Account</span>
+                </a>
+              </li>
+              <div class="divider"></div>
+              <li class="menu-item mb-2" (click)="signOut()">
+                <a class="menu-link">
+                  <i class="pi pi-sign-out menu-icon"></i>
+                  <span>Logout</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div><p-button label="Logout" (onClick)="signOut()"></p-button></div>
+        </div>
+      </div>
+    </header>
     <div class="wrapper">
      <div class="left-section">
         <div class="profile-wrapper">
