@@ -59,7 +59,7 @@ export class LoginComponent {
           console.log(response)
           sessionStorage.setItem('authType', 'custom');
           sessionStorage.setItem('token', response.token);
-          sessionStorage.setItem('userName', response.name);
+          sessionStorage.setItem('userName', response.userName);
           sessionStorage.setItem('userId', response.id);
           this.router.navigate(['/candidate']);
         },
