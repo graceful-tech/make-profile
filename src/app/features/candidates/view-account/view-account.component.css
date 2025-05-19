@@ -1,32 +1,19 @@
-.account-info {
-    padding: 1rem;
-    margin-left: 0.5rem;
-    align-items: center;
-}
-
-
-.account-info label {
-    font-weight: 500;
-}
-
-.light-backgroud {
-    background: #F8F9FA;
-}
-.register-wrapper {
+.wrapper {
     background: #fff;
-    width: 30%;
     height: auto;
     padding:1.5rem;
     margin: 0 auto;
-}
+    margin-top:10%;
+    width: 55%;
+}      
 
 .align {
-    display: flex;
+
     align-items: center;
     height: 90vh;
     
 }
-.profile-wrapper {
+profile-wrapper {
     margin: auto;
     background: #fff;
     padding: 1.2rem;
@@ -34,12 +21,8 @@
     box-shadow: 0 1px 2px 0 #ffffff;
     overflow: hidden;
     box-sizing: border-box;
-}
+} 
 
-.wrapper {
-    margin-top: 2.8rem;
-    padding: 0.5rem;
-}
 header-image {
     position: relative;
     top: 0;
@@ -63,6 +46,24 @@ header-image {
 
 
 .right-align{
-    margin-left: 35%; 
+    margin-left: 75%; 
+}
+.account-info {
+
+padding: 1rem;
+margin-left: 0.5rem;
 }
 
+.account-info label {
+font-weight: 500;
+}
+
+.light-backgroud {
+background: #F8F9FA;
+}
+.right-align-btn {
+    float: right;
+    margin-right: 15px;
+    padding: 1rem;
+  }
+  

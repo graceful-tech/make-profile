@@ -1,0 +1,61 @@
+
+<div class="header-image">
+    <img class="header-images"src="assets/img/make-profile.svg" alt="Header Image"/>
+    <p-button (onClick)="signOut()" label="Back" class="right-align"></p-button>
+</div>
+
+ <div class="right-section">
+    <div class="wrapper">
+      <div class="heading">
+          <span>My Account</span>
+      
+         <p-button (onClick)="editOut()" label="Edit" class="right-align"></p-button> 
+        </div>  
+      <div class="profile-wrapper">
+          <div class="col-12 md:col-6">
+            <div class="field-wrapper">
+              <label>Name</label>
+              <div class="input-wrapper">
+                <input type="text" pInputText [value]="user?.name" [disabled]="true"    />
+              </div>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="field-wrapper">
+              <label>Email</label>
+              <div class="input-wrapper">
+                <input type="text" pInputText [value]="user?.email"  [disabled]="true"   />
+              </div>
+            </div>
+        </div>
+
+
+        <div class="col-12">
+            <div class="field-wrapper">
+              <label>Contact</label>
+              <div class="input-wrapper">
+                <input type="text" pKeyFilter="int"  pInputText [value]="user?.mobileNumber"  [disabled]="true"   />
+              </div>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="field-wrapper">
+              <label>Password 
+                <button type="button"   (click)="togglePassword()" >
+                    <i [ngClass]="showPassword ? 'pi pi-eye-slash' : 'pi pi-eye'"></i>
+                  </button>
+              </label>
+              <div class="input-wrapper">
+                <input type="text" pKeyFilter="int" [disabled]="true"  pInputText [value]=" showPassword ? user?.password : '••••••••'" 
+                />
+              </div>
+            </div>
+        </div>
+                
+     </div>
+        
+</div>
+
+</div>

@@ -1,16 +1,16 @@
 import { Component } from '@angular/core';
-import { GlobalService } from '../../../services/global.service';
-import { ApiService } from '../../../services/api.service';
 import { Router } from '@angular/router';
+import { ApiService } from 'src/app/services/api.service';
+import { GlobalService } from 'src/app/services/global.service';
 
 @Component({
-  selector: 'app-view-account',
+  selector: 'app-mob-view-account',
   standalone: false,
-  templateUrl: './view-account.component.html',
-  styleUrl: './view-account.component.css'
+  templateUrl: './mob-view-account.component.html',
+  styleUrl: './mob-view-account.component.css'
 })
-export class ViewAccountComponent {
-  userId: any;
+export class MobViewAccountComponent {
+userId: any;
   user: any;
   constructor(public gs: GlobalService, private api: ApiService, private router: Router) { }
   ngOnInit() {
@@ -47,5 +47,6 @@ togglePassword() {
   this.showPassword = !this.showPassword;
 }
   
+
 
 }

@@ -9,7 +9,8 @@ import { MobileChosseTemplateComponent } from './mobile-chosse-template/mobile-c
 import { MobileEditCandidatesComponent } from './mobile-edit-candidates/mobile-edit-candidates.component';
 import { MobilePaymentOptionComponent } from './mobile-payments/mobile-payment-option/mobile-payment-option.component';
 import { MobilePaymentDetailsComponent } from './mobile-payments/mobile-payment-details/mobile-payment-details.component';
- 
+import { MobViewAccountComponent } from './mob-view-account/mob-view-account.component';
+  
 
 @NgModule({
   declarations: [
@@ -18,8 +19,9 @@ import { MobilePaymentDetailsComponent } from './mobile-payments/mobile-payment-
     MobileChosseTemplateComponent,
     MobileEditCandidatesComponent,
     MobilePaymentOptionComponent,
-    MobilePaymentDetailsComponent
-
+    MobilePaymentDetailsComponent,
+    MobViewAccountComponent
+ 
   ],
   imports: [
     CommonModule,

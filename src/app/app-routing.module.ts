@@ -9,6 +9,7 @@ import { MobileLoginComponent } from './auth-mobile/mobile-login/mobile-login.co
 import { MobileCreateAccountComponent } from './auth-mobile/mobile-create-account/mobile-create-account.component';
 import { ViewAccountComponent } from './features/candidates/view-account/view-account.component';
 import { EditUserComponent } from './features/candidates/edit-user/edit-user.component';
+import { MobViewAccountComponent } from './features/mobile-view-candidates/mob-view-account/mob-view-account.component';
 
 const routes: Routes = [
 
@@ -27,6 +28,11 @@ const routes: Routes = [
   { path: 'mob-login', component: MobileLoginComponent },
 
   {path:'editUser', component: EditUserComponent},
+
+  { path: 'view-mob-user', component: MobViewAccountComponent },
+  
+ 
+ 
 
 
   {

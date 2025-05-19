@@ -1,0 +1,62 @@
+
+  <div class="wrapper">
+    <div class="heading">
+        <span>Edit User</span>
+        <p-button (onClick)="viewOut()" label="Back"></p-button> 
+      </div>
+        <div class="profile-wrapper">
+            <div class="grid grid-nogutter account-info light-backgroud">
+                <div class="col-2">
+                    <label>Name</label>
+                </div>
+                <div class="col-10">
+                    <input type="name" [(ngModel)]="user.name" class="form-control" />
+                  </div>
+                </div>
+
+          <div class="grid grid-nogutter account-info">
+            <div class="col-2"><label>Email</label> 
+            </div>
+            <div class="col-10">
+              <input type="email" [(ngModel)]="user.email" class="form-control" />
+            </div>
+          </div>
+  
+          <div class="grid grid-nogutter account-info light-backgroud">
+            <div class="col-2"><label>Contact</label></div>
+            <div class="col-10">
+                <!-- [disabled]="user?.mobileNumber" -->
+                <input  
+                type="text"
+                [(ngModel)]="user.mobileNumber"
+                class="form-control"
+              />
+            </div>
+          </div>
+  
+          <div class="grid grid-nogutter account-info">
+            <div class="col-2"><label>Password</label></div>
+            <div class="col-10" style="display: flex; align-items: center">
+              <input
+                [type]="showPassword ? 'text' : 'password'"
+                [(ngModel)]="user.password"
+                class="form-control"
+              />
+              <button
+                type="button"
+                (click)="togglePassword()"
+                style="margin-left: 10px"
+              >
+                <i [ngClass]="showPassword ? 'pi pi-eye-slash' : 'pi pi-eye'"></i>
+              </button>
+            </div>
+          </div>
+  
+          <div class="mt-4 btn-primary">
+            <p-button (onClick)="saveUser()" class="btn-primary" >Save</p-button>
+          </div>
+        </div>
+    </div>
+
+
+

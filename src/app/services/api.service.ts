@@ -13,6 +13,9 @@ export const IS_APPLY_JOB_REQUEST = new HttpContextToken<boolean>(() => false);
   providedIn: 'root'
 })
 export class ApiService {
+  put(route: string, user: any) {
+    throw new Error('Method not implemented.');
+  }
 
   constructor(private http: HttpClient) { }
 
