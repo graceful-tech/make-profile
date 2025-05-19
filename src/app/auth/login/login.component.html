@@ -1,10 +1,10 @@
 <div class="header-image">
     <img class="header-images" src="assets/img/make-profile.svg" alt="Header Image" />
     <p-button (onClick)="goBack()" label="Back" class="right-align"></p-button>
-  </div>
+</div>
 <div class="main-wrapper">
     <div class="login-form">
-         <form [formGroup]="loginForm">
+        <form [formGroup]="loginForm">
             <div class="heading">
                 <span>Login</span>
             </div>
@@ -19,7 +19,7 @@
                     <small class="error-message" *ngIf="loginForm.controls['mobileNumber'].invalid && showError">
                         Mobile Number is required</small>
                 </div>
-           
+
                 <div class="col-12">
                     <div class="field-wrapper">
                         <label class="required">Password</label>
@@ -31,7 +31,7 @@
                     <small class="error-message" *ngIf="loginForm.controls['password'].invalid && showError">
                         Password is required</small>
                 </div>
-        
+
                 <div class="col-6">
                     <div class="field-wrapper">
                         <p-button type="submit" [label]="loadingFlag ? 'Please Wait..' : 'Login'"
@@ -41,7 +41,8 @@
                 </div>
                 <div class="col-6">
                     <div class="forgot-password">
-                        <a href="javascript:void(0)" routerLink="/request-password-reset">Forgot Password</a>
+                      
+                        <a  routerLink="/password">Forgot Password</a>
                     </div>
                 </div>
             </div>

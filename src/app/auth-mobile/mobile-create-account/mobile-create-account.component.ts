@@ -68,7 +68,8 @@ export class MobileCreateAccountComponent {
         next: response => {
           this.loadingFlag = false;
           const customer = response as any;
-          this.router.navigate(['/mobiel-login']);
+          window.alert('Your Account Created SuccessFully')
+          this.router.navigate(['/mob-login']);
           console.log(customer);
         },
         error: (error) => {
