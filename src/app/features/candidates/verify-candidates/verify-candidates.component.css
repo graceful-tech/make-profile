@@ -250,23 +250,12 @@ margin-top: 10px;
     border-radius: 8px;
 }
 
-  .highlight-border {
+.highlight-border {
       animation: blink-border 1s infinite;
       border-color: red;
     }
 
     @keyframes blink-border {
       0%, 100% { border-color: red; }
-      50% { border-color: black; }
+      50% { border-color: transparent; }
     }
-
-      .headerStyle {
-      text-align: center; 
-      font-weight: bold;
-      animation: blink 1s infinite;
-      }   
-
-      @keyframes blink {
-      0%, 100% { color: red;}
-      50% { color: black; }
-      }

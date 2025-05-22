@@ -155,14 +155,14 @@
                   <p-checkbox
                     [binary]="true"
                     inputId="fresher"
-                    formControlName="isFresher" Style="padding-right: 5px;"
+                    formControlName="fresher" Style="padding-right: 5px;"
                   ></p-checkbox>
                   <label>Fresher</label>
                 </div>
               </div>
             </div>
           
-            <ng-container *ngIf="!candidateForm.get('isFresher')?.value">
+            <ng-container *ngIf="!candidateForm.get('fresher')?.value">
               <div formArrayName="experiences">
                 <div *ngFor="let experience of experienceControls.controls; let i = index" [formGroupName]="i" class="experience-container">
                   
@@ -297,7 +297,7 @@
               </div>
             </ng-container>
   
-            <ng-container *ngIf="candidateForm.get('isFresher')?.value">
+            <ng-container *ngIf="candidateForm.get('fresher')?.value">
               <div formArrayName="collegeProject">
                 <div *ngFor="let collegeProject of collegeProjectControls.controls; let i = index" [formGroupName]="i" class="experience-container">
                   

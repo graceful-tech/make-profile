@@ -18,13 +18,13 @@ import { DatePipe } from '@angular/common';
 import { PaymentOptionComponent } from '../../candidates/payments/payment-option/payment-option.component';
 
 @Component({
-  selector: 'app-mobile-create-candidates',
+  selector: 'app-mobile-verify-component',
   standalone: false,
-  templateUrl: './mobile-create-candidates.component.html',
-  styleUrl: './mobile-create-candidates.component.css'
+  templateUrl: './mobile-verify-component.component.html',
+  styleUrl: './mobile-verify-component.component.css'
 })
-export class MobileCreateCandidatesComponent {
-  @ViewChild('chipInput', { static: false }) chipInputRef!: ElementRef;
+export class MobileVerifyComponentComponent {
+ @ViewChild('chipInput', { static: false }) chipInputRef!: ElementRef;
 
   candidateForm!: FormGroup;
   genderList: Array<ValueSet> = [];
@@ -1014,3 +1014,4 @@ export class MobileCreateCandidatesComponent {
   }
     
 }
+

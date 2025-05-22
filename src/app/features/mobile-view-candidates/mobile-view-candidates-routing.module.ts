@@ -5,6 +5,7 @@ import { MobileCreateCandidatesComponent } from './mobile-create-candidates/mobi
 import { MobileChosseTemplateComponent } from './mobile-chosse-template/mobile-chosse-template.component';
 import { MobileEditCandidatesComponent } from './mobile-edit-candidates/mobile-edit-candidates.component';
 import { MobilePaymentOptionComponent } from './mobile-payments/mobile-payment-option/mobile-payment-option.component';
+import { MobileVerifyComponentComponent } from './mobile-verify-component/mobile-verify-component.component';
 
 const routes: Routes = [
 
@@ -17,8 +18,9 @@ const routes: Routes = [
   {path: 'edit-candidate', component:MobileEditCandidatesComponent},
   
   {path: 'mobile-payment', component:MobilePaymentOptionComponent},
-  
 
+  {path: 'verify-components', component:MobileVerifyComponentComponent},
+  
 ];
 
 @NgModule({

@@ -118,7 +118,7 @@
             <ng-template pTemplate="body" let-credits>
               <tr>
                 <td>{{ credits.id }}</td>
-                <td>{{ credits.creditUsed ?? 'N/A' }}</td>
+                <td>{{ credits.creditUsed ?? 0 }}</td>
                 <td>{{ credits.creditAvailable }}</td>
                 <td>{{ credits.paymentDate }}</td>
               </tr>
@@ -281,7 +281,7 @@
             <div class="field-wrapper">
               <label class="required">Mobile</label>
               <div class="input-wrapper">
-                <input type="text"  pKeyFilter="int"  [maxlength]="10"  [disabled]="candidateId" pInputText formControlName="mobileNumber" />
+                <input type="text"  pKeyFilter="int"  [maxlength]="10"   pInputText formControlName="mobileNumber" />
               </div>
             </div>
             <small class="error-message" *ngIf="candidateForm.controls['mobileNumber'].invalid && showError">
@@ -417,14 +417,14 @@
         <div class="grid">
           <div class="col-12 md:col-6 lg:col-3">
             <div class="fresher-checkbox pb-3">
-              <p-checkbox [binary]="true" inputId="fresher" formControlName="isFresher"
+              <p-checkbox [binary]="true" inputId="fresher" formControlName="fresher"
                 Style="padding-right: 5px;"></p-checkbox>
               <label>Fresher</label>
             </div>
           </div>
         </div>
 
-        <ng-container *ngIf="!candidateForm.get('isFresher')?.value">
+        <ng-container *ngIf="!candidateForm.get('fresher')?.value">
           <div formArrayName="experiences">
             <div *ngFor="let experience of experienceControls.controls; let i = index" [formGroupName]="i"
               class="experience-container">
@@ -543,7 +543,7 @@
           </div>
         </ng-container>
 
-        <ng-container *ngIf="candidateForm.get('isFresher')?.value">
+        <ng-container *ngIf="candidateForm.get('fresher')?.value">
           <div formArrayName="collegeProject">
             <div *ngFor="let collegeProject of collegeProjectControls.controls; let i = index" [formGroupName]="i"
               class="experience-container">

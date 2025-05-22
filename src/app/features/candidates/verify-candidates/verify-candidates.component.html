@@ -1,14 +1,10 @@
-<Header *ngIf="fieldCount > 0">
-  <h5 class="headerStyle">Please Fill atleast {{fieldCount}} Section</h5>
-</Header>
 
 <div class="wrapper">
   <div class="profile-wrapper">
       <form [formGroup]="candidateForm">
           <app-make-profile-divider></app-make-profile-divider>
-          <section *ngIf="personalDetails">
-           <div class="section-heading">Personal Details</div>
-            <div class="grid" id="personalDetails">
+          <div class="section-heading">Personal Details</div>
+            <div class="grid">
             <div class="col-12 md:col-6 lg:col-3">
               <div class="field-wrapper">
                 <label class="required">Mobile Number</label>
@@ -125,11 +121,10 @@
           
       
           </div>
-   </section>
+
           <app-make-profile-divider></app-make-profile-divider>
       
-       <section *ngIf="skills">
-          <div class="grid border-line" id="skills">
+          <div class="grid">
              <div class="col-12">
               <div class="field-wrapper">
                <label>Skills</label>
@@ -139,11 +134,8 @@
               </div>
              </div>
           </div>
-        </section>   
-         
+          
           <app-make-profile-divider></app-make-profile-divider>
-
-        <section *ngIf="experience">
           <div class="section-heading mt-3">
             <div>Professional Details</div>
           </div>
@@ -154,17 +146,15 @@
                 <p-checkbox
                   [binary]="true"
                   inputId="fresher"
-                  formControlName="fresher"  Style="padding-right: 5px;"
+                  formControlName="fresher" Style="padding-right: 5px;"
                 ></p-checkbox>
                 <label>Fresher</label>
               </div>
             </div>
           </div>
-      
-
-        <!-- <section *ngIf="experience"> -->
+        
           <ng-container *ngIf="!candidateForm.get('fresher')?.value">
-            <div formArrayName="experiences" class="border-line" id="experience">
+            <div formArrayName="experiences" class="border-line" id="experiences">
               <div *ngFor="let experience of experienceControls.controls; let i = index" [formGroupName]="i" class="experience-container">
                 
                 <!-- Experience Details -->
@@ -305,11 +295,9 @@
               
             </div>
           </ng-container>
-        </section>  
 
-        <section *ngIf="collegeProject">
           <ng-container *ngIf="candidateForm.get('fresher')?.value">
-            <div formArrayName="collegeProject" class="border-line" id="collegeProject">
+            <div formArrayName="collegeProject" class="border-line">
               <div *ngFor="let collegeProject of collegeProjectControls.controls; let i = index" [formGroupName]="i" class="experience-container">
                 
                 <div class="grid">
@@ -355,9 +343,8 @@
               
             </div>
           </ng-container>
-      </section>
+      
           <app-make-profile-divider></app-make-profile-divider>
-        <section *ngIf="qualification"> 
           <div class="section-heading mt-3">
             <div>Qualification Details</div>
           </div>
@@ -429,7 +416,6 @@
                  
                 </div>
 
-
                 <hr class="sub-section-divider" />
 
                 <div class="col-12 md:col-6 lg:col-3" style="padding-left: 15px;" *ngIf="i>0">
@@ -444,12 +430,8 @@
                 <!-- <p-button type="button" label="+ Add Qualifications" (click)="addQualication()"></p-button> -->
               </div>
             </div>
-
-         </section>    
           
             <app-make-profile-divider></app-make-profile-divider>
-
-          <section *ngIf="course" >
             <div class="section-heading mt-3">
               <div>Course & Certificates</div>
             </div>
@@ -502,9 +484,8 @@
                  </div>
             </div>
       
-        </section>  
+      
              <app-make-profile-divider></app-make-profile-divider>
-         <section *ngIf="achievements">   
             <div class="section-heading mt-3">
               <div>Achievements & Awards</div>
             </div>
@@ -545,11 +526,10 @@
                      <button type="button" class="custom-btn"  (click)="addAchievements()">+ Add Achievements</button>
                   </div>
             </div>    
-    </section>  
+
             <app-make-profile-divider></app-make-profile-divider>
 
-        <section *ngIf="extraSkills">  
-            <div class="grid" class="border-line" id="extraSkills">
+            <div class="grid">
               <div class="col-12 md:col-6">
                <div class="field-wrapper">
                 <label>Soft Skills</label>
@@ -568,7 +548,6 @@
                 </div>
                </div>
            </div>
-           </section>  
          </form>
 
          <app-make-profile-divider></app-make-profile-divider>
@@ -580,9 +559,20 @@
           <p-button  styleClass="p-button-secondary" label="Reset" (onClick)="reset()"> </p-button>
           </div>
           <div class="button-wrapper" *ngIf="payments">
-            <p-button class="mr-2" label="Next"  (onClick)="createCandidate()"></p-button>
+            <p-button class="mr-2" label="Next"  (onClick)="verifyDetails()"></p-button>
           </div>
           
   </div>
- 
+  <!-- <section class="preview-resume" >
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="first-image" >
+          <img  src="assets/img/image2.jpg" alt="search" style="border-radius: 10px;"/>
+        </div> 
+        <div class="second-image">
+          <img src="assets/img/image3.jpg"/>
+        </div>
+      </div>
+    </div>
+  </section> -->
 </div>

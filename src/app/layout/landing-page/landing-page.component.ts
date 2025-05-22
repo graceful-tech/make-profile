@@ -19,7 +19,10 @@ export class LandingPageComponent {
   constructor(private fb: FormBuilder, private api: ApiService, private gs: GlobalService, private router: Router,
     private dialog: DialogService, private route: ActivatedRoute, private deviceServiceService: DeviceServiceService) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+
+    this.deviceServiceService.directlyTo('landing');
+   }
 
   candidate() {
     this.router.navigate(['/candidates'],

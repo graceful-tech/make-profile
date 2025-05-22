@@ -54,7 +54,7 @@ export class CreateCandidatesComponent {
   shareJobImageUrl: any;
   requirement: any;
   userName: any;
-  isFresher: boolean = false;
+  fresher: boolean = false;
   yearsList: any[] = [];
   dataLoaded: boolean = true;
   maritalStatus: Array<ValueSet> = [];
@@ -77,6 +77,13 @@ export class CreateCandidatesComponent {
   collegeProjectDeletedArray:Array<any> = [];
   returnCandidate:any;
   resumeName: any;
+  fieldsName: any;
+  experience:boolean=true;
+  personalDetails:boolean =true;
+  course:boolean = true;
+  achievements:boolean = true;
+  extraSkills:boolean = true
+  qualification:boolean= true;
 
   constructor(
     private api: ApiService,
@@ -96,6 +103,7 @@ export class CreateCandidatesComponent {
     this.payments = this.config.data?.payments;
     this.candidateImageUrl = this.config.data?.candidateImage;
     this.resumeName = this.config.data?.resumeName;
+    this.fieldsName = this.config.data?.fieldsName;
   }
 
   ngOnInit() {
@@ -116,11 +124,14 @@ export class CreateCandidatesComponent {
     else{
       this.getCandidates();
     }
+ 
 
   }
   
 
-  ngAfterViewInit() {}
+  ngAfterViewInit() {
+   
+  }
 
   createCandidateForm() {
     this.candidateForm = this.fb.group({
@@ -131,7 +142,7 @@ export class CreateCandidatesComponent {
       gender: [''],
       nationality: [''],
       languagesKnown: [''],
-      isFresher: [''],
+      fresher: [''],
       skills: ['', Validators.required],
       linkedIn: [''],
       dob: [''],
@@ -186,6 +197,8 @@ export class CreateCandidatesComponent {
   }
 
   createCandidate() {
+    if(this.candidateForm.valid){
+    
     this.dataLoaded = false;
 
     const route = 'candidate/create';
@@ -202,19 +215,19 @@ export class CreateCandidatesComponent {
     payload.dob = this.datePipe.transform(payload.dob,'yyyy-MM-dd');
    }
 
-    if (payload.isFresher != null && payload.isFresher) {
-      payload['isFresher'] = true;
+    if (payload.fresher != null && payload.fresher) {
+      payload['fresher'] = true;
     } else {
-      payload['isFresher'] = false;
+      payload['fresher'] = false;
     }
 
   
 
-    if (payload.isFresher) {
+    if (payload.fresher) {
       payload.experiences = [];
     }  
      
-    if (payload.isFresher) {
+    if (payload.fresher) {
     if (Object.is(payload.collegeProject[0].collegeProjectName, '')) {
         payload.collegeProject = [];
       } else {
@@ -227,46 +240,8 @@ export class CreateCandidatesComponent {
       }
     } 
 
-  
-    // if (!payload.isFresher) {
-    //   if (Object.is(payload.experiences[0].companyName, '')) {
-    //     payload.experiences = [];
-    //   } else {
-    //     payload.experiences.forEach((exp: any) => {
-    //       exp.experienceYearStartDate = this.datePipe.transform(
-    //         exp.experienceYearStartDate,
-    //         'yyyy-MM-dd'
-    //       );
-    //       exp.experienceYearEndDate = this.datePipe.transform(
-    //         exp.experienceYearEndDate,
-    //         'yyyy-MM-dd'
-    //       );
-
-    //       payload.experiences = payload.experiences.map((res: any) => ({
-    //         ...res,
-    //         responsibilities: Array.isArray(res.responsibilities)
-    //           ? res.responsibilities.join(', ')
-    //           : res.responsibilities
-    //       }));
-    
-    //       const hasEmptyProjectName = exp.projects?.some((proj: any) => proj.projectName === '');
-    
-    //       if (hasEmptyProjectName) {
-    //         exp.projects = [];
-    //       } else {
-    //         exp.projects = exp.projects.map((proj: any) => ({
-    //           ...proj,
-    //           projectSkills: Array.isArray(proj.projectSkills)
-    //             ? proj.projectSkills.join(', ')
-    //             : proj.projectSkills
-    //         }));
-    //       }
-    //     });
-    //   }
-    // }
-
-
-    if (!payload.isFresher) {
+   
+    if (!payload.fresher) {
       if (Object.is(payload.experiences?.[0]?.companyName, '')) {
         payload.experiences = [];
       } else {
@@ -309,6 +284,7 @@ export class CreateCandidatesComponent {
           };
         });
       }
+    
     }
     
      
@@ -390,7 +366,7 @@ export class CreateCandidatesComponent {
     }
  
 
-    if (payload.isFresher) {
+    if (payload.fresher) {
       const hasValidProject = payload.collegeProject.some((project: { collegeProjectName: string; }) =>
         project.collegeProjectName && project.collegeProjectName.trim() !== ''
       );
@@ -422,10 +398,10 @@ export class CreateCandidatesComponent {
         this.returnCandidate = response;
         this.returnCandidate.candidateLogo = this.candidateImageUrl;
 
-        response.languagesKnown = response?.languagesKnown ? response.languagesKnown .split(',').map((skill: string) => skill.trim()) : [];
-        response.skills = response?.skills ? response.skills.split(',').map((skill: string) => skill.trim()) : [];
-        response.softSkills = response?.softSkills ? response.softSkills.split(',').map((skill: string) => skill.trim()) : [];
-        response.coreCompentencies = response?.coreCompentencies ? response.coreCompentencies.split(',').map((skill: string) => skill.trim()) : [];
+        // response.languagesKnown = response?.languagesKnown ? response.languagesKnown .split(',').map((skill: string) => skill.trim()) : [];
+        // response.skills = response?.skills ? response.skills.split(',').map((skill: string) => skill.trim()) : [];
+        // response.softSkills = response?.softSkills ? response.softSkills.split(',').map((skill: string) => skill.trim()) : [];
+        // response.coreCompentencies = response?.coreCompentencies ? response.coreCompentencies.split(',').map((skill: string) => skill.trim()) : [];
 
         response.candidateLogo = this.candidateImageUrl; 
         this.close(this.returnCandidate);
@@ -440,6 +416,11 @@ export class CreateCandidatesComponent {
       },
     });
     this.dataLoaded = true;
+
+    }
+    else{
+      this.showError = true;
+    }
   }
 
   reset() {
@@ -455,8 +436,8 @@ export class CreateCandidatesComponent {
   createExperience(): FormGroup {
     return this.fb.group({
       id:[''],
-      companyName: ['', Validators.required],
-      role: ['', Validators.required],
+      companyName: [''],
+      role: [''],
       experienceYearStartDate: [''],
       experienceYearEndDate: [''],
       projects: this.fb.array([this.createProject()]),
@@ -741,7 +722,21 @@ export class CreateCandidatesComponent {
         certificateFormArray.push(this.createCertificateFormGroup(certificate));
       });
     }
+
+      if(candidate.experiences?.length > 0){
       this.patchExperiences(candidate.experiences);
+      }
+      else{
+          if(candidate.collegeProject?.length > 0){
+      const collegeProjectFromArray = this.candidateForm.get('collegeProject') as FormArray;
+      collegeProjectFromArray.clear();
+
+      candidate.collegeProject?.forEach(collegeProject => {
+        collegeProject.collegeProjectSkills = collegeProject?.collegeProjectSkills ? collegeProject.collegeProjectSkills.split(',').map((skill: string) => skill.trim()) : [];
+        collegeProjectFromArray.push(this.createCollegeProjectFormGroup(collegeProject));
+      });
+    }
+      }
   
       if(candidate.qualification?.length > 0){
         const qualificationFormArray = this.candidateForm.get('qualification') as FormArray;
@@ -761,15 +756,7 @@ export class CreateCandidatesComponent {
       });
     }
 
-    if(candidate.collegeProject?.length > 0){
-      const collegeProjectFromArray = this.candidateForm.get('collegeProject') as FormArray;
-      collegeProjectFromArray.clear();
-
-      candidate.collegeProject?.forEach(collegeProject => {
-        collegeProject.collegeProjectSkills = collegeProject?.collegeProjectSkills ? collegeProject.collegeProjectSkills.split(',').map((skill: string) => skill.trim()) : [];
-        collegeProjectFromArray.push(this.createCollegeProjectFormGroup(collegeProject));
-      });
-    }
+    
   
       const candidateDob = candidate.dob ? new Date(candidate.dob) : null;
 
@@ -781,7 +768,7 @@ export class CreateCandidatesComponent {
         gender: candidate?.gender,
         nationality:candidate?.nationality,
         languagesKnown: candidate?.languagesKnown,
-        isFresher: candidate?.isFresher,
+        fresher: candidate?.fresher,
         skills: candidate?.skills,
         linkedIn: candidate?.linkedIn,
         dob: candidateDob,  
@@ -969,6 +956,7 @@ export class CreateCandidatesComponent {
       });
   
     }
+ 
 
   }
    

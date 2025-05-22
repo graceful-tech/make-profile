@@ -17,6 +17,7 @@ import { Requirement } from 'src/app/models/candidates/requirement.model';
 import { LocalStorage } from '@ng-idle/core';
 import { ChooseTemplateComponent } from '../Templates/choose-template/choose-template.component';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { CollegeProject } from 'src/app/models/candidates/college-project';
 
 
 @Component({
@@ -40,7 +41,7 @@ export class CandidatesDetailsComponent {
   resumeDetailsSubscription!: Subscription;
   loaderImagePreview: any;
   userName: any;
-  isFresher: boolean = false;
+  fresher: boolean = false;
   yearsList: any[] = [];
   dataLoaded: boolean = true;
   maritalStatus: Array<ValueSet> = [];
@@ -157,7 +158,7 @@ export class CandidatesDetailsComponent {
       alternateMobileNumber: [''],
       nationality: [''],
       languagesKnown: [[]],
-      isFresher: [''],
+      fresher: [''],
       skills: ['', Validators.required],
       linkedIn: [''],
       dob: [''],
@@ -216,6 +217,7 @@ export class CandidatesDetailsComponent {
   }
 
   createCandidate() {
+    if(this.candidateForm.valid){
     this.dataLoaded = false;
 
     const route = 'candidate/create';
@@ -232,17 +234,17 @@ export class CandidatesDetailsComponent {
       payload.dob = this.datePipe.transform(payload.dob, 'yyyy-MM-dd');
     }
 
-    if (payload.isFresher != null && payload.isFresher) {
-      payload['isFresher'] = true;
+    if (payload.fresher != null && payload.fresher) {
+      payload['fresher'] = true;
     } else {
-      payload['isFresher'] = false;
+      payload['fresher'] = false;
     }
 
-    if (payload.isFresher) {
+    if (payload.fresher) {
       payload.experiences = [];
     }
 
-    if (payload.isFresher) {
+    if (payload.fresher) {
       if (Object.is(payload.collegeProject[0].collegeProjectName, '')) {
         payload.collegeProject = [];
       } else {
@@ -255,7 +257,7 @@ export class CandidatesDetailsComponent {
       }
     }
 
-    // if (!payload.isFresher) {
+    // if (!payload.fresher) {
     //   if (Object.is(payload.experiences[0].companyName, '')) {
     //     payload.experiences = [];
     //   } else {
@@ -285,7 +287,7 @@ export class CandidatesDetailsComponent {
     //   }
     // }
 
-    if (!payload.isFresher) {
+    if (!payload.fresher) {
       if (Object.is(payload.experiences?.[0]?.companyName, '')) {
         payload.experiences = [];
       } else {
@@ -408,7 +410,7 @@ export class CandidatesDetailsComponent {
     }
 
 
-    if (payload.isFresher) {
+    if (payload.fresher) {
       const hasValidProject = payload.collegeProject.some((project: { collegeProjectName: string; }) =>
         project.collegeProjectName && project.collegeProjectName.trim() !== ''
       );
@@ -457,6 +459,10 @@ export class CandidatesDetailsComponent {
     });
     this.dataLoaded = true;
   }
+  else{
+    this.showError = true;
+  }
+  }
 
   reset() {
     this.candidateForm.reset();
@@ -471,8 +477,8 @@ export class CandidatesDetailsComponent {
   createExperience(): FormGroup {
     return this.fb.group({
       id: [''],
-      companyName: ['', Validators.required],
-      role: ['', Validators.required],
+      companyName: [''],
+      role: [''],
       experienceYearStartDate: [''],
       experienceYearEndDate: [''],
       projects: this.fb.array([this.createProject()]),
@@ -797,9 +803,9 @@ export class CandidatesDetailsComponent {
 
     const username = sessionStorage.getItem('userName');
 
-    const formData = new FormData();
-    formData.append('resume', this.multipartFile);
-    formData.append('userName', String(username));
+      const formData = new FormData();
+     formData.append('resume', this.multipartFile);
+      formData.append('username', String(username));
 
     this.api.upload(route, formData).subscribe({
       next: (response) => {
@@ -919,7 +925,20 @@ export class CandidatesDetailsComponent {
         certificateFormArray.push(this.createCertificateFormGroup(certificate));
       });
     }
-    this.patchExperiences(candidate.experiences);
+    if(candidate.experiences?.length > 0){
+      this.patchExperiences(candidate.experiences);
+      }
+      else{
+          if(candidate.collegeProject?.length > 0){
+      const collegeProjectFromArray = this.candidateForm.get('collegeProject') as FormArray;
+      collegeProjectFromArray.clear();
+
+      candidate.collegeProject?.forEach(collegeProject => {
+        collegeProject.collegeProjectSkills = collegeProject?.collegeProjectSkills ? collegeProject.collegeProjectSkills.split(',').map((skill: string) => skill.trim()) : [];
+        collegeProjectFromArray.push(this.createCollegeProjectFormGroup(collegeProject));
+      });
+    }
+      }
 
     if (candidate.qualification?.length > 0) {
       const qualificationFormArray = this.candidateForm.get('qualification') as FormArray;
@@ -949,7 +968,7 @@ export class CandidatesDetailsComponent {
       gender: candidate?.gender,
       nationality: candidate?.nationality,
       languagesKnown: candidate?.languagesKnown,
-      isFresher: candidate?.isFresher,
+      fresher: candidate?.fresher,
       skills: candidate?.skills,
       linkedIn: candidate?.linkedIn,
       dob: candidateDob,
@@ -1094,7 +1113,7 @@ export class CandidatesDetailsComponent {
     return this.fb.group({
       id: [''],
       collegeProjectName: [''],
-      collegeProjectSkills: [[]],
+      collegeProjectSkills: [''],
       collegeProjectDescription: [''],
       isDeleted: false
     });
@@ -1133,6 +1152,16 @@ export class CandidatesDetailsComponent {
     });
   }
 
+   createCollegeProjectFormGroup(collegeProject: CollegeProject){
+        return this.fb.group({
+          id:collegeProject.id,
+          collegeProjectName:  collegeProject.collegeProjectName,
+          collegeProjectSkills: collegeProject.collegeProjectSkills,
+          collegeProjectDescription:collegeProject.collegeProjectDescription,
+          isDeleted:false,
+        });
+      }
+
   getCandidates() {
     // this.ngxLoaderStart('Resume is getting ready, please wait...');
 
@@ -1147,9 +1176,9 @@ export class CandidatesDetailsComponent {
           const candidateClone = JSON.parse(JSON.stringify(candidate));
           this.patchCandidateForm(candidateClone);
 
-          if (this.candidateId !== null && this.candidateId !== undefined) {
-            this.candidateForm.controls['mobileNumber'].disable();
-          }
+          // if (this.candidateId !== null && this.candidateId !== undefined) {
+          //   this.candidateForm.controls['mobileNumber'].disable();
+          // }
           this.getCandidateImage(candidate?.id)
 
           console.log(this.candidates);

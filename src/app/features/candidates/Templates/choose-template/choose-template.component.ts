@@ -14,6 +14,8 @@ import { GlobalService } from 'src/app/services/global.service';
 import { CreateCandidatesComponent } from '../../create-candidates/create-candidates.component';
 import { Candidate } from 'src/app/models/candidates/candidate.model';
 import { LocalStorage } from '@ng-idle/core';
+import { AddCandidatesComponent } from '../../add-candidates/add-candidates.component';
+import { VerifyCandidatesComponent } from '../../verify-candidates/verify-candidates.component';
 
 @Component({
   selector: 'app-choose-template',
@@ -163,18 +165,39 @@ export class ChooseTemplateComponent {
     this.resetPosition();
   }
 
+  checkSection(resumeName: any){
+
+    const route = 'template/checker';
+     const payload = {
+      ...this.candidates,
+      resumeFormatName: resumeName,
+    };
+    localStorage.setItem('resumeName',resumeName);
+
+    this.api.retrieve(route,payload).subscribe({
+      next: (response) => {
+     console.log('keerthi');
+        const name = response?.name;
+         this.createResume(name);
+      },
+    });
+  
+  }
+
   createResume(resumeName: any) {
     this.ref.close();
     const candidateId = localStorage.getItem('candidateId');
    
-    localStorage.setItem('resumeName',resumeName);
+     localStorage.setItem('resumeName',resumeName);
+    const resumeNames = localStorage.getItem('resumeName');
 
-    const ref = this.dialog.open(CreateCandidatesComponent, {
+    const ref = this.dialog.open(VerifyCandidatesComponent, {
       data: {
         candidates: this.candidates,
         payments:true,
         candidateImage :this.candidateImageUrl,
-        resumeName:resumeName
+        resumeName:resumeName,
+       // fieldsName:resumeName
       },
       closable: true,
       width: '70%',

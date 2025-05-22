@@ -11,7 +11,7 @@
                   <input type="text"  pKeyFilter="int"  [maxlength]="10"  pInputText formControlName="mobileNumber" />
                 </div>
               </div>
-              <small class="error-message" *ngIf="candidateForm.controls['mobileNumber'].invalid && showError">
+              <small class="error-message" *ngIf="candidateForm.get('mobileNumber')?.invalid && showError ">
                 Mobile Number is required</small>
             </div>
         
@@ -38,20 +38,18 @@
         
             <div class="col-12 md:col-6 lg:col-3">
               <div class="field-wrapper">
-                <label class="required">Gender</label>
+                <label>Gender</label>
                 <div class="input-wrapper">
                   <p-dropdown [options]="genderList" optionLabel="displayValue" optionValue="dataValue"  placeholder="Select Gender"
                     formControlName="gender">
                   </p-dropdown>
                 </div>
               </div>
-              <small class="error-message" *ngIf="candidateForm.controls['gender'].invalid && showError">
-                Gender is required</small>
             </div>
 
             <div class="col-12 md:col-6 lg:col-3">
               <div class="field-wrapper">
-                <label [ngClass]="{ required: isRequired('languagesKnown') }">Languages Known</label>
+                <label>Languages Known</label>
                 <div class="input-wrapper">
                   <p-multiSelect [options]="languages" defaultLabel="Select Languages" [showHeader]="false" optionLabel="displayValue"
                     optionValue="dataValue" formControlName="languagesKnown">
@@ -126,11 +124,14 @@
           <div class="grid">
              <div class="col-12">
               <div class="field-wrapper">
-               <label>Skills</label>
+               <label [ngClass]="{ required: isRequired('skills') }">Skills</label>
                 <div class="input-wrapper">
                  <p-chips separator="," formControlName="skills" [addOnBlur]="true" [addOnTab]="true"></p-chips>
                 </div>
               </div>
+               <small class="error-message" *ngIf="candidateForm.controls['skills'].invalid && showError">
+                Skills is required</small>
+       
              </div>
           </div>
           
@@ -145,15 +146,15 @@
                 <p-checkbox
                   [binary]="true"
                   inputId="fresher"
-                  formControlName="isFresher" Style="padding-right: 5px;"
+                  formControlName="fresher" Style="padding-right: 5px;"
                 ></p-checkbox>
                 <label>Fresher</label>
               </div>
             </div>
           </div>
         
-          <ng-container *ngIf="!candidateForm.get('isFresher')?.value">
-            <div formArrayName="experiences">
+          <ng-container *ngIf="!candidateForm.get('fresher')?.value">
+            <div formArrayName="experiences" class="border-line" id="experiences">
               <div *ngFor="let experience of experienceControls.controls; let i = index" [formGroupName]="i" class="experience-container">
                 
                 <!-- Experience Details -->
@@ -295,8 +296,8 @@
             </div>
           </ng-container>
 
-          <ng-container *ngIf="candidateForm.get('isFresher')?.value">
-            <div formArrayName="collegeProject">
+          <ng-container *ngIf="candidateForm.get('fresher')?.value">
+            <div formArrayName="collegeProject" class="border-line">
               <div *ngFor="let collegeProject of collegeProjectControls.controls; let i = index" [formGroupName]="i" class="experience-container">
                 
                 <div class="grid">
@@ -348,7 +349,7 @@
             <div>Qualification Details</div>
           </div>
          
-            <div formArrayName="qualification">
+            <div formArrayName="qualification" class="border-line" id="qualification">
               <div *ngFor="let qualifications of qualificationControls.controls; let i = index" [formGroupName]="i" class="experience-container">
                 
                 <div class="grid">
@@ -435,7 +436,7 @@
               <div>Course & Certificates</div>
             </div>
       
-            <div formArrayName="certificates">
+            <div formArrayName="certificates" class="border-line" id="course">
               <div *ngFor="let certificate of certificateControls.controls; let i = index" [formGroupName]="i" class="experience-container">
       
                 <div class="grid">
@@ -481,7 +482,7 @@
                     <!-- <p-button type="button" label="+ Add Couse" (click)="addCertificates()"></p-button> -->
                     <button type="button" class="custom-btn" (click)="addCertificates()">+ Add Couse</button>
                  </div>
-             </div>
+            </div>
       
       
              <app-make-profile-divider></app-make-profile-divider>
@@ -489,7 +490,7 @@
               <div>Achievements & Awards</div>
             </div>
       
-            <div formArrayName="achievements">
+            <div formArrayName="achievements" class="border-line" id="achievements">
                <div *ngFor="let certificate of achievementsControls.controls; let i = index" [formGroupName]="i" class="experience-container">
       
                  <div class="grid">

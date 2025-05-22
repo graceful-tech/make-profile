@@ -1,4 +1,5 @@
-import {ChangeDetectorRef,Component, ElementRef, ViewChild} from '@angular/core';
+import { DatePipe } from '@angular/common';
+import {ChangeDetectorRef,Component,EventEmitter,Input,Output,} from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
@@ -6,25 +7,26 @@ import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dy
 import { ApiService } from '../../../services/api.service';
 import { GlobalService } from '../../../services/global.service';
 import { ValueSet } from '../../../models/admin/value-set.model';
-import {Subscription } from 'rxjs';
+import { elementAt, Subscription } from 'rxjs';
 import { Lookup } from '../../../models/master/lookup.model';
 import { Candidate } from 'src/app/models/candidates/candidate.model';
 import { Qualification } from 'src/app/models/candidates/qualification';
 import { Certificates } from 'src/app/models/candidates/certificates';
 import { Achievements } from 'src/app/models/candidates/achievements';
 import { PaymentService } from 'src/app/services/payment.service';
+import { PaymentOptionComponent } from '../payments/payment-option/payment-option.component';
 import { CollegeProject } from 'src/app/models/candidates/college-project';
-import { DatePipe } from '@angular/common';
-import { PaymentOptionComponent } from '../../candidates/payments/payment-option/payment-option.component';
+import { AddCandidatesComponent } from '../add-candidates/add-candidates.component';
 
 @Component({
-  selector: 'app-mobile-create-candidates',
+  selector: 'app-verify-candidates',
   standalone: false,
-  templateUrl: './mobile-create-candidates.component.html',
-  styleUrl: './mobile-create-candidates.component.css'
+  templateUrl: './verify-candidates.component.html',
+  styleUrl: './verify-candidates.component.css'
 })
-export class MobileCreateCandidatesComponent {
-  @ViewChild('chipInput', { static: false }) chipInputRef!: ElementRef;
+export class VerifyCandidatesComponent {
+
+ 
 
   candidateForm!: FormGroup;
   genderList: Array<ValueSet> = [];
@@ -69,8 +71,15 @@ export class MobileCreateCandidatesComponent {
   imageName: any;
   returnImage:any;
   collegeProjectDeletedArray:Array<any> = [];
-  candidatesUpdateData: any;
-  skill: Array<any> = [];
+  returnCandidate:any;
+  resumeName: any;
+  fieldsName: any;
+  experience:boolean=true;
+  personalDetails:boolean =true;
+  course:boolean = true;
+  achievements:boolean = true;
+  extraSkills:boolean = true
+  qualification:boolean= true;
 
   constructor(
     private api: ApiService,
@@ -86,12 +95,15 @@ export class MobileCreateCandidatesComponent {
     private ps: PaymentService,
   ) 
   {
-    // this.candidates = this.config.data?.candidates;
-    // this.payments = this.config.data?.payments;
-    // this.candidateImageUrl = this.config.data?.candidateImage;
+    this.candidates = this.config.data?.candidates;
+    this.payments = this.config.data?.payments;
+    this.candidateImageUrl = this.config.data?.candidateImage;
+    this.resumeName = this.config.data?.resumeName;
+    this.fieldsName = this.config.data?.fieldsName;
 
-    
+    console.log(this.resumeName);
   }
+
 
   ngOnInit() {
     this.createCandidateForm();
@@ -100,31 +112,25 @@ export class MobileCreateCandidatesComponent {
     this.getLanguages();
     this.getMaritalStatus();
     this.getFieldOfStudy();
+    //this.getCandidates();
     
 
-    // this.gs.candidateDetails$.subscribe(response => {
-    //   this.candidatesUpdateData = response;
-    // });
-
-    // if(this.candidatesUpdateData !== null && this.candidatesUpdateData !== undefined){
-    //   // this.candidateId = this.candidatesUpdateData?.id;
-    //   this.candidates = this.candidatesUpdateData;
-    //   this.patchCandidateForm(this.candidatesUpdateData);
-
-    //   this.gs.candidateImage$.subscribe(response =>{
-    //     if(response !== null){
-    //     this.candidateImageUrl = response
-    //     }
-    //   })
-    // }
-    // else{
+    if (this.candidates !== null ) {
+      this.candidateId = this.candidates.id;
+      const candidateClone = JSON.parse(JSON.stringify(this.candidates));
+      this.patchCandidateForm(candidateClone);
+    }
+    else{
       this.getCandidates();
-    // }
+    }
+ 
 
-    
   }
+  
 
-  ngAfterViewInit() {}
+  ngAfterViewInit() {
+   
+  }
 
   createCandidateForm() {
     this.candidateForm = this.fb.group({
@@ -134,7 +140,7 @@ export class MobileCreateCandidatesComponent {
       email: ['', Validators.compose([Validators.required, Validators.email])],
       gender: [''],
       nationality: [''],
-      languagesKnown: [[]],
+      languagesKnown: [''],
       fresher: [''],
       skills: ['', Validators.required],
       linkedIn: [''],
@@ -231,38 +237,7 @@ export class MobileCreateCandidatesComponent {
       }
     } 
 
-  
-    // if (!payload.fresher) {
-    //   if (Object.is(payload.experiences[0].companyName, '')) {
-    //     payload.experiences = [];
-    //   } else {
-    //     payload.experiences.forEach((exp: any) => {
-    //       exp.experienceYearStartDate = this.datePipe.transform(
-    //         exp.experienceYearStartDate,
-    //         'yyyy-MM-dd'
-    //       );
-    //       exp.experienceYearEndDate = this.datePipe.transform(
-    //         exp.experienceYearEndDate,
-    //         'yyyy-MM-dd'
-    //       );
-    
-    //       const hasEmptyProjectName = exp.projects?.some((proj: any) => proj.projectName === '');
-    
-    //       if (hasEmptyProjectName) {
-    //         exp.projects = [];
-    //       } else {
-    //         exp.projects = exp.projects.map((proj: any) => ({
-    //           ...proj,
-    //           projectSkills: Array.isArray(proj.projectSkills)
-    //             ? proj.projectSkills.join(', ')
-    //             : proj.projectSkills
-    //         }));
-    //       }
-    //     });
-    //   }
-    // }
-
-        if (!payload.fresher) {
+    if (!payload.fresher) {
       if (Object.is(payload.experiences?.[0]?.companyName, '')) {
         payload.experiences = [];
       } else {
@@ -305,7 +280,6 @@ export class MobileCreateCandidatesComponent {
           };
         });
       }
-    
     }
     
      
@@ -410,27 +384,29 @@ export class MobileCreateCandidatesComponent {
 
     this.api.retrieve(route, payload).subscribe({
       next: (response) => {
-      
+
         this.candidateId = response?.id;
         this.dataLoaded = true;
-        this.candidates = response as Candidate
         localStorage.setItem('candidateId',this.candidateId);
-        
-       if (this.candidateImageUrl !== undefined && this.multipartFile !== undefined) {
-          this.uploadCandidateImage();
-        }
+        this.uploadCandidateImage();
 
-        
+        this.returnCandidate = response;
+        this.returnCandidate.candidateLogo = this.candidateImageUrl;
+
+        // response.languagesKnown = response?.languagesKnown ? response.languagesKnown .split(',').map((skill: string) => skill.trim()) : [];
+        // response.skills = response?.skills ? response.skills.split(',').map((skill: string) => skill.trim()) : [];
+        // response.softSkills = response?.softSkills ? response.softSkills.split(',').map((skill: string) => skill.trim()) : [];
+        // response.coreCompentencies = response?.coreCompentencies ? response.coreCompentencies.split(',').map((skill: string) => skill.trim()) : [];
+
         response.candidateLogo = this.candidateImageUrl; 
-
-        this.gs.setCandidateDetails(this.candidates);
-
-        window.alert('Created Successfully');
-
+        this.close(this.returnCandidate);
+      
+        this.gs.showMessage('Success', 'Create Successfully');
       },
       error: (error) => {
         this.dataLoaded = true;
-         window.alert('Error in creating please try again');
+        this.gs.showMessage('Error', 'Error in Creating Resume');
+
         console.log(error);
       },
     });
@@ -465,7 +441,7 @@ export class MobileCreateCandidatesComponent {
     return this.fb.group({
       id:[''],
       projectName: [''],
-      projectSkills: [[]],
+      projectSkills: [''],
       projectRole: [''],
       projectDescription: [''],
       isDeleted:false
@@ -707,11 +683,10 @@ export class MobileCreateCandidatesComponent {
      this.api.downloadFile(route, formData).subscribe({
       next: (response) => {
         this.candidateImageUrl = URL.createObjectURL(response);
-        this.dataLoaded = true;
       },
       error: (error) => {
         this.dataLoaded = true;
-        //this.gs.showMessage('Error', 'Error in updating logo.');
+        this.gs.showMessage('Error', 'Error in updating logo.');
       },
     });
   }
@@ -737,17 +712,6 @@ export class MobileCreateCandidatesComponent {
         certificateFormArray.push(this.createCertificateFormGroup(certificate));
       });
     }
-
-         if(candidate.qualification?.length > 0){
-        const qualificationFormArray = this.candidateForm.get('qualification') as FormArray;
-        qualificationFormArray.clear();
-
-        candidate.qualification?.forEach(qualification => {
-        qualificationFormArray.push(this.createQualificationFormGroup(qualification));
-      });
-       }
-  
-
       if(candidate.experiences?.length > 0){
       this.patchExperiences(candidate.experiences);
       }
@@ -761,7 +725,16 @@ export class MobileCreateCandidatesComponent {
         collegeProjectFromArray.push(this.createCollegeProjectFormGroup(collegeProject));
       });
     }
-      }
+      };
+  
+      if(candidate.qualification?.length > 0){
+        const qualificationFormArray = this.candidateForm.get('qualification') as FormArray;
+        qualificationFormArray.clear();
+
+        candidate.qualification?.forEach(qualification => {
+        qualificationFormArray.push(this.createQualificationFormGroup(qualification));
+      });
+    }
   
     if(candidate.achievements?.length > 0){
       const achievementFormArray = this.candidateForm.get('achievements') as FormArray;
@@ -772,7 +745,7 @@ export class MobileCreateCandidatesComponent {
       });
     }
 
-  
+
   
       const candidateDob = candidate.dob ? new Date(candidate.dob) : null;
 
@@ -812,6 +785,8 @@ export class MobileCreateCandidatesComponent {
         experienceFormArray.clear();
         experiences?.forEach((experience) => {
         
+          const responsibilities = experience?.responsibilities ? experience.responsibilities.split(',').map((res: string) => res.trim()) : [];
+
           const experienceForm = this.createExperience();
           experienceForm.patchValue({
             id:experience.id,
@@ -820,7 +795,7 @@ export class MobileCreateCandidatesComponent {
             experienceYearStartDate:  experience.experienceYearStartDate ? new Date(experience.experienceYearStartDate) : null,
             experienceYearEndDate:  experience.experienceYearEndDate ? new Date(experience.experienceYearEndDate) : null,
             currentlyWorking: experience.currentlyWorking,
-            responsibilities:experience.responsibilities,
+            responsibilities:responsibilities,
             isDeleted:false
           });
          
@@ -828,12 +803,12 @@ export class MobileCreateCandidatesComponent {
             const projectFormArray = experienceForm.get('projects') as FormArray; 
             projectFormArray.clear();
            experience.projects?.forEach((project:any) => {
-          
+            const projectSkills = project?.projectSkills ? project.projectSkills.split(',').map((skill: string) => skill.trim()) : [];
             const projectForm = this.createProject();
             projectForm.patchValue({
               id:project.id,
               projectName: project.projectName,
-              projectSkills: project.projectSkills,
+              projectSkills: projectSkills,
               projectRole: project.projectRole,
               projectDescription: project.projectDescription,
               isDeleted:false
@@ -879,13 +854,71 @@ export class MobileCreateCandidatesComponent {
       });
     }
 
-    next(){
+    verifyDetails() {
+
+        const route = 'template/checker';
+     const payload = {
+      ...this.candidates,
+      resumeFormatName: this.resumeName,
+    };
+    localStorage.setItem('resumeName',this.resumeName);
+
+    this.api.retrieve(route,payload).subscribe({
+      next: (response: any) => {  
+        const fieldname = response?.fieldName;
+        const count = response?.count !== null ? response?.count :0;
+
+         if(fieldname !== null && fieldname.length > 0){
+          this.createResume(fieldname,count);
+          }
+         else{
+         this.payment();
+         }
+      },
+    });
+
+    }
+
+    createResume(fieldsName: any,count:any) {
+    this.ref.close();
+    const candidateId = localStorage.getItem('candidateId');
+   
+    // localStorage.setItem('resumeName',resumeName);
+      const resumeNames = localStorage.getItem('resumeName');
+
+    const ref = this.dialog.open(AddCandidatesComponent, {
+      data: {
+        candidates: this.candidates,
+        payments:true,
+        candidateImage :this.candidateImageUrl,
+        resumeName:resumeNames,
+        fieldsName:fieldsName,
+        count:count
+      },
+      closable: true,
+      width: '70%',
+      height: '90%',
+      header: 'Please fill out the missing details',
+    });
+
+    ref.onClose.subscribe((response) => {
+      if (response) {
+        this.candidates = response;
+        this.candidateId = response.id;
+        const candidate = response as Candidate;
+        // this.patchCandidateForm(candidate);
+      }
+    });
+  }
+
+    payment(){
       this.ref.close();
       const ref = this.dialog.open(PaymentOptionComponent, {
            
             data: {
               candidates: this.candidates,
-              candidateId: this.candidates?.id
+              candidateId: this.candidates?.id,
+              resumeName:this.resumeName,
             },
             closable: true,
             width: '30%',
@@ -894,7 +927,7 @@ export class MobileCreateCandidatesComponent {
           });
     }
 
-   get collegeProjectControls() {
+    get collegeProjectControls() {
     return this.candidateForm.get('collegeProject') as FormArray;
   }
 
@@ -926,35 +959,11 @@ export class MobileCreateCandidatesComponent {
       return this.fb.group({
         id:[''],
         collegeProjectName: [''],
-        collegeProjectSkills: [[]],
+        collegeProjectSkills: [''],
         collegeProjectDescription: [''],
         isDeleted:false
       });
     }
-
-    goBack(){
-      this.gs.setCandidateDetails(this.candidates);
-      if( this.candidateImageUrl !== null && this.candidateImageUrl !== undefined){
-      this.gs.setCandidateImage(this.candidateImageUrl);
-      }
-      this.router.navigate(['mob-candidate']);
-    }
-
-    // addSkill() {
-    //   const inputEl = document.getElementById('chipInput') as HTMLInputElement;
-    //   const value = inputEl?.value?.trim();
-    
-    //   if (value) {
-    //     const control = this.candidateForm.get('skills');
-    //     const current = control?.value || [];
-    
-    //     if (!current.includes(value)) {
-    //       control?.setValue([...current, value]);
-    //     }
-    
-    //     inputEl.value = '';  
-    //   } 
-    // }
 
     getCandidates() {
       const route = 'candidate';
@@ -962,55 +971,41 @@ export class MobileCreateCandidatesComponent {
         next: (response) => {
           const candidate = response as Candidate;
           if(candidate !== null){
-            this.candidateId =  candidate?.id
-           this.patchCandidateForm(candidate);
-           this.getCandidateImage(candidate?.id);
+          this.candidates = candidate;
+          this.candidateId=candidate?.id;
+        
+          const candidateClone = JSON.parse(JSON.stringify(candidate)); 
 
-          //set global
-          this.gs.setCandidateDetails(candidate);
-         
+          this.patchCandidateForm(candidateClone);
+          this.getCandidateImage(candidate?.id);
+
+          if (this.candidateId !== null && this.candidateId !== undefined) {
+            this.candidateForm.controls['mobileNumber'].disable();
+          }
         }
         },
+
       });
     }
   
-     getCandidateImage(id: any) {
-    const route = `candidate/get-image?candidateId=${id}`;
+    getCandidateImage(id:any){
+      const route ='candidate/get-image'
   
-    this.api.getImage(route).subscribe({
-      next: (response) => {
-        if(response.size > 0){
-        this.candidateImageUrl = URL.createObjectURL(response);
-        this.dataLoaded = true;
-
-        //set global image
-        if( this.candidateImageUrl !== null && this.candidateImageUrl !== undefined){
-          this.gs.setCandidateImage(this.candidateImageUrl);
-         }
+      const formData = new FormData();
+      formData.append('candidateId',id)
+  
+      this.api.upload(route,formData).subscribe({
+        next: (response) =>{
+          this.candidateImageUrl = URL.createObjectURL(response);
+          this.dataLoaded = true;
         }
-      },
-      error: (err) => {
-        console.error('Error fetching candidate image:', err);
-
-        this.dataLoaded = false;
-      }
-    });
-  }
+      });
   
-  addSkill(controlName: string, inputId: string) {
-    const inputEl = document.getElementById(inputId) as HTMLInputElement;
-    const value = inputEl?.value?.trim();
-  
-    if (value) {
-      const control = this.candidateForm.get(controlName);
-      const current = control?.value || [];
-  
-      if (!current.includes(value)) {
-        control?.setValue([...current, value]);
-      }
-  
-      inputEl.value = '';
     }
-  }
+
     
-}
+ 
+
+  }
+   
+

@@ -13,7 +13,7 @@ export interface Candidate {
     nationality: string;
     gender: string;
     languagesKnown: any;
-    isFresher: boolean;
+    fresher: boolean;
     skills: any;
     linkedIn:string;
     dob:any;

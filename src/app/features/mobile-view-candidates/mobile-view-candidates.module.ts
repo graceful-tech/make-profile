@@ -10,6 +10,7 @@ import { MobileEditCandidatesComponent } from './mobile-edit-candidates/mobile-e
 import { MobilePaymentOptionComponent } from './mobile-payments/mobile-payment-option/mobile-payment-option.component';
 import { MobilePaymentDetailsComponent } from './mobile-payments/mobile-payment-details/mobile-payment-details.component';
 import { MobViewAccountComponent } from './mob-view-account/mob-view-account.component';
+import { MobileVerifyComponentComponent } from './mobile-verify-component/mobile-verify-component.component';
   
 
 @NgModule({
@@ -20,7 +21,8 @@ import { MobViewAccountComponent } from './mob-view-account/mob-view-account.com
     MobileEditCandidatesComponent,
     MobilePaymentOptionComponent,
     MobilePaymentDetailsComponent,
-    MobViewAccountComponent
+    MobViewAccountComponent,
+    MobileVerifyComponentComponent
  
   ],
   imports: [

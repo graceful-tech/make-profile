@@ -149,6 +149,7 @@ border-radius: 10px;
 animation: fadeInRotate 3s ease-in-out;
 }
 
+
 /* Second image animation (appears after 3 seconds) */
 .second-image img {
 max-width: 100%;
@@ -161,6 +162,10 @@ animation-delay: 3s;
 margin-top: 10px;
 }
 
+.error-message {
+    padding-left: 1rem;
+  }
+  
 @keyframes fadeInRotate {
 0% {
   opacity: 0;
@@ -242,3 +247,20 @@ margin-top: 10px;
   font-size: 14px;
   color: #0c0c0c;
 }
+
+.border-line{
+    padding: 0.5rem;
+    margin: 0.5rem 0;
+    border: 2px solid rgb(161, 150, 150);
+    border-radius: 8px;
+}
+
+.highlight-border {
+      animation: blink-border 1s infinite;
+      border-color: red;
+    }
+
+    @keyframes blink-border {
+      0%, 100% { border-color: red; }
+      50% { border-color: transparent; }
+    }
