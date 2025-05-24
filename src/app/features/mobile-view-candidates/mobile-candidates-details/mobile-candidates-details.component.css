@@ -460,6 +460,8 @@ img {
   display: flex;
   justify-content: center;
   align-items: center;
+
+  
 }
 
 .middle-text {
@@ -677,7 +679,7 @@ ngx-ui-loader .ngx-ui-loader__fg {
 }
 
 .menu-item:hover {
-  background: #2196F3;
+  background: #3591dd; 
   color: #fff;
   cursor: pointer;
 }
@@ -703,6 +705,5 @@ ngx-ui-loader .ngx-ui-loader__fg {
   cursor: pointer;
 }
 
-.p-dropdown {
-  border-color: snow !important;
-}
+ 
+ 

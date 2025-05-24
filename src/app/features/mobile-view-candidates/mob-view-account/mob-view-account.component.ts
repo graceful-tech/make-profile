@@ -26,11 +26,8 @@ userId: any;
 
     const route = `user/get_user/${sessionStorage.getItem('userName')}`
     this.api.get(route).subscribe({
-
-
       next: response => {
         this.user = response;
-
       }
     });
 

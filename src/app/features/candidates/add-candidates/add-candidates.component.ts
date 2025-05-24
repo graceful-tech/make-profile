@@ -333,7 +333,7 @@ export class AddCandidatesComponent {
      }
      
       
-     if (Object.is(payload.qualification[0].instutionName, '')) {
+     if (Object.is(payload.qualification[0].institutionName, '')) {
        payload.qualification = [];
      } else {
        payload.qualification.forEach((q: any) => {
@@ -559,7 +559,7 @@ export class AddCandidatesComponent {
    createQualification(): FormGroup {
      return this.fb.group({
        id:[''],
-       instutionName: [''],
+       institutionName: [''],
        department: [''],
        qualificationStartYear: [''],
        qualificationEndYear: [''],
@@ -869,7 +869,7 @@ export class AddCandidatesComponent {
      createQualificationFormGroup(qualification: Qualification){
        return this.fb.group({
          id:qualification.id,
-         instutionName: qualification.instutionName,
+         institutionName: qualification.institutionName,
          department: qualification.department,
          qualificationStartYear: qualification.qualificationStartYear ? new Date(qualification.qualificationStartYear) : null,
          qualificationEndYear: qualification.qualificationEndYear ? new Date(qualification.qualificationEndYear) : null,
@@ -904,7 +904,7 @@ export class AddCandidatesComponent {
        
         const route = 'template/checker';
 
-       const payload = {...candidateDetails,resumeFormatName: this.resumeName,};
+       const payload = {...candidateDetails,templateName: this.resumeName,};
 
        this.api.retrieve(route,payload).subscribe({
            next: (response) => {

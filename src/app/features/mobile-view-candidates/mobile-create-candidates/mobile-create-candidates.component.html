@@ -137,14 +137,15 @@
             <div class="grid">
                <div class="col-12">
                 <div class="field-wrapper">
-                 <label>Skills</label>
+                 <label [ngClass]="{ required: isRequired('skills') }">Skills</label>
                   <div class="input-wrapper">
                    <p-chips separator="," formControlName="skills" [addOnBlur]="true" [addOnTab]="true" inputId="chipInput" placeholder="Add Skills"></p-chips>
     
                    <p-button type="button" (onClick)="addSkill('skills','chipInput')">Add</p-button>
-            
                   </div>
                 </div>
+                 <small class="error-message" *ngIf="candidateForm.controls['skills'].invalid && showError">
+                Skills is required</small>
                </div>
             </div>
             
@@ -367,7 +368,7 @@
                       <div class="field-wrapper">
                         <label>Instution Name</label>
                         <div class="input-wrapper">
-                          <input type="text" pInputText formControlName="instutionName" />
+                          <input type="text" pInputText formControlName="institutionName" />
                         </div>
                       </div>
                     </div>
@@ -387,7 +388,7 @@
                         <label>Qualification</label>
                         <div class="input-wrapper">
                           <p-dropdown [options]="fieldOfStudy" optionLabel="displayValue" optionValue="dataValue"  placeholder="Select Qualification"
-                         formControlName="department" [filter]="true">
+                         formControlName="department" [filter]="true" styleClass="narrow-dropdown">
                         </p-dropdown>
                         </div>
                       </div>

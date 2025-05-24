@@ -13,7 +13,7 @@ import { MobViewAccountComponent } from './features/mobile-view-candidates/mob-v
 
 const routes: Routes = [
 
-  { path: 'landing', component: LandingPageComponent },
+  { path: '', component: LandingPageComponent },
 
   { path: 'mob-landing', component: LandingPageMobileComponent },
 

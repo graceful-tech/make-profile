@@ -80,9 +80,7 @@ export class PaymentOptionComponent  {
     //const route = `credits?userId=${this.userId}`;
     this.ngxLoaderStart();
     const route = 'credits/redeem'
-    const payload ={
-      userId:this.userId
-    }
+    const payload ={userId:this.userId}
 
     this.api.retrieve(route,payload).subscribe({
       next: (response) => {
@@ -97,22 +95,14 @@ export class PaymentOptionComponent  {
       error: (error) => {
         this.ngxLoaderStop();
         this.gs.showMessage('error','Error in  creating Resume')
-
       },
     });
   }
 
   createResume() {
     const route = 'resume/create';
-    const candidateId = localStorage.getItem('candidateId');
-    
-    const payload = {
-      ...this.candidates,
-      resumeFormatName: this.resumeName,
-    };
+    const payload = {...this.candidates, templateName: this.resumeName,};
 
-    
-    
      this.api.retrieve(route, payload).subscribe({
       next: (response) => {
         this.ngxLoaderStop();

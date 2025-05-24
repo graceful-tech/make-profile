@@ -6,6 +6,7 @@ import { MobileChosseTemplateComponent } from './mobile-chosse-template/mobile-c
 import { MobileEditCandidatesComponent } from './mobile-edit-candidates/mobile-edit-candidates.component';
 import { MobilePaymentOptionComponent } from './mobile-payments/mobile-payment-option/mobile-payment-option.component';
 import { MobileVerifyComponentComponent } from './mobile-verify-component/mobile-verify-component.component';
+import { ResumeDetailsComponent } from '../candidates/resume-details/resume-details.component';
 
 const routes: Routes = [
 
@@ -20,6 +21,8 @@ const routes: Routes = [
   {path: 'mobile-payment', component:MobilePaymentOptionComponent},
 
   {path: 'verify-components', component:MobileVerifyComponentComponent},
+
+  {path: 'resume-details', component:ResumeDetailsComponent},
   
 ];
 

@@ -1017,3 +1017,22 @@ table::-webkit-scrollbar-thumb {
  
   
  
+.narrow-dropdown .p-dropdown {
+  width: 200px !important;
+}
+
+ 
+ .narrow-dropdown .p-dropdown {
+  width: 200px !important;
+}
+
+  .narrow-dropdown .p-dropdown-panel {
+  width: 200px !important;
+  white-space: normal !important;  
+}
+
+  .narrow-dropdown .p-dropdown-items .p-dropdown-item {
+  white-space: normal !important;
+  word-break: break-word !important;
+  line-height: 1.2rem !important;
+}

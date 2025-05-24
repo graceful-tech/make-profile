@@ -60,13 +60,8 @@ candidateForm!: FormGroup;
   isDeleted:boolean = false;
   payments: boolean = false;
   candidatesDetails: Array<Candidate> = [];
-  experienceDeletedArray:Array<any> = [];
-  qualificationDeletedArray:Array<any> = [];
-  certificatesDeletedArray:Array<any> = [];
-  achievementsDeletedArray:Array<any> = [];
   imageName: any;
   returnImage:any;
-  collegeProjectDeletedArray:Array<any> = [];
   candidatesUpdateData: any;
   resumeName:any;
 
@@ -84,11 +79,7 @@ candidateForm!: FormGroup;
     private ps: PaymentService,
   ) 
   {
-    // this.candidates = this.config.data?.candidates;
-    // this.payments = this.config.data?.payments;
-    // this.candidateImageUrl = this.config.data?.candidateImage;
-
-    
+   
   }
 
   ngOnInit() {
@@ -98,24 +89,29 @@ candidateForm!: FormGroup;
     this.getLanguages();
     this.getMaritalStatus();
     this.getFieldOfStudy();
-   // this.getCandidates();
 
-    // if (this.candidates?.id) {
-    //   this.patchCandidateForm(this.candidates);
-    // }
-
-    // this.gs.candidateDetails$.subscribe(response => {
-    //   this.candidatesUpdateData = response;
-    // });
-
+    this.gs.resumeName$.subscribe(response =>{
+        if(response !== null){
+        this.resumeName = response
+        }
+      })
+     
     // if(this.candidatesUpdateData !== null && this.candidatesUpdateData !== undefined){
-    //  this.candidateId = this.candidatesUpdateData?.id;
+    //    this.candidateId = this.candidatesUpdateData?.id;
     //   this.candidates = this.candidatesUpdateData;
-    //       this.patchCandidateForm(this.candidatesUpdateData);
+      
+    //   const candidateClone = JSON.parse(JSON.stringify(this.candidatesUpdateData)); 
+    //   this.patchCandidateForm(candidateClone);
+
+    //   this.gs.candidateImage$.subscribe(response =>{
+    //     if(response !== null){
+    //     this.candidateImageUrl = response
+    //     }
+    //   })
     // }
-    // else{
+    //   else{
       this.getCandidates();
-    // }
+     // }
 
     this.gs.candidateImage$.subscribe(response =>{
       if(response !== null){
@@ -123,9 +119,6 @@ candidateForm!: FormGroup;
       }
     })
 
-    this.gs.resumeName$.subscribe(response =>{
-      this.resumeName = response
-    })
   }
 
   ngAfterViewInit() {}
@@ -194,12 +187,10 @@ candidateForm!: FormGroup;
   }
 
   generatingResume() {
-    this.dataLoaded = false;
+   this.dataLoaded = false;
 
     const route = 'candidate/create';
     const payload = this.candidateForm.getRawValue();
-
-   // payload['candidateLogo'] = this.multipartFile;
 
     if (payload.lastWorkingDate) {
       payload['lastWorkingDate'] = this.datePipe.transform(
@@ -212,48 +203,31 @@ candidateForm!: FormGroup;
     payload.dob = this.datePipe.transform(payload.dob,'yyyy-MM-dd');
    }
 
-    // if (payload.fresher != null && payload.fresher) {
-    //   payload['fresher'] = true;
-    // } else {
-    //   payload['fresher'] = false;
-    // }
+    if (payload.fresher != null && payload.fresher) {
+      payload['fresher'] = true;
+    } else {
+      payload['fresher'] = false;
+    }
 
-    // if (Object.is(payload.experiences[0].companyName, '')
-    // ) {
-    //   if(this.experienceDeletedArray.length > 0){
-    //     this.experienceDeletedArray.forEach( exp => {
-    //       payload.experiences.push(exp);
-    //     });
-    //   }
-    //   else{
-    //   payload.experiences = [];
-    //   payload.experiences.projects =[];
-    //   }
-    // } else {
-    //   payload.experiences.forEach((ele: any) => {
-    //     ele.experienceYearStartDate = this.datePipe.transform(
-    //       ele.experienceYearStartDate,
-    //       'yyyy-MM-dd'
-    //     );
-    //     ele.experienceYearEndDate = this.datePipe.transform(
-    //       ele.experienceYearEndDate,
-    //       'yyyy-MM-dd'
-    //     );
-         
-    //     const hasEmptyProjectName = ele.projects?.some((proj: any) => proj.projectName === '');
-    //     if (hasEmptyProjectName) {
-    //       ele.projects = [];
-    //     }        
+  
 
-    //   });
-
-    //   if(this.experienceDeletedArray.length > 0){
-    //   this.experienceDeletedArray.forEach( exp => {
-    //     payload.experiences.push(exp);
-    //   });
-    // }
-    // }
-
+    if (payload.fresher) {
+      payload.experiences = [];
+    }  
+     
+    if (payload.fresher) {
+    if (Object.is(payload.collegeProject[0].collegeProjectName, '')) {
+        payload.collegeProject = [];
+      } else {
+        payload.collegeProject = payload.collegeProject.map((proj: any) => ({
+          ...proj,
+          collegeProjectSkills: Array.isArray(proj.collegeProjectSkills)
+            ? proj.collegeProjectSkills.join(', ')
+            : proj.collegeProjectSkills
+        }));
+      }
+    } 
+ 
         if (!payload.fresher) {
       if (Object.is(payload.experiences?.[0]?.companyName, '')) {
         payload.experiences = [];
@@ -300,127 +274,103 @@ candidateForm!: FormGroup;
     
     }
     
-
-    if (Object.is(payload.qualification[0].instutionName, '')) {
      
-
-      if(this.qualificationDeletedArray.length > 0){
-        this.qualificationDeletedArray.forEach( exp => {
-          payload.qualification.push(exp);
-        });
-      }
-      else{
-        payload.qualification = [];
-      }
+    if (Object.is(payload.qualification[0].institutionName, '')) {
+      payload.qualification = [];
     } else {
-      payload.qualification.forEach((ele: any) => {
-        ele.qualificationStartYear = this.datePipe.transform(
-          ele.qualificationStartYear,
+      payload.qualification.forEach((q: any) => {
+        q.qualificationStartYear = this.datePipe.transform(
+          q.qualificationStartYear,
           'yyyy-MM-dd'
         );
-        ele.qualificationEndYear = this.datePipe.transform(
-          ele.qualificationEndYear,
+        q.qualificationEndYear = this.datePipe.transform(
+          q.qualificationEndYear,
           'yyyy-MM-dd'
         );
       });
-
-      if(this.qualificationDeletedArray.length > 0){
-        this.qualificationDeletedArray.forEach( exp => {
-          payload.qualification.push(exp);
-        });
-      }
     }
-
+    
     if (Object.is(payload.achievements[0].achievementsName, '')) {
-     
-      if(this.achievementsDeletedArray.length > 0){
-        this.achievementsDeletedArray.forEach( exp => {
-          payload.achievements.push(exp);
-        });
-      }
-      else{
         payload.achievements = [];
-      }
-    }
-    else{
-      if(this.achievementsDeletedArray.length > 0){
-        this.achievementsDeletedArray.forEach( exp => {
-          payload.achievements.push(exp);
-        });
-      }
-    }
-
-    if (Object.is(payload.certificates[0].courseName, '')) {
-
-      if(this.certificatesDeletedArray.length > 0){
-        this.certificatesDeletedArray.forEach( exp => {
-          payload.certificates.push(exp);
-        });
-      }
-      else{
-        payload.certificates = [];
-      }
-     
-    } else {
-      payload.certificates.forEach((ele: any) => {
-        ele.courseStartDate = this.datePipe.transform(
-          ele.courseStartDate,
-          'yyyy-MM-dd'
-        );
-        ele.courseEndDate = this.datePipe.transform(
-          ele.courseEndDate,
+    } else{
+      payload.achievements.forEach((cert: any) => {
+        cert.achievementsDate = this.datePipe.transform(
+          cert.achievementsDate,
           'yyyy-MM-dd'
         );
       });
-
-      if(this.certificatesDeletedArray.length > 0){
-        this.certificatesDeletedArray.forEach( exp => {
-          payload.certificates.push(exp);
-        });
-      }
     }
+   
+    if (Object.is(payload.certificates[0].courseName, ''))  {
+      payload.certificates = [];
+    } else {
+      payload.certificates.forEach((cert: any) => {
+        cert.courseStartDate = this.datePipe.transform(
+          cert.courseStartDate,
+          'yyyy-MM-dd'
+        );
+        cert.courseEndDate = this.datePipe.transform(
+          cert.courseEndDate,
+          'yyyy-MM-dd'
+        );
+      });
+    }
+    
 
     if (Object.is(payload.languagesKnown, '')) {
-      payload.languagesKnown = [];
+      payload.languagesKnown = '';
+    }
+    else{
+      const stringList: string[] = payload.languagesKnown;
+      const commaSeparatedString: string = stringList.join(', ');
+      payload.languagesKnown = commaSeparatedString;
     }
 
     if (Object.is(payload.skills, '')) {
-      payload.skills = [];
+      payload.skills = '';
+    }else{
+      const stringList: string[] = payload.skills;
+      const commaSeparatedString: string = stringList.join(', ');
+      payload.skills = commaSeparatedString;
     }
 
     if (Object.is(payload.softSkills, '')) {
-      payload.softSkills = [];
+      payload.softSkills = '';
+    }
+    else{
+      const stringList: string[] = payload.softSkills;
+      const commaSeparatedString: string = stringList.join(', ');
+      payload.softSkills = commaSeparatedString;
     }
 
     if (Object.is(payload.coreCompentencies, '')) {
-      payload.coreCompentencies = [];
-    }
-
-    if(payload.fresher){
-     
-      if(Object.is(payload.collegeProject[0].collegeProjectName, '')){
-        
-        if(this.collegeProjectDeletedArray.length > 0){
-          this.collegeProjectDeletedArray.forEach( pro => {
-            payload.collegeProject.push(pro);
-          }); 
-        }
-        else{
-          payload.collegeProject = [];
-       }
-      }
-      else{
-        if(this.collegeProjectDeletedArray.length > 0){
-          this.collegeProjectDeletedArray.forEach( pro => {
-            payload.collegeProject.push(pro);
-          }); 
-        }
-      }
+      payload.coreCompentencies = '';
     }
     else{
+      const stringList: string[] = payload.coreCompentencies;
+      const commaSeparatedString: string = stringList.join(', ');
+      payload.coreCompentencies = commaSeparatedString;
+    }
+ 
+
+    if (payload.fresher) {
+      const hasValidProject = payload.collegeProject.some((project: { collegeProjectName: string; }) =>
+        project.collegeProjectName && project.collegeProjectName.trim() !== ''
+      );
+    
+      if (!hasValidProject) {
+        payload.collegeProject = [];
+      } else {
+        payload.collegeProject = payload.collegeProject.map((project: { collegeProjectSkills: any[]; })  => ({
+          ...project,
+          collegeProjectSkills: Array.isArray(project.collegeProjectSkills)
+            ? project.collegeProjectSkills.join(', ')
+            : ''
+        }));
+      }
+    } else {
       payload.collegeProject = [];
     }
-
 
     this.api.retrieve(route, payload).subscribe({
       next: (response) => {
@@ -473,7 +423,7 @@ candidateForm!: FormGroup;
       projects: this.fb.array([this.createProject()]),
       currentlyWorking: [''],
       responsibilities:[''],
-      isDeleted:false,
+      
     });
   }
 
@@ -484,7 +434,7 @@ candidateForm!: FormGroup;
       projectSkills: [[]],
       projectRole: [''],
       projectDescription: [''],
-      isDeleted:false
+      
     });
   }
 
@@ -500,8 +450,6 @@ candidateForm!: FormGroup;
       const removedExperience = this.experienceControls.at(index).value;
       console.log('Removed Experience:', removedExperience);
       if (removedExperience.id) {
-        removedExperience.isDeleted = true; 
-       this.experienceDeletedArray.push(removedExperience);
        this.experienceControls.removeAt(index);
       } else {
         this.experienceControls.removeAt(index);
@@ -554,13 +502,13 @@ candidateForm!: FormGroup;
   createQualification(): FormGroup {
     return this.fb.group({
       id:[''],
-      instutionName: [''],
+      institutionName: [''],
       department: [''],
       qualificationStartYear: [''],
       qualificationEndYear: [''],
       percentage: [''],
       fieldOfStudy: [''],
-      isDeleted:false,
+      
     });
   }
 
@@ -579,8 +527,6 @@ candidateForm!: FormGroup;
     if (confirmDelete && this.qualificationControls.length > 1) {
       const removedQualification = this.qualificationControls.at(index).value;
        if (removedQualification.id) {
-        removedQualification.isDeleted = true; 
-          this.qualificationDeletedArray.push(removedQualification);
           this.qualificationControls.removeAt(index);
       } else {
         this.qualificationControls.removeAt(index);
@@ -612,8 +558,6 @@ candidateForm!: FormGroup;
     if (confirmDelete && this.certificateControls.length > 1) {
     const removedCertificate = this.certificateControls.at(index).value;
        if (removedCertificate.id) {
-          removedCertificate.isDeleted = true; 
-          this.certificatesDeletedArray.push(removedCertificate);
           this.certificateControls.removeAt(index);
       } else {
         this.certificateControls.removeAt(index);
@@ -627,7 +571,7 @@ candidateForm!: FormGroup;
       courseName: [''],
       courseStartDate: [''],
       courseEndDate: [''],
-      isDeleted:false
+      
     });
   }
 
@@ -648,8 +592,6 @@ candidateForm!: FormGroup;
     if (confirmDelete && this.achievementsControls.length > 1) {
       const removedAchievement = this.achievementsControls.at(index).value;
        if (removedAchievement.id) {
-        removedAchievement.isDeleted =true;
-        this.achievementsDeletedArray.push(removedAchievement);
         this.achievementsControls.removeAt(index);
        } else {
         this.achievementsControls.removeAt(index);
@@ -814,7 +756,6 @@ candidateForm!: FormGroup;
         courseName: certificate.courseName,
         courseStartDate: certificate.courseStartDate ? new Date(certificate.courseStartDate) : null,
         courseEndDate: certificate.courseEndDate ? new Date(certificate.courseEndDate) : null,
-        isDeleted:['']
       });
     }
   
@@ -834,7 +775,7 @@ candidateForm!: FormGroup;
             experienceYearEndDate:  experience.experienceYearEndDate ? new Date(experience.experienceYearEndDate) : null,
             currentlyWorking: experience.currentlyWorking,
             responsibilities:experience.responsibilities,
-            isDeleted:false
+            
           });
          
           if(experience.projects?.length > 0){
@@ -849,7 +790,7 @@ candidateForm!: FormGroup;
               projectSkills: project.projectSkills,
               projectRole: project.projectRole,
               projectDescription: project.projectDescription,
-              isDeleted:false
+              
             });
             projectFormArray.push(projectForm);
           });
@@ -862,13 +803,13 @@ candidateForm!: FormGroup;
     createQualificationFormGroup(qualification: Qualification){
       return this.fb.group({
         id:qualification.id,
-        instutionName: qualification.instutionName,
+        institutionName: qualification.institutionName,
         department: qualification.department,
         qualificationStartYear: qualification.qualificationStartYear ? new Date(qualification.qualificationStartYear) : null,
         qualificationEndYear: qualification.qualificationEndYear ? new Date(qualification.qualificationEndYear) : null,
         percentage: qualification.percentage,
         fieldOfStudy: qualification.fieldOfStudy,
-        isDeleted:false,
+        
       });
     }
   
@@ -878,7 +819,7 @@ candidateForm!: FormGroup;
         id:achievement.id,
         achievementsName: achievement.achievementsName,
         achievementsDate:  achievement.achievementsDate ? new Date(achievement.achievementsDate) : null,
-        isDeleted:false,
+        
       });
     }
 
@@ -888,15 +829,16 @@ candidateForm!: FormGroup;
         collegeProjectName:  collegeProject.collegeProjectName,
         collegeProjectSkills: collegeProject.collegeProjectSkills,
         collegeProjectDescription:collegeProject.collegeProjectDescription,
-        isDeleted:false,
+        
       });
     }
 
     next(){
-    
       this.gs.setCandidateDetails(this.candidates);
-      this.router.navigate(['mob-candidate/mobile-payment']);
-       
+      if(this.resumeName !== null && this.resumeName !== undefined){
+         this.gs.setResumeName(this.resumeName);
+      }
+      this.router.navigate(['mob-candidate/verify-components']);  
     }
 
    get collegeProjectControls() {
@@ -918,8 +860,6 @@ candidateForm!: FormGroup;
     if (confirmDelete && this.collegeProjectControls.length > 1) {
       const removeCollegeProject = this.collegeProjectControls.at(index).value;
        if (removeCollegeProject.id) {
-        removeCollegeProject.isDeleted =true;
-         this.collegeProjectDeletedArray.push(removeCollegeProject);
          this.collegeProjectControls.removeAt(index);
        } else {
         this.collegeProjectControls.removeAt(index);
@@ -933,7 +873,7 @@ candidateForm!: FormGroup;
         collegeProjectName: [''],
         collegeProjectSkills: [[]],
         collegeProjectDescription: [''],
-        isDeleted:false
+        
       });
     }
 
@@ -952,12 +892,15 @@ candidateForm!: FormGroup;
         next: (response) => {
           const candidate = response as Candidate;
           if(candidate !== null){
+           
             this.candidateId =  candidate?.id
-           this.patchCandidateForm(candidate);
-           this.getCandidateImage(candidate?.id);
+             this.candidates = candidate;
+            const candidateClone = JSON.parse(JSON.stringify(candidate)); 
+            this.patchCandidateForm(candidateClone);
+            this.getCandidateImage(candidate?.id);
 
-          //set global
-          this.gs.setCandidateDetails(candidate);
+            //set global
+            this.gs.setCandidateDetails(candidate);
          
         }
         },

@@ -18,6 +18,7 @@ import { LocalStorage } from '@ng-idle/core';
 import { ChooseTemplateComponent } from '../Templates/choose-template/choose-template.component';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { CollegeProject } from 'src/app/models/candidates/college-project';
+import { ResumeDetailsComponent } from '../resume-details/resume-details.component';
 
 
 @Component({
@@ -257,35 +258,7 @@ export class CandidatesDetailsComponent {
       }
     }
 
-    // if (!payload.fresher) {
-    //   if (Object.is(payload.experiences[0].companyName, '')) {
-    //     payload.experiences = [];
-    //   } else {
-    //     payload.experiences.forEach((exp: any) => {
-    //       exp.experienceYearStartDate = this.datePipe.transform(
-    //         exp.experienceYearStartDate,
-    //         'yyyy-MM-dd'
-    //       );
-    //       exp.experienceYearEndDate = this.datePipe.transform(
-    //         exp.experienceYearEndDate,
-    //         'yyyy-MM-dd'
-    //       );
-
-    //       const hasEmptyProjectName = exp.projects?.some((proj: any) => proj.projectName === '');
-
-    //       if (hasEmptyProjectName) {
-    //         exp.projects = [];
-    //       } else {
-    //         exp.projects = exp.projects.map((proj: any) => ({
-    //           ...proj,
-    //           projectSkills: Array.isArray(proj.projectSkills)
-    //             ? proj.projectSkills.join(', ')
-    //             : proj.projectSkills
-    //         }));
-    //       }
-    //     });
-    //   }
-    // }
+   
 
     if (!payload.fresher) {
       if (Object.is(payload.experiences?.[0]?.companyName, '')) {
@@ -332,7 +305,7 @@ export class CandidatesDetailsComponent {
       }
     }
 
-    if (Object.is(payload.qualification[0].instutionName, '')) {
+    if (Object.is(payload.qualification[0].institutionName, '')) {
       payload.qualification = [];
     } else {
       payload.qualification.forEach((q: any) => {
@@ -436,18 +409,10 @@ export class CandidatesDetailsComponent {
 
         this.candidateId = response?.id;
         this.dataLoaded = true;
-        localStorage.setItem('candidateId', this.candidateId);
-        this.uploadCandidateImage();
-
-        // response.languagesKnown = response?.languagesKnown ? response.languagesKnown .split(',').map((skill: string) => skill.trim()) : [];
-        // response.skills = response?.skills ? response.skills.split(',').map((skill: string) => skill.trim()) : [];
-        // response.softSkills = response?.softSkills ? response.softSkills.split(',').map((skill: string) => skill.trim()) : [];
-        // response.coreCompentencies = response?.coreCompentencies ? response.coreCompentencies.split(',').map((skill: string) => skill.trim()) : [];
-
-        this.candidates = response
-
+        localStorage.setItem('candidateId', this.candidateId); 
+        this.candidates = response 
+        this.uploadCandidateImage()
         this.dataLoaded = true;
-
         this.gs.showMessage('Success', 'Create Successfully');
       },
       error: (error) => {
@@ -550,7 +515,7 @@ export class CandidatesDetailsComponent {
 
   createQualification(): FormGroup {
     return this.fb.group({
-      instutionName: [''],
+      institutionName: [''],
       department: [''],
       qualificationStartYear: [''],
       qualificationEndYear: [''],
@@ -735,23 +700,22 @@ export class CandidatesDetailsComponent {
   }
 
   getScore(jobId: any, tenant: any) {
-
-    const candidateIds = '23';
+      
+   
 
     const route = "score-check/get-score"
-
     const formData = new FormData();
+
     formData.append('jobId', jobId);
-    formData.append('candidateId', candidateIds);
+    formData.append('candidateId', this.candidateId);
     formData.append('tenant', tenant);
-
-
-    const payload = { jobId: jobId, candidateId: candidateIds, tenant: tenant };
+    
+    const payload = { jobId: jobId, candidateId: this.candidateId, tenant: tenant };
 
     this.api.upload(route, formData).subscribe({
       next: (response) => {
 
-        this.candidateScore = { id: 1, score: '55%', related: true, jobId: 'GT0002' };
+        this.candidateScore = response;
       }
     });
 
@@ -783,14 +747,14 @@ export class CandidatesDetailsComponent {
       if (confirmDelete && event.target.files[0]) {
         this.multipartFile = event.target.files[0];
         this.resume = { fileName: this.multipartFile?.name };
-        // this.parseResume();
+         this.parseResume();
       }
     }
     else {
       if (event.target.files[0]) {
         this.multipartFile = event.target.files[0];
         this.resume = { fileName: this.multipartFile?.name };
-        // this.parseResume();
+         this.parseResume();
       }
     }
   }
@@ -810,22 +774,24 @@ export class CandidatesDetailsComponent {
     this.api.upload(route, formData).subscribe({
       next: (response) => {
         if (response) {
+          this.ngxLoaderStop();
           this.candidates = response;
           this.candidateId = response.id;
-          const candidate = response as Candidate;
-          this.patchCandidateForm(candidate);
-
-          this.getCandidateImage(this.candidateId);
+          this.resumeDetailComponent(response);
+        }
+        else{
+          this.ngxLoaderStop();
+          this.gs.showMessage('Note!..', 'Error in uploading resume please reupload it ');
         }
         this.ngxLoaderStop();
       },
       error: error => {
         this.ngxLoaderStop();
-        this.gs.showToast('error', 'Error in uploading resume please reupload it ');
+        this.gs.showMessage('error', 'Error in uploading resume please reupload it ');
       }
 
     });
-    this.ngxLoaderStop();
+    
   }
 
   enterDetails() {
@@ -846,12 +812,6 @@ export class CandidatesDetailsComponent {
         localStorage.setItem('candidateId', response.id);
         this.candidates = response;
         this.candidateId = response.id;
-
-        // response.languagesKnown = response?.languagesKnown ? response.languagesKnown .split(',').map((skill: string) => skill.trim()) : [];
-        // response.skills = response?.skills ? response.skills.split(',').map((skill: string) => skill.trim()) : [];
-        // response.softSkills = response?.softSkills ? response.softSkills.split(',').map((skill: string) => skill.trim()) : [];
-        // response.coreCompentencies = response?.coreCompentencies ? response.coreCompentencies.split(',').map((skill: string) => skill.trim()) : [];
-
         const candidate = response as Candidate
         const candidateClone = JSON.parse(JSON.stringify(candidate));
         this.patchCandidateForm(candidateClone);
@@ -1036,7 +996,7 @@ export class CandidatesDetailsComponent {
   createQualificationFormGroup(qualification: Qualification) {
     return this.fb.group({
       id: qualification.id,
-      instutionName: qualification.instutionName,
+      institutionName: qualification.institutionName,
       department: qualification.department,
       qualificationStartYear: qualification.qualificationStartYear ? new Date(qualification.qualificationStartYear) : null,
       qualificationEndYear: qualification.qualificationEndYear ? new Date(qualification.qualificationEndYear) : null,
@@ -1175,10 +1135,6 @@ export class CandidatesDetailsComponent {
 
           const candidateClone = JSON.parse(JSON.stringify(candidate));
           this.patchCandidateForm(candidateClone);
-
-          // if (this.candidateId !== null && this.candidateId !== undefined) {
-          //   this.candidateForm.controls['mobileNumber'].disable();
-          // }
           this.getCandidateImage(candidate?.id)
 
           console.log(this.candidates);
@@ -1223,6 +1179,34 @@ export class CandidatesDetailsComponent {
     this.ngxLoader.start();
     this.customLoaderMessage = message;
   }
+
+  resumeDetailComponent(candidateDetails:any){
+   const ref = this.dialog.open(ResumeDetailsComponent, {
+      data: {
+        candidates: candidateDetails,
+      },
+      closable: true,
+      width: '70%',
+      height: '90%',
+      header: 'Check your details',
+    });
+
+    ref.onClose.subscribe(response => {
+      if (response) {
+
+        this.candidates = response;
+        this.candidateId = response.id;
+        const candidate = response as Candidate
+        const candidateClone = JSON.parse(JSON.stringify(candidate));
+        this.patchCandidateForm(candidateClone);
+        this.candidateImageUrl = response.candidateLogo;
+
+        this.resume = null;
+        
+      }
+    });
+  }
+   
 
 }
 

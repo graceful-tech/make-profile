@@ -12,6 +12,7 @@ import { PaymentDetailsComponent } from './payments/payment-details/payment-deta
 import { NgxUiLoaderModule } from 'ngx-ui-loader';
 import { ViewAccountComponent } from './view-account/view-account.component';
 import { VerifyCandidatesComponent } from './verify-candidates/verify-candidates.component';
+import { ResumeDetailsComponent } from './resume-details/resume-details.component';
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import { VerifyCandidatesComponent } from './verify-candidates/verify-candidates
     PaymentOptionComponent,
     PaymentDetailsComponent,
     ViewAccountComponent,
-    VerifyCandidatesComponent
+    VerifyCandidatesComponent,
+    ResumeDetailsComponent
   ],
   imports: [
     CommonModule,

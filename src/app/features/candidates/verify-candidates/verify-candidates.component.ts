@@ -283,7 +283,7 @@ export class VerifyCandidatesComponent {
     }
     
      
-    if (Object.is(payload.qualification[0].instutionName, '')) {
+    if (Object.is(payload.qualification[0].institutionName, '')) {
       payload.qualification = [];
     } else {
       payload.qualification.forEach((q: any) => {
@@ -388,15 +388,9 @@ export class VerifyCandidatesComponent {
         this.candidateId = response?.id;
         this.dataLoaded = true;
         localStorage.setItem('candidateId',this.candidateId);
-        this.uploadCandidateImage();
-
-        this.returnCandidate = response;
+         this.returnCandidate = response;
+         this.uploadCandidateImage();
         this.returnCandidate.candidateLogo = this.candidateImageUrl;
-
-        // response.languagesKnown = response?.languagesKnown ? response.languagesKnown .split(',').map((skill: string) => skill.trim()) : [];
-        // response.skills = response?.skills ? response.skills.split(',').map((skill: string) => skill.trim()) : [];
-        // response.softSkills = response?.softSkills ? response.softSkills.split(',').map((skill: string) => skill.trim()) : [];
-        // response.coreCompentencies = response?.coreCompentencies ? response.coreCompentencies.split(',').map((skill: string) => skill.trim()) : [];
 
         response.candidateLogo = this.candidateImageUrl; 
         this.close(this.returnCandidate);
@@ -514,7 +508,7 @@ export class VerifyCandidatesComponent {
   createQualification(): FormGroup {
     return this.fb.group({
       id:[''],
-      instutionName: [''],
+      institutionName: [''],
       department: [''],
       qualificationStartYear: [''],
       qualificationEndYear: [''],
@@ -824,7 +818,7 @@ export class VerifyCandidatesComponent {
     createQualificationFormGroup(qualification: Qualification){
       return this.fb.group({
         id:qualification.id,
-        instutionName: qualification.instutionName,
+        institutionName: qualification.institutionName,
         department: qualification.department,
         qualificationStartYear: qualification.qualificationStartYear ? new Date(qualification.qualificationStartYear) : null,
         qualificationEndYear: qualification.qualificationEndYear ? new Date(qualification.qualificationEndYear) : null,
@@ -859,7 +853,7 @@ export class VerifyCandidatesComponent {
         const route = 'template/checker';
      const payload = {
       ...this.candidates,
-      resumeFormatName: this.resumeName,
+      templateName: this.resumeName,
     };
     localStorage.setItem('resumeName',this.resumeName);
 

@@ -1,11 +1,5 @@
 import { DatePipe } from '@angular/common';
-import {
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  Input,
-  Output,
-} from '@angular/core';
+import {ChangeDetectorRef,Component,} from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
@@ -288,7 +282,7 @@ export class CreateCandidatesComponent {
     }
     
      
-    if (Object.is(payload.qualification[0].instutionName, '')) {
+    if (Object.is(payload.qualification[0].institutionName, '')) {
       payload.qualification = [];
     } else {
       payload.qualification.forEach((q: any) => {
@@ -393,15 +387,12 @@ export class CreateCandidatesComponent {
         this.candidateId = response?.id;
         this.dataLoaded = true;
         localStorage.setItem('candidateId',this.candidateId);
-        this.uploadCandidateImage();
+          this.returnCandidate = response;
+          this.uploadCandidateImage();
 
-        this.returnCandidate = response;
+      
         this.returnCandidate.candidateLogo = this.candidateImageUrl;
 
-        // response.languagesKnown = response?.languagesKnown ? response.languagesKnown .split(',').map((skill: string) => skill.trim()) : [];
-        // response.skills = response?.skills ? response.skills.split(',').map((skill: string) => skill.trim()) : [];
-        // response.softSkills = response?.softSkills ? response.softSkills.split(',').map((skill: string) => skill.trim()) : [];
-        // response.coreCompentencies = response?.coreCompentencies ? response.coreCompentencies.split(',').map((skill: string) => skill.trim()) : [];
 
         response.candidateLogo = this.candidateImageUrl; 
         this.close(this.returnCandidate);
@@ -524,7 +515,7 @@ export class CreateCandidatesComponent {
   createQualification(): FormGroup {
     return this.fb.group({
       id:[''],
-      instutionName: [''],
+      institutionName: [''],
       department: [''],
       qualificationStartYear: [''],
       qualificationEndYear: [''],
@@ -835,7 +826,7 @@ export class CreateCandidatesComponent {
     createQualificationFormGroup(qualification: Qualification){
       return this.fb.group({
         id:qualification.id,
-        instutionName: qualification.instutionName,
+        institutionName: qualification.institutionName,
         department: qualification.department,
         qualificationStartYear: qualification.qualificationStartYear ? new Date(qualification.qualificationStartYear) : null,
         qualificationEndYear: qualification.qualificationEndYear ? new Date(qualification.qualificationEndYear) : null,
@@ -957,6 +948,7 @@ export class CreateCandidatesComponent {
   
     }
  
+    
 
   }
    

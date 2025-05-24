@@ -188,8 +188,7 @@ export class ChooseTemplateComponent {
     this.ref.close();
     const candidateId = localStorage.getItem('candidateId');
    
-     localStorage.setItem('resumeName',resumeName);
-    const resumeNames = localStorage.getItem('resumeName');
+     localStorage.setItem('templateName',resumeName);
 
     const ref = this.dialog.open(VerifyCandidatesComponent, {
       data: {

@@ -1,7 +1,7 @@
 export interface Qualification {
 
     id:any;
-    instutionName:any;
+    institutionName:any;
     department: any;
     qualificationStartYear: any;
     qualificationEndYear: any;

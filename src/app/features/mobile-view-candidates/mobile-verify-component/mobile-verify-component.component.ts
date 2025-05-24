@@ -62,15 +62,22 @@ export class MobileVerifyComponentComponent {
   isDeleted:boolean = false;
   payments: boolean = false;
   candidatesDetails: Array<Candidate> = [];
-  experienceDeletedArray:Array<any> = [];
-  qualificationDeletedArray:Array<any> = [];
-  certificatesDeletedArray:Array<any> = [];
-  achievementsDeletedArray:Array<any> = [];
   imageName: any;
   returnImage:any;
-  collegeProjectDeletedArray:Array<any> = [];
   candidatesUpdateData: any;
   skill: Array<any> = [];
+  resumeName: any;
+  fieldsName: any;
+  fieldCount: any; 
+  experience:boolean=true;
+  personalDetails:boolean =true;
+  course:boolean = true;
+  achievements:boolean = true;
+  extraSkills:boolean = true
+  qualification:boolean= true;
+  skills:boolean = true;
+  collegeProject: boolean= true;
+   
 
   constructor(
     private api: ApiService,
@@ -86,11 +93,7 @@ export class MobileVerifyComponentComponent {
     private ps: PaymentService,
   ) 
   {
-    // this.candidates = this.config.data?.candidates;
-    // this.payments = this.config.data?.payments;
-    // this.candidateImageUrl = this.config.data?.candidateImage;
-
-    
+ 
   }
 
   ngOnInit() {
@@ -102,25 +105,33 @@ export class MobileVerifyComponentComponent {
     this.getFieldOfStudy();
     
 
-    // this.gs.candidateDetails$.subscribe(response => {
-    //   this.candidatesUpdateData = response;
-    // });
+    this.gs.resumeName$.subscribe(response =>{
+      this.resumeName = response
+    })
 
-    // if(this.candidatesUpdateData !== null && this.candidatesUpdateData !== undefined){
-    //   // this.candidateId = this.candidatesUpdateData?.id;
-    //   this.candidates = this.candidatesUpdateData;
-    //   this.patchCandidateForm(this.candidatesUpdateData);
+   
+    this.gs.candidateDetails$.subscribe(response => {
+      this.candidatesUpdateData = response;
+    });
 
-    //   this.gs.candidateImage$.subscribe(response =>{
-    //     if(response !== null){
-    //     this.candidateImageUrl = response
-    //     }
-    //   })
-    // }
-    // else{
+    if(this.candidatesUpdateData !== null && this.candidatesUpdateData !== undefined){
+       this.candidateId = this.candidatesUpdateData?.id;
+      this.candidates = this.candidatesUpdateData;
+      
+      const candidateClone = JSON.parse(JSON.stringify(this.candidatesUpdateData)); 
+      this.patchCandidateForm(candidateClone);
+
+      this.gs.candidateImage$.subscribe(response =>{
+        if(response !== null){
+        this.candidateImageUrl = response
+        }
+      })
+
+      this.verifyDetails(this.candidates);
+    }
+    else{
       this.getCandidates();
-    // }
-
+     }
     
   }
 
@@ -230,38 +241,7 @@ export class MobileVerifyComponentComponent {
         }));
       }
     } 
-
-  
-    // if (!payload.fresher) {
-    //   if (Object.is(payload.experiences[0].companyName, '')) {
-    //     payload.experiences = [];
-    //   } else {
-    //     payload.experiences.forEach((exp: any) => {
-    //       exp.experienceYearStartDate = this.datePipe.transform(
-    //         exp.experienceYearStartDate,
-    //         'yyyy-MM-dd'
-    //       );
-    //       exp.experienceYearEndDate = this.datePipe.transform(
-    //         exp.experienceYearEndDate,
-    //         'yyyy-MM-dd'
-    //       );
-    
-    //       const hasEmptyProjectName = exp.projects?.some((proj: any) => proj.projectName === '');
-    
-    //       if (hasEmptyProjectName) {
-    //         exp.projects = [];
-    //       } else {
-    //         exp.projects = exp.projects.map((proj: any) => ({
-    //           ...proj,
-    //           projectSkills: Array.isArray(proj.projectSkills)
-    //             ? proj.projectSkills.join(', ')
-    //             : proj.projectSkills
-    //         }));
-    //       }
-    //     });
-    //   }
-    // }
-
+ 
         if (!payload.fresher) {
       if (Object.is(payload.experiences?.[0]?.companyName, '')) {
         payload.experiences = [];
@@ -309,7 +289,7 @@ export class MobileVerifyComponentComponent {
     }
     
      
-    if (Object.is(payload.qualification[0].instutionName, '')) {
+    if (Object.is(payload.qualification[0].institutionName, '')) {
       payload.qualification = [];
     } else {
       payload.qualification.forEach((q: any) => {
@@ -419,13 +399,12 @@ export class MobileVerifyComponentComponent {
        if (this.candidateImageUrl !== undefined && this.multipartFile !== undefined) {
           this.uploadCandidateImage();
         }
-
-        
         response.candidateLogo = this.candidateImageUrl; 
 
-        this.gs.setCandidateDetails(this.candidates);
+        this.verifyDetails(this.candidates);
 
-        window.alert('Created Successfully');
+        //this.gs.setCandidateDetails(this.candidates);
+        //window.alert('Created Successfully');
 
       },
       error: (error) => {
@@ -457,7 +436,7 @@ export class MobileVerifyComponentComponent {
       projects: this.fb.array([this.createProject()]),
       currentlyWorking: [''],
       responsibilities:[''],
-      isDeleted:false,
+      
     });
   }
 
@@ -468,7 +447,7 @@ export class MobileVerifyComponentComponent {
       projectSkills: [[]],
       projectRole: [''],
       projectDescription: [''],
-      isDeleted:false
+      
     });
   }
 
@@ -484,8 +463,6 @@ export class MobileVerifyComponentComponent {
       const removedExperience = this.experienceControls.at(index).value;
       console.log('Removed Experience:', removedExperience);
       if (removedExperience.id) {
-        removedExperience.isDeleted = true; 
-       this.experienceDeletedArray.push(removedExperience);
        this.experienceControls.removeAt(index);
       } else {
         this.experienceControls.removeAt(index);
@@ -538,13 +515,13 @@ export class MobileVerifyComponentComponent {
   createQualification(): FormGroup {
     return this.fb.group({
       id:[''],
-      instutionName: [''],
+      institutionName: [''],
       department: [''],
       qualificationStartYear: [''],
       qualificationEndYear: [''],
       percentage: [''],
       fieldOfStudy: [''],
-      isDeleted:false,
+      
     });
   }
 
@@ -563,8 +540,6 @@ export class MobileVerifyComponentComponent {
     if (confirmDelete && this.qualificationControls.length > 1) {
       const removedQualification = this.qualificationControls.at(index).value;
        if (removedQualification.id) {
-        removedQualification.isDeleted = true; 
-          this.qualificationDeletedArray.push(removedQualification);
           this.qualificationControls.removeAt(index);
       } else {
         this.qualificationControls.removeAt(index);
@@ -596,8 +571,6 @@ export class MobileVerifyComponentComponent {
     if (confirmDelete && this.certificateControls.length > 1) {
     const removedCertificate = this.certificateControls.at(index).value;
        if (removedCertificate.id) {
-          removedCertificate.isDeleted = true; 
-          this.certificatesDeletedArray.push(removedCertificate);
           this.certificateControls.removeAt(index);
       } else {
         this.certificateControls.removeAt(index);
@@ -611,7 +584,7 @@ export class MobileVerifyComponentComponent {
       courseName: [''],
       courseStartDate: [''],
       courseEndDate: [''],
-      isDeleted:false
+      
     });
   }
 
@@ -632,8 +605,6 @@ export class MobileVerifyComponentComponent {
     if (confirmDelete && this.achievementsControls.length > 1) {
       const removedAchievement = this.achievementsControls.at(index).value;
        if (removedAchievement.id) {
-        removedAchievement.isDeleted =true;
-        this.achievementsDeletedArray.push(removedAchievement);
         this.achievementsControls.removeAt(index);
        } else {
         this.achievementsControls.removeAt(index);
@@ -821,7 +792,7 @@ export class MobileVerifyComponentComponent {
             experienceYearEndDate:  experience.experienceYearEndDate ? new Date(experience.experienceYearEndDate) : null,
             currentlyWorking: experience.currentlyWorking,
             responsibilities:experience.responsibilities,
-            isDeleted:false
+            
           });
          
           if(experience.projects?.length > 0){
@@ -836,7 +807,7 @@ export class MobileVerifyComponentComponent {
               projectSkills: project.projectSkills,
               projectRole: project.projectRole,
               projectDescription: project.projectDescription,
-              isDeleted:false
+              
             });
             projectFormArray.push(projectForm);
           });
@@ -849,13 +820,13 @@ export class MobileVerifyComponentComponent {
     createQualificationFormGroup(qualification: Qualification){
       return this.fb.group({
         id:qualification.id,
-        instutionName: qualification.instutionName,
+        institutionName: qualification.institutionName,
         department: qualification.department,
         qualificationStartYear: qualification.qualificationStartYear ? new Date(qualification.qualificationStartYear) : null,
         qualificationEndYear: qualification.qualificationEndYear ? new Date(qualification.qualificationEndYear) : null,
         percentage: qualification.percentage,
         fieldOfStudy: qualification.fieldOfStudy,
-        isDeleted:false,
+        
       });
     }
   
@@ -865,7 +836,7 @@ export class MobileVerifyComponentComponent {
         id:achievement.id,
         achievementsName: achievement.achievementsName,
         achievementsDate:  achievement.achievementsDate ? new Date(achievement.achievementsDate) : null,
-        isDeleted:false,
+        
       });
     }
 
@@ -875,7 +846,7 @@ export class MobileVerifyComponentComponent {
         collegeProjectName:  collegeProject.collegeProjectName,
         collegeProjectSkills: collegeProject.collegeProjectSkills,
         collegeProjectDescription:collegeProject.collegeProjectDescription,
-        isDeleted:false,
+        
       });
     }
 
@@ -913,8 +884,6 @@ export class MobileVerifyComponentComponent {
     if (confirmDelete && this.collegeProjectControls.length > 1) {
       const removeCollegeProject = this.collegeProjectControls.at(index).value;
        if (removeCollegeProject.id) {
-        removeCollegeProject.isDeleted =true;
-         this.collegeProjectDeletedArray.push(removeCollegeProject);
          this.collegeProjectControls.removeAt(index);
        } else {
         this.collegeProjectControls.removeAt(index);
@@ -928,7 +897,7 @@ export class MobileVerifyComponentComponent {
         collegeProjectName: [''],
         collegeProjectSkills: [[]],
         collegeProjectDescription: [''],
-        isDeleted:false
+        
       });
     }
 
@@ -937,7 +906,8 @@ export class MobileVerifyComponentComponent {
       if( this.candidateImageUrl !== null && this.candidateImageUrl !== undefined){
       this.gs.setCandidateImage(this.candidateImageUrl);
       }
-      this.router.navigate(['mob-candidate']);
+      this.gs.setResumeName(this.resumeName);
+      this.router.navigate(['mob-candidate/edit-candidate']);
     }
 
     // addSkill() {
@@ -956,19 +926,21 @@ export class MobileVerifyComponentComponent {
     //   } 
     // }
 
-    getCandidates() {
+     getCandidates() {
       const route = 'candidate';
       this.api.get(route).subscribe({
         next: (response) => {
           const candidate = response as Candidate;
           if(candidate !== null){
+            this.candidates = response
             this.candidateId =  candidate?.id
-           this.patchCandidateForm(candidate);
+
+           const candidateClone = JSON.parse(JSON.stringify(candidate)); 
+            this.patchCandidateForm(candidateClone);
            this.getCandidateImage(candidate?.id);
 
-          //set global
-          this.gs.setCandidateDetails(candidate);
-         
+            this.verifyDetails(candidate);
+ 
         }
         },
       });
@@ -1012,6 +984,80 @@ export class MobileVerifyComponentComponent {
       inputEl.value = '';
     }
   }
+
+
+     verifyDetails(candidateDetails:any) {
+       
+        const route = 'template/checker';
+
+       const payload = {...candidateDetails,templateName: this.resumeName,};
+
+       this.api.retrieve(route,payload).subscribe({
+           next: (response) => {
+          
+           this.fieldsName = response?.fieldName;
+           this.fieldCount = response?.count !== null ? response?.count :0;
+
+  
+           if(this.fieldsName !== null && this.fieldsName.length > 0 && this.fieldsName[0] !== "") {
+            
+            if(!this.fieldsName.includes('experience')){
+                this.experience = false;
+              }
+        
+              if(!this.fieldsName.includes('qualification')){
+                this.qualification = false;
+              }
+        
+              if(!this.fieldsName.includes('achievements')){
+                this.achievements = false;
+              }
+        
+              if(!this.fieldsName.includes('extraSkills')){
+                this.extraSkills = false;
+              }
+        
+              if(!this.fieldsName.includes('course')){
+                this.course = false;
+              }
+
+              if(!this.fieldsName.includes('skills')){
+               this.skills = false;
+               }
+        
+              if(!this.fieldsName.includes('personalDetails')){
+                this.personalDetails = false;
+              }
+
+              if(!this.fieldsName.includes('collegeProject')){
+                 this.collegeProject = false;
+              }
+
+               this.highlightVisibleFields(this.fieldsName);
+        }
+        else{
+         this.payment();
+        }
+      },
+    });
+
+    }
+
+     highlightVisibleFields(fieldsName:any) {
+  
+      const allElementsWithId = document.querySelectorAll('[id]');
+
+      allElementsWithId.forEach((el) => {
+         if (fieldsName.includes(el.id)) {
+           el.classList.add('highlight-border');
+         }
+    });
+}
+
+ payment(){
+  this.gs.setCandidateDetails(this.candidates);
+  this.router.navigate(['mob-candidate/mobile-payment']);
+}
     
 }
 

@@ -7,6 +7,7 @@ import {DialogService,DynamicDialogConfig,DynamicDialogRef,} from 'primeng/dynam
 import { Candidate } from 'src/app/models/candidates/candidate.model';
 import { ApiService } from 'src/app/services/api.service';
 import { GlobalService } from 'src/app/services/global.service';
+ 
 
 import { PaymentService } from 'src/app/services/payment.service';
 
@@ -20,7 +21,7 @@ export class MobilePaymentOptionComponent {
   balanceCredits: number = 0;
   candidateId: any;
   credits: any;
-  candidates: Array<Candidate> = [];
+  candidates: any;
   candidatesUpdateData: any;
   candidateImageUrl: any;
   resumeName: any;
@@ -42,33 +43,16 @@ export class MobilePaymentOptionComponent {
     private ps: PaymentService,
     private ngxLoader: NgxUiLoaderService
   ) {
-    
+     this.gs.resumeName$.subscribe(response =>{
+      this.resumeName = response
+    })
   }
 
   ngOnInit() {
+      this.getCandidates();
+  } 
  
-    
-    
-    this.gs.candidateDetails$.subscribe(response => {
-      this.candidatesUpdateData = response;
-    });
-
-    if(this.candidatesUpdateData !== null && this.candidatesUpdateData !== undefined){
-       this.candidateId = this.candidatesUpdateData?.id;
-       this.candidates = this.candidatesUpdateData;
-    }
-
-    this.gs.candidateImage$.subscribe(response =>{
-      if(response !== null){
-      this.candidateImageUrl = response
-      }
-    })
-
-    this.gs.resumeName$.subscribe(response =>{
-      this.resumeName = response
-    })
-
-  }
+  
 
   async payRupees() {
     const amount = 1 * 100;
@@ -96,6 +80,7 @@ export class MobilePaymentOptionComponent {
       next: (response) => {
         this.credits = response as any;
         if( this.credits){
+          
           this.createResume();
         }
         else{
@@ -109,13 +94,15 @@ export class MobilePaymentOptionComponent {
   createResume() {
     this.ngxLoaderStart();
     const route = 'resume/create';
-    const candidateId = localStorage.getItem('candidateId');
-    
-    const payload = this.candidates;
-    
-    this.api.retrieve(route, payload).subscribe({
-      next: (response) => {
 
+  const templateName =  localStorage.getItem('templateName');
+  if(this.resumeName === null){
+     this.resumeName = templateName;
+    }
+    const payload = {...this.candidates,templateName: this.resumeName,};
+
+    this.api.retrieve(route,payload).subscribe({
+      next: (response) => {
         this.ngxLoaderStop();
       },
       error: (err) => {
@@ -162,6 +149,17 @@ export class MobilePaymentOptionComponent {
       this.ngxLoader.start();
    }
 
-  
+   getCandidates() {
+      const route = 'candidate';
+      this.api.get(route).subscribe({
+        next: (response) => {
+          const candidate = response as Candidate;
+          if(candidate !== null){
+            this.candidateId =  candidate?.id
+            this.candidates = candidate;
+        }
+        },
+      });
+    }
 
 }

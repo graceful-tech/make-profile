@@ -161,3 +161,11 @@
     text-align: right;
    
   }
+
+  .error-message {
+    padding-left: 1rem;
+  }
+
+::ng-deep .custom-dropdown .p-dropdown {
+  width: 200px !important;
+}

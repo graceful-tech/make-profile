@@ -78,9 +78,9 @@
                   <p-button *ngIf="!candidateId" (onClick)="enterDetails()" label="Enter Details"></p-button>
                   <p-button *ngIf="candidateId" (onClick)="UpdateCandidate()" label="Update Details"></p-button>
                 </span>
-                <span class="header-button" *ngIf="resume?.fileName">
+                <!-- <span class="header-button" *ngIf="resume?.fileName">
                   <button class="resume-btn" (click)="parseResume()">Next Step</button>
-                </span>
+                </span> -->
               </div>
             </div>
           </div>
@@ -228,16 +228,16 @@
                 <td>{{ requirement.source }}</td>
                 <td>{{ requirement.minExperience }} - {{ requirement.maxExperience }}</td>
                 <td>{{ requirement.maxCostToCompany }}</td>
-                <td *ngIf="requirement.jobId === this.candidateScore?.jobId; else noScore">
+                <td *ngIf="requirement.jobId === candidateScore?.jobId; else noScore">
                   <span
-                    [ngClass]="{'green' : this.candidateScore?.score > '59','red': this.candidateScore?.score <= 59}">
-                    {{ this.candidateScore?.score !== null ? this.candidateScore?.score : '-' }} </span>
+                    [ngClass]="{'green' : candidateScore?.score > '59','red': candidateScore?.score <= 59}">
+                    {{ candidateScore?.score !== null ? candidateScore?.score : '-' }} </span>
                 </td>
 
-                <td *ngIf="requirement.jobId === this.candidateScore?.jobId; else noRelated">
-                  <span [ngClass]="{'green' : this.candidateScore?.related === true,   
-                            'red': this.candidateScore?.related === false }"> {{ this.candidateScore?.score !== null
-                    && this.candidateScore?.related === true ? 'MATCHED' : this.candidateScore?.score === null ? '-' :
+                <td *ngIf="requirement.jobId === candidateScore?.jobId; else noRelated">
+                  <span [ngClass]="{'green' : candidateScore?.related === true,   
+                            'red': candidateScore?.related === false }"> {{ candidateScore?.score !== null
+                    && candidateScore?.related === true ? 'MATCHED' : candidateScore?.score === null ? '-' :
                     'NOT MATCHED' }}</span>
                 </td>
                 <ng-template #noScore>
@@ -251,7 +251,7 @@
                 </td>
                 <td>
                   <button class="apply-btn"
-                    [disabled]="!(this.candidateScore?.related && this.candidateScore?.score !== null && requirement.jobId === this.candidateScore?.jobId)"
+                    [disabled]="!(candidateScore?.related && candidateScore?.score !== null && requirement.jobId === candidateScore?.jobId)"
                     (click)="applyJob(requirement.jobId,requirement.tenant)">Apply</button>
                 </td>
 
@@ -599,7 +599,7 @@
                 <div class="field-wrapper">
                   <label>Instution Name</label>
                   <div class="input-wrapper">
-                    <input type="text" pInputText formControlName="instutionName" />
+                    <input type="text" pInputText formControlName="institutionName" />
                   </div>
                 </div>
               </div>

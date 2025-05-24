@@ -553,26 +553,12 @@
          <app-make-profile-divider></app-make-profile-divider>
 
          <div class="button-wrapper" *ngIf="!payments">
-          <p-button class="mr-2" [label]="dataLoaded ? 'Generate' : 'Generating..'"  [icon]="dataLoaded ? '' : 'pi pi-spin pi-spinner'" [disabled]="!dataLoaded"
+          <p-button class="mr-2" [label]="dataLoaded ? 'save' : 'saving..'"  [icon]="dataLoaded ? '' : 'pi pi-spin pi-spinner'" [disabled]="!dataLoaded"
               (onClick)="createCandidate()"></p-button>
+
       
-          <p-button  styleClass="p-button-secondary" label="Reset" (onClick)="reset()"> </p-button>
-          </div>
-          <div class="button-wrapper" *ngIf="payments">
-            <p-button class="mr-2" label="Next"  (onClick)="next()"></p-button>
+           <p-button  styleClass="p-button-secondary" label="Save&CreateResume" (onClick)="saveandcreateresume()"> </p-button> 
           </div>
           
   </div>
-  <!-- <section class="preview-resume" >
-    <div class="container">
-      <div class="row justify-content-center">
-        <div class="first-image" >
-          <img  src="assets/img/image2.jpg" alt="search" style="border-radius: 10px;"/>
-        </div> 
-        <div class="second-image">
-          <img src="assets/img/image3.jpg"/>
-        </div>
-      </div>
-    </div>
-  </section> -->
 </div>

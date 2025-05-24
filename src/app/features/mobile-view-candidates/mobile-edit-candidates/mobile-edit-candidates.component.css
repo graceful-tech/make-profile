@@ -87,7 +87,6 @@
   .button-wrapper {
     margin-top: 1rem;
     margin-left: 0.3rem;
-    
     display: flex;
     justify-content: space-between;
   }
@@ -162,12 +161,24 @@
   }
 
   .header-button{
-    margin-top: 1rem;
+    margin-top: 2rem;
     margin-bottom: 1rem;
     margin-left: 0.2rem;
     display: flex;
-    justify-content: space-between;
+    justify-content: right;  
+    
   }
 
  
-  
+  .header-image {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: #c1bdbd;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 10px;
+  }

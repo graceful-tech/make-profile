@@ -1,10 +1,16 @@
  
-<div class="wrapper">
+<Header>
+  <div class="header-image">
+  <h5>Verify Your Details</h5>
+  </div>
+</Header>
+
+<div class="wrapper mt-2">
     <div class="profile-wrapper">
 
         <div class="header-button">
-          <span style="font-weight: 500; font-size: large;">Verify Your Details</span>
-            <p-button type="button" label="Back" (click)="goBack()"></p-button>
+          <!-- <span style="font-weight: 500; font-size: large;">Verify Your Details</span> -->
+            <p-button type="button"  label="Back" (click)="goBack()"></p-button>
         </div>
 
         <form [formGroup]="candidateForm">
@@ -358,7 +364,7 @@
                       <div class="field-wrapper">
                         <label>Instution Name</label>
                         <div class="input-wrapper">
-                          <input type="text" pInputText formControlName="instutionName" />
+                          <input type="text" pInputText formControlName="institutionName" />
                         </div>
                       </div>
                     </div>
@@ -378,7 +384,7 @@
                         <label>Qualification</label>
                         <div class="input-wrapper">
                           <p-dropdown [options]="fieldOfStudy" optionLabel="displayValue" optionValue="dataValue"  placeholder="Select Qualification"
-                         formControlName="department" [filter]="true">
+                         formControlName="department" [filter]="true" styleClass="narrow-dropdown">
                         </p-dropdown>
                         </div>
                       </div>

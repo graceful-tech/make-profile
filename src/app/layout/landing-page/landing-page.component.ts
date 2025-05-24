@@ -20,7 +20,6 @@ export class LandingPageComponent {
     private dialog: DialogService, private route: ActivatedRoute, private deviceServiceService: DeviceServiceService) { }
 
   ngOnInit() {
-
     this.deviceServiceService.directlyTo('landing');
    }
 

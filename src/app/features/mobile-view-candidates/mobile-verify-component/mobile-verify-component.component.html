@@ -1,21 +1,19 @@
  
-<div class="wrapper">
+<Header *ngIf="fieldCount > 0">
+  <div class="header-image">
+  <h5 class="headerStyle">Please fill atleast {{fieldCount}} Section</h5>
+  </div>
+</Header>
+
+<div class="wrapper mt-4">
+  
     <div class="profile-wrapper">
-
-        <div class="grid">
-            <div class="col-12 md:col-6 lg:col-3">
-              <div class="mb-2 back-button">
-                <p-button type="button" label="Back" (click)="goBack()"></p-button>
-              </div>
-            </div>
-          </div>
-
-           
 
         <form [formGroup]="candidateForm">
             <app-make-profile-divider></app-make-profile-divider>
+          <section *ngIf="personalDetails"> 
             <div class="section-heading">Personal Details</div>
-              <div class="grid">
+              <div class="grid" id="personalDetails">
               
                 <div class="col-12 md:col-6">
                   <div class="field-wrapper">
@@ -131,10 +129,11 @@
                    </div>
                   </div>      
             </div>
-  
+  </section>   
             <app-make-profile-divider></app-make-profile-divider>
         
-            <div class="grid">
+      <section *ngIf="skills">
+            <div class="grid border-line" id="skills">
                <div class="col-12">
                 <div class="field-wrapper">
                  <label>Skills</label>
@@ -147,8 +146,11 @@
                 </div>
                </div>
             </div>
+       </section>     
             
             <app-make-profile-divider></app-make-profile-divider>
+
+        <section *ngIf="experience">  
             <div class="section-heading mt-3">
               <div>Professional Details</div>
             </div>
@@ -167,8 +169,8 @@
             </div>
           
             <ng-container *ngIf="!candidateForm.get('fresher')?.value">
-              <div formArrayName="experiences">
-                <div *ngFor="let experience of experienceControls.controls; let i = index" [formGroupName]="i" class="experience-container">
+              <div formArrayName="experiences" class="border-line" id="experiences">
+                <div *ngFor="let experience of experienceControls.controls; let i = index" [formGroupName]="i" class="experience-container border-line" id="experience">
                   
                   <!-- Experience Details -->
                   <div class="grid">
@@ -306,9 +308,11 @@
                 
               </div>
             </ng-container>
+         </section>     
   
+         <section *ngIf="collegeProject" class="border-line" id="collegeProject">
             <ng-container *ngIf="candidateForm.get('fresher')?.value">
-              <div formArrayName="collegeProject">
+              <div formArrayName="collegeProject" >
                 <div *ngFor="let collegeProject of collegeProjectControls.controls; let i = index" [formGroupName]="i" class="experience-container">
                   
                   <div class="grid">
@@ -353,13 +357,16 @@
                 
               </div>
             </ng-container>
+         </section>   
         
             <app-make-profile-divider></app-make-profile-divider>
+         
+            <section *ngIf="qualification"  class="border-line" id="qualification" > 
             <div class="section-heading mt-3">
               <div>Qualification Details</div>
             </div>
            
-              <div formArrayName="qualification">
+              <div formArrayName="qualification" >
                 <div *ngFor="let qualifications of qualificationControls.controls; let i = index" [formGroupName]="i" class="experience-container">
                   
                   <div class="grid">
@@ -367,7 +374,7 @@
                       <div class="field-wrapper">
                         <label>Instution Name</label>
                         <div class="input-wrapper">
-                          <input type="text" pInputText formControlName="instutionName" />
+                          <input type="text" pInputText formControlName="institutionName" />
                         </div>
                       </div>
                     </div>
@@ -387,7 +394,7 @@
                         <label>Qualification</label>
                         <div class="input-wrapper">
                           <p-dropdown [options]="fieldOfStudy" optionLabel="displayValue" optionValue="dataValue"  placeholder="Select Qualification"
-                         formControlName="department" [filter]="true">
+                         formControlName="department" [filter]="true" styleClass="narrow-dropdown">
                         </p-dropdown>
                         </div>
                       </div>
@@ -437,13 +444,17 @@
                   <!-- <p-button type="button" label="+ Add Qualifications" (click)="addQualication()"></p-button> -->
                 </div>
               </div>
+            </section>   
             
               <app-make-profile-divider></app-make-profile-divider>
+             
+            <section *ngIf="course" class="border-line" id="course">
+             
               <div class="section-heading mt-3">
                 <div>Course & Certificates</div>
               </div>
         
-              <div formArrayName="certificates">
+              <div formArrayName="certificates" >
                 <div *ngFor="let certificate of certificateControls.controls; let i = index" [formGroupName]="i" class="experience-container">
         
                   <div class="grid">
@@ -488,13 +499,14 @@
                    </div>
                </div>
         
-        
+              </section> 
                <app-make-profile-divider></app-make-profile-divider>
-              <div class="section-heading mt-3">
+             <section *ngIf="achievements" class="border-line" id="achievements">  
+               <div class="section-heading mt-3">
                 <div>Achievements & Awards</div>
               </div>
         
-              <div formArrayName="achievements">
+              <div formArrayName="achievements" >
                  <div *ngFor="let certificate of achievementsControls.controls; let i = index" [formGroupName]="i" class="experience-container">
         
                    <div class="grid">
@@ -527,9 +539,11 @@
                        <button type="button" class="custom-btn"  (click)="addAchievements()">+ Add Achievements</button>
                     </div>
               </div>    
-  
-              <app-make-profile-divider></app-make-profile-divider>
-  
+            </section>
+             
+            <app-make-profile-divider></app-make-profile-divider>
+         
+             <section *ngIf="extraSkills" class="border-line" id="extraSkills">  
               <div class="grid">
                 <div class="col-12 md:col-6">
                  <div class="field-wrapper">
@@ -551,19 +565,21 @@
                   </div>
                  </div>
              </div>
+             </section>  
            </form>
   
            <app-make-profile-divider></app-make-profile-divider>
   
-           <div class="button-wrapper" *ngIf="!payments">
+           <div class="button-wrapper">
+
+            <p-button type="button" label="Back" (click)="goBack()"></p-button>
+
             <p-button class="mr-2" [label]="dataLoaded ? 'Generate' : 'Generating..'"
                 [icon]="dataLoaded ? '' : 'pi pi-spin pi-spinner'" [disabled]="!dataLoaded"
                 (onClick)="createCandidate()"></p-button>
-        
-            <p-button  styleClass="p-button-secondary" label="Reset"
-                (onClick)="reset()">
-            </p-button>
-            
+
+           
+       
             </div>
             <!-- <div class="button-wrapper" *ngIf="payments">
               <p-button class="mr-2" label="Next"
@@ -571,14 +587,14 @@
           
               </div> -->
 
-              <div class="grid">
+              <!-- <div class="grid">
                 <div class="col-12 md:col-6 lg:col-3">
                   <div class="">
-                    <p-button type="button" label="Back" (click)="goBack()"></p-button>
+                   
                    
                   </div>
                 </div>
-              </div>
+              </div> -->
             
     </div>
   </div>
