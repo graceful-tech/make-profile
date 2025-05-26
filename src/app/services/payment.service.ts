@@ -21,6 +21,7 @@ export class PaymentService {
   candidates: any;
   status:any;
   userId:any;
+  templateName: any;
   
 
   constructor(private winRef: WindowRefService, private api: ApiService, private gs: GlobalService, private zone: NgZone) {
@@ -68,7 +69,9 @@ export class PaymentService {
   //   });
   //}
 
-  payWithRazorPay(amount: number){
+  payWithRazorPay(amount: number,templateName:any){
+
+    this.templateName = templateName;
     
     const userIds = sessionStorage.getItem('userId');
     this.userId=userIds;
@@ -178,6 +181,7 @@ export class PaymentService {
             paymentId: response?.razorpay_payment_id,
             paymentOrderId: this.paymentOrderId,
             amount: this.amount,
+            paymentType:this.templateName,
             paymentStatus: 'Completed',
           };
           this.savePayment(payload);

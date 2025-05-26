@@ -67,7 +67,7 @@ export class PaymentOptionComponent  {
        
       this.redeem();
     });
-    this.ps.payWithRazorPay(amount);
+    this.ps.payWithRazorPay(amount,this.resumeName);
    
     //remove after the tesing
     //this.createResume();
@@ -80,7 +80,10 @@ export class PaymentOptionComponent  {
     //const route = `credits?userId=${this.userId}`;
     this.ngxLoaderStart();
     const route = 'credits/redeem'
-    const payload ={userId:this.userId}
+    const payload ={
+      userId:this.userId,
+      templateName: this.resumeName
+    }
 
     this.api.retrieve(route,payload).subscribe({
       next: (response) => {

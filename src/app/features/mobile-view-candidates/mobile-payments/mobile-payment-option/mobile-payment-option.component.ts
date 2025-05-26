@@ -62,7 +62,7 @@ export class MobilePaymentOptionComponent {
        
       this.redeem();
     });
-    this.ps.payWithRazorPay(amount);
+    this.ps.payWithRazorPay(amount,this.resumeName);
     this.ref.close();
   }
   
