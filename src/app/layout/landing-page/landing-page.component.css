@@ -134,10 +134,11 @@ p {
 /* .cta-button:hover {
     background-color: #45a049;
 } */
-.bt{
+.bt {
     padding-left: 47%;
-    
+
 }
+
 .btn {
     width: 200px;
     /* or any value you're using */
@@ -150,28 +151,30 @@ p {
 }
 
 .menu {
-    background: url('/assets/images/background.png');   
+    background: url('/assets/images/background.png');
     padding: 0.5rem;
-  }
-  
-  .menu ul {
+    position: fixed;
+    width: 100%;
+
+}
+
+.menu ul {
     list-style: none;
     display: flex;
     margin: 0;
     padding: 0;
     justify-content: space-around;
-  }
-  
-  .menu li a {
+}
+
+.menu li a {
     color: white;
     text-decoration: none;
     padding: 0.5rem 1rem;
     display: block;
     font-weight: bold;
-  }
-  
-  .menu li a:hover {
+}
+
+.menu li a:hover {
     background-color: #0056b3;
     border-radius: 4px;
-  }
-  
+}

@@ -15,6 +15,8 @@ body {
 .menu {
     background: url('/assets/images/background.png');   
     padding: 0.5rem;
+    position: fixed;
+    width: 100%;
   }
   .menu ul {
     list-style: none;
@@ -177,4 +179,8 @@ p {
 
 .google {
     padding-left: 0%;
+}
+
+.features-section{
+    padding-top: 30px;
 }

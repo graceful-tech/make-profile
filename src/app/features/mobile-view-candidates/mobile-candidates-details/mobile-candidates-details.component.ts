@@ -71,6 +71,7 @@ export class MobileCandidatesDetailsComponent {
   isUploading: boolean = false;
   loading: boolean = true;
   user: any;
+  totalCreditsAvailable: number = 0;
 
 
   constructor(
@@ -1102,6 +1103,10 @@ export class MobileCandidatesDetailsComponent {
     this.api.get(route).subscribe({
       next: (response) => {
         this.availableCredits = response as any;
+        this.totalCreditsAvailable = this.availableCredits.reduce(
+          (sum: any, credit: { creditAvailable: any; }) => sum + (credit.creditAvailable || 0),
+          0
+        );
       },
     });
   }

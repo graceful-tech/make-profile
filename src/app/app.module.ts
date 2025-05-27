@@ -11,12 +11,12 @@ import { AppComponent } from './app.component';
 import { LayoutModule } from './layout/layout.module';
 import { InterceptorService } from './services/interceptor.service';
 import { MessageService } from 'primeng/api';
-import { AddCandidatesComponent } from './features/candidates/add-candidates/add-candidates.component';
 import { LoginComponent } from './auth/login/login.component';
 import { CreateAccountComponent } from './auth/create-account/create-account.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MobileCreateAccountComponent } from './auth-mobile/mobile-create-account/mobile-create-account.component';
 import { MobileLoginComponent } from './auth-mobile/mobile-login/mobile-login.component';
+
 
 
 @NgModule({
@@ -26,6 +26,7 @@ import { MobileLoginComponent } from './auth-mobile/mobile-login/mobile-login.co
     CreateAccountComponent,
     MobileCreateAccountComponent,
     MobileLoginComponent
+
 
   ],
   imports: [
@@ -44,9 +45,9 @@ import { MobileLoginComponent } from './auth-mobile/mobile-login/mobile-login.co
     DynamicDialogRef,
     DynamicDialogConfig,
     DatePipe,
-   
-   { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true },
-   { provide: LocationStrategy, useClass: HashLocationStrategy },
+
+    { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true },
+    { provide: LocationStrategy, useClass: HashLocationStrategy },
   ],
   bootstrap: [AppComponent]
 })
