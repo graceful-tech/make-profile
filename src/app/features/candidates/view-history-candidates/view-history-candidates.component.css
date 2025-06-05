@@ -1,0 +1,21 @@
+  .mobile {
+    display: flex;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+.custom-btn:hover {
+    background-color: #3716dc;
+  }
+
+ .custom-btn {
+  background-color: #366fe0;
+  color: white;
+  border: none;
+  padding: 7px 11px;
+  font-size: 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-right: 15px;
+  font-style: italic;
+} 

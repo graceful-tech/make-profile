@@ -442,9 +442,11 @@ export class AddCandidatesComponent {
          this.returnCandidate.candidateLogo = this.candidateImageUrl;
          response.candidateLogo = this.candidateImageUrl; 
 
+         this.patchCandidateForm(response);
+
          this.candidates = response;
         
-         this.verifyDetails(response);
+         this.verifyDetails();
 
          this.gs.showMessage('Success', 'Create Successfully');
        },
@@ -900,11 +902,196 @@ export class AddCandidatesComponent {
      }
 
 
-      verifyDetails(candidateDetails:any) {
+      verifyDetails() {
        
         const route = 'template/checker';
 
-       const payload = {...candidateDetails,templateName: this.resumeName,};
+      //  const payload = {...candidateDetails,templateName: this.resumeName,};
+       const payload = this.candidateForm.getRawValue();
+      
+       payload['templateName'] = this.resumeName;
+
+       
+     if (payload.lastWorkingDate) {
+       payload['lastWorkingDate'] = this.datePipe.transform(
+         payload.lastWorkingDate,
+         'yyyy-MM-dd'
+       );
+     }
+ 
+    if(payload.dob !=null){
+     payload.dob = this.datePipe.transform(payload.dob,'yyyy-MM-dd');
+    }
+ 
+     if (payload.fresher != null && payload.fresher) {
+       payload['fresher'] = true;
+     } else {
+       payload['fresher'] = false;
+     }
+ 
+   
+ 
+     if (payload.fresher) {
+       payload.experiences = [];
+     }  
+      
+     if (payload.fresher) {
+     if (Object.is(payload.collegeProject[0].collegeProjectName, '')) {
+         payload.collegeProject = [];
+       } else {
+         payload.collegeProject = payload.collegeProject.map((proj: any) => ({
+           ...proj,
+           collegeProjectSkills: Array.isArray(proj.collegeProjectSkills)
+             ? proj.collegeProjectSkills.join(', ')
+             : proj.collegeProjectSkills
+         }));
+       }
+     } 
+ 
+   
+     if (!payload.fresher) {
+       if (Object.is(payload.experiences?.[0]?.companyName, '')) {
+         payload.experiences = [];
+       } else {
+         payload.experiences = payload.experiences.map((exp: any) => {
+           const experienceYearStartDate = this.datePipe.transform(
+             exp.experienceYearStartDate,
+             'yyyy-MM-dd'
+           );
+           const experienceYearEndDate = this.datePipe.transform(
+             exp.experienceYearEndDate,
+             'yyyy-MM-dd'
+           );
+     
+           const responsibilities = Array.isArray(exp.responsibilities)
+             ? exp.responsibilities.join(', ')
+             : exp.responsibilities;
+     
+           let projects = exp.projects || [];
+           const hasEmptyProjectName = projects.some(
+             (proj: any) => proj.projectName === ''
+           );
+     
+           if (hasEmptyProjectName) {
+             projects = [];
+           } else {
+             projects = projects.map((proj: any) => ({
+               ...proj,
+               projectSkills: Array.isArray(proj.projectSkills)
+                 ? proj.projectSkills.join(', ')
+                 : proj.projectSkills
+             }));
+           }
+     
+           return {
+             ...exp,
+             experienceYearStartDate,
+             experienceYearEndDate,
+             responsibilities,
+             projects
+           };
+         });
+       }
+     }
+     
+      
+     if (Object.is(payload.qualification[0].institutionName, '')) {
+       payload.qualification = [];
+     } else {
+       payload.qualification.forEach((q: any) => {
+         q.qualificationStartYear = this.datePipe.transform(
+           q.qualificationStartYear,
+           'yyyy-MM-dd'
+         );
+         q.qualificationEndYear = this.datePipe.transform(
+           q.qualificationEndYear,
+           'yyyy-MM-dd'
+         );
+       });
+     }
+     
+     if (Object.is(payload.achievements[0].achievementsName, '')) {
+         payload.achievements = [];
+     } else{
+       payload.achievements.forEach((cert: any) => {
+         cert.achievementsDate = this.datePipe.transform(
+           cert.achievementsDate,
+           'yyyy-MM-dd'
+         );
+       });
+     }
+    
+     if (Object.is(payload.certificates[0].courseName, ''))  {
+       payload.certificates = [];
+     } else {
+       payload.certificates.forEach((cert: any) => {
+         cert.courseStartDate = this.datePipe.transform(
+           cert.courseStartDate,
+           'yyyy-MM-dd'
+         );
+         cert.courseEndDate = this.datePipe.transform(
+           cert.courseEndDate,
+           'yyyy-MM-dd'
+         );
+       });
+     }
+     
+ 
+     if (Object.is(payload.languagesKnown, '')) {
+       payload.languagesKnown = '';
+     }
+     else{
+       const stringList: string[] = payload.languagesKnown;
+       const commaSeparatedString: string = stringList.join(', ');
+       payload.languagesKnown = commaSeparatedString;
+     }
+ 
+     if (Object.is(payload.skills, '')) {
+       payload.skills = '';
+     }else{
+       const stringList: string[] = payload.skills;
+       const commaSeparatedString: string = stringList.join(', ');
+       payload.skills = commaSeparatedString;
+     }
+ 
+     if (Object.is(payload.softSkills, '')) {
+       payload.softSkills = '';
+     }
+     else{
+       const stringList: string[] = payload.softSkills;
+       const commaSeparatedString: string = stringList.join(', ');
+       payload.softSkills = commaSeparatedString;
+     }
+ 
+     if (Object.is(payload.coreCompentencies, '')) {
+       payload.coreCompentencies = '';
+     }
+     else{
+       const stringList: string[] = payload.coreCompentencies;
+       const commaSeparatedString: string = stringList.join(', ');
+       payload.coreCompentencies = commaSeparatedString;
+     }
+  
+ 
+     if (payload.fresher) {
+       const hasValidProject = payload.collegeProject.some((project: { collegeProjectName: string; }) =>
+         project.collegeProjectName && project.collegeProjectName.trim() !== ''
+       );
+     
+       if (!hasValidProject) {
+         payload.collegeProject = [];
+       } else {
+         payload.collegeProject = payload.collegeProject.map((project: { collegeProjectSkills: any[]; })  => ({
+           ...project,
+           collegeProjectSkills: Array.isArray(project.collegeProjectSkills)
+             ? project.collegeProjectSkills.join(', ')
+             : ''
+         }));
+       }
+     } else {
+       payload.collegeProject = [];
+     }
+     
 
        this.api.retrieve(route,payload).subscribe({
            next: (response) => {

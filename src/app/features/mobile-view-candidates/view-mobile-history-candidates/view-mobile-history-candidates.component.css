@@ -1,0 +1,62 @@
+.custom-btn:hover {
+    background-color: #3716dc;
+  }
+
+ .custom-btn {
+  background-color: #366fe0;
+  color: white;
+  border: none;
+  padding: 5px 8px;
+  font-size: 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-right: 15px;
+  font-style: italic;
+} 
+
+.applied-job {
+    display: flex;
+    flex-direction: column;
+}
+
+.applied-job span {
+    margin-top: 3px;
+    margin-bottom: 3px;
+}
+
+.flex-start label {
+    font-weight: 500;
+    color: #404040;
+}
+
+.pi-info-circle {
+    color: #2196F3;
+    margin-top: 3px;
+    cursor: pointer;
+}
+
+.green {
+    color: #0f9640;
+    font-weight: 500;
+}
+
+.orange {
+    color: #dc5512;
+    font-weight: 500;
+}
+
+.red {
+    color: #d11111;
+    font-weight: 500;
+}
+
+.row-footer {
+    padding: 0.6rem 1rem !important;
+    background: #F9FAFB;
+}
+
+.no-border {
+    border: none !important;
+}
+
+ 

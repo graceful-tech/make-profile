@@ -27,6 +27,7 @@ export class MobilePaymentOptionComponent {
   resumeName: any;
   availableCredits: any;
   isUploading:boolean=false;
+  templateName:any;
   
 
   constructor(
@@ -44,7 +45,7 @@ export class MobilePaymentOptionComponent {
     private ngxLoader: NgxUiLoaderService
   ) {
      this.gs.resumeName$.subscribe(response =>{
-      this.resumeName = response
+      this.templateName = response
     })
   }
 
@@ -56,13 +57,11 @@ export class MobilePaymentOptionComponent {
 
   async payRupees() {
     const amount = 1 * 100;
-    const paymentType = 'Resume';
-    
     this.ps.initRazorPays(() => {
        
       this.redeem();
     });
-    this.ps.payWithRazorPay(amount,this.resumeName);
+    this.ps.payWithRazorPay(amount,this.templateName);
     this.ref.close();
   }
   
@@ -72,9 +71,15 @@ export class MobilePaymentOptionComponent {
     this.ngxLoaderStart();
     const route = 'credits/redeem';
 
+    if(this.templateName === null || this.templateName === undefined){
+      this.templateName = localStorage.getItem('templateName')
+    }
+
     const userIds = sessionStorage.getItem('userId');
     const  payload = {
-      userId:userIds
+      userId:userIds,
+      templateName:this.templateName
+     
     }
     this.api.retrieve(route,payload).subscribe({
       next: (response) => {
@@ -96,14 +101,15 @@ export class MobilePaymentOptionComponent {
     const route = 'resume/create';
 
   const templateName =  localStorage.getItem('templateName');
-  if(this.resumeName === null){
-     this.resumeName = templateName;
+   if(this.templateName === null || this.templateName === undefined){
+     this.templateName = templateName;
     }
-    const payload = {...this.candidates,templateName: this.resumeName,};
+    const payload = {...this.candidates,templateName: this.templateName};
 
     this.api.retrieve(route,payload).subscribe({
       next: (response) => {
         this.ngxLoaderStop();
+         
       },
       error: (err) => {
         this.ngxLoaderStop();

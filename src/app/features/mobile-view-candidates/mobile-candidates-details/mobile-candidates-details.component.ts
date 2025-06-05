@@ -1,3 +1,4 @@
+
 import { DatePipe } from '@angular/common';
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -18,6 +19,7 @@ import { CreateCandidatesComponent } from '../../candidates/create-candidates/cr
 import { ChooseTemplateComponent } from '../../candidates/Templates/choose-template/choose-template.component';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { CollegeProject } from 'src/app/models/candidates/college-project';
+import { PaymentService } from 'src/app/services/payment.service';
 
 @Component({
   selector: 'app-mobile-candidates-details',
@@ -84,7 +86,8 @@ export class MobileCandidatesDetailsComponent {
     private cdr: ChangeDetectorRef,
     private router: Router,
     public ref: DynamicDialogRef,
-    private ngxLoader: NgxUiLoaderService
+    private ngxLoader: NgxUiLoaderService,
+    private ps: PaymentService,
   ) { }
 
   ngOnInit() {
@@ -1201,6 +1204,20 @@ export class MobileCandidatesDetailsComponent {
   close() {
     const accountMenu = document.querySelector('.account-wrapper');
     accountMenu?.classList.remove('show-account-menu');
+  }
+
+  payment(templateName:any){
+    const amount = 10 * 100;
+
+     this.ps.initRazorPays(() => {
+    });
+    
+    this.ps.payWithRazorPay(amount,templateName);
+   
+  }
+
+  viewHistory(){
+    this.router.navigate(['mob-candidate/view-history'])
   }
 
 }

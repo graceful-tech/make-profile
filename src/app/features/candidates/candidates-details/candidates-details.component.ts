@@ -1,3 +1,4 @@
+
 import { DatePipe } from '@angular/common';
 import { ChangeDetectorRef, Component, } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -19,6 +20,8 @@ import { ChooseTemplateComponent } from '../Templates/choose-template/choose-tem
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { CollegeProject } from 'src/app/models/candidates/college-project';
 import { ResumeDetailsComponent } from '../resume-details/resume-details.component';
+import { PaymentService } from 'src/app/services/payment.service';
+import { ViewHistoryCandidatesComponent } from '../view-history-candidates/view-history-candidates.component';
 
 
 @Component({
@@ -86,7 +89,9 @@ export class CandidatesDetailsComponent {
     private cdr: ChangeDetectorRef,
     private router: Router,
     public ref: DynamicDialogRef,
-    private ngxLoader: NgxUiLoaderService
+    private ngxLoader: NgxUiLoaderService,
+     private ps: PaymentService,
+  
   ) { }
 
   ngOnInit() {
@@ -141,8 +146,6 @@ export class CandidatesDetailsComponent {
 
     const route = `user/get_user/${sessionStorage.getItem('userName')}`
     this.api.get(route).subscribe({
-
-
       next: response => {
         this.user = response;
 
@@ -219,215 +222,215 @@ export class CandidatesDetailsComponent {
   }
 
   createCandidate() {
-    if (this.candidateForm.valid) {
-      this.dataLoaded = false;
+    if(this.candidateForm.valid){
+    this.dataLoaded = false;
 
-      const route = 'candidate/create';
-      const payload = this.candidateForm.getRawValue();
+    const route = 'candidate/create';
+    const payload = this.candidateForm.getRawValue();
 
-      if (payload.lastWorkingDate) {
-        payload['lastWorkingDate'] = this.datePipe.transform(
-          payload.lastWorkingDate,
+    if (payload.lastWorkingDate) {
+      payload['lastWorkingDate'] = this.datePipe.transform(
+        payload.lastWorkingDate,
+        'yyyy-MM-dd'
+      );
+    }
+
+    if (payload.dob != null) {
+      payload.dob = this.datePipe.transform(payload.dob, 'yyyy-MM-dd');
+    }
+
+    if (payload.fresher != null && payload.fresher) {
+      payload['fresher'] = true;
+    } else {
+      payload['fresher'] = false;
+    }
+
+    if (payload.fresher) {
+      payload.experiences = [];
+    }
+
+    if (payload.fresher) {
+      if (Object.is(payload.collegeProject[0].collegeProjectName, '')) {
+        payload.collegeProject = [];
+      } else {
+        payload.collegeProject = payload.collegeProject.map((proj: any) => ({
+          ...proj,
+          collegeProjectSkills: Array.isArray(proj.collegeProjectSkills)
+            ? proj.collegeProjectSkills.join(', ')
+            : proj.collegeProjectSkills
+        }));
+      }
+    }
+
+   
+
+    if (!payload.fresher) {
+      if (Object.is(payload.experiences?.[0]?.companyName, '')) {
+        payload.experiences = [];
+      } else {
+        payload.experiences = payload.experiences.map((exp: any) => {
+          const experienceYearStartDate = this.datePipe.transform(
+            exp.experienceYearStartDate,
+            'yyyy-MM-dd'
+          );
+          const experienceYearEndDate = this.datePipe.transform(
+            exp.experienceYearEndDate,
+            'yyyy-MM-dd'
+          );
+
+          const responsibilities = Array.isArray(exp.responsibilities)
+            ? exp.responsibilities.join(', ')
+            : exp.responsibilities;
+
+          let projects = exp.projects || [];
+          const hasEmptyProjectName = projects.some(
+            (proj: any) => proj.projectName === ''
+          );
+
+          if (hasEmptyProjectName) {
+            projects = [];
+          } else {
+            projects = projects.map((proj: any) => ({
+              ...proj,
+              projectSkills: Array.isArray(proj.projectSkills)
+                ? proj.projectSkills.join(', ')
+                : proj.projectSkills
+            }));
+          }
+
+          return {
+            ...exp,
+            experienceYearStartDate,
+            experienceYearEndDate,
+            responsibilities,
+            projects
+          };
+        });
+      }
+    }
+
+    if (Object.is(payload.qualification[0].institutionName, '')) {
+      payload.qualification = [];
+    } else {
+      payload.qualification.forEach((q: any) => {
+        q.qualificationStartYear = this.datePipe.transform(
+          q.qualificationStartYear,
           'yyyy-MM-dd'
         );
-      }
-
-      if (payload.dob != null) {
-        payload.dob = this.datePipe.transform(payload.dob, 'yyyy-MM-dd');
-      }
-
-      if (payload.fresher != null && payload.fresher) {
-        payload['fresher'] = true;
-      } else {
-        payload['fresher'] = false;
-      }
-
-      if (payload.fresher) {
-        payload.experiences = [];
-      }
-
-      if (payload.fresher) {
-        if (Object.is(payload.collegeProject[0].collegeProjectName, '')) {
-          payload.collegeProject = [];
-        } else {
-          payload.collegeProject = payload.collegeProject.map((proj: any) => ({
-            ...proj,
-            collegeProjectSkills: Array.isArray(proj.collegeProjectSkills)
-              ? proj.collegeProjectSkills.join(', ')
-              : proj.collegeProjectSkills
-          }));
-        }
-      }
-
-
-
-      if (!payload.fresher) {
-        if (Object.is(payload.experiences?.[0]?.companyName, '')) {
-          payload.experiences = [];
-        } else {
-          payload.experiences = payload.experiences.map((exp: any) => {
-            const experienceYearStartDate = this.datePipe.transform(
-              exp.experienceYearStartDate,
-              'yyyy-MM-dd'
-            );
-            const experienceYearEndDate = this.datePipe.transform(
-              exp.experienceYearEndDate,
-              'yyyy-MM-dd'
-            );
-
-            const responsibilities = Array.isArray(exp.responsibilities)
-              ? exp.responsibilities.join(', ')
-              : exp.responsibilities;
-
-            let projects = exp.projects || [];
-            const hasEmptyProjectName = projects.some(
-              (proj: any) => proj.projectName === ''
-            );
-
-            if (hasEmptyProjectName) {
-              projects = [];
-            } else {
-              projects = projects.map((proj: any) => ({
-                ...proj,
-                projectSkills: Array.isArray(proj.projectSkills)
-                  ? proj.projectSkills.join(', ')
-                  : proj.projectSkills
-              }));
-            }
-
-            return {
-              ...exp,
-              experienceYearStartDate,
-              experienceYearEndDate,
-              responsibilities,
-              projects
-            };
-          });
-        }
-      }
-
-      if (Object.is(payload.qualification[0].institutionName, '')) {
-        payload.qualification = [];
-      } else {
-        payload.qualification.forEach((q: any) => {
-          q.qualificationStartYear = this.datePipe.transform(
-            q.qualificationStartYear,
-            'yyyy-MM-dd'
-          );
-          q.qualificationEndYear = this.datePipe.transform(
-            q.qualificationEndYear,
-            'yyyy-MM-dd'
-          );
-        });
-      }
-
-      if (Object.is(payload.achievements[0].achievementsName, '')) {
-        payload.achievements = [];
-      } else {
-        payload.achievements.forEach((cert: any) => {
-          cert.achievementsDate = this.datePipe.transform(
-            cert.achievementsDate,
-            'yyyy-MM-dd'
-          );
-        });
-      }
-
-      if (Object.is(payload.certificates[0].courseName, '')) {
-        payload.certificates = [];
-      } else {
-        payload.certificates.forEach((cert: any) => {
-          cert.courseStartDate = this.datePipe.transform(
-            cert.courseStartDate,
-            'yyyy-MM-dd'
-          );
-          cert.courseEndDate = this.datePipe.transform(
-            cert.courseEndDate,
-            'yyyy-MM-dd'
-          );
-        });
-      }
-
-
-      if (Object.is(payload.languagesKnown, '')) {
-        payload.languagesKnown = '';
-      }
-      else {
-        const stringList: string[] = payload.languagesKnown;
-        const commaSeparatedString: string = stringList.join(', ');
-        payload.languagesKnown = commaSeparatedString;
-      }
-
-      if (Object.is(payload.skills, '')) {
-        payload.skills = '';
-      } else {
-        const stringList: string[] = payload.skills;
-        const commaSeparatedString: string = stringList.join(', ');
-        payload.skills = commaSeparatedString;
-      }
-
-      if (Object.is(payload.softSkills, '')) {
-        payload.softSkills = '';
-      }
-      else {
-        const stringList: string[] = payload.softSkills;
-        const commaSeparatedString: string = stringList.join(', ');
-        payload.softSkills = commaSeparatedString;
-      }
-
-      if (Object.is(payload.coreCompentencies, '')) {
-        payload.coreCompentencies = '';
-      }
-      else {
-        const stringList: string[] = payload.coreCompentencies;
-        const commaSeparatedString: string = stringList.join(', ');
-        payload.coreCompentencies = commaSeparatedString;
-      }
-
-
-      if (payload.fresher) {
-        const hasValidProject = payload.collegeProject.some((project: { collegeProjectName: string; }) =>
-          project.collegeProjectName && project.collegeProjectName.trim() !== ''
+        q.qualificationEndYear = this.datePipe.transform(
+          q.qualificationEndYear,
+          'yyyy-MM-dd'
         );
-
-        if (!hasValidProject) {
-          payload.collegeProject = [];
-        } else {
-          payload.collegeProject = payload.collegeProject.map((project: { collegeProjectSkills: any[]; }) => ({
-            ...project,
-            collegeProjectSkills: Array.isArray(project.collegeProjectSkills)
-              ? project.collegeProjectSkills.join(', ')
-              : ''
-          }));
-        }
-      } else {
-        payload.collegeProject = [];
-      }
-
-
-
-      this.api.retrieve(route, payload).subscribe({
-        next: (response) => {
-
-          this.candidateId = response?.id;
-          this.dataLoaded = true;
-          localStorage.setItem('candidateId', this.candidateId);
-          this.candidates = response
-          this.uploadCandidateImage()
-          this.dataLoaded = true;
-          this.gs.showMessage('Success', 'Create Successfully');
-        },
-        error: (error) => {
-          this.dataLoaded = true;
-          this.gs.showMessage('Error', 'Error in Creating Creating');
-
-          console.log(error);
-        },
       });
-      this.dataLoaded = true;
+    }
+
+    if (Object.is(payload.achievements[0].achievementsName, '')) {
+      payload.achievements = [];
+    } else {
+      payload.achievements.forEach((cert: any) => {
+        cert.achievementsDate = this.datePipe.transform(
+          cert.achievementsDate,
+          'yyyy-MM-dd'
+        );
+      });
+    }
+
+    if (Object.is(payload.certificates[0].courseName, '')) {
+      payload.certificates = [];
+    } else {
+      payload.certificates.forEach((cert: any) => {
+        cert.courseStartDate = this.datePipe.transform(
+          cert.courseStartDate,
+          'yyyy-MM-dd'
+        );
+        cert.courseEndDate = this.datePipe.transform(
+          cert.courseEndDate,
+          'yyyy-MM-dd'
+        );
+      });
+    }
+
+
+    if (Object.is(payload.languagesKnown, '')) {
+      payload.languagesKnown = '';
     }
     else {
-      this.showError = true;
+      const stringList: string[] = payload.languagesKnown;
+      const commaSeparatedString: string = stringList.join(', ');
+      payload.languagesKnown = commaSeparatedString;
     }
+
+    if (Object.is(payload.skills, '')) {
+      payload.skills = '';
+    } else {
+      const stringList: string[] = payload.skills;
+      const commaSeparatedString: string = stringList.join(', ');
+      payload.skills = commaSeparatedString;
+    }
+
+    if (Object.is(payload.softSkills, '')) {
+      payload.softSkills = '';
+    }
+    else {
+      const stringList: string[] = payload.softSkills;
+      const commaSeparatedString: string = stringList.join(', ');
+      payload.softSkills = commaSeparatedString;
+    }
+
+    if (Object.is(payload.coreCompentencies, '')) {
+      payload.coreCompentencies = '';
+    }
+    else {
+      const stringList: string[] = payload.coreCompentencies;
+      const commaSeparatedString: string = stringList.join(', ');
+      payload.coreCompentencies = commaSeparatedString;
+    }
+
+
+    if (payload.fresher) {
+      const hasValidProject = payload.collegeProject.some((project: { collegeProjectName: string; }) =>
+        project.collegeProjectName && project.collegeProjectName.trim() !== ''
+      );
+
+      if (!hasValidProject) {
+        payload.collegeProject = [];
+      } else {
+        payload.collegeProject = payload.collegeProject.map((project: { collegeProjectSkills: any[]; }) => ({
+          ...project,
+          collegeProjectSkills: Array.isArray(project.collegeProjectSkills)
+            ? project.collegeProjectSkills.join(', ')
+            : ''
+        }));
+      }
+    } else {
+      payload.collegeProject = [];
+    }
+
+
+
+    this.api.retrieve(route, payload).subscribe({
+      next: (response) => {
+
+        this.candidateId = response?.id;
+        this.dataLoaded = true;
+        localStorage.setItem('candidateId', this.candidateId); 
+        this.candidates = response 
+        this.uploadCandidateImage()
+        this.dataLoaded = true;
+        this.gs.showMessage('Success', 'Create Successfully');
+      },
+      error: (error) => {
+        this.dataLoaded = true;
+        this.gs.showMessage('Error', 'Error in Creating Creating');
+
+        console.log(error);
+      },
+    });
+    this.dataLoaded = true;
+  }
+  else{
+    this.showError = true;
+  }
   }
 
   reset() {
@@ -701,16 +704,13 @@ export class CandidatesDetailsComponent {
   }
 
   getScore(jobId: any, tenant: any) {
-
-
-
     const route = "score-check/get-score"
     const formData = new FormData();
 
     formData.append('jobId', jobId);
     formData.append('candidateId', this.candidateId);
     formData.append('tenant', tenant);
-
+    
     const payload = { jobId: jobId, candidateId: this.candidateId, tenant: tenant };
 
     this.api.upload(route, formData).subscribe({
@@ -748,14 +748,14 @@ export class CandidatesDetailsComponent {
       if (confirmDelete && event.target.files[0]) {
         this.multipartFile = event.target.files[0];
         this.resume = { fileName: this.multipartFile?.name };
-        this.parseResume();
+         this.parseResume();
       }
     }
     else {
       if (event.target.files[0]) {
         this.multipartFile = event.target.files[0];
         this.resume = { fileName: this.multipartFile?.name };
-        this.parseResume();
+         this.parseResume();
       }
     }
   }
@@ -768,9 +768,9 @@ export class CandidatesDetailsComponent {
 
     const username = sessionStorage.getItem('userName');
 
-    const formData = new FormData();
-    formData.append('resume', this.multipartFile);
-    formData.append('username', String(username));
+      const formData = new FormData();
+     formData.append('resume', this.multipartFile);
+      formData.append('username', String(username));
 
     this.api.upload(route, formData).subscribe({
       next: (response) => {
@@ -780,7 +780,7 @@ export class CandidatesDetailsComponent {
           this.candidateId = response.id;
           this.resumeDetailComponent(response);
         }
-        else {
+        else{
           this.ngxLoaderStop();
           this.gs.showMessage('Note!..', 'Error in uploading resume please reupload it ');
         }
@@ -792,7 +792,7 @@ export class CandidatesDetailsComponent {
       }
 
     });
-
+    
   }
 
   enterDetails() {
@@ -886,20 +886,20 @@ export class CandidatesDetailsComponent {
         certificateFormArray.push(this.createCertificateFormGroup(certificate));
       });
     }
-    if (candidate.experiences?.length > 0) {
+    if(candidate.experiences?.length > 0){
       this.patchExperiences(candidate.experiences);
-    }
-    else {
-      if (candidate.collegeProject?.length > 0) {
-        const collegeProjectFromArray = this.candidateForm.get('collegeProject') as FormArray;
-        collegeProjectFromArray.clear();
-
-        candidate.collegeProject?.forEach(collegeProject => {
-          collegeProject.collegeProjectSkills = collegeProject?.collegeProjectSkills ? collegeProject.collegeProjectSkills.split(',').map((skill: string) => skill.trim()) : [];
-          collegeProjectFromArray.push(this.createCollegeProjectFormGroup(collegeProject));
-        });
       }
+      else{
+          if(candidate.collegeProject?.length > 0){
+      const collegeProjectFromArray = this.candidateForm.get('collegeProject') as FormArray;
+      collegeProjectFromArray.clear();
+
+      candidate.collegeProject?.forEach(collegeProject => {
+        collegeProject.collegeProjectSkills = collegeProject?.collegeProjectSkills ? collegeProject.collegeProjectSkills.split(',').map((skill: string) => skill.trim()) : [];
+        collegeProjectFromArray.push(this.createCollegeProjectFormGroup(collegeProject));
+      });
     }
+      }
 
     if (candidate.qualification?.length > 0) {
       const qualificationFormArray = this.candidateForm.get('qualification') as FormArray;
@@ -1109,23 +1109,19 @@ export class CandidatesDetailsComponent {
     this.api.get(route).subscribe({
       next: (response) => {
         this.availableCredits = response as any;
-        this.totalCreditsAvailable = this.availableCredits.reduce(
-          (sum: any, credit: { creditAvailable: any; }) => sum + (credit.creditAvailable || 0),
-          0
-        );
       },
     });
   }
 
-  createCollegeProjectFormGroup(collegeProject: CollegeProject) {
-    return this.fb.group({
-      id: collegeProject.id,
-      collegeProjectName: collegeProject.collegeProjectName,
-      collegeProjectSkills: collegeProject.collegeProjectSkills,
-      collegeProjectDescription: collegeProject.collegeProjectDescription,
-      isDeleted: false,
-    });
-  }
+   createCollegeProjectFormGroup(collegeProject: CollegeProject){
+        return this.fb.group({
+          id:collegeProject.id,
+          collegeProjectName:  collegeProject.collegeProjectName,
+          collegeProjectSkills: collegeProject.collegeProjectSkills,
+          collegeProjectDescription:collegeProject.collegeProjectDescription,
+          isDeleted:false,
+        });
+      }
 
   getCandidates() {
     // this.ngxLoaderStart('Resume is getting ready, please wait...');
@@ -1185,8 +1181,8 @@ export class CandidatesDetailsComponent {
     this.customLoaderMessage = message;
   }
 
-  resumeDetailComponent(candidateDetails: any) {
-    const ref = this.dialog.open(ResumeDetailsComponent, {
+  resumeDetailComponent(candidateDetails:any){
+   const ref = this.dialog.open(ResumeDetailsComponent, {
       data: {
         candidates: candidateDetails,
       },
@@ -1207,11 +1203,59 @@ export class CandidatesDetailsComponent {
         this.candidateImageUrl = response.candidateLogo;
 
         this.resume = null;
+        
+      }
+    });
+  }
+   
+  payment(templateName:any){
+    const amount = 10 * 100;
 
+     this.ps.initRazorPays(() => {
+    });
+    
+    this.ps.payWithRazorPay(amount,templateName);
+   
+  }
+
+  viewHistory(){
+   const route = "history/candidate"
+
+   this.api.get(route).subscribe({
+      next: response => {
+      const candidateList = response;
+       this.viewCandidateSHistory(candidateList);
       }
     });
   }
 
+
+   viewCandidateSHistory(candidateList:any) {
+    const ref = this.dialog.open(ViewHistoryCandidatesComponent, {
+      data: {
+        candidates: candidateList,
+      },
+      closable: true,
+      width: '80%',
+      height: '90%',
+      header: 'View History',
+    });
+
+    ref.onClose.subscribe(response => {
+      if (response) {
+
+        this.candidates = response;
+        this.candidateId = response.id;
+        const candidate = response as Candidate
+        const candidateClone = JSON.parse(JSON.stringify(candidate));
+        this.patchCandidateForm(candidateClone);
+        this.candidateImageUrl = response.candidateLogo;
+
+
+      }
+    });
+
+  }
 
 }
 

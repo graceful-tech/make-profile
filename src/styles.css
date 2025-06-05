@@ -1036,3 +1036,13 @@ table::-webkit-scrollbar-thumb {
   word-break: break-word !important;
   line-height: 1.2rem !important;
 }
+
+.heading {
+    font-weight: 600;
+    font-size: 1.3rem;
+    color: #212121;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}

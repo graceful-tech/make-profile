@@ -7,6 +7,7 @@ import { MobileEditCandidatesComponent } from './mobile-edit-candidates/mobile-e
 import { MobilePaymentOptionComponent } from './mobile-payments/mobile-payment-option/mobile-payment-option.component';
 import { MobileVerifyComponentComponent } from './mobile-verify-component/mobile-verify-component.component';
 import { ResumeDetailsComponent } from '../candidates/resume-details/resume-details.component';
+import { ViewMobileHistoryCandidatesComponent } from './view-mobile-history-candidates/view-mobile-history-candidates.component';
 
 const routes: Routes = [
 
@@ -23,6 +24,10 @@ const routes: Routes = [
   {path: 'verify-components', component:MobileVerifyComponentComponent},
 
   {path: 'resume-details', component:ResumeDetailsComponent},
+  
+  {path: 'view-history', component:ViewMobileHistoryCandidatesComponent},
+
+  
   
 ];
 

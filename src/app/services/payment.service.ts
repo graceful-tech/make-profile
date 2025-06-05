@@ -33,42 +33,7 @@ export class PaymentService {
     this.userId=userIds;
   }
 
-  // payOnAccountCreation(customerDetails: any) {
-  //   this.amount = 100;
-  //   this.initRazorPay();
-  //   const route = 'payment-orders';
-  //   const postData = { amount: this.amount };
-  //   this.api.create(route, postData).subscribe({
-  //     next: response => {
-  //       const orderId = response.orderId;
-  //       this.paymentOrderId = response.id;
-  //       this.razorPayOptions['order_id'] = orderId;
-  //       this.razorPayOptions.prefill['name'] = customerDetails?.name;
-  //       this.razorPayOptions.prefill['email'] = customerDetails?.email;
-  //       this.razorPayOptions.prefill['contact'] = customerDetails?.mobileNumber;
-
-  //       var rzp1 = new Razorpay(this.razorPayOptions);
-  //       rzp1.open();
-  //       rzp1.on('payment.failed', (response: any) => {
-  //         this.zone.run(() => {
-  //           const payload = {
-  //             customerId: this.customerDetails.id,
-  //             orderId: response?.error?.metadata?.order_id,
-  //             paymentId: response?.error?.metadata?.payment_id,
-  //             paymentOrderId: this.paymentOrderId,
-  //          //   paymentType: this.paymentType,
-  //             statementId: this.statementId,
-  //             amount: this.amount,
-  //             paymentStatus: 'Failed',
-  //           }
-  //           this.savePayment(payload);
-  //         });
-  //       });
-  //     },
-  //     error: error => { }
-  //   });
-  //}
-
+ 
   payWithRazorPay(amount: number,templateName:any){
 
     this.templateName = templateName;
@@ -78,9 +43,6 @@ export class PaymentService {
     
     this.amount = amount / 100;
     //this.initRazorPay();
-
-  
-   
 
     const route = 'payment/generate-order';
     const postData = { amount: amount, userId: userIds };
@@ -103,14 +65,15 @@ export class PaymentService {
             orderId: response?.error?.metadata?.order_id,
             paymentId: response?.error?.metadata?.payment_id,
             paymentOrderId: this.paymentOrderId,
-         // paymentType: paymentType,
             amount: this.amount,
             paymentStatus: 'Failed',
           }
           this.savePayment(payload);
         });
       },
-      error: error => { }
+      error: error => { 
+
+      }
     });
   }
 
@@ -181,7 +144,6 @@ export class PaymentService {
             paymentId: response?.razorpay_payment_id,
             paymentOrderId: this.paymentOrderId,
             amount: this.amount,
-            paymentType:this.templateName,
             paymentStatus: 'Completed',
           };
           this.savePayment(payload);
@@ -198,8 +160,17 @@ export class PaymentService {
 
   savePayment(payload: any) {
     const route = 'payment/save';
-   // payload['userId'] = localStorage.getItem('candidateId');
-    this.api.create(route, payload).subscribe({
+
+    if(!this.templateName){
+    this.templateName =  localStorage.getItem('templateName');
+    }
+
+     const updatedPayload = {
+     ...payload,
+     templateName: this.templateName
+    };
+
+     this.api.create(route, updatedPayload).subscribe({
       next: response => {
          this.gs.setPaymentStatus(payload?.paymentStatus);
       },
@@ -208,11 +179,6 @@ export class PaymentService {
       }
     });
   }
-
-  // addMoneyToWallet(amount: number) {
-  //   const paymentType = 'ADD_MONEY_TO_WALLET';
-  // //  this.payWithRazorPay(amount, paymentType);
-  // }
 
 
   getCandidateById(candidateId:any) {

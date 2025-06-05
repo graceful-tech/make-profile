@@ -28,7 +28,8 @@ export class PaymentOptionComponent  {
   candidates: Array<Candidate> = [];
   userId:any;
   isUploading:boolean=false;
- resumeName: any;
+  resumeName: any;
+  templateName:any;
   
 
   constructor(
@@ -47,7 +48,7 @@ export class PaymentOptionComponent  {
   ) {
     this.candidates = this.config.data?.candidates;
     this.candidateId = this.config.data?.candidateId;
-    this.resumeName = this.config.data?.resumeName;
+    this.templateName = this.config.data?.resumeName;
 
      const userId =   sessionStorage.getItem('userId')
 
@@ -67,22 +68,21 @@ export class PaymentOptionComponent  {
        
       this.redeem();
     });
-    this.ps.payWithRazorPay(amount,this.resumeName);
+    this.ps.payWithRazorPay(amount,this.templateName);
    
-    //remove after the tesing
-    //this.createResume();
-
-   // this.ref.close();
-
   }
   
   redeem() {
-    //const route = `credits?userId=${this.userId}`;
-    this.ngxLoaderStart();
+     this.ngxLoaderStart();
     const route = 'credits/redeem'
-    const payload ={
+
+    if(!this.templateName){
+      this.templateName = localStorage.getItem('templateName')
+    }
+
+    const payload = {
       userId:this.userId,
-      templateName: this.resumeName
+      templateName: this.templateName
     }
 
     this.api.retrieve(route,payload).subscribe({
@@ -103,13 +103,18 @@ export class PaymentOptionComponent  {
   }
 
   createResume() {
+    this.ngxLoaderStart()
+
     const route = 'resume/create';
-    const payload = {...this.candidates, templateName: this.resumeName,};
+    const payload = {...this.candidates, templateName: this.templateName};
 
      this.api.retrieve(route, payload).subscribe({
       next: (response) => {
+        if(response){
         this.ngxLoaderStop();
-        this.gs.showMessage('Success','your resume is created successfully')
+        this.gs.showMessage('Success','your resume is created successfully');
+         localStorage.removeItem('resumeName');
+        }
       },
       error: (error) => {
         this.ngxLoaderStop();

@@ -12,6 +12,7 @@ import { MobilePaymentDetailsComponent } from './mobile-payments/mobile-payment-
 import { MobViewAccountComponent } from './mob-view-account/mob-view-account.component';
 import { MobileVerifyComponentComponent } from './mobile-verify-component/mobile-verify-component.component';
 import { MobileResumeDetailsComponent } from './mobile-resume-details/mobile-resume-details.component';
+import { ViewMobileHistoryCandidatesComponent } from './view-mobile-history-candidates/view-mobile-history-candidates.component';
   
 
 @NgModule({
@@ -24,7 +25,8 @@ import { MobileResumeDetailsComponent } from './mobile-resume-details/mobile-res
     MobilePaymentDetailsComponent,
     MobViewAccountComponent,
     MobileVerifyComponentComponent,
-    MobileResumeDetailsComponent
+    MobileResumeDetailsComponent,
+    ViewMobileHistoryCandidatesComponent
  
   ],
   imports: [

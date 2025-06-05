@@ -1,3 +1,4 @@
+
 .table-container {
   width: 100%;
   margin-left: 0;
@@ -48,7 +49,9 @@ p-table th {
 .wrapper1 {
   padding: 0.5rem;
   display: flex;
-  gap: 10px;
+  gap: 20px;
+  /* flex-direction: column; */
+  /* position: relative; */
 }
 
 
@@ -67,19 +70,6 @@ img {
   width: 100%;
 }
 
-.custom-btn {
-  background-color: #415ddb;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  font-size: 12px;
-  border-radius: 8px;
-  cursor: pointer;
-  margin-left: 6rem;
-  margin-top: 10px;
-  margin-right: 5rem;
-
-}
 
 .custom-btn:hover {
   background-color: #3716dc;
@@ -280,17 +270,26 @@ img {
   margin-bottom: 1rem;
 }
 
-.custom-btn {
-  background-color: #366fe0;
-  color: white;
+.link-button {
+  color: #007bff;
+  text-decoration: underline;
+  background: none;
   border: none;
-  padding: 8px 12px;
-  font-size: 15px;
-  border-radius: 8px;
+  padding: 0;
+  margin: 0;
   cursor: pointer;
-  margin-right: 15px;
-  font-style: italic;
+  font: inherit;
 }
+
+.link-button:hover {
+  color: #0056b3;
+}
+
+
+
+
+ 
+
 
 .header-middle {
   color: #000;
@@ -416,17 +415,16 @@ img {
   }
 
   .custom-btn {
-    background-color: #366fe0;
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    font-size: 15px;
-    border-radius: 8px;
-    cursor: pointer;
-    margin-right: 15px;
-    font-style: italic;
-
-  }
+  background-color: #366fe0;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  font-size: 11px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-right: 15px;
+  font-style: italic;
+}
 
   .header-middle {
     color: #000;
@@ -656,9 +654,9 @@ ngx-ui-loader .ngx-ui-loader__fg {
   background: #fff;
   padding: 0;
   /* margin-left: 50px; */
-  min-width: 136px;
+  min-width: 180px;
   margin-top: 15px;
-  left: 23px;
+  left: 50px;
   box-shadow: 0 1px 5px 0 rgb(0 0 0/8%);
   border-radius: 5px;
 }
