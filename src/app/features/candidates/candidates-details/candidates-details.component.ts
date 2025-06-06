@@ -1109,6 +1109,10 @@ export class CandidatesDetailsComponent {
     this.api.get(route).subscribe({
       next: (response) => {
         this.availableCredits = response as any;
+         this.totalCreditsAvailable = this.availableCredits.reduce(
+          (sum: any, credit: { creditAvailable: any; }) => sum + (credit.creditAvailable || 0),
+          0
+        );
       },
     });
   }

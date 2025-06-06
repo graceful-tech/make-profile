@@ -92,7 +92,7 @@ export class LoginComponent {
   }
 
   goBack() {
-    this.router.navigate(['/landing']);
+    this.router.navigate(['']);
   }
 
 }

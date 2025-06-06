@@ -87,7 +87,7 @@ export class CreateAccountComponent {
   }
 
   goBack() {
-    this.router.navigate(['/landing']);
+    this.router.navigate(['']);
   }
 
 
