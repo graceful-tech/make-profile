@@ -1220,4 +1220,15 @@ export class MobileCandidatesDetailsComponent {
     this.router.navigate(['mob-candidate/view-history'])
   }
 
+  navigateToVerify(templateName:any){
+
+     localStorage.setItem('templateName',templateName);
+    this.gs.setResumeName(templateName);
+    
+    if (this.candidateImageUrl != null &&this.candidateImageUrl !== undefined) {
+      this.gs.setCandidateImage(this.candidateImageUrl);
+    }
+    this.router.navigate(['mob-candidate/edit-candidate']);
+  }
+
 }

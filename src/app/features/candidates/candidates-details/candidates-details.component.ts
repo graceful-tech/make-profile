@@ -22,6 +22,7 @@ import { CollegeProject } from 'src/app/models/candidates/college-project';
 import { ResumeDetailsComponent } from '../resume-details/resume-details.component';
 import { PaymentService } from 'src/app/services/payment.service';
 import { ViewHistoryCandidatesComponent } from '../view-history-candidates/view-history-candidates.component';
+import { VerifyCandidatesComponent } from '../verify-candidates/verify-candidates.component';
 
 
 @Component({
@@ -841,6 +842,7 @@ export class CandidatesDetailsComponent {
         this.candidates = response;
         this.candidateId = response.id;
         const candidate = response as Candidate
+        const candidateClone = JSON.parse(JSON.stringify(candidate));
         this.patchCandidateForm(candidate);
 
         this.candidateImageUrl = response.candidateLogo;
@@ -1259,6 +1261,27 @@ export class CandidatesDetailsComponent {
       }
     });
 
+  }
+
+  navigateToVerify(templateName:any){
+ 
+     
+         const ref = this.dialog.open(VerifyCandidatesComponent, {
+           data: {
+             candidates: this.candidates,
+             payments:true,
+             candidateImage :this.candidateImageUrl,
+             resumeName:templateName,
+            // fieldsName:resumeName
+           },
+           closable: true,
+           width: '70%',
+           height: '90%',
+           header: 'Check Your Details',
+         });
+     
+     
+    
   }
 
 }

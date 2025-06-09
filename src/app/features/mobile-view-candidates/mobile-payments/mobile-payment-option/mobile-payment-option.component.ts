@@ -28,6 +28,7 @@ export class MobilePaymentOptionComponent {
   availableCredits: any;
   isUploading:boolean=false;
   templateName:any;
+ planetImagePath: any;
   
 
   constructor(
@@ -50,7 +51,12 @@ export class MobilePaymentOptionComponent {
   }
 
   ngOnInit() {
+     if(this.templateName === null || this.templateName === undefined){
+      this.templateName = localStorage.getItem('templateName')
+    }
+      this.planetImagePath ='./assets/img/'+this.templateName+'.png';
       this.getCandidates();
+      this.getAvailableCredits();
   } 
  
   
@@ -109,9 +115,13 @@ export class MobilePaymentOptionComponent {
     this.api.retrieve(route,payload).subscribe({
       next: (response) => {
         this.ngxLoaderStop();
-         
+         if(response){
+            window.alert('Resume created successfully');
+             this.ngxLoaderStop();
+         }
       },
       error: (err) => {
+         window.alert('Error in creating Resume');
         this.ngxLoaderStop();
       }
     });
@@ -167,5 +177,23 @@ export class MobilePaymentOptionComponent {
         },
       });
     }
+
+    getAvailableCredits() {
+       if(this.templateName === null || this.templateName === undefined){
+      this.templateName = localStorage.getItem('templateName')
+    }
+        const userId = sessionStorage.getItem('userId');
+
+     const route = `credits/get-available-credits?templateName=${this.templateName}&userId=${userId}`;
+
+    this.api.get(route).subscribe({
+      next: (response) => {
+        this.balanceCredits = response as any;
+
+        const balance = response
+      },
+    });
+  }
+  
 
 }

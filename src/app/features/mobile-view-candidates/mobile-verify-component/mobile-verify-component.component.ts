@@ -399,7 +399,7 @@ export class MobileVerifyComponentComponent {
        if (this.candidateImageUrl !== undefined && this.multipartFile !== undefined) {
           this.uploadCandidateImage();
         }
-        response.candidateLogo = this.candidateImageUrl; 
+       // response.candidateLogo = this.candidateImageUrl; 
 
         this.verifyDetails(this.candidates);
 
@@ -939,7 +939,7 @@ export class MobileVerifyComponentComponent {
             this.patchCandidateForm(candidateClone);
            this.getCandidateImage(candidate?.id);
 
-            this.verifyDetails(candidate);
+            this.verifyDetails(this.candidates);
  
         }
         },
@@ -1056,7 +1056,7 @@ export class MobileVerifyComponentComponent {
 
  payment(){
   this.gs.setCandidateDetails(this.candidates);
-  this.router.navigate(['mob-candidate/mobile-payment']);
+  this.router.navigate(['/mob-candidate/mobile-payment']);
 }
     
 }

@@ -178,3 +178,33 @@ p {
     background-color: #0056b3;
     border-radius: 4px;
 }
+
+.floating-container {
+    position: fixed;
+    width: 150px;
+    /* Increased container size */
+    height: 150px;
+    bottom: 0;
+    right: 0;
+    margin: 35px 25px;
+}
+
+.floating-button {
+    position: absolute;
+    width: 25rem;
+    height: 25rem;
+    /* background: #2cb3f0; */
+    bottom: 0;
+    border-radius: 50%;
+    left:10;
+    right:0;
+
+    color: #ffffff;
+    line-height: 65px;
+    text-align: center;
+    font-size: 15px;
+    /* z-index: 100; */
+    /* box-shadow: 0 10px 25px -5px rgba(44, 179, 240, 0.6); */
+    font-family: 'Poppins';
+}
+

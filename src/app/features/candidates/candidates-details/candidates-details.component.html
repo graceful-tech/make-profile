@@ -118,6 +118,7 @@
                 <th style="width: 10%;">PAYMENT DATE</th>
                 <th style="width: 10%;">TEMPLATE NAME</th>
                 <th style="width: 10%;">PAY AMOUNT</th>
+                <th style="width: 10%;">RECREATE RESUME</th>
               </tr>
             </ng-template>
             <ng-template pTemplate="body" let-credits>
@@ -127,6 +128,7 @@
                 <td>{{ credits.paymentDate }}</td> 
                 <td>{{ credits.templateName }}</td>
                 <td> <button type="button" class="custom-btn" (click)="payment(credits.templateName)">Just Pay</button> </td>
+                <td> <button type="button" class="modify-btn" (click)="navigateToVerify(credits.templateName)">Re-Create</button> </td>
               </tr>
             </ng-template>
             <ng-template pTemplate="emptymessage">

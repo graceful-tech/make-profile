@@ -1,5 +1,13 @@
 <div class="wrapper">
+  
   <div class="profile-wrapper">
+    
+    <div>
+    <p-button  label="Back" (onClick)="backToDashboard()"></p-button> 
+    </div> 
+
+    <app-make-profile-divider></app-make-profile-divider>
+
       <form [formGroup]="candidateForm">
           <app-make-profile-divider></app-make-profile-divider>
           <div class="section-heading">Personal Details</div>
@@ -556,10 +564,7 @@
 
           <p-button class="mr-2" [label]="dataLoaded ? 'save' : 'saving..'"  [icon]="dataLoaded ? '' : 'pi pi-spin pi-spinner'" [disabled]="!dataLoaded"
               (onClick)="createCandidate()"></p-button>
-
-
            <p-button  styleClass="p-button-secondary" label="Save&CreateResume" (onClick)="saveandcreateresume()"> </p-button> 
           </div>
-          
   </div>
 </div>

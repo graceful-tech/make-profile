@@ -25,5 +25,8 @@ export class LandingPageMobileComponent {
       { relativeTo: this.route });
   }
 
+  toLogin(){
+     this.router.navigate(['/mob-login']);
+  }
 
 }

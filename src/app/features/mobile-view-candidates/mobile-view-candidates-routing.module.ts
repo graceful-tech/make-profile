@@ -8,6 +8,7 @@ import { MobilePaymentOptionComponent } from './mobile-payments/mobile-payment-o
 import { MobileVerifyComponentComponent } from './mobile-verify-component/mobile-verify-component.component';
 import { ResumeDetailsComponent } from '../candidates/resume-details/resume-details.component';
 import { ViewMobileHistoryCandidatesComponent } from './view-mobile-history-candidates/view-mobile-history-candidates.component';
+import { ResumeDetailsMobileComponent } from './resume-details-mobile/resume-details-mobile.component';
 
 const routes: Routes = [
 
@@ -23,7 +24,7 @@ const routes: Routes = [
 
   {path: 'verify-components', component:MobileVerifyComponentComponent},
 
-  {path: 'resume-details', component:ResumeDetailsComponent},
+  {path: 'resume-details', component:ResumeDetailsMobileComponent},
   
   {path: 'view-history', component:ViewMobileHistoryCandidatesComponent},
 

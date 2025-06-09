@@ -14,18 +14,15 @@ import { Qualification } from 'src/app/models/candidates/qualification';
 import { Certificates } from 'src/app/models/candidates/certificates';
 import { Achievements } from 'src/app/models/candidates/achievements';
 import { PaymentService } from 'src/app/services/payment.service';
-import { PaymentOptionComponent } from '../payments/payment-option/payment-option.component';
-import { CollegeProject } from 'src/app/models/candidates/college-project';
-import { ChooseTemplateComponent } from '../Templates/choose-template/choose-template.component';
-
+ import { CollegeProject } from 'src/app/models/candidates/college-project';
+ 
 @Component({
-  selector: 'app-resume-details',
+  selector: 'app-resume-details-mobile',
   standalone: false,
-  templateUrl: './resume-details.component.html',
-  styleUrl: './resume-details.component.css'
+  templateUrl: './resume-details-mobile.component.html',
+  styleUrl: './resume-details-mobile.component.css'
 })
-export class ResumeDetailsComponent {
-
+export class ResumeDetailsMobileComponent {
 
   candidateForm!: FormGroup;
   genderList: Array<ValueSet> = [];
@@ -862,21 +859,7 @@ export class ResumeDetailsComponent {
       });
     }
 
-    next(){
-      this.ref.close();
-      const ref = this.dialog.open(PaymentOptionComponent, {
-           
-            data: {
-              candidates: this.candidates,
-              candidateId: this.candidates?.id,
-              resumeName:this.resumeName,
-            },
-            closable: true,
-            width: '30%',
-            height: '90%',
-            styleClass: 'payment-dialog-header',
-          });
-    }
+    
 
    get collegeProjectControls() {
     return this.candidateForm.get('collegeProject') as FormArray;
@@ -1151,10 +1134,10 @@ export class ResumeDetailsComponent {
         this.candidateId = response?.id;
        
         localStorage.setItem('candidateId',this.candidateId);
-         this.candidates = response as Candidate;
-         this.uploadCandidateImage();
+         this.candidates = response;
+        this.uploadCandidateImage();
 
-          this.toCreateResume(); 
+        this.chooseTemplate();
 
           this.dataLoaded = true;  
       },
@@ -1173,34 +1156,20 @@ export class ResumeDetailsComponent {
     }
      
     }
-
-    toCreateResume(){
-      this.ref.close();
-       const ref = this.dialog.open(ChooseTemplateComponent, {
-            data: {
-              candidates: this.candidates,
-              candidateImage: this.candidateImageUrl
-            },
-            closable: true,
-            width: '40%',
-            height: '90%',
-            styleClass: 'custom-dialog-header',
-          });
-      
-          ref.onClose.subscribe(response => {
-            if (response) {
-              this.candidateImageUrl = response.candidateLogo;
-              console.log(this.candidateImageUrl)
-            }
-          });
-    }
-
     backToDashboard(){
       history.back();
     }
- 
 
-  }
-   
-
-
+    chooseTemplate(){
+     this.gs.setCandidateDetails(this.candidates)
+     if(this.candidateImageUrl !== null && this.candidateImageUrl !== undefined){
+     this.gs.setCandidateImage(this.candidateImageUrl)
+      }
+     if(this.candidates !== null && this.candidates !== undefined){
+    this.router.navigate(['mob-candidate/choose-Template']);
+     }
+     else{
+      window.alert("Please enter the details")
+     }
+    }
+}

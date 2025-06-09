@@ -113,4 +113,78 @@
      align-items: center;
     }
    }
-   
+ 
+   .custom-loader-backdrop {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+  background: rgba(108, 103, 103, 0.427);
+}
+
+.custom-loader-container {
+  text-align: center;
+}
+
+.dotted-spinner {
+  width: 60px;
+  height: 60px;
+  border: 6px dotted #0059ff;
+  border-radius: 80%;
+  animation: spin 3s linear infinite;
+  margin: 0 auto 16px;
+  margin-top: 40px;
+}
+
+.loader-text {
+  color: rgb(5, 5, 5);
+  font-size: 19px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  position: relative;
+  padding-left: 20px;
+
+}
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes dots {
+  0% {
+    content: "";
+  }
+
+  33% {
+    content: ".";
+  }
+
+  66% {
+    content: "..";
+  }
+
+  100% {
+    content: "...";
+  }
+}
+
+
+.resume-preview {
+  width: 220px;
+  height: 310px;
+  overflow: hidden;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 5px rgba(0,0,0,0.2);
+}
+
+.scaled-preview {
+  transform: scale(0.3); /* Adjust this to scale */
+  transform-origin: top left;
+  width: 700px; /* Original width of resume */
+  height: 990px; /* Original height of resume */
+  border: none;
+}

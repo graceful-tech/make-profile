@@ -383,7 +383,7 @@ export class MobileCreateCandidatesComponent {
           this.uploadCandidateImage();
         }
 
-        response.candidateLogo = this.candidateImageUrl; 
+       // response.candidateLogo = this.candidateImageUrl; 
 
         this.gs.setCandidateDetails(this.candidates);
 

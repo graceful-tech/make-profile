@@ -30,6 +30,8 @@ export class PaymentOptionComponent  {
   isUploading:boolean=false;
   resumeName: any;
   templateName:any;
+  planetImagePath:any;
+  availableCredits:any;
   
 
   constructor(
@@ -50,13 +52,15 @@ export class PaymentOptionComponent  {
     this.candidateId = this.config.data?.candidateId;
     this.templateName = this.config.data?.resumeName;
 
-     const userId =   sessionStorage.getItem('userId')
+    const userId =   sessionStorage.getItem('userId')
 
-     this.userId = userId;
+    this.userId = userId;
+    
   }
 
   ngOnInit() {
-   
+   this.planetImagePath ='./assets/img/'+this.templateName+'.png';
+   this.getAvailableCredits(this.templateName,this.userId)
   }
 
   
@@ -66,7 +70,10 @@ export class PaymentOptionComponent  {
   
      this.ps.initRazorPays(() => {
        
-      this.redeem();
+      setTimeout(() => {
+      this.redeem();  
+    }, 2000);
+
     });
     this.ps.payWithRazorPay(amount,this.templateName);
    
@@ -88,12 +95,15 @@ export class PaymentOptionComponent  {
     this.api.retrieve(route,payload).subscribe({
       next: (response) => {
         this.credits = response as any;
+        
         if(this.credits){
             this.createResume();
         }
         else{
           this.gs.showMessage('error','You dont have credits');
+           this.ngxLoaderStop();
         }
+        
       },
       error: (error) => {
         this.ngxLoaderStop();
@@ -136,5 +146,18 @@ export class PaymentOptionComponent  {
       this.isUploading = true;
       this.ngxLoader.start();
    }
+
+   getAvailableCredits(templateName:any,userId:any) {
+     const route = `credits/get-available-credits?templateName=${templateName}&userId=${userId}`;
+
+    this.api.get(route).subscribe({
+      next: (response) => {
+        this.balanceCredits = response as any;
+
+        const balance = response
+      },
+    });
+  }
+  
 
 }

@@ -159,7 +159,8 @@ p {
     width: 40%;
     position: relative;
     /* Ensures layering */
-    z-index: 10;
+   
+    
 }
 
 /* .cta-button:hover {
@@ -183,4 +184,32 @@ p {
 
 .features-section{
     padding-top: 30px;
+}
+.floating-container {
+    position: fixed;
+    width: 150px;
+    /* Increased container size */
+    height: 150px;
+    bottom: 0;
+    right: 0;
+    margin: 65px 25px;
+}
+
+.floating-button {
+    position: absolute;
+    width: 15rem;
+    height: 15rem;
+    /* background: #2cb3f0; */
+    bottom: 0;
+    border-radius: 50%;
+    left: 0;
+    right:0;
+
+    color: #ffffff;
+    line-height: 65px;
+    text-align: center;
+    font-size: 15px;
+    /* z-index: 100; */
+    /* box-shadow: 0 10px 25px -5px rgba(44, 179, 240, 0.6); */
+    font-family: 'Poppins';
 }

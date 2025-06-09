@@ -444,7 +444,7 @@ export class AddCandidatesComponent {
 
          this.patchCandidateForm(response);
 
-         this.candidates = response;
+         this.candidates = response as Candidate;
         
          this.verifyDetails();
 
@@ -1153,7 +1153,7 @@ export class AddCandidatesComponent {
      payment() {
        this.ref.close();
        const ref = this.dialog.open(PaymentOptionComponent, {
-            
+
              data: {
                candidates: this.candidates,
                candidateId: this.candidates?.id,

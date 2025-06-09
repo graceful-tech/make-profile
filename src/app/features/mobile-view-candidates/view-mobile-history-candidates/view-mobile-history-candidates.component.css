@@ -59,4 +59,16 @@
     border: none !important;
 }
 
- 
+ .truncate {
+  white-space: nowrap;
+  overflow: nowrap;
+  text-overflow: ellipsis;
+  max-width: 200px;
+}
+.wrap-text {
+  white-space: normal;      
+  word-wrap: break-word;   
+  word-break: break-word;
+  display: block;  
+  max-width: 80%;        
+}
