@@ -653,10 +653,8 @@ ngx-ui-loader .ngx-ui-loader__fg {
   position: absolute;
   background: #fff;
   padding: 0;
-  /* margin-left: 50px; */
-  min-width: 180px;
+  min-width: 160px;
   margin-top: 15px;
-  left: 50px;
   box-shadow: 0 1px 5px 0 rgb(0 0 0/8%);
   border-radius: 5px;
 }
