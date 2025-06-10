@@ -16,6 +16,8 @@ import { CreateAccountComponent } from './auth/create-account/create-account.com
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MobileCreateAccountComponent } from './auth-mobile/mobile-create-account/mobile-create-account.component';
 import { MobileLoginComponent } from './auth-mobile/mobile-login/mobile-login.component';
+import { ViewAccountComponent } from './features/users/view-account/view-account.component';
+import { EditUserComponent } from './features/users/edit-user/edit-user.component';
 
 
 
@@ -25,7 +27,9 @@ import { MobileLoginComponent } from './auth-mobile/mobile-login/mobile-login.co
     LoginComponent,
     CreateAccountComponent,
     MobileCreateAccountComponent,
-    MobileLoginComponent
+    MobileLoginComponent,
+    ViewAccountComponent,
+    EditUserComponent
 
 
   ],

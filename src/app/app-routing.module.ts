@@ -7,9 +7,10 @@ import { LoginComponent } from './auth/login/login.component';
 import { CreateAccountComponent } from './auth/create-account/create-account.component';
 import { MobileLoginComponent } from './auth-mobile/mobile-login/mobile-login.component';
 import { MobileCreateAccountComponent } from './auth-mobile/mobile-create-account/mobile-create-account.component';
-import { ViewAccountComponent } from './features/candidates/view-account/view-account.component';
-import { EditUserComponent } from './features/candidates/edit-user/edit-user.component';
-import { MobViewAccountComponent } from './features/mobile-view-candidates/mob-view-account/mob-view-account.component';
+ import { MobViewAccountComponent } from './features/mobile-view-candidates/mob-view-account/mob-view-account.component';
+import { ViewAccountComponent } from './features/users/view-account/view-account.component';
+import { EditUserComponent } from './features/users/edit-user/edit-user.component';
+import { ForgotPasswordComponent } from './features/candidates/forgot-password/forgot-password.component';
 
 const routes: Routes = [
 
@@ -30,6 +31,8 @@ const routes: Routes = [
   {path:'editUser', component: EditUserComponent},
 
   { path: 'view-mob-user', component: MobViewAccountComponent },
+
+  {path: 'Forgot-password', component: ForgotPasswordComponent },
   
  
  

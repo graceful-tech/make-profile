@@ -21,7 +21,7 @@
 
 }
 
-.login-form {
+.login-form{
   height: 280px;
   margin-bottom: 10px;
 }
@@ -64,26 +64,31 @@
 
 .heading {
   display: flex;
-
+ 
 }
 
 .forgot-password {
   margin-top: 10px;
   color: #2196F3;
+  text-decoration: none;
+}
+
+.forgot-password a:hover,
+.create-account a:hover {
   text-decoration: underline;
 }
 
-.create-account {
+.create-account{
   font-size: medium;
   color: #2196F3;
   text-decoration: underline;
 }
 
-.center {
+.center{
   margin-top: 15px;
 }
 
-.col-6 {
+.col-6{
   padding-top: 15px;
 }
 
@@ -93,11 +98,11 @@
   left: 0;
   /* width: 100%; */
   z-index: 1000;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  display: flex;  
+  align-items: center;  
+  justify-content: space-between; 
   padding: 10px 10px;
-
+  
 }
 
 

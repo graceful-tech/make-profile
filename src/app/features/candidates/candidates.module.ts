@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { CandidatesRoutingModule } from './candidates-routing.module';
+ import { CandidatesRoutingModule } from './candidates-routing.module';
 import { AddCandidatesComponent } from './add-candidates/add-candidates.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { CreateCandidatesComponent } from './create-candidates/create-candidates.component';
@@ -10,9 +9,11 @@ import { ChooseTemplateComponent } from './Templates/choose-template/choose-temp
 import { PaymentOptionComponent } from './payments/payment-option/payment-option.component';
 import { PaymentDetailsComponent } from './payments/payment-details/payment-details.component';
 import { NgxUiLoaderModule } from 'ngx-ui-loader';
-import { ViewAccountComponent } from './view-account/view-account.component';
-import { VerifyCandidatesComponent } from './verify-candidates/verify-candidates.component';
+import { ViewAccountComponent } from '../users/view-account/view-account.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { CommonModule } from '@angular/common';
 import { ResumeDetailsComponent } from './resume-details/resume-details.component';
+import { VerifyCandidatesComponent } from './verify-candidates/verify-candidates.component';
 import { ViewHistoryCandidatesComponent } from './view-history-candidates/view-history-candidates.component';
 
 
@@ -25,7 +26,7 @@ import { ViewHistoryCandidatesComponent } from './view-history-candidates/view-h
     ChooseTemplateComponent,
     PaymentOptionComponent,
     PaymentDetailsComponent,
-    ViewAccountComponent,
+    ForgotPasswordComponent,
     VerifyCandidatesComponent,
     ResumeDetailsComponent,
     ViewHistoryCandidatesComponent

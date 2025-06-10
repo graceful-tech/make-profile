@@ -27,6 +27,7 @@ import { ResumeDetailsMobileComponent } from './resume-details-mobile/resume-det
     MobViewAccountComponent,
     MobileVerifyComponentComponent,
     MobileResumeDetailsComponent,
+    MobileResumeDetailsComponent,
     ViewMobileHistoryCandidatesComponent,
     ResumeDetailsMobileComponent
  
