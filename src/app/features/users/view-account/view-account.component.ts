@@ -13,7 +13,9 @@ export class ViewAccountComponent {
   userId: any;
   user: any;
   constructor(public gs: GlobalService, private api: ApiService, private router: Router) { }
-  ngOnInit() {
+  
+  
+ngOnInit() {
     this.gs.user$.subscribe((response: any) => {
       this.userId = response?.id;
       this.getUserById();

@@ -1,19 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
 import { GlobalService } from 'src/app/services/global.service';
-import { ButtonModule } from 'primeng/button';
-
+ 
 @Component({
   selector: 'app-edit-user',
-  standalone: true,
-  imports: [CommonModule, FormsModule,ButtonModule],
+  standalone: false,
   templateUrl: './edit-user.component.html',
   styleUrls: ['./edit-user.component.css']
 })
-export class EditUserComponent implements OnInit {
+export class EditUserComponent {
   user: any = {};
   showPassword: boolean = false;
   isLoading: boolean = false;
@@ -24,7 +20,7 @@ export class EditUserComponent implements OnInit {
     private router: Router
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.gs.user$.subscribe((response: any) => {
       const userName = response?.userName || sessionStorage.getItem('userName');
       if (userName) {
@@ -33,7 +29,7 @@ export class EditUserComponent implements OnInit {
     });
   }
 
-  getUserByUserName(userName: string): void {
+  getUserByUserName(userName: string) {
     const route = `user/get_user/${userName}`;
     this.isLoading = true;
     this.api.get(route).subscribe({
@@ -48,11 +44,11 @@ export class EditUserComponent implements OnInit {
     });
   }
 
-  togglePassword(): void {
+  togglePassword() {
     this.showPassword = !this.showPassword;
   }
 
-  saveUser(): void {
+  saveUser() {
     const userName = this.user?.userName || sessionStorage.getItem('userName');
     const route = `user/update_user/${userName}`;
     this.api.update(route, this.user).subscribe({
