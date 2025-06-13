@@ -16,7 +16,7 @@
             <div class="field-wrapper">
               <label>Name</label>
               <div class="input-wrapper">
-                <input type="text" pInputText [value]="user?.name" [disabled]="true"    />
+                <input type="text"  pInputText  [(ngModel)]="user.name" [disabled]="editUser"    />
               </div>
             </div>
         </div>
@@ -25,7 +25,7 @@
             <div class="field-wrapper">
               <label>Email</label>
               <div class="input-wrapper">
-                <input type="text" pInputText [value]="user?.email"  [disabled]="true"   />
+                <input type="text" pInputText  [(ngModel)]="user.email"  [disabled]="editUser"   />
               </div>
             </div>
         </div>
@@ -35,7 +35,7 @@
             <div class="field-wrapper">
               <label>Contact</label>
               <div class="input-wrapper">
-                <input type="text" pKeyFilter="int"  pInputText [value]="user?.mobileNumber"  [disabled]="true"   />
+                <input type="text"   [maxlength]="10"  pInputText [(ngModel)]="user.mobileNumber"  [disabled]="editUser"   />
               </div>
             </div>
         </div>
@@ -47,14 +47,26 @@
                     <i [ngClass]="showPassword ? 'pi pi-eye-slash' : 'pi pi-eye'"></i>
                   </button>
               </label>
-              <div class="input-wrapper">
-                <input type="text" pKeyFilter="int" [disabled]="true"  pInputText [value]=" showPassword ? user?.password : '••••••••'" 
-                />
+              <div class="input-wrapper">   
+               
+             <input
+                [type]="showPassword ? 'text' : 'password'"
+                [(ngModel)]="user.password"
+                class="form-control"
+               [disabled]="editUser"
+                 
+              />
               </div>
             </div>
         </div>
                 
      </div>
+        
+     <div style="text-align: right;">
+          <p-button (onClick)="updateUser()"  [disabled]="editUser"  label="Update"></p-button> 
+
+     </div>
+
         
 </div>
 

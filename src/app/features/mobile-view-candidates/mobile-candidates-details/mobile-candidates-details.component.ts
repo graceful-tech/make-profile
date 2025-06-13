@@ -74,6 +74,7 @@ export class MobileCandidatesDetailsComponent {
   loading: boolean = true;
   user: any;
   totalCreditsAvailable: number = 0;
+  credits: any;
 
 
   constructor(
@@ -686,26 +687,56 @@ export class MobileCandidatesDetailsComponent {
 
   onEdit(id: any) { }
 
-  getScore(jobId: any, tenant: any) {
-    const candidateIds = '23';
+  checkScore(jobId: any, tenant: any) {
+     this.ngxLoaderStart();
 
     const route = 'score-check/get-score';
 
     const formData = new FormData();
     formData.append('jobId', jobId);
-    formData.append('candidateId', candidateIds);
+    formData.append('candidateId', this.candidateId);
     formData.append('tenant', tenant);
 
-    const payload = { jobId: jobId, candidateId: candidateIds, tenant: tenant };
+    //const payload = { jobId: jobId, candidateId: candidateIds, tenant: tenant };
 
     this.api.upload(route, formData).subscribe({
       next: (response) => {
-        this.candidateScore = {
-          id: 1,
-          score: '55%',
-          related: true,
-          jobId: 'GT0002',
-        };
+         this.candidateScore = response;
+         this.ngxLoaderStop();
+      },
+      error: (error) => {
+        this.ngxLoaderStop();
+        this.gs.showMessage('error','Error in  matching job')
+      },
+    });
+  }
+
+   getScore(jobId: any, tenant: any) {
+     this.ngxLoaderStart();
+    const route = 'credits/redeem'
+   
+    const userId =   sessionStorage.getItem('userId')
+     
+    const payload = {
+      userId:userId,
+      templateName: "Applied job"
+    }
+
+    this.api.retrieve(route,payload).subscribe({
+      next: (response) => {
+        this.credits = response as any;
+        
+        if(this.credits){
+            this.checkScore(jobId,tenant);
+        }
+        else{
+          this.gs.showMessage('error','You dont have credits');
+           this.ngxLoaderStop();
+        }
+      },
+      error: (error) => {
+        this.ngxLoaderStop();
+        this.gs.showMessage('error','Error in Matching job')
       },
     });
   }
@@ -1207,13 +1238,20 @@ export class MobileCandidatesDetailsComponent {
   }
 
   payment(templateName:any){
-    const amount = 10 * 100;
+    const confirmedAmount = prompt("Enter final amount in ₹", "10");
 
-     this.ps.initRazorPays(() => {
+  if (confirmedAmount && !isNaN(+confirmedAmount) && +confirmedAmount > 0) {
+    const amount = +confirmedAmount * 100;  
+    const paymentType = 'Resume';
+
+    this.ps.initRazorPays(() => {
+      
     });
-    
-    this.ps.payWithRazorPay(amount,templateName);
-   
+
+    this.ps.payWithRazorPay(amount, templateName);
+  } else {
+    alert("Invalid amount entered.");
+  }
   }
 
   viewHistory(){
@@ -1230,5 +1268,23 @@ export class MobileCandidatesDetailsComponent {
     }
     this.router.navigate(['mob-candidate/edit-candidate']);
   }
+
+  payForApplyingJOb(){
+      const confirmedAmount = prompt("Enter final amount in ₹", "10");
+
+  if (confirmedAmount && !isNaN(+confirmedAmount) && +confirmedAmount > 0) {
+    const amount = +confirmedAmount * 100;  
+    const paymentType = 'Resume';
+
+    this.ps.initRazorPays(() => {
+      
+    });
+
+    this.ps.payWithRazorPay(amount, "Applied Job");
+  } else {
+    alert("Invalid amount entered.");
+  }
+  }
+  
 
 }

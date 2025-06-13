@@ -33,10 +33,10 @@ p-table th {
 }
 
 
-.styled-text {
+/* .styled-text {
   padding-left: 10px;
   color: #178be9;
-}
+} */
 
 .wrapper {
   margin-top: 1rem;
@@ -285,6 +285,12 @@ img {
   color: #0056b3;
 }
 
+.styled-text {
+  padding-left: 10px;
+  color: #178be9;
+  display: flex;
+  justify-content: space-between;
+}
 
 
 
@@ -403,11 +409,11 @@ img {
     width: 10%
   }
 
-  .styled-text {
+  /* .styled-text {
     padding-left: 10px;
     display: flex;
     margin-top: 9px;
-  }
+  } */
 
   .custom-btn:hover {
     background-color: #3716dc;
@@ -730,4 +736,38 @@ ngx-ui-loader .ngx-ui-loader__fg {
   cursor: pointer;
   /* margin-right: 15px; */
   font-style: italic;
+}
+
+.suggest-style{
+  margin-top: 9px; 
+  display: flex;
+  justify-content: left;
+  color: #178be9;
+}
+
+.addButton{
+  background-color: #2679b9;
+  color: white;
+  border: none;
+  padding: 5px 7px;
+  font-size: 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-style: italic;
+
+}
+
+.applied-job-button{
+  color: #007bff;
+  text-decoration: underline;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  font: inherit;
+  font-weight: bold;
+  font-size:15px;
+
+
 }

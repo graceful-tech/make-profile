@@ -128,19 +128,38 @@
                 <td>{{ credits.paymentDate }}</td> 
                 <td>{{ credits.templateName }}</td>
                 <td> <button type="button" class="custom-btn" (click)="payment(credits.templateName)">Just Pay</button> </td>
-                <td> <button type="button" class="modify-btn" (click)="navigateToVerify(credits.templateName)">Re-Create</button> </td>
+                
+                
+                <ng-container *ngIf="credits.templateName !== 'Applied Job'; else emptyCell">
+                    <td>
+                      <button 
+                        type="button" 
+                        class="modify-btn"  
+                        (click)="navigateToVerify(credits.templateName)">
+                        Re-Create
+                      </button>
+                    </td>
+                  </ng-container>
+                  <ng-template #emptyCell>
+                    <td></td>
+                  </ng-template>
+
               </tr>
             </ng-template>
             <ng-template pTemplate="emptymessage">
               <tr>
-                <td colspan="4">No records found.</td>
+                <td colspan="6">No records found.</td>
               </tr>
             </ng-template>
           </p-table>
         </div>
 
+        <div class="styled-text">
+        <h5>Applied Jobs</h5>
+           <!-- <p-button type="button"  label="Pay for job"  (onClick)="payForApplyingJOb()"></p-button> -->
+            <span class="applied-job-button" (click)="payForApplyingJOb()">Pay for Applying job</span>
 
-        <h5 class="styled-text">Applied Jobs</h5>
+        </div>
         <div class="table-container">
             <p-table   [value]="appliedJobs">
                 <ng-template pTemplate="header">
@@ -258,8 +277,11 @@
                   <button class="small-btn" (click)="getScore(requirement.jobId,requirement.tenant)">Get Score</button>
                 </td>
                 <td>
-                  <button class="apply-btn"
+                  <!-- <button class="apply-btn"
                     [disabled]="!(candidateScore?.related && candidateScore?.score !== null && requirement.jobId === candidateScore?.jobId)"
+                    (click)="applyJob(requirement.jobId,requirement.tenant)">Apply</button> -->
+                    <button class="apply-btn"
+                     
                     (click)="applyJob(requirement.jobId,requirement.tenant)">Apply</button>
                 </td>
 
@@ -278,7 +300,9 @@
 
   <div class="right-section">
     <div class="profile-wrapper">
-
+      <div style="text-align: left; color: rgb(239, 233, 233);">
+       <span style="font-size: 20px; font-weight: bold; background-color: #1a8c8c; padding: 5px 5px; border-radius: 50px;">Your Details</span>
+       </div>
       <form [formGroup]="candidateForm">
 
         <app-make-profile-divider></app-make-profile-divider>
@@ -289,7 +313,7 @@
 
         </div>
         <div class="grid">
-          <div class="col-12 md:col-6 lg:col-3">
+          <div class="col-12 sm:col-6 md:col-4">
             <div class="field-wrapper">
               <label class="required">Mobile</label>
               <div class="input-wrapper">
@@ -300,7 +324,7 @@
               Mobile Number is required</small>
           </div>
 
-          <div class="col-12 md:col-6 lg:col-3">
+          <div class="col-12 sm:col-6 md:col-4">
             <div class="field-wrapper">
               <label class="required">Name</label>
               <div class="input-wrapper">
@@ -311,7 +335,7 @@
               required</small>
           </div>
 
-          <div class="col-12 md:col-6 lg:col-3">
+          <div class="col-12 sm:col-6 md:col-4">
             <div class="field-wrapper">
               <label class="required">Email</label>
               <div class="input-wrapper">
@@ -325,7 +349,7 @@
               Email is required</small>
           </div>
 
-          <div class="col-12 md:col-6 lg:col-3">
+          <div class="col-12 sm:col-6 md:col-4">
             <div class="field-wrapper">
               <label class="required">Gender</label>
               <div class="input-wrapper">
@@ -338,7 +362,7 @@
               Gender is required</small>
           </div>
 
-          <div class="col-12 md:col-6 lg:col-3">
+          <div class="col-12 sm:col-6 md:col-4">
             <div class="field-wrapper">
               <label [ngClass]="{ required: isRequired('languagesKnown') }">Languages</label>
               <div class="input-wrapper">
@@ -349,7 +373,7 @@
             </div>
           </div>
 
-          <div class="col-12 md:col-6 lg:col-3">
+          <div class="col-12 sm:col-6 md:col-4">
             <div class="field-wrapper">
               <label>DOB</label>
               <div class="input-wrapper">
@@ -358,7 +382,7 @@
             </div>
           </div>
 
-          <div class="col-12 md:col-6 lg:col-3">
+          <div class="col-12 sm:col-6 md:col-4">
             <div class="field-wrapper">
               <label>LinkedIn</label>
               <div class="input-wrapper">
@@ -367,7 +391,7 @@
             </div>
           </div>
 
-          <div class="col-12 md:col-6 lg:col-3">
+          <div class="col-12 sm:col-6 md:col-4">
             <div class="field-wrapper">
               <label>Marital Status</label>
               <div class="input-wrapper">
@@ -427,7 +451,7 @@
         </div>
 
         <div class="grid">
-          <div class="col-12 md:col-6 lg:col-3">
+          <div class="col-12 sm:col-6 md:col-4">
             <div class="fresher-checkbox pb-3">
               <p-checkbox [binary]="true" inputId="fresher" formControlName="fresher"
                 Style="padding-right: 5px;"></p-checkbox>
@@ -443,7 +467,7 @@
 
               <!-- Experience Details -->
               <div class="grid">
-                <div class="col-12 md:col-6 lg:col-3">
+                <div class="col-12 sm:col-6 md:col-4">
                   <div class="field-wrapper">
                     <label>Company Name</label>
                     <div class="input-wrapper">
@@ -452,7 +476,7 @@
                   </div>
                 </div>
 
-                <div class="col-12 md:col-6 lg:col-3">
+                <div class="col-12 sm:col-6 md:col-4">
                   <div class="field-wrapper">
                     <label>Role Name</label>
                     <div class="input-wrapper">
@@ -461,7 +485,7 @@
                   </div>
                 </div>
 
-                <div class="col-12 md:col-6 lg:col-3">
+                <div class="col-12 sm:col-6 md:col-4">
                   <div class="field-wrapper">
                     <label>Year Started</label>
                     <div class="input-wrapper">
@@ -470,7 +494,7 @@
                   </div>
                 </div>
 
-                <div class="col-12 md:col-6 lg:col-3">
+                <div class="col-12 sm:col-6 md:col-4">
                   <div class="field-wrapper">
                     <label>Year Ended</label>
                     <div class="input-wrapper">
@@ -509,7 +533,7 @@
                   class="project-container">
 
                   <div class="grid">
-                    <div class="col-12 md:col-6 lg:col-3">
+                    <div class="col-12 sm:col-6 md:col-4">
                       <div class="field-wrapper">
                         <label>Project Name</label>
                         <div class="input-wrapper">
@@ -518,7 +542,7 @@
                       </div>
                     </div>
 
-                    <div class="col-12 md:col-6 lg:col-3">
+                    <div class="col-12 sm:col-6 md:col-4">
                       <div class="field-wrapper">
                         <label>Project Role</label>
                         <div class="input-wrapper">
@@ -607,7 +631,7 @@
             class="experience-container">
 
             <div class="grid">
-              <div class="col-12 md:col-6 lg:col-3">
+              <div class="col-12 sm:col-6 md:col-4">
                 <div class="field-wrapper">
                   <label>Instution Name</label>
                   <div class="input-wrapper">
@@ -616,7 +640,7 @@
                 </div>
               </div>
 
-              <div class="col-12 md:col-6 lg:col-3">
+              <div class="col-12 sm:col-6 md:col-4">
                 <div class="field-wrapper">
                   <label>Field Of Study</label>
                   <div class="input-wrapper">
@@ -625,7 +649,7 @@
                 </div>
               </div>
 
-              <div class="col-12 md:col-6 lg:col-3">
+              <div class="col-12 sm:col-6 md:col-4">
                 <div class="field-wrapper">
                   <label>Qualification</label>
                   <div class="input-wrapper">
@@ -636,7 +660,7 @@
                 </div>
               </div>
 
-              <div class="col-12 md:col-6 lg:col-3">
+              <div class="col-12 sm:col-6 md:col-4">
                 <div class="field-wrapper">
                   <label>Start Year</label>
                   <div class="input-wrapper">
@@ -645,7 +669,7 @@
                 </div>
               </div>
 
-              <div class="col-12 md:col-6 lg:col-3">
+              <div class="col-12 sm:col-6 md:col-4">
                 <div class="field-wrapper">
                   <label>End year</label>
                   <div class="input-wrapper">
@@ -654,7 +678,7 @@
                 </div>
               </div>
 
-              <div class="col-12 md:col-6 lg:col-3">
+              <div class="col-12 sm:col-6 md:col-4">
                 <div class="field-wrapper">
                   <label>Percentage</label>
                   <div class="input-wrapper">
@@ -681,7 +705,7 @@
             class="experience-container">
 
             <div class="grid">
-              <div class="col-12 md:col-6 lg:col-3">
+              <div class="col-12 sm:col-6 md:col-4">
                 <div class="field-wrapper">
                   <label>Course Name</label>
                   <div class="input-wrapper">
@@ -690,7 +714,7 @@
                 </div>
               </div>
 
-              <div class="col-12 md:col-6 lg:col-3">
+              <div class="col-12 sm:col-6 md:col-4">
                 <div class="field-wrapper">
                   <label>Start Year</label>
                   <div class="input-wrapper">
@@ -700,7 +724,7 @@
                 </div>
               </div>
 
-              <div class="col-12 md:col-6 lg:col-3">
+              <div class="col-12 sm:col-6 md:col-4">
                 <div class="field-wrapper">
                   <label>End year</label>
                   <div class="input-wrapper">

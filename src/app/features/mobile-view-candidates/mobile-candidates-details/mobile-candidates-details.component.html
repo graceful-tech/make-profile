@@ -143,7 +143,19 @@
                     <!-- <td>{{ credits.paymentDate }}</td> -->
                     <!-- <td>{{ credits.templateName }}</td> -->
                    <td> <button type="button" class="custom-btn" (click)="payment(credits.templateName)">Pay</button> </td>
-                   <td> <button type="button" class="modify-btn" (click)="navigateToVerify(credits.templateName)">Re-Create</button> </td>
+                 <ng-container *ngIf="credits.templateName !== 'Applied Job'; else emptyCell">
+                    <td>
+                      <button 
+                        type="button" 
+                        class="modify-btn"  
+                        (click)="navigateToVerify(credits.templateName)">
+                        Re-Create
+                      </button>
+                    </td>
+                  </ng-container>
+                  <ng-template #emptyCell>
+                    <td></td>
+                  </ng-template>
 
                   </tr>
                 </ng-template>
@@ -156,7 +168,12 @@
             </div>
 
 
-            <h5 class="styled-text">Applied Jobs</h5>
+            <div class="styled-text">
+              <h5 >Applied Jobs</h5>
+                <!-- <button type="button" style="background-color: rgb(74, 74, 182); border-radius: 5%; color: white;"    (click)="payForApplyingJOb()">Pay for job</button> -->
+                            <span class="applied-job-button" (click)="payForApplyingJOb()">Pay for applying job</span>
+
+            </div>
             <div class="table-container">
                 <p-table   [value]="appliedJobs">
                     <ng-template pTemplate="header">
@@ -211,7 +228,11 @@
                 <div class="col-12 md:col-6 lg:col-3">
                     <div class="field-wrapper">
                         <div class="input-wrapper">
-                            <p-chips separator="," formControlName="skills" [addOnBlur]="true" [addOnTab]="true"  placeholder="Skills Are Separated By Comma"></p-chips>
+                            <p-chips separator="," formControlName="skills" [addOnBlur]="true" [addOnTab]="true" inputId="chipInput"  placeholder="Skills Are Separated By Comma"></p-chips>
+                            <div style="display: flex; align-items: left;">
+                             <button type="button" class="addButton"  (click)="addSkill('skills','chipInput')">Add Skills</button>
+
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -225,7 +246,7 @@
             
          
     
-            <h5 class="styled-text">Suggest Jobs</h5>
+            <h5 class="suggest-style">Suggest Jobs</h5>
             <div class="table-container">
                 <p-table    [value]="requirements">
                     <ng-template pTemplate="header">
@@ -293,6 +314,10 @@
      
      <div class="right-section">
         <div class="profile-wrapper">
+
+           <div style="text-align: center; color: rgb(239, 233, 233); padding-bottom: 20px;">
+            <span style="font-size: 20px; font-weight: bold; background-color: #1a8c8c; padding: 5px 5px; border-radius: 50px;">Your Details</span>
+            </div>
            
             <form [formGroup]="candidateForm">
     

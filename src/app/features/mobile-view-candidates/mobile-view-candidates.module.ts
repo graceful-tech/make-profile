@@ -9,8 +9,7 @@ import { MobileChosseTemplateComponent } from './mobile-chosse-template/mobile-c
 import { MobileEditCandidatesComponent } from './mobile-edit-candidates/mobile-edit-candidates.component';
 import { MobilePaymentOptionComponent } from './mobile-payments/mobile-payment-option/mobile-payment-option.component';
 import { MobilePaymentDetailsComponent } from './mobile-payments/mobile-payment-details/mobile-payment-details.component';
-import { MobViewAccountComponent } from './mob-view-account/mob-view-account.component';
-import { MobileVerifyComponentComponent } from './mobile-verify-component/mobile-verify-component.component';
+ import { MobileVerifyComponentComponent } from './mobile-verify-component/mobile-verify-component.component';
 import { MobileResumeDetailsComponent } from './mobile-resume-details/mobile-resume-details.component';
 import { ViewMobileHistoryCandidatesComponent } from './view-mobile-history-candidates/view-mobile-history-candidates.component';
 import { ResumeDetailsMobileComponent } from './resume-details-mobile/resume-details-mobile.component';
@@ -24,9 +23,7 @@ import { ResumeDetailsMobileComponent } from './resume-details-mobile/resume-det
     MobileEditCandidatesComponent,
     MobilePaymentOptionComponent,
     MobilePaymentDetailsComponent,
-    MobViewAccountComponent,
     MobileVerifyComponentComponent,
-    MobileResumeDetailsComponent,
     MobileResumeDetailsComponent,
     ViewMobileHistoryCandidatesComponent,
     ResumeDetailsMobileComponent

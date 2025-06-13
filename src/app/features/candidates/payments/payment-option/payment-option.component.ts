@@ -65,17 +65,22 @@ export class PaymentOptionComponent  {
 
   
   async payRupees() {
-    const amount = 10 * 100;
-    const paymentType = 'Resume';
-  
-     this.ps.initRazorPays(() => {
-       
-      setTimeout(() => {
-      this.redeem();  
-    }, 2000);
+   const confirmedAmount = prompt("Enter final amount in ₹", "10");
 
+  if (confirmedAmount && !isNaN(+confirmedAmount) && +confirmedAmount > 0) {
+    const amount = +confirmedAmount * 100;    
+    const paymentType = 'Resume';
+
+    this.ps.initRazorPays(() => {
+      setTimeout(() => {
+        this.redeem();
+      }, 2000);
     });
-    this.ps.payWithRazorPay(amount,this.templateName);
+
+    this.ps.payWithRazorPay(amount, this.templateName);
+  } else {
+    alert("Invalid amount entered.");
+  }
    
   }
   
@@ -119,12 +124,36 @@ export class PaymentOptionComponent  {
     const payload = {...this.candidates, templateName: this.templateName};
 
      this.api.retrieve(route, payload).subscribe({
-      next: (response) => {
-        if(response){
-        this.ngxLoaderStop();
-        this.gs.showMessage('Success','your resume is created successfully');
-         localStorage.removeItem('resumeName');
+      next: (response:any) => {
+        if(response.resumePdf){
+        const base64String = response.resumePdf;
+
+        // Decode Base64 to binary string
+        const binaryString = atob(base64String);
+
+        // Convert binary string to byte array
+        const byteArray = new Uint8Array(binaryString.length);
+        for (let i = 0; i < binaryString.length; i++) {
+          byteArray[i] = binaryString.charCodeAt(i);
         }
+
+        // Create blob
+        const blob = new Blob([byteArray], { type: 'application/pdf' });
+
+        // Download
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = response.candidateName;
+        a.click();
+        window.URL.revokeObjectURL(url);
+
+        this.gs.showMessage('Success', 'Your resume is created successfully');
+        localStorage.removeItem('resumeName');
+
+         this.ngxLoaderStop();
+      }
+       this.ngxLoaderStop();
       },
       error: (error) => {
         this.ngxLoaderStop();

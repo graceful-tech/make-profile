@@ -10,8 +10,9 @@ import { GlobalService } from 'src/app/services/global.service';
   styleUrl: './mob-view-account.component.css'
 })
 export class MobViewAccountComponent {
-userId: any;
-  user: any;
+  userId: any;
+  user: any = {};
+  editUser:boolean=true;
   constructor(public gs: GlobalService, private api: ApiService, private router: Router) { }
   ngOnInit() {
     this.gs.user$.subscribe((response: any) => {
@@ -32,11 +33,12 @@ userId: any;
     });
 
   }
+  
   editOut() {
-    this.router.navigate(['editUser']);
+   this.editUser = false;
   }
   signOut(){
-    this.router.navigate(['candidate'])
+    this.router.navigate(['/mob-candidate'])
   }
   showPassword: boolean = false;
 
@@ -44,6 +46,21 @@ togglePassword() {
   this.showPassword = !this.showPassword;
 }
   
+
+updateUser(){
+ const userName = this.user?.userName || sessionStorage.getItem('userName');
+    const route = `user/update_user/${userName}`;
+    this.api.update(route, this.user).subscribe({
+      next: () => {
+        alert('User updated successfully.');
+       
+      },
+      error: (err) => {
+        console.error('Error updating user:', err);
+        alert('Failed to update user.');
+      }
+    });
+}
 
 
 }

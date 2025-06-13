@@ -115,10 +115,34 @@ export class MobilePaymentOptionComponent {
     this.api.retrieve(route,payload).subscribe({
       next: (response) => {
         this.ngxLoaderStop();
-         if(response){
-            window.alert('Resume created successfully');
+        if(response.resumePdf){
+
+        const base64String = response.resumePdf;
+
+        // Decode Base64 to binary string
+        const binaryString = atob(base64String);
+
+        // Convert binary string to byte array
+        const byteArray = new Uint8Array(binaryString.length);
+        for (let i = 0; i < binaryString.length; i++) {
+          byteArray[i] = binaryString.charCodeAt(i);
+        }
+
+        // Create blob
+        const blob = new Blob([byteArray], { type: 'application/pdf' });
+
+        // Download
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = response.candidateName;
+        a.click();
+        window.URL.revokeObjectURL(url);
+
+         window.alert('Resume created successfully');
              this.ngxLoaderStop();
          }
+          this.ngxLoaderStop();
       },
       error: (err) => {
          window.alert('Error in creating Resume');

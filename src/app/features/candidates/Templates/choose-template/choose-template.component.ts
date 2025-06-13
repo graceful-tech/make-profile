@@ -43,6 +43,7 @@ export class ChooseTemplateComponent {
     { path: './assets/img/Earth.png', name: 'Earth' },
     { path: './assets/img/Mars.png', name: 'Mars' },
     { path: './assets/img/Jupiter.png', name: 'Jupiter' },
+    { path: './assets/img/Saturn.png', name: 'Saturn' },
   ];
   
 

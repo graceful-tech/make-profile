@@ -37,6 +37,8 @@ p-table th {
 .styled-text {
   padding-left: 10px;
   color: #178be9;
+  display: flex;
+  justify-content: space-between;
 }
 
 .wrapper {
@@ -661,4 +663,36 @@ img {
 
   /* font-family: Arial, sans-serif; */
   /* box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1); */
+}
+
+.link-button {
+  color: #007bff;
+  text-decoration: underline;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  font: inherit;
+}
+
+.link-button:hover {
+  color: #0056b3;
+}
+
+.applied-job-button{
+  color: #007bff;
+  text-decoration: underline;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  font: inherit;
+  font-weight: bold;
+  font-size:15px;
+}
+
+.applied-job-button:hover {
+  color: #0056b3;
 }

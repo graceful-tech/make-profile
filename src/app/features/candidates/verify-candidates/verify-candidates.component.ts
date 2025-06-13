@@ -848,6 +848,9 @@ export class VerifyCandidatesComponent {
       });
     }
 
+    
+
+
     verifyDetails() {
 
         const route = 'template/checker';

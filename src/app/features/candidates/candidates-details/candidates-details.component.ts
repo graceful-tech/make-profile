@@ -78,6 +78,7 @@ export class CandidatesDetailsComponent {
   customLoaderMessage: any;
   user: any;
   totalCreditsAvailable: number = 0;
+  credits: any;
 
 
   constructor(
@@ -704,7 +705,10 @@ export class CandidatesDetailsComponent {
 
   }
 
-  getScore(jobId: any, tenant: any) {
+  checkScore(jobId: any, tenant: any) {
+
+     this.ngxLoaderStart('Resume is getting ready, please wait...');
+    
     const route = "score-check/get-score"
     const formData = new FormData();
 
@@ -718,9 +722,46 @@ export class CandidatesDetailsComponent {
       next: (response) => {
 
         this.candidateScore = response;
-      }
+
+         this.ngxLoaderStop();
+      },
+       error: (error) => {
+          this.dataLoaded = true;
+            this.ngxLoaderStop();
+        },
     });
 
+  }
+
+   getScore(jobId: any, tenant: any) {
+     this.ngxLoaderStart("hai");
+    const route = 'credits/redeem'
+   
+    const userId =   sessionStorage.getItem('userId')
+     
+    const payload = {
+      userId:userId,
+      templateName: "Applied job"
+    }
+
+    this.api.retrieve(route,payload).subscribe({
+      next: (response) => {
+        this.credits = response as any;
+        
+        if(this.credits){
+            this.checkScore(jobId,tenant);
+        }
+        else{
+          this.gs.showMessage('error','You dont have credits');
+           this.ngxLoaderStop();
+        }
+        
+      },
+      error: (error) => {
+        this.ngxLoaderStop();
+        this.gs.showMessage('error','Error in  creating Resume')
+      },
+    });
   }
 
   applyJob(jobId: any, tenant: any) {
@@ -1215,12 +1256,20 @@ export class CandidatesDetailsComponent {
   }
    
   payment(templateName:any){
-    const amount = 10 * 100;
+     const confirmedAmount = prompt("Enter final amount in ₹", "10");
 
-     this.ps.initRazorPays(() => {
+  if (confirmedAmount && !isNaN(+confirmedAmount) && +confirmedAmount > 0) {
+    const amount = +confirmedAmount * 100;  
+    const paymentType = 'Resume';
+
+    this.ps.initRazorPays(() => {
+      
     });
-    
-    this.ps.payWithRazorPay(amount,templateName);
+
+    this.ps.payWithRazorPay(amount, templateName);
+  } else {
+    alert("Invalid amount entered.");
+  }
    
   }
 
@@ -1282,6 +1331,24 @@ export class CandidatesDetailsComponent {
      
      
     
+  }
+
+  payForApplyingJOb(){
+
+     const confirmedAmount = prompt("Enter final amount in ₹", "10");
+
+  if (confirmedAmount && !isNaN(+confirmedAmount) && +confirmedAmount > 0) {
+    const amount = +confirmedAmount * 100;  
+    const paymentType = 'Resume';
+
+    this.ps.initRazorPays(() => {
+      
+    });
+
+    this.ps.payWithRazorPay(amount, "Applied Job");
+  } else {
+    alert("Invalid amount entered.");
+  }
   }
 
 }

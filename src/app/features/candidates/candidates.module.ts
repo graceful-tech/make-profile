@@ -10,8 +10,7 @@ import { PaymentOptionComponent } from './payments/payment-option/payment-option
 import { PaymentDetailsComponent } from './payments/payment-details/payment-details.component';
 import { NgxUiLoaderModule } from 'ngx-ui-loader';
 import { ViewAccountComponent } from '../users/view-account/view-account.component';
-import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
-import { CommonModule } from '@angular/common';
+ import { CommonModule } from '@angular/common';
 import { ResumeDetailsComponent } from './resume-details/resume-details.component';
 import { VerifyCandidatesComponent } from './verify-candidates/verify-candidates.component';
 import { ViewHistoryCandidatesComponent } from './view-history-candidates/view-history-candidates.component';
@@ -26,8 +25,7 @@ import { ViewHistoryCandidatesComponent } from './view-history-candidates/view-h
     ChooseTemplateComponent,
     PaymentOptionComponent,
     PaymentDetailsComponent,
-    ForgotPasswordComponent,
-    VerifyCandidatesComponent,
+     VerifyCandidatesComponent,
     ResumeDetailsComponent,
     ViewHistoryCandidatesComponent
   ],
