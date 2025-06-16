@@ -18,6 +18,7 @@ import { MobileCreateAccountComponent } from './auth-mobile/mobile-create-accoun
 import { MobileLoginComponent } from './auth-mobile/mobile-login/mobile-login.component';
 import { ViewAccountComponent } from './features/users/view-account/view-account.component';
 import { EditUserComponent } from './features/users/edit-user/edit-user.component';
+import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
 
 
 
@@ -29,7 +30,8 @@ import { EditUserComponent } from './features/users/edit-user/edit-user.componen
     MobileCreateAccountComponent,
     MobileLoginComponent,
     ViewAccountComponent,
-    EditUserComponent
+    EditUserComponent,
+    ForgotPasswordComponent
 
 
   ],

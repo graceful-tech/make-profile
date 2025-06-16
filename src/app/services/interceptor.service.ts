@@ -14,7 +14,7 @@ export class InterceptorService implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
     if (request.url.includes('/login') || request.url.includes('/google-login') || request.url.includes('/user/create') || request.url.includes('/forgot-password/users')
-    ) {
+    || request.url.includes('/forgot-password/verify-otp')  ) {
       console.log('Skipping interceptor for login request');
       return next.handle(request);
     }

@@ -9,6 +9,7 @@ import { MobileLoginComponent } from './auth-mobile/mobile-login/mobile-login.co
 import { MobileCreateAccountComponent } from './auth-mobile/mobile-create-account/mobile-create-account.component';
 import { ViewAccountComponent } from './features/users/view-account/view-account.component';
 import { EditUserComponent } from './features/users/edit-user/edit-user.component';
+import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
   
 
 const routes: Routes = [
@@ -29,7 +30,7 @@ const routes: Routes = [
 
   {path:'editUser', component: EditUserComponent},
 
-  // {path: 'Forgot-password', component: ForgotPasswordComponent },
+  {path: 'forgot-password', component: ForgotPasswordComponent },
    
 
   {
