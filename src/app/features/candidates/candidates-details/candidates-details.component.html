@@ -697,10 +697,14 @@
 
         <app-make-profile-divider></app-make-profile-divider>
         <div class="section-heading mt-3">
-          <div>Course & Certificates</div>
+          <span>Course & Certificates</span>
+          <div style="color: #313133; font-weight: bold; background-color: rgb(235, 235, 235); border-radius: 50px; padding: 5px 5px;">
+            <p-checkbox [binary]="true" formControlName="certificatesMandatory"  label="Is Mandatory"></p-checkbox>
+            </div>
         </div>
 
         <div formArrayName="certificates">
+          
           <div *ngFor="let certificate of certificateControls.controls; let i = index" [formGroupName]="i"
             class="experience-container">
 
@@ -743,7 +747,11 @@
 
         <app-make-profile-divider></app-make-profile-divider>
         <div class="section-heading mt-3">
-          <div>Achievements & Awards</div>
+          <Span>Achievements & Awards</Span>
+
+          <div style="color: #313133; font-weight: bold; background-color: rgb(235, 235, 235); border-radius: 50px; padding: 5px 5px;">
+            <p-checkbox [binary]="true" formControlName="achievementsMandatory" label="Is Mandatory"></p-checkbox>
+            </div>
         </div>
 
         <div formArrayName="achievements">
@@ -779,18 +787,32 @@
       <app-make-profile-divider></app-make-profile-divider>
 
         <div class="grid">
-          <div class="col-12 md:col-6">
+          <div class="col-12">
            <div class="field-wrapper">
-            <label>Soft Skills</label>
+            <div style="display: flex; justify-content: space-between;">
+                <Span>Soft Skills</Span>
+                <div style="color: #313133; font-weight: bold; background-color: rgb(235, 235, 235); border-radius: 50px; padding: 5px 5px;">
+                 <p-checkbox [binary]="true" formControlName="softSkillsMandatory" label="Is Mandatory"></p-checkbox>
+            </div>
+            </div>
+            
              <div class="input-wrapper">
               <p-chips separator="," formControlName="softSkills" [addOnBlur]="true" [addOnTab]="true"></p-chips>
              </div>
            </div>
           </div>
+       </div>
 
-          <div class="col-12 md:col-6">
+       <div class="grid">
+          <div class="col-12">
             <div class="field-wrapper">
-             <label>Core Competencies</label>
+               <div style="display: flex; justify-content: space-between;">
+                <Span>Core Competencies</Span>
+                <div style="color: #313133; font-weight: bold; background-color: rgb(235, 235, 235); border-radius: 50px; padding: 5px 5px;">
+                 <p-checkbox [binary]="true" formControlName="coreCompentenciesMandatory" label="Is Mandatory"></p-checkbox>
+            </div>
+            </div>
+             
               <div class="input-wrapper">
                <p-chips separator="," formControlName="coreCompentencies" [addOnBlur]="true" [addOnTab]="true"></p-chips>
               </div>

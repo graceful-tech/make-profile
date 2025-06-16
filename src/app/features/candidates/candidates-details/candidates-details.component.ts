@@ -178,6 +178,10 @@ export class CandidatesDetailsComponent {
       softSkills: [''],
       coreCompentencies: [''],
       collegeProject: this.fb.array([this.createCollegeProject()]),
+      coreCompentenciesMandatory:[''],
+      softSkillsMandatory:[''],
+      certificatesMandatory:[''],
+      achievementsMandatory:[''],
     });
   }
 
@@ -979,7 +983,11 @@ export class CandidatesDetailsComponent {
       address: candidate?.address,
       maritalStatus: candidate?.maritalStatus,
       softSkills: candidate?.softSkills,
-      coreCompentencies: candidate?.coreCompentencies
+      coreCompentencies: candidate?.coreCompentencies,
+      coreCompentenciesMandatory:candidate?.coreCompentenciesMandatory,
+      softSkillsMandatory:candidate?.softSkillsMandatory,
+      certificatesMandatory:candidate?.certificatesMandatory,
+      achievementsMandatory:candidate?.achievementsMandatory,
     });
   }
 

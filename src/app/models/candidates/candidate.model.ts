@@ -27,5 +27,9 @@ export interface Candidate {
     softSkills:any;
     coreCompentencies:any;
     resumeFormatName:any;
+    coreCompentenciesMandatory:any;
+    softSkillsMandatory:any;
+    certificatesMandatory:any;
+    achievementsMandatory:any;
 
 }

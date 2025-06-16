@@ -125,39 +125,38 @@ export class PaymentOptionComponent  {
 
      this.api.retrieve(route, payload).subscribe({
       next: (response:any) => {
-        if(response.resumePdf){
-        const base64String = response.resumePdf;
-
-        // Decode Base64 to binary string
-        const binaryString = atob(base64String);
-
-        // Convert binary string to byte array
-        const byteArray = new Uint8Array(binaryString.length);
-        for (let i = 0; i < binaryString.length; i++) {
-          byteArray[i] = binaryString.charCodeAt(i);
+            if (response.resumePdf) {
+         const base64String = response.resumePdf.trim();  
+        const byteCharacters = atob(base64String);
+        const byteNumbers = new Array(byteCharacters.length);
+        for (let i = 0; i < byteCharacters.length; i++) {
+          byteNumbers[i] = byteCharacters.charCodeAt(i);
         }
 
-        // Create blob
+        const byteArray = new Uint8Array(byteNumbers);
         const blob = new Blob([byteArray], { type: 'application/pdf' });
 
-        // Download
+        // Create a link element and trigger download
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = response.candidateName;
+        a.download = (response.candidateName || 'resume') + '.pdf';
+        document.body.appendChild(a);
         a.click();
+
+        // Clean up
+        document.body.removeChild(a);
         window.URL.revokeObjectURL(url);
 
         this.gs.showMessage('Success', 'Your resume is created successfully');
         localStorage.removeItem('resumeName');
-
-         this.ngxLoaderStop();
+        this.ngxLoaderStop();
       }
        this.ngxLoaderStop();
       },
       error: (error) => {
         this.ngxLoaderStop();
-        this.gs.showMessage('error','Error in creating Resume')
+        this.gs.showMessage('error', error.error?.message)
 
       },
 

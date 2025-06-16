@@ -17,7 +17,7 @@
                 <td>{{ candidate.mobileNumber }}</td>
                 <td>{{ candidate.email }}</td> 
                 <td colspan="1"  class="flex-start">{{ candidate.skills }}</td>
-                <td>{{ candidate.createdDate }}</td>
+               <td>{{ candidate.createdDate | date: 'dd-MM-yyyy HH:mm:ss' }}</td>
                 <td> <button type="button" class="custom-btn" (click)="restoreCandidate(candidate)">Use</button> </td>
               </tr>
             </ng-template>
