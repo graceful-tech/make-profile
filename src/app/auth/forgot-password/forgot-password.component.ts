@@ -1,11 +1,5 @@
 import { Component } from '@angular/core';
-import {
-  FormBuilder,
-  Validators,
-  FormsModule,
-  ReactiveFormsModule,
-  FormGroup,
-} from '@angular/forms';
+import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
 import { GlobalService } from 'src/app/services/global.service';
@@ -32,7 +26,7 @@ export class ForgotPasswordComponent {
     public gs: GlobalService,
     private route: ActivatedRoute,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.createForgotPasswordForm();
@@ -42,7 +36,7 @@ export class ForgotPasswordComponent {
     this.forgotPasswordForm = this.fb.group({
       email: ['', Validators.required],
       otp: [''],
-      newPassword: [''],
+      password: [''],
       confirmPassword: [''],
     });
   }
@@ -105,17 +99,16 @@ export class ForgotPasswordComponent {
           this.loadingFlag = false;
           this.otpVerified = true;
 
-          // Add validators for password fields
-          this.forgotPasswordForm.controls['newPassword'].setValidators([Validators.required]);
+          this.forgotPasswordForm.controls['password'].setValidators([Validators.required]);
           this.forgotPasswordForm.controls['confirmPassword'].setValidators([Validators.required]);
-          this.forgotPasswordForm.controls['newPassword'].updateValueAndValidity();
+          this.forgotPasswordForm.controls['password'].updateValueAndValidity();
           this.forgotPasswordForm.controls['confirmPassword'].updateValueAndValidity();
 
           this.gs.showMessage('Success', 'OTP Verified. Set your new password.');
         },
         error: (error) => {
           this.loadingFlag = false;
-          this.gs.showMessage('Error', 'Invalid OTP. Please try again.');
+          this.gs.showMessage('Error', 'Invalid OTP. Please Enter Correct Otp.');
         },
       });
     } else {
@@ -125,11 +118,11 @@ export class ForgotPasswordComponent {
   }
 
   submitNewPassword() {
-    const pwd = this.forgotPasswordForm.controls['newPassword'].value;
+    const pwd = this.forgotPasswordForm.controls['password'].value;
     const cpwd = this.forgotPasswordForm.controls['confirmPassword'].value;
 
     if (
-      this.forgotPasswordForm.controls['newPassword'].valid &&
+      this.forgotPasswordForm.controls['password'].valid &&
       this.forgotPasswordForm.controls['confirmPassword'].valid
     ) {
       if (pwd !== cpwd) {
@@ -144,10 +137,10 @@ export class ForgotPasswordComponent {
       const payload = {
         email: this.forgotPasswordForm.controls['email'].value,
         otp: this.forgotPasswordForm.controls['otp'].value,
-        newPassword: pwd,
+        password: pwd,
       };
 
-      this.api.post('forgot-password/reset-password', payload).subscribe({
+      this.api.update('forgot-password/update-password', payload).subscribe({
         next: () => {
           this.loadingFlag = false;
           this.gs.showMessage('Success', 'Password reset successfully!');

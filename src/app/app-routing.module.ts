@@ -1,4 +1,4 @@
-	import { createComponent, NgModule } from '@angular/core';
+import { createComponent, NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LandingPageMobileComponent } from './layout/landing-page-mobile/landing-page-mobile.component';
 import { LandingPageComponent } from './layout/landing-page/landing-page.component';
