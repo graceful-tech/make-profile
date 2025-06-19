@@ -6,7 +6,7 @@
     <div class="login-card">
         <div class="top-section">
             <div class="top-links">
-                <span class="create-account"><a routerLink="/mob-create">Create Account</a></span>
+                <span class="create-account"><a routerLink="/mob-login/mob-create">Create Account</a></span>
             </div>
             <div class="google-section">
                 <p class="easy-login">Easy Login</p>
@@ -48,7 +48,7 @@
                     <div class="button-row">
                         <p-button type="submit" [label]="loadingFlag ? 'Please Wait..' : 'Login'"
                             [disabled]="loadingFlag" (onClick)="login()"></p-button>
-                        <a routerLink="/request-password-reset" class="forgot-password">Forgot Password</a>
+                        <a routerLink="/mob-login/mob-forgot" class="forgot-password">Forgot Password</a>
                     </div>
 
                     <small class="error-message" *ngIf="error">{{ error }}</small>

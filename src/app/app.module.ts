@@ -14,8 +14,6 @@ import { MessageService } from 'primeng/api';
 import { LoginComponent } from './auth/login/login.component';
 import { CreateAccountComponent } from './auth/create-account/create-account.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { MobileCreateAccountComponent } from './auth-mobile/mobile-create-account/mobile-create-account.component';
-import { MobileLoginComponent } from './auth-mobile/mobile-login/mobile-login.component';
 import { ViewAccountComponent } from './features/users/view-account/view-account.component';
 import { EditUserComponent } from './features/users/edit-user/edit-user.component';
 import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
@@ -27,12 +25,11 @@ import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.
     AppComponent,
     LoginComponent,
     CreateAccountComponent,
-    MobileCreateAccountComponent,
-    MobileLoginComponent,
     ViewAccountComponent,
     EditUserComponent,
     ForgotPasswordComponent
-
+   
+    
 
   ],
   imports: [

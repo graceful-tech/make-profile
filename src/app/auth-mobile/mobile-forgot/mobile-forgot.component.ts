@@ -1,18 +1,16 @@
 import { Component } from '@angular/core';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
 import { GlobalService } from 'src/app/services/global.service';
-import { ButtonModule } from 'primeng/button';
-import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-forgot-password',
+  selector: 'app-mobile-forgot',
   standalone: false,
-  templateUrl: './forgot-password.component.html',
-  styleUrl: './forgot-password.component.css',
+  templateUrl: './mobile-forgot.component.html',
+  styleUrl: './mobile-forgot.component.css'
 })
-export class ForgotPasswordComponent {
+export class MobileForgotComponent {
   loadingFlag = false;
   flag = false;
   showError = false;
@@ -59,61 +57,66 @@ export class ForgotPasswordComponent {
     if (this.forgotPasswordForm.valid) {
       this.flag = true;
 
+      const email = this.forgotPasswordForm.controls['email'].value;
+
       const route = `forgot-password/users`;
+
       const payload = this.forgotPasswordForm.value;
 
       this.api.retrieve(route, payload).subscribe({
         next: (response) => {
+          this.loadingFlag = false;
+          this.otpRequested = true;
           this.values = response;
           this.otp = this.values.otp;
           this.expiryDate = this.values.expiryDate;
-          this.flag = false;
-          this.otpRequested = true;
 
           this.forgotPasswordForm.controls['otp'];
           this.forgotPasswordForm.controls['otp'].updateValueAndValidity();
-
-          this.gs.showMessage('Success', 'OTP sent to your email.');
+          window.alert('OTP sent to your email');
         },
         error: (error) => {
           this.loadingFlag = false;
-          this.gs.showMessage('Error', 'Please enter the correct email id');
+          window.alert('Please enter the correct email id');
         },
       });
     } else {
       this.showError = true;
-      this.gs.showMessage('Error', 'Please enter the email id');
+      window.alert('Please enter the email id');
     }
+
   }
 
   sendPasswordResetEmail() {
     if (this.forgotPasswordForm.valid) {
       this.loadingFlag = true;
 
+      const email = this.forgotPasswordForm.controls['email'].value;
+
       const route = `forgot-password/users`;
+
       const payload = this.forgotPasswordForm.value;
 
       this.api.retrieve(route, payload).subscribe({
         next: (response) => {
+          this.loadingFlag = false;
+          this.otpRequested = true;
           this.values = response;
           this.otp = this.values.otp;
           this.expiryDate = this.values.expiryDate;
-          this.loadingFlag = false;
-          this.otpRequested = true;
 
           this.forgotPasswordForm.controls['otp'];
           this.forgotPasswordForm.controls['otp'].updateValueAndValidity();
-
-          this.gs.showMessage('Success', 'OTP sent to your email.');
+          window.alert('OTP sent to your email');
         },
         error: (error) => {
           this.loadingFlag = false;
-          this.gs.showMessage('Error', 'Please enter the correct email id');
+          window.alert('Please enter the correct email id');
         },
       });
     } else {
       this.showError = true;
-      this.gs.showMessage('Error', 'Please enter the email id');
+      window.alert('Please enter the email id');
     }
   }
 
@@ -122,16 +125,13 @@ export class ForgotPasswordComponent {
     if (verifyOtp === this.otp) {
       if (new Date(this.expiryDate) < new Date()) {
         this.forgotPasswordForm.controls['otp'].reset('');
-        this.gs.showMessage('Error', 'Your OTP has expired. Please generate a new one.')
+        window.alert('Your OTP has expired. Please generate a new one.');
       }
       if (this.forgotPasswordForm.valid) {
         this.loadingFlag = true;
         const route = `forgot-password/verify-otp`;
-        // const payload = this.forgotPasswordForm.value;
-        const payload = {
-          email: this.forgotPasswordForm.controls['email'].value,
-          otp: this.forgotPasswordForm.controls['otp'].value,
-        };
+        const payload = this.forgotPasswordForm.value;
+
         this.api.retrieve(route, payload).subscribe({
           next: (response) => {
             this.loadingFlag = false;
@@ -141,19 +141,17 @@ export class ForgotPasswordComponent {
             this.forgotPasswordForm.controls['confirmPassword'].setValidators([Validators.required]);
             this.forgotPasswordForm.controls['password'].updateValueAndValidity();
             this.forgotPasswordForm.controls['confirmPassword'].updateValueAndValidity();
-
-            this.gs.showMessage('Success', 'OTP Verified. Set your new password.');
+            window.alert('OTP Verified.Set your new password');
           },
           error: (error) => {
             this.loadingFlag = false;
-            this.gs.showMessage('Error', 'Invalid OTP. Please Enter Correct Otp.');
+            // window.alert('Invalid OTP. Please Enter Correct Otp.');
           },
         });
       }
-    }
-    else {
+    } else {
       this.showError = true;
-      this.gs.showMessage('Error', 'Invalid OTP. Please Enter Correct Otp.');
+      window.alert('Invalid OTP. Please Enter Correct Otp.');
     }
   }
 
@@ -167,7 +165,7 @@ export class ForgotPasswordComponent {
     ) {
       if (pwd !== cpwd) {
         this.passwordMismatch = true;
-        this.gs.showMessage('Error', 'Passwords do not match.');
+        window.alert('Passwords do not match.');
         return;
       }
 
@@ -183,21 +181,21 @@ export class ForgotPasswordComponent {
       this.api.update('forgot-password/update-password', payload).subscribe({
         next: () => {
           this.loadingFlag = false;
-          this.gs.showMessage('Success', 'Password reset successfully!');
-          this.router.navigate(['/login']);
+          window.alert('Password reset successfully!');
+          this.router.navigate(['/mob-login']);
         },
         error: () => {
           this.loadingFlag = false;
-          this.gs.showMessage('Error', 'Failed to reset password.');
+          window.alert('Failed to reset password.');
         },
       });
     } else {
       this.showError = true;
-      this.gs.showMessage('Error', 'Please fill all password fields.');
+      window.alert('Please fill all password fields.');
     }
   }
 
   login() {
-    this.router.navigate(['login']);
+    this.router.navigate(['mob-login']);
   }
 }
