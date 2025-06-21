@@ -352,96 +352,6 @@ img {
   font-weight: 500;
 }
 
-@media screen and (max-width: 768px) {
-
-  .header-image {
-    position: relative;
-    top: 0;
-    left: 0;
-    /* width: 100%; */
-    background: #fff;
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    /* justify-content: space-between; */
-    /* padding: 10px 10px; */
-
-  }
-
-  .header-images {
-    width: 100px;
-    height: auto;
-
-  }
-
-  .right-align {
-    margin-left: auto;
-    padding: 8px;
-  }
-
-  .wrapper {
-    display: flex;
-    flex-direction: column;
-    position: relative;
-  }
-
-  .left-section {
-    max-width: 100%;
-    flex: none;
-  }
-
-
-  .right-section {
-    max-width: 100%;
-    flex: none;
-
-  }
-
-  .right-section {
-    margin-top: auto;
-  }
-
-  .mobile {
-    display: flex;
-    border-collapse: collapse;
-    width: 100%;
-  }
-
-  .applied-jobs {
-    display: flex;
-    border-collapse: collapse;
-    width: 10%
-  }
-
-  .styled-text {
-    padding-left: 10px;
-    display: flex;
-    margin-top: 20px;
-  }
-
-  .custom-btn:hover {
-    background-color: #3716dc;
-    padding-right: 50px;
-  }
-
-  .header-middle {
-    color: #000;
-    padding-left: 0rem;
-  }
-
-  .header-button {
-    padding-left: 0rem;
-  }
-
-  .icon {
-    font-size: 50px;
-    color: #007bff;
-    cursor: pointer;
-    padding-left: 0px;
-  }
-
-}
-
 .resume-btn {
   background-color: #1f883d;
   ;
@@ -496,46 +406,9 @@ img {
 
 }
 
-@keyframes spin {
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes dots {
-  0% {
-    content: "";
-  }
-
-  33% {
-    content: ".";
-  }
-
-  66% {
-    content: "..";
-  }
-
-  100% {
-    content: "...";
-  }
-}
-
-.loader-text .dots {
-  display: inline-block;
-  width: 1.5em;
-  text-align: left;
-}
-
-.loader-text .dots::after {
-  content: "";
-  animation: dots 1.5s steps(3, end) infinite;
-}
-
 .profile-wrapper {
   margin-top: 40px;
 }
-
- 
 
 .account-wrapper {
   position: relative;
@@ -695,4 +568,68 @@ img {
 
 .applied-job-button:hover {
   color: #0056b3;
+}
+
+
+/* Full-screen overlay with blur */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  backdrop-filter: blur(6px);
+  background-color: rgba(255, 255, 255, 0.4);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+ 
+.spinner-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.blurred {
+  filter: blur(4px);
+  pointer-events: none;
+  user-select: none;
+  transition: filter 0.3s ease;
+}
+
+.loading-text {
+  font-size: 24px;
+  font-weight: bold;
+  color: #0a0a0a;  
+  margin-top: 12px;
+  
+}
+
+ 
+.dot {
+   font-size: 34px;
+  opacity: 0;
+  animation: blink 1.5s infinite;
+}
+
+.dot1 {
+  animation-delay: 0s;
+ }
+.dot2 {
+  animation-delay: 0.2s;
+}
+.dot3 {
+  animation-delay: 0.4s;
+}
+
+@keyframes blink {
+  0%, 80%, 100% {
+    opacity: 0;
+  }
+  40% {
+    opacity: 1;
+  }
 }

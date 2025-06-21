@@ -78,6 +78,8 @@ export class CreateCandidatesComponent {
   achievements:boolean = true;
   extraSkills:boolean = true
   qualification:boolean= true;
+  isUploading: boolean = false;
+
 
   constructor(
     private api: ApiService,
@@ -153,6 +155,8 @@ export class CreateCandidatesComponent {
       softSkillsMandatory:[''],
       certificatesMandatory:[''],
       achievementsMandatory:[''],
+      summary:[''],
+      careerObjective:['']
 
     });
   }
@@ -782,6 +786,8 @@ export class CreateCandidatesComponent {
         softSkillsMandatory:candidate?.softSkillsMandatory,
         certificatesMandatory:candidate?.certificatesMandatory,
         achievementsMandatory:candidate?.achievementsMandatory,
+        summary:candidate?.summary,
+        careerObjective:candidate?.careerObjective
       });
     }
   
@@ -963,6 +969,48 @@ export class CreateCandidatesComponent {
   
     }
  
+    getResumeContent(content:any){
+      
+      this.ngxLoaderStart();
+
+       const route =`content/openai?content=${content}`
+  
+      this.api.get(route).subscribe({
+        next: (response) =>{
+
+          if(response){
+            const responseContent = response as any;
+            if(content === 'Summary'){
+               this.candidateForm.get('summary')?.setValue(responseContent?.resumeContent);
+
+               this.ngxLoaderStop();
+            }
+            else{
+               this.candidateForm.get('careerObjective')?.setValue(responseContent?.resumeContent);
+
+                this.ngxLoaderStop();
+            }
+          }
+          
+        },
+        error: (error) => {
+        this.dataLoaded = true;
+        this.gs.showMessage('Error', 'Please try after some time');
+
+        console.log(error);
+      },
+      });
+    }
+
+     ngxLoaderStop() {
+     setTimeout(() => {
+      this.isUploading = false;
+    }, 2000);
+  }
+
+  ngxLoaderStart() {
+    this.isUploading = true;
+   }
     
 
   }

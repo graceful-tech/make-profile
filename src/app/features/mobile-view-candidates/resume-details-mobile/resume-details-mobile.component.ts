@@ -384,6 +384,14 @@ export class ResumeDetailsMobileComponent {
       payload.collegeProject = [];
     }
     
+      payload.coreCompentenciesMandatory =  this.candidates?.coreCompentenciesMandatory !== null ? this.candidates?.coreCompentenciesMandatory: false;
+
+    payload.softSkillsMandatory =  this.candidates?.softSkillsMandatory !== null ? this.candidates?.softSkillsMandatory: false;
+
+    payload.certificatesMandatory =  this.candidates?.certificatesMandatory !== null ? this.candidates?.certificatesMandatory: false;
+
+    payload.achievementsMandatory =  this.candidates?.achievementsMandatory !== null ? this.candidates?.achievementsMandatory: false;
+
 
 
     this.api.retrieve(route, payload).subscribe({
@@ -402,19 +410,18 @@ export class ResumeDetailsMobileComponent {
        
         this.close(this.returnCandidate);
 
-        this.gs.showMessage('Success','Created Successfully')
-     
+     window.alert('Candidate Created Successfully');
       },
       error: (error) => {
         this.dataLoaded = true;
-         this.gs.showMessage('error','Error in Creating Resume ')
+         window.alert('Error in Creating Resume ')
       },
     });
     this.dataLoaded = true;
 
     }
     else{
-      this.gs.showMessage('error','Please fill the mandatory fields');
+     window.alert('Please fill the mandatory fields');
       this.showError = true;
     }
   }
@@ -768,7 +775,13 @@ export class ResumeDetailsMobileComponent {
         address: candidate?.address,
         maritalStatus: candidate?.maritalStatus,
         softSkills:candidate?.softSkills ? candidate?.softSkills :[],
-        coreCompentencies:candidate?.coreCompentencies ? candidate?.coreCompentencies :[]
+        coreCompentencies:candidate?.coreCompentencies ? candidate?.coreCompentencies :[],
+        summary:candidate?.summary,
+        careerObjective:candidate?.careerObjective,
+         coreCompentenciesMandatory:candidate?.coreCompentenciesMandatory,
+        softSkillsMandatory:candidate?.softSkillsMandatory,
+        certificatesMandatory:candidate?.certificatesMandatory,
+        achievementsMandatory:candidate?.achievementsMandatory,
       });
     }
 

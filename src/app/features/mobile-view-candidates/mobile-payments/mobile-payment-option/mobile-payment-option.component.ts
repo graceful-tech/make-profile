@@ -91,8 +91,11 @@ export class MobilePaymentOptionComponent {
       next: (response) => {
         this.credits = response as any;
         if( this.credits){
-          
-          this.createResume();
+          this.gs.setResumeName(this.templateName);
+          this.gs.setCandidateDetails(this.candidates);
+          // this.createResume();
+          this.router.navigate(['/mob-candidate/final-verify']);
+
         }
         else{
           this.ngxLoaderStop();
@@ -178,7 +181,7 @@ export class MobilePaymentOptionComponent {
   }
 
   ngxLoaderStop(){
-    this.ngxLoader.stop();  
+    // this.ngxLoader.stop();  
     setTimeout(() => {
       this.isUploading = false;
     }, 2000);
@@ -186,7 +189,7 @@ export class MobilePaymentOptionComponent {
 
   ngxLoaderStart(){
       this.isUploading = true;
-      this.ngxLoader.start();
+      // this.ngxLoader.start();
    }
 
    getCandidates() {
@@ -217,6 +220,33 @@ export class MobilePaymentOptionComponent {
         const balance = response
       },
     });
+  }
+
+
+  goToOpenAi(){
+
+      this.isUploading = true
+
+    const route = 'resume/get-content';
+    const payload = {...this.candidates};
+
+     this.api.retrieve(route, payload).subscribe({
+      next: (response:any) => {
+
+        if(response){
+        const responseCandidate =  response as Candidate;
+           this.isUploading = false
+        }
+              this.isUploading = false
+      },
+      error: (error) => {
+          this.isUploading = false
+        this.gs.showMessage('error', error.error?.message)
+
+      },
+
+    });
+    
   }
   
 

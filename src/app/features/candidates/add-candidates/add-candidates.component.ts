@@ -823,6 +823,8 @@ export class AddCandidatesComponent {
          softSkillsMandatory:candidate?.softSkillsMandatory,
          certificatesMandatory:candidate?.certificatesMandatory,
          achievementsMandatory:candidate?.achievementsMandatory,
+         summary:candidate?.summary,
+         careerObjective:candidate?.careerObjective
        });
      }
    

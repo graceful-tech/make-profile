@@ -980,8 +980,8 @@ table::-webkit-scrollbar-thumb {
     
 @media (max-width: 740px) {
     .p-dialog.p-dynamic-dialog.p-component {
-      width: 90% !important;
-      height: 70% !important;
+      width: 70% !important;
+      height: 25% !important;
       z-index: 1102 !important;
     }
 
@@ -1045,4 +1045,13 @@ table::-webkit-scrollbar-thumb {
     align-items: center;
     justify-content: space-between;
     margin-bottom: 1rem;
+}
+
+.custom-blue circle {
+   stroke: #2196f3 !important;
+}
+
+.p-dialog-mobile-content {
+    overflow-x: hidden;
+    padding: 40px;
 }

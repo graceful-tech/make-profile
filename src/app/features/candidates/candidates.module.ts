@@ -14,6 +14,7 @@ import { ViewAccountComponent } from '../users/view-account/view-account.compone
 import { ResumeDetailsComponent } from './resume-details/resume-details.component';
 import { VerifyCandidatesComponent } from './verify-candidates/verify-candidates.component';
 import { ViewHistoryCandidatesComponent } from './view-history-candidates/view-history-candidates.component';
+import { ResumeCreatingComponent } from './resume-creating/resume-creating.component';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { ViewHistoryCandidatesComponent } from './view-history-candidates/view-h
     PaymentDetailsComponent,
      VerifyCandidatesComponent,
     ResumeDetailsComponent,
-    ViewHistoryCandidatesComponent
+    ViewHistoryCandidatesComponent,
+    ResumeCreatingComponent
   ],
   imports: [
     CommonModule,

@@ -14,6 +14,7 @@ import { ApiService } from 'src/app/services/api.service';
 import { GlobalService } from 'src/app/services/global.service';
 
 import { PaymentService } from 'src/app/services/payment.service';
+import { ResumeCreatingComponent } from '../../resume-creating/resume-creating.component';
 
 @Component({
   selector: 'app-payment-option',
@@ -32,6 +33,7 @@ export class PaymentOptionComponent  {
   templateName:any;
   planetImagePath:any;
   availableCredits:any;
+  generating:boolean=false;
   
 
   constructor(
@@ -102,13 +104,14 @@ export class PaymentOptionComponent  {
         this.credits = response as any;
         
         if(this.credits){
-            this.createResume();
+          this.ngxLoaderStop();
+            // this.createResume();
+            this.goToOpenAi();
         }
         else{
           this.gs.showMessage('error','You dont have credits');
            this.ngxLoaderStop();
         }
-        
       },
       error: (error) => {
         this.ngxLoaderStop();
@@ -118,7 +121,7 @@ export class PaymentOptionComponent  {
   }
 
   createResume() {
-    this.ngxLoaderStart()
+    this.generating = true
 
     const route = 'resume/create';
     const payload = {...this.candidates, templateName: this.templateName};
@@ -164,7 +167,7 @@ export class PaymentOptionComponent  {
   }
 
   ngxLoaderStop(){
-    this.ngxLoader.stop();  
+    
     setTimeout(() => {
       this.isUploading = false;
     }, 2000);
@@ -172,7 +175,7 @@ export class PaymentOptionComponent  {
 
   ngxLoaderStart(){
       this.isUploading = true;
-      this.ngxLoader.start();
+     
    }
 
    getAvailableCredits(templateName:any,userId:any) {
@@ -186,6 +189,56 @@ export class PaymentOptionComponent  {
       },
     });
   }
+
+
+  goToOpenAi(){
+
+      this.generating = true
+
+    const route = 'resume/get-content';
+    const payload = {...this.candidates};
+
+     this.api.retrieve(route, payload).subscribe({
+      next: (response:any) => {
+
+        if(response){
+        const responseCandidate =  response as Candidate;
+        this.openCreateResumeDialog(responseCandidate,this.templateName);
+          this.generating = false
+        }
+              this.generating = false
+      },
+      error: (error) => {
+          this.generating = false
+        this.gs.showMessage('error', error.error?.message)
+
+      },
+
+    });
+    
+  }
+
+  openCreateResumeDialog(candidate:any,templateName:any) {
+      this.ref.close();
+      const ref = this.dialog.open(ResumeCreatingComponent, {
+        data: {
+          candidates: candidate,
+          templateName: templateName
+        },
+        closable: true,
+        width: '80%',
+        height: '90%',
+       
+        header: 'Kindly check your summary, objective, and the information below for any spelling errors.',
+      });
+  
+      // ref.onClose.subscribe(response => {
+      //   if (response) {
+      //     this.candidateImageUrl = response.candidateLogo;
+      //     console.log(this.candidateImageUrl)
+      //   }
+      // });
+    }
   
 
 }

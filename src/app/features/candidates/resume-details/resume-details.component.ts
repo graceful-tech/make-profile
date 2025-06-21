@@ -60,8 +60,7 @@ export class ResumeDetailsComponent {
   fieldOfStudy: any;
   inputBgColor = 'lightblue';
   candidates: any;
-  isDeleted:boolean = false;
-  payments: boolean = false;
+   payments: boolean = false;
   candidatesDetails: Array<Candidate> = [];
   experienceDeletedArray:Array<any> = [];
   qualificationDeletedArray:Array<any> = [];
@@ -477,8 +476,7 @@ export class ResumeDetailsComponent {
       const removedExperience = this.experienceControls.at(index).value;
       console.log('Removed Experience:', removedExperience);
       if (removedExperience.id) {
-        removedExperience.isDeleted = true; 
-       this.experienceDeletedArray.push(removedExperience);
+        this.experienceDeletedArray.push(removedExperience);
        this.experienceControls.removeAt(index);
       } else {
         this.experienceControls.removeAt(index);
@@ -517,8 +515,7 @@ export class ResumeDetailsComponent {
       const removedProject = projectArray.at(projectIndex).value;
 
       if (removedProject.id) {
-        removedProject.isDeleted = true;
-        const experienceGroup = this.experienceControls.at(experienceIndex);
+         const experienceGroup = this.experienceControls.at(experienceIndex);
         const projectsControl = experienceGroup.get('projects') as FormArray;
         projectsControl.at(projectIndex).patchValue(removedProject);
       }
@@ -556,8 +553,7 @@ export class ResumeDetailsComponent {
     if (confirmDelete && this.qualificationControls.length > 1) {
       const removedQualification = this.qualificationControls.at(index).value;
        if (removedQualification.id) {
-        removedQualification.isDeleted = true; 
-          this.qualificationDeletedArray.push(removedQualification);
+           this.qualificationDeletedArray.push(removedQualification);
           this.qualificationControls.removeAt(index);
       } else {
         this.qualificationControls.removeAt(index);
@@ -589,8 +585,7 @@ export class ResumeDetailsComponent {
     if (confirmDelete && this.certificateControls.length > 1) {
     const removedCertificate = this.certificateControls.at(index).value;
        if (removedCertificate.id) {
-          removedCertificate.isDeleted = true; 
-          this.certificatesDeletedArray.push(removedCertificate);
+           this.certificatesDeletedArray.push(removedCertificate);
           this.certificateControls.removeAt(index);
       } else {
         this.certificateControls.removeAt(index);
@@ -625,8 +620,7 @@ export class ResumeDetailsComponent {
     if (confirmDelete && this.achievementsControls.length > 1) {
       const removedAchievement = this.achievementsControls.at(index).value;
        if (removedAchievement.id) {
-        removedAchievement.isDeleted =true;
-        this.achievementsDeletedArray.push(removedAchievement);
+         this.achievementsDeletedArray.push(removedAchievement);
         this.achievementsControls.removeAt(index);
        } else {
         this.achievementsControls.removeAt(index);
@@ -784,6 +778,8 @@ export class ResumeDetailsComponent {
         softSkillsMandatory:candidate?.softSkillsMandatory,
         certificatesMandatory:candidate?.certificatesMandatory,
         achievementsMandatory:candidate?.achievementsMandatory,
+        summary:candidate?.summary,
+        careerObjective:candidate?.careerObjective
       });
     }
 
@@ -794,7 +790,6 @@ export class ResumeDetailsComponent {
         courseName: certificate.courseName,
         courseStartDate: certificate.courseStartDate ? new Date(certificate.courseStartDate) : null,
         courseEndDate: certificate.courseEndDate ? new Date(certificate.courseEndDate) : null,
-        isDeleted:['']
       });
     }
   
@@ -909,8 +904,7 @@ export class ResumeDetailsComponent {
     if (confirmDelete && this.collegeProjectControls.length > 1) {
       const removeCollegeProject = this.collegeProjectControls.at(index).value;
        if (removeCollegeProject.id) {
-        removeCollegeProject.isDeleted =true;
-         this.collegeProjectDeletedArray.push(removeCollegeProject);
+          this.collegeProjectDeletedArray.push(removeCollegeProject);
          this.collegeProjectControls.removeAt(index);
        } else {
         this.collegeProjectControls.removeAt(index);

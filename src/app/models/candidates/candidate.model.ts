@@ -31,5 +31,8 @@ export interface Candidate {
     softSkillsMandatory:any;
     certificatesMandatory:any;
     achievementsMandatory:any;
+    summary:any;
+    careerObjective:any;
+
 
 }

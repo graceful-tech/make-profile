@@ -1,4 +1,4 @@
-
+<!-- 
   <span *ngIf="isUploading">
     <ngx-ui-loader
     fgsColor="#1E90FF"
@@ -9,7 +9,18 @@
     overlayColor="rgba(128, 128, 128, 0.8)">
     
 </ngx-ui-loader>
-</span>
+</span> -->
+
+<div class="overlay"  *ngIf="isUploading">
+  <div class="spinner-container">
+    <mat-spinner [diameter]="80" strokeWidth="5"   class="custom-blue" ></mat-spinner>
+    <p class="loading-text">
+  Uploading Resume<span class="dot dot1">.</span><span class="dot dot2">.</span><span class="dot dot3">.</span>
+</p>
+  </div>
+</div>
+
+
 
 
 <!-- <div class="header-image">
@@ -722,6 +733,10 @@
                   <div class="section-heading mt-3">
                     <div>Course & Certificates</div>
                   </div>
+
+                  <div style="color: #313133; font-weight: bold;  padding: 5px; text-align: right;">
+                   <p-checkbox [binary]="true" formControlName="certificatesMandatory" label="Is Mandatory"></p-checkbox>
+                 </div>
             
                   <div formArrayName="certificates">
                     <div *ngFor="let certificate of certificateControls.controls; let i = index" [formGroupName]="i" class="experience-container">
@@ -764,6 +779,12 @@
                   <div class="section-heading mt-3">
                     <div>Achievements & Awards</div>
                   </div>
+
+                  <div style="color: #313133; font-weight: bold;  padding: 5px; text-align: right;">
+                   <p-checkbox [binary]="true" formControlName="achievementsMandatory" label="Is Mandatory"></p-checkbox>
+                 </div>
+            
+
             
                   <div formArrayName="achievements">
                      <div *ngFor="let certificate of achievementsControls.controls; let i = index" [formGroupName]="i" class="experience-container">
@@ -793,10 +814,17 @@
 
                   <app-make-profile-divider></app-make-profile-divider>
   
-              <div class="grid">
+              
+                
+                
+
                 <div class="col-12 md:col-6">
                  <div class="field-wrapper">
-                  <label>Soft Skills</label>
+                 
+                   <div style="display: flex; justify-content: space-between;">
+                     <label>Soft Skills</label>
+                   <p-checkbox [binary]="true" formControlName="softSkillsMandatory" label="Is Mandatory"></p-checkbox>
+                 </div>
                    <div class="input-wrapper">
                     <p-chips separator="," formControlName="softSkills" [addOnBlur]="true" [addOnTab]="true" inputId="softInput"></p-chips>
                     <p-button type="button" (onClick)="addSkill('softSkills','softInput')">Add</p-button>
@@ -804,17 +832,23 @@
                    </div>
                  </div>
                 </div>
+
+                 
   
                 <div class="col-12 md:col-6">
                   <div class="field-wrapper">
+                     <div style="display: flex; justify-content: space-between;">
                    <label>Core Competencies</label>
+                    <p-checkbox [binary]="true" formControlName="coreCompentenciesMandatory" label="Is Mandatory"></p-checkbox>
+                  
+                     </div>
                     <div class="input-wrapper">
                      <p-chips separator="," formControlName="coreCompentencies" [addOnBlur]="true" [addOnTab]="true" inputId="compentenciesInput"></p-chips>
                      <p-button type="button" (onClick)="addSkill('coreCompentencies','compentenciesInput')">Add</p-button>
                     </div>
                   </div>
                  </div>
-                </div>
+               
                 
                </form>
       

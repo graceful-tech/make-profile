@@ -75,6 +75,7 @@ export class MobileCandidatesDetailsComponent {
   user: any;
   totalCreditsAvailable: number = 0;
   credits: any;
+  gettingContent: boolean=false;
 
 
   constructor(
@@ -118,7 +119,8 @@ export class MobileCandidatesDetailsComponent {
     this.getAvailableCredits();
     this.toggleAccountMenu();
      this.getCandidates();
-  
+
+   
   }
 
 
@@ -150,6 +152,12 @@ export class MobileCandidatesDetailsComponent {
       softSkills: [''],
       coreCompentencies: [''],
       collegeProject: this.fb.array([this.createCollegeProject()]),
+      coreCompentenciesMandatory:[''],
+      softSkillsMandatory:[''],
+      achievementsMandatory:[''],
+      certificatesMandatory:[''],
+      summary:[''],
+      careerObjective:['']
     });
   }
 
@@ -383,6 +391,10 @@ export class MobileCandidatesDetailsComponent {
     } else {
       payload.collegeProject = [];
     }
+
+      
+
+
 
 
     this.api.retrieve(route, payload).subscribe({
@@ -706,7 +718,7 @@ export class MobileCandidatesDetailsComponent {
       },
       error: (error) => {
         this.ngxLoaderStop();
-        this.gs.showMessage('error','Error in  matching job')
+        window.alert('Error in  matching job')
       },
     });
   }
@@ -929,6 +941,12 @@ export class MobileCandidatesDetailsComponent {
       maritalStatus: candidate?.maritalStatus,
       softSkills: candidate?.softSkills,
       coreCompentencies: candidate?.coreCompentencies,
+      summary:candidate?.summary,
+      coreCompentenciesMandatory:candidate?.coreCompentenciesMandatory,
+      softSkillsMandatory:candidate?.softSkillsMandatory,
+      certificatesMandatory:candidate?.certificatesMandatory,
+      achievementsMandatory:candidate?.achievementsMandatory,
+      careerObjective:candidate?.careerObjective
     });
   }
 
@@ -1178,7 +1196,7 @@ export class MobileCandidatesDetailsComponent {
   }
 
   ngxLoaderStop() {
-    this.ngxLoader.stop();
+    // this.ngxLoader.stop();
     setTimeout(() => {
       this.isUploading = false;
     }, 2000);
@@ -1186,7 +1204,7 @@ export class MobileCandidatesDetailsComponent {
 
   ngxLoaderStart() {
     this.isUploading = true;
-    this.ngxLoader.start();
+    // this.ngxLoader.start();
   }
 
   signOut() {

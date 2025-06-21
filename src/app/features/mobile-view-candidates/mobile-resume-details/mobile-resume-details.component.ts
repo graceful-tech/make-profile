@@ -386,6 +386,14 @@ export class MobileResumeDetailsComponent {
       payload.collegeProject = [];
     }
     
+       payload.coreCompentenciesMandatory =  this.candidates?.coreCompentenciesMandatory !== null ? this.candidates?.coreCompentenciesMandatory: false;
+
+    payload.softSkillsMandatory =  this.candidates?.softSkillsMandatory !== null ? this.candidates?.softSkillsMandatory: false;
+
+    payload.certificatesMandatory =  this.candidates?.certificatesMandatory !== null ? this.candidates?.certificatesMandatory: false;
+
+    payload.achievementsMandatory =  this.candidates?.achievementsMandatory !== null ? this.candidates?.achievementsMandatory: false;
+
 
 
     this.api.retrieve(route, payload).subscribe({
@@ -768,7 +776,13 @@ export class MobileResumeDetailsComponent {
         address: candidate?.address,
         maritalStatus: candidate?.maritalStatus,
         softSkills:candidate?.softSkills ? candidate?.softSkills :[],
-        coreCompentencies:candidate?.coreCompentencies ? candidate?.coreCompentencies :[]
+        coreCompentencies:candidate?.coreCompentencies ? candidate?.coreCompentencies :[],
+        summary:candidate?.summary,
+        coreCompentenciesMandatory:candidate?.coreCompentenciesMandatory,
+        softSkillsMandatory:candidate?.softSkillsMandatory,
+        certificatesMandatory:candidate?.certificatesMandatory,
+        achievementsMandatory:candidate?.achievementsMandatory,
+        careerObjective:candidate?.careerObjective
       });
     }
 

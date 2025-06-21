@@ -1,4 +1,4 @@
- 
+<!--  
 <div *ngIf="isUploading" class="custom-loader-backdrop">
     <div class="custom-loader-container">
       <div class="dotted-spinner"></div>
@@ -6,7 +6,25 @@
         Please Wait&nbsp;<span class="dots"></span>
       </div>
     </div>
+  </div> -->
+
+  <div class="overlay"  *ngIf="isUploading">
+  <div class="spinner-container">
+    <mat-spinner [diameter]="80" strokeWidth="5"   class="custom-blue" ></mat-spinner>
+    <p class="loading-text">
+     Payment Processing<span class="dot dot1">.</span><span class="dot dot2">.</span><span class="dot dot3">.</span>
+</p>
   </div>
+</div>
+
+<div class="overlay"  *ngIf="generating">
+  <div class="spinner-container">
+    <mat-spinner [diameter]="80" strokeWidth="5"   class="custom-blue" ></mat-spinner>
+    <p class="loading-text">
+     Generating Resume<span class="dot dot1">.</span><span class="dot dot2">.</span><span class="dot dot3">.</span>
+</p>
+  </div>
+</div>
    
 
 

@@ -1,4 +1,4 @@
-import {ChangeDetectorRef,Component} from '@angular/core';
+import {ChangeDetectorRef,Component, ElementRef, ViewChild} from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
@@ -18,13 +18,15 @@ import { DatePipe } from '@angular/common';
 import { PaymentOptionComponent } from '../../candidates/payments/payment-option/payment-option.component';
 
 @Component({
-  selector: 'app-mobile-edit-candidates',
+  selector: 'app-final-verify',
   standalone: false,
-  templateUrl: './mobile-edit-candidates.component.html',
-  styleUrl: './mobile-edit-candidates.component.css'
+  templateUrl: './final-verify.component.html',
+  styleUrl: './final-verify.component.css'
 })
-export class MobileEditCandidatesComponent {
-candidateForm!: FormGroup;
+export class FinalVerifyComponent {
+ @ViewChild('chipInput', { static: false }) chipInputRef!: ElementRef;
+
+  candidateForm!: FormGroup;
   genderList: Array<ValueSet> = [];
   languages: Array<ValueSet> = [];
   noticePeriodList: Array<ValueSet> = [];
@@ -63,7 +65,11 @@ candidateForm!: FormGroup;
   imageName: any;
   returnImage:any;
   candidatesUpdateData: any;
-  resumeName:any;
+  skill: Array<any> = [];
+  templateName: any;
+  isUploading:boolean = false;
+  certificateEmptyFields: boolean = false;
+  achievementsEmptyFields :boolean = false;
 
   constructor(
     private api: ApiService,
@@ -79,7 +85,15 @@ candidateForm!: FormGroup;
     private ps: PaymentService,
   ) 
   {
-   
+     this.gs.resumeName$.subscribe(response =>{
+      this.templateName = response
+    })
+
+    
+    this.gs.candidateDetails$.subscribe(response => {
+      this.candidatesUpdateData = response;
+    });  
+    
   }
 
   ngOnInit() {
@@ -89,36 +103,26 @@ candidateForm!: FormGroup;
     this.getLanguages();
     this.getMaritalStatus();
     this.getFieldOfStudy();
+    
+    if(this.templateName === null || this.templateName === undefined){
+      this.templateName = localStorage.getItem('templateName')
+    }
 
-    this.gs.resumeName$.subscribe(response =>{
-        if(response !== null){
-        this.resumeName = response
-        }
-      })
-     
-    // if(this.candidatesUpdateData !== null && this.candidatesUpdateData !== undefined){
-    //    this.candidateId = this.candidatesUpdateData?.id;
-    //   this.candidates = this.candidatesUpdateData;
+   
+    if(this.candidatesUpdateData !== null && this.candidatesUpdateData !== undefined){
+       this.candidateId = this.candidatesUpdateData?.id;
+      this.candidates = this.candidatesUpdateData;
+
+       this.goToOpenAi();
       
-    //   const candidateClone = JSON.parse(JSON.stringify(this.candidatesUpdateData)); 
-    //   this.patchCandidateForm(candidateClone);
-
-    //   this.gs.candidateImage$.subscribe(response =>{
-    //     if(response !== null){
-    //     this.candidateImageUrl = response
-    //     }
-    //   })
-    // }
-    //   else{
+      // const candidateClone = JSON.parse(JSON.stringify(this.candidatesUpdateData)); 
+      // this.patchCandidateForm(candidateClone);
+    }
+    else{
       this.getCandidates();
-     // }
+     }
 
-    this.gs.candidateImage$.subscribe(response =>{
-      if(response !== null){
-      this.candidateImageUrl = response
-      }
-    })
-
+    
   }
 
   ngAfterViewInit() {}
@@ -145,13 +149,8 @@ candidateForm!: FormGroup;
       softSkills:[''],
       coreCompentencies:[''],
       collegeProject: this.fb.array([this.createCollegeProject()]),
-      coreCompentenciesMandatory:[''],
-      softSkillsMandatory:[''],
-      achievementsMandatory:[''],
-      certificatesMandatory:[''],
       summary:[''],
       careerObjective:['']
-
 
     });
   }
@@ -193,8 +192,9 @@ candidateForm!: FormGroup;
     );
   }
 
-  generatingResume() {
-   this.dataLoaded = false;
+  createCandidate() {
+  if(this.candidateForm.valid){
+    this.dataLoaded = false;
 
     const route = 'candidate/create';
     const payload = this.candidateForm.getRawValue();
@@ -378,46 +378,42 @@ candidateForm!: FormGroup;
     } else {
       payload.collegeProject = [];
     }
-
+    
       payload.coreCompentenciesMandatory =  this.candidates?.coreCompentenciesMandatory !== null ? this.candidates?.coreCompentenciesMandatory: false;
-
-    payload.softSkillsMandatory =  this.candidates?.softSkillsMandatory !== null ? this.candidates?.softSkillsMandatory: false;
-
-    payload.certificatesMandatory =  this.candidates?.certificatesMandatory !== null ? this.candidates?.certificatesMandatory: false;
-
-    payload.achievementsMandatory =  this.candidates?.achievementsMandatory !== null ? this.candidates?.achievementsMandatory: false;
-
-
-
+    
+      payload.softSkillsMandatory =  this.candidates?.softSkillsMandatory !== null ? this.candidates?.softSkillsMandatory: false;
+    
+      payload.certificatesMandatory =  this.candidates?.certificatesMandatory !== null ? this.candidates?.certificatesMandatory: false;
+    
+      payload.achievementsMandatory =  this.candidates?.achievementsMandatory !== null ? this.candidates?.achievementsMandatory: false;
+    
     this.api.retrieve(route, payload).subscribe({
       next: (response) => {
-       
-       this.candidateId = response?.id;
+      
+        this.candidateId = response?.id;
         this.dataLoaded = true;
         this.candidates = response as Candidate
-        localStorage.setItem('candidateId',this.candidateId);
-
-       if (this.candidateImageUrl !== undefined && this.multipartFile !== undefined) {
-          this.uploadCandidateImage();
-        }
-
-        // response.softSkills = response?.softSkills || [];
-        // response.coreCompentencies = response?.coreCompentencies || [];
-        response.candidateLogo = this.candidateImageUrl; 
-
-         this.gs.setCandidateDetails(this.candidates);
+       
         
-        window.alert('Updated Successfully'); 
-      
+         this.createResume(this.candidates);
+
+       
+
+         
+
       },
       error: (error) => {
         this.dataLoaded = true;
-        window.alert('Error in Updating please try again');
-
+         window.alert('Error in creating please try again');
         console.log(error);
       },
     });
     this.dataLoaded = true;
+  }
+    else{
+      this.showError = true;
+       window.alert("Enter the mandatory details")
+    }
   }
 
   reset() {
@@ -433,8 +429,8 @@ candidateForm!: FormGroup;
   createExperience(): FormGroup {
     return this.fb.group({
       id:[''],
-      companyName: ['', Validators.required],
-      role: ['', Validators.required],
+      companyName: [''],
+      role: [''],
       experienceYearStartDate: [''],
       experienceYearEndDate: [''],
       projects: this.fb.array([this.createProject()]),
@@ -465,7 +461,6 @@ candidateForm!: FormGroup;
     );
     if (confirmDelete && this.experienceControls.length > 1) {
       const removedExperience = this.experienceControls.at(index).value;
-      console.log('Removed Experience:', removedExperience);
       if (removedExperience.id) {
        this.experienceControls.removeAt(index);
       } else {
@@ -505,7 +500,6 @@ candidateForm!: FormGroup;
       const removedProject = projectArray.at(projectIndex).value;
 
       if (removedProject.id) {
-        removedProject.isDeleted = true;
         const experienceGroup = this.experienceControls.at(experienceIndex);
         const projectsControl = experienceGroup.get('projects') as FormArray;
         projectsControl.at(projectIndex).patchValue(removedProject);
@@ -544,7 +538,7 @@ candidateForm!: FormGroup;
     if (confirmDelete && this.qualificationControls.length > 1) {
       const removedQualification = this.qualificationControls.at(index).value;
        if (removedQualification.id) {
-          this.qualificationControls.removeAt(index);
+        this.qualificationControls.removeAt(index);
       } else {
         this.qualificationControls.removeAt(index);
       }
@@ -673,7 +667,7 @@ candidateForm!: FormGroup;
   }
 
   uploadCandidateImage() {
-    if(this.imageName !== null && this.imageName !== ''){
+    if(this.candidateImageUrl !== undefined && this.multipartFile !== undefined ){
     this.dataLoaded = false;
     const route = 'candidate/upload-image';
     const formData = new FormData();
@@ -682,6 +676,7 @@ candidateForm!: FormGroup;
      this.api.downloadFile(route, formData).subscribe({
       next: (response) => {
         this.candidateImageUrl = URL.createObjectURL(response);
+        this.dataLoaded = true;
       },
       error: (error) => {
         this.dataLoaded = true;
@@ -698,7 +693,7 @@ candidateForm!: FormGroup;
 
   patchCandidateForm(candidate: Candidate) {
 
-   candidate.languagesKnown = candidate?.languagesKnown ? candidate.languagesKnown .split(',').map((skill: string) => skill.trim()) : [];
+    candidate.languagesKnown = candidate?.languagesKnown ? candidate.languagesKnown .split(',').map((skill: string) => skill.trim()) : [];
     candidate.skills = candidate?.skills ? candidate.skills.split(',').map((skill: string) => skill.trim()) : [];
     candidate.softSkills = candidate?.softSkills ? candidate.softSkills.split(',').map((skill: string) => skill.trim()) : [];
     candidate.coreCompentencies = candidate?.coreCompentencies ? candidate.coreCompentencies.split(',').map((skill: string) => skill.trim()) : [];
@@ -711,8 +706,11 @@ candidateForm!: FormGroup;
         certificateFormArray.push(this.createCertificateFormGroup(certificate));
       });
     }
+     else{
+          this.certificateEmptyFields = true;
+        }
 
-    if(candidate.qualification?.length > 0){
+         if(candidate.qualification?.length > 0){
         const qualificationFormArray = this.candidateForm.get('qualification') as FormArray;
         qualificationFormArray.clear();
 
@@ -745,6 +743,9 @@ candidateForm!: FormGroup;
       achievementFormArray.push(this.createAchievementsFormGroup(achievement));
       });
     }
+     else{
+          this.achievementsEmptyFields = true;
+        }
 
       const candidateDob = candidate.dob ? new Date(candidate.dob) : null;
 
@@ -765,11 +766,7 @@ candidateForm!: FormGroup;
         softSkills:candidate?.softSkills ? candidate?.softSkills :[],
         coreCompentencies:candidate?.coreCompentencies ? candidate?.coreCompentencies :[],
         summary:candidate?.summary,
-        coreCompentenciesMandatory:candidate?.coreCompentenciesMandatory,
-        softSkillsMandatory:candidate?.softSkillsMandatory,
-        certificatesMandatory:candidate?.certificatesMandatory,
-        achievementsMandatory:candidate?.achievementsMandatory,
-        careerObjective:candidate?.careerObjective
+        careerObjective:candidate?.careerObjective,
       });
     }
   
@@ -779,6 +776,7 @@ candidateForm!: FormGroup;
         courseName: certificate.courseName,
         courseStartDate: certificate.courseStartDate ? new Date(certificate.courseStartDate) : null,
         courseEndDate: certificate.courseEndDate ? new Date(certificate.courseEndDate) : null,
+        
       });
     }
   
@@ -857,11 +855,18 @@ candidateForm!: FormGroup;
     }
 
     next(){
-      this.gs.setCandidateDetails(this.candidates);
-      if(this.resumeName !== null && this.resumeName !== undefined){
-         this.gs.setResumeName(this.resumeName);
-      }
-      this.router.navigate(['mob-candidate/verify-components']);  
+      this.ref.close();
+      const ref = this.dialog.open(PaymentOptionComponent, {
+           
+            data: {
+              candidates: this.candidates,
+              candidateId: this.candidates?.id
+            },
+            closable: true,
+            width: '30%',
+            height: '90%',
+            styleClass: 'payment-dialog-header',
+          });
     }
 
    get collegeProjectControls() {
@@ -902,14 +907,14 @@ candidateForm!: FormGroup;
 
     goBack(){
       this.gs.setCandidateDetails(this.candidates);
-      if(this.candidateImageUrl !== null){
+      if( this.candidateImageUrl !== null && this.candidateImageUrl !== undefined){
       this.gs.setCandidateImage(this.candidateImageUrl);
       }
-      this.gs.setResumeName(this.resumeName);
-      this.router.navigate(['mob-candidate/choose-Template']);
+      this.router.navigate(['mob-candidate']);
     }
 
-      getCandidates() {
+    
+    getCandidates() {
       const route = 'candidate';
       this.api.get(route).subscribe({
         next: (response) => {
@@ -918,33 +923,199 @@ candidateForm!: FormGroup;
            
             this.candidateId =  candidate?.id
              this.candidates = candidate;
+
             const candidateClone = JSON.parse(JSON.stringify(candidate)); 
             this.patchCandidateForm(candidateClone);
-            this.getCandidateImage(candidate?.id);
+            // this.getCandidateImage(candidate?.id);
+
+            this.getResumeContent('Summary');
+
+            this.getResumeContent('Career Objective');
+
+
 
             //set global
-            this.gs.setCandidateDetails(candidate);
+           // this.gs.setCandidateDetails(candidate);
          
         }
         },
       });
     }
+  
+     getCandidateImage(id: any) {
+    const route = `candidate/get-image?candidateId=${id}`;
+  
+    this.api.getImage(route).subscribe({
+      next: (response) => {
+        if(response.size > 0){
+        this.candidateImageUrl = URL.createObjectURL(response);
+        this.dataLoaded = true;
 
-    
-    getCandidateImage(id: any) {
-      const route = `candidate/get-image?candidateId=${id}`;
-    
-      this.api.getImage(route).subscribe({
-        next: (response) => {
-          if(response.size > 0){
-          this.candidateImageUrl = URL.createObjectURL(response);
-          this.dataLoaded = true;
-          }
-        },
-        error: (err) => {
-          console.error('Error fetching candidate image:', err);
-          this.dataLoaded = false;
+        //set global image
+        if( this.candidateImageUrl !== null && this.candidateImageUrl !== undefined){
+          this.gs.setCandidateImage(this.candidateImageUrl);
+         }
         }
+      },
+      error: (err) => {
+        console.error('Error fetching candidate image:', err);
+
+        this.dataLoaded = false;
+      }
+    });
+  }
+  
+  addSkill(controlName: string, inputId: string) {
+    const inputEl = document.getElementById(inputId) as HTMLInputElement;
+    const value = inputEl?.value?.trim();
+  
+    if (value) {
+      const control = this.candidateForm.get(controlName);
+      const current = control?.value || [];
+  
+      if (!current.includes(value)) {
+        control?.setValue([...current, value]);
+      }
+  
+      inputEl.value = '';
+    }
+  }
+
+  createResume(candidates:any) {
+    this.ngxLoaderStart();
+    const route = 'resume/create';
+
+  const templateName =  localStorage.getItem('templateName');
+   if(this.templateName === null || this.templateName === undefined){
+     this.templateName = templateName;
+    }
+    const payload = {...candidates,templateName: this.templateName};
+
+    this.api.retrieve(route,payload).subscribe({
+      next: (response) => {
+        this.ngxLoaderStop();
+                  if (response.resumePdf) {
+         const base64String = response.resumePdf.trim();  
+        const byteCharacters = atob(base64String);
+        const byteNumbers = new Array(byteCharacters.length);
+        for (let i = 0; i < byteCharacters.length; i++) {
+          byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+
+        const byteArray = new Uint8Array(byteNumbers);
+        const blob = new Blob([byteArray], { type: 'application/pdf' });
+
+        // Create a link element and trigger download
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = (response.candidateName) + '.pdf';
+        document.body.appendChild(a);
+        a.click();
+
+        // Clean up
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+
+        window.alert('Your resume is created successfully');
+        localStorage.removeItem('resumeName');
+        this.ngxLoaderStop();
+
+        this.router.navigate(['/mob-candidate']);
+      }
+          this.ngxLoaderStop();
+      },
+      error: (err) => {
+         window.alert('Error in creating Resume');
+        this.ngxLoaderStop();
+      }
+    });
+  }
+
+
+  ngxLoaderStart(){
+    this.isUploading = true;
+  }
+
+  ngxLoaderStop(){
+    this.isUploading = false;
+  }
+
+    getProjectContentCount(experienceIndex: number): boolean {
+        const projects = this.experienceControls.at(experienceIndex).get('projects') as FormArray;
+        const projectName = projects.controls[0] as any;
+        return  projectName.controls.projectName?.value !== '' ? true : false;
+    }
+
+
+    goToOpenAi(){
+
+    this.isUploading = true
+
+    const route = 'resume/get-content';
+    const payload = {...this.candidates};
+
+     this.api.retrieve(route, payload).subscribe({
+      next: (response:any) => {
+        if(response){
+
+          response.coreCompentenciesMandatory = this.candidates?.coreCompentenciesMandatory;
+          response.softSkillsMandatory = this.candidates?.softSkillsMandatory;
+          response.achievementsMandatory = this.candidates?.achievementsMandatory;
+          response.certificatesMandatory = this.candidates?.certificatesMandatory;
+
+          this.candidateId = response.id;
+          this.candidates = response;
+      
+         const candidateClone = JSON.parse(JSON.stringify(this.candidates)); 
+         this.patchCandidateForm(candidateClone);
+
+            this.isUploading = false
+        }
+              this.isUploading = false
+      },
+      error: (error) => {
+          this.isUploading = false
+        this.gs.showMessage('error', error.error?.message)
+
+      },
+
+    });
+    
+  }
+
+
+  getResumeContent(content:any){
+      
+      this.ngxLoaderStart();
+
+       const route =`content/openai?content=${content}`
+  
+      this.api.get(route).subscribe({
+        next: (response) =>{
+
+          if(response){
+            const responseContent = response as any;
+            if(content === 'Summary'){
+               this.candidateForm.get('summary')?.setValue(responseContent?.resumeContent);
+
+               this.ngxLoaderStop();
+            }
+            else{
+               this.candidateForm.get('careerObjective')?.setValue(responseContent?.resumeContent);
+
+                this.ngxLoaderStop();
+            }
+          }
+          
+        },
+        error: (error) => {
+        this.dataLoaded = true;
+        this.gs.showMessage('Error', 'Please try after some time');
+
+        console.log(error);
+      },
       });
     }
+
 }

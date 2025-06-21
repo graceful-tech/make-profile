@@ -9,8 +9,9 @@ import { NgModule } from "@angular/core";
 import { MessageComponent } from "./message/message.component";
 import { ClickedOutsideDirective } from "./directives/clicked-outside.directive";
 import { LoginPopupComponent } from "./popup/login-popup/login-popup.component";
-import { MatIconModule } from '@angular/material/icon';
-import { HammerModule } from '@angular/platform-browser';
+import { MatIconModule } from '@angular/material/icon'; 
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MobileMessageComponent } from "./mobile-message/mobile-message.component";
  
  
  
@@ -19,7 +20,8 @@ import { HammerModule } from '@angular/platform-browser';
    MakeProfileDividerComponent,
    ClickedOutsideDirective,
    MessageComponent,
-   LoginPopupComponent    
+   LoginPopupComponent,
+   MobileMessageComponent
   ],
   imports: [
     CommonModule,
@@ -29,6 +31,7 @@ import { HammerModule } from '@angular/platform-browser';
     ReactiveFormsModule,
     NgxUiLoaderModule,
     MatIconModule,
+    MatProgressSpinnerModule,
    
     
   ],
@@ -44,7 +47,9 @@ import { HammerModule } from '@angular/platform-browser';
     MessageComponent,
     LoginPopupComponent,
     MatIconModule,
-    NgxUiLoaderModule
+    NgxUiLoaderModule,
+    MatProgressSpinnerModule,
+    MobileMessageComponent
   ]
 })
 export class SharedModule { }

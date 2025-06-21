@@ -412,6 +412,7 @@ export class CandidatesDetailsComponent {
       payload.collegeProject = [];
     }
 
+    
 
 
     this.api.retrieve(route, payload).subscribe({
@@ -771,7 +772,7 @@ export class CandidatesDetailsComponent {
   applyJob(jobId: any, tenant: any) {
 
     const route = "applied-job/save"
-    const candidateIds = '23';
+    const candidateIds = this.candidateId;
 
     const payload = {
       candidateId: candidateIds,
@@ -988,6 +989,8 @@ export class CandidatesDetailsComponent {
       softSkillsMandatory:candidate?.softSkillsMandatory,
       certificatesMandatory:candidate?.certificatesMandatory,
       achievementsMandatory:candidate?.achievementsMandatory,
+      summary:candidate?.summary,
+      careerObjective:candidate?.careerObjective
     });
   }
 
@@ -1224,7 +1227,7 @@ export class CandidatesDetailsComponent {
   }
 
   ngxLoaderStop() {
-    this.ngxLoader.stop();
+    //this.ngxLoader.stop();
     setTimeout(() => {
       this.isUploading = false;
     }, 2000);
@@ -1232,7 +1235,7 @@ export class CandidatesDetailsComponent {
 
   ngxLoaderStart(message: any) {
     this.isUploading = true;
-    this.ngxLoader.start();
+  //  this.ngxLoader.start();
     this.customLoaderMessage = message;
   }
 
@@ -1275,6 +1278,7 @@ export class CandidatesDetailsComponent {
     });
 
     this.ps.payWithRazorPay(amount, templateName);
+
   } else {
     alert("Invalid amount entered.");
   }

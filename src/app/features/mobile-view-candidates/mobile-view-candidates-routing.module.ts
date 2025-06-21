@@ -9,6 +9,7 @@ import { MobileVerifyComponentComponent } from './mobile-verify-component/mobile
 import { ResumeDetailsComponent } from '../candidates/resume-details/resume-details.component';
 import { ViewMobileHistoryCandidatesComponent } from './view-mobile-history-candidates/view-mobile-history-candidates.component';
 import { ResumeDetailsMobileComponent } from './resume-details-mobile/resume-details-mobile.component';
+import { FinalVerifyComponent } from './final-verify/final-verify.component';
 
 const routes: Routes = [
 
@@ -27,6 +28,9 @@ const routes: Routes = [
   {path: 'resume-details', component:ResumeDetailsMobileComponent},
   
   {path: 'view-history', component:ViewMobileHistoryCandidatesComponent},
+
+  {path: 'final-verify', component:FinalVerifyComponent},
+
 
   
   
