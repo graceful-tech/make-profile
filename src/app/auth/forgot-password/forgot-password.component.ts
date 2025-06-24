@@ -23,6 +23,7 @@ export class ForgotPasswordComponent {
   values: any;
   otp: any;
   expiryDate: any;
+  otpExpired = false;
 
   constructor(
     private api: ApiService,
@@ -121,8 +122,9 @@ export class ForgotPasswordComponent {
     const verifyOtp = this.forgotPasswordForm.controls['otp'].value;
     if (verifyOtp === this.otp) {
       if (new Date(this.expiryDate) < new Date()) {
+        this.otpExpired = true;
         this.forgotPasswordForm.controls['otp'].reset('');
-        this.gs.showMessage('Error', 'Your OTP has expired. Please generate a new one.')
+        this.gs.showMessage('Error', 'Your OTP has expired. Please generate a new otp.')
       }
       if (this.forgotPasswordForm.valid) {
         this.loadingFlag = true;
@@ -153,7 +155,7 @@ export class ForgotPasswordComponent {
     }
     else {
       this.showError = true;
-      this.gs.showMessage('Error', 'Invalid OTP. Please Enter Correct Otp.');
+      this.gs.showMessage('Error', 'Please Enter a Valid Otp');
     }
   }
 

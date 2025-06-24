@@ -58,7 +58,7 @@
                             [label]=" loadingFlag? 'Please Wait..': otpVerified ? 'Submit': otpRequested? 'Verify': 'Request' "
                             [disabled]="loadingFlag" (onClick)="handleClick()">
                         </p-button>
-                        <p-button *ngIf="otpRequested && !otpVerified" type="submit"
+                        <p-button *ngIf="otpExpired && !otpVerified" type="submit"
                             [label]="flag?'Please Wait..':'Regenerate Otp'" (onClick)="regenerateOtp()"
                             [disabled]="flag"></p-button>
                     </div>

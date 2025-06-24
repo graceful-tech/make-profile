@@ -18,6 +18,7 @@ export class MobileForgotComponent {
   otpRequested = false;
   otpVerified = false;
   passwordMismatch = false;
+  otpExpired = false;
   values: any;
   otp: any;
   expiryDate: any;
@@ -65,7 +66,7 @@ export class MobileForgotComponent {
 
       this.api.retrieve(route, payload).subscribe({
         next: (response) => {
-          this.loadingFlag = false;
+          this.flag = false;
           this.otpRequested = true;
           this.values = response;
           this.otp = this.values.otp;
@@ -122,12 +123,12 @@ export class MobileForgotComponent {
 
   verifyOtp() {
     const verifyOtp = this.forgotPasswordForm.controls['otp'].value;
-    if (verifyOtp === this.otp) {
+    if (verifyOtp === this.otp && this.forgotPasswordForm.valid) {
       if (new Date(this.expiryDate) < new Date()) {
+        this.otpExpired = true;
         this.forgotPasswordForm.controls['otp'].reset('');
         window.alert('Your OTP has expired. Please generate a new one.');
-      }
-      if (this.forgotPasswordForm.valid) {
+      } else if (this.forgotPasswordForm.valid) {
         this.loadingFlag = true;
         const route = `forgot-password/verify-otp`;
         const payload = this.forgotPasswordForm.value;
@@ -145,13 +146,13 @@ export class MobileForgotComponent {
           },
           error: (error) => {
             this.loadingFlag = false;
-            // window.alert('Invalid OTP. Please Enter Correct Otp.');
+            window.alert('Invalid OTP. Please Enter Correct Otp.');
           },
         });
       }
     } else {
       this.showError = true;
-      window.alert('Invalid OTP. Please Enter Correct Otp.');
+      window.alert('Please Enter a valid Otp.');
     }
   }
 
