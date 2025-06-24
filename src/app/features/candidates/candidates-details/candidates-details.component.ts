@@ -79,6 +79,7 @@ export class CandidatesDetailsComponent {
   user: any;
   totalCreditsAvailable: number = 0;
   credits: any;
+  matchingJob:boolean = false;
 
 
   constructor(
@@ -712,7 +713,7 @@ export class CandidatesDetailsComponent {
 
   checkScore(jobId: any, tenant: any) {
 
-     this.ngxLoaderStart('Resume is getting ready, please wait...');
+     this.matchingJob = true;
     
     const route = "score-check/get-score"
     const formData = new FormData();
@@ -728,18 +729,19 @@ export class CandidatesDetailsComponent {
 
         this.candidateScore = response;
 
-         this.ngxLoaderStop();
+         this.matchingJob = false;
       },
        error: (error) => {
           this.dataLoaded = true;
-            this.ngxLoaderStop();
+           this.matchingJob = false;
         },
     });
 
   }
 
    getScore(jobId: any, tenant: any) {
-     this.ngxLoaderStart("hai");
+    //  this.ngxLoaderStart("hai");
+    this.matchingJob = true;
     const route = 'credits/redeem'
    
     const userId =   sessionStorage.getItem('userId')
@@ -755,15 +757,16 @@ export class CandidatesDetailsComponent {
         
         if(this.credits){
             this.checkScore(jobId,tenant);
+            //  this.matchingJob = false;
         }
         else{
           this.gs.showMessage('error','You dont have credits');
-           this.ngxLoaderStop();
+          this.matchingJob = false;
         }
         
       },
       error: (error) => {
-        this.ngxLoaderStop();
+        this.matchingJob = false;
         this.gs.showMessage('error','Error in  creating Resume')
       },
     });
