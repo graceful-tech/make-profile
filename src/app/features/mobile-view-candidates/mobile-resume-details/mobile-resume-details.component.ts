@@ -228,18 +228,18 @@ export class MobileResumeDetailsComponent {
       payload.experiences = [];
     }  
      
-    if (payload.fresher) {
-    if (Object.is(payload.collegeProject[0].collegeProjectName, '')) {
-        payload.collegeProject = [];
-      } else {
-        payload.collegeProject = payload.collegeProject.map((proj: any) => ({
-          ...proj,
-          collegeProjectSkills: Array.isArray(proj.collegeProjectSkills)
-            ? proj.collegeProjectSkills.join(', ')
-            : proj.collegeProjectSkills
-        }));
-      }
-    } 
+    // if (payload.fresher) {
+    // if (Object.is(payload.collegeProject[0].collegeProjectName, '')) {
+    //     payload.collegeProject = [];
+    //   } else {
+    //     payload.collegeProject = payload.collegeProject.map((proj: any) => ({
+    //       ...proj,
+    //       collegeProjectSkills: Array.isArray(proj.collegeProjectSkills)
+    //         ? proj.collegeProjectSkills.join(', ')
+    //         : proj.collegeProjectSkills
+    //     }));
+    //   }
+    // } 
 
    
     if (!payload.fresher) {
@@ -375,7 +375,7 @@ export class MobileResumeDetailsComponent {
       if (!hasValidProject) {
         payload.collegeProject = [];
       } else {
-        payload.collegeProject = payload.collegeProject.map((project: { collegeProjectSkills: any[]; })  => ({
+        payload.collegeProject = payload.collegeProject.map((project: any)  => ({
           ...project,
           collegeProjectSkills: Array.isArray(project.collegeProjectSkills)
             ? project.collegeProjectSkills.join(', ')
@@ -735,8 +735,7 @@ export class MobileResumeDetailsComponent {
       collegeProjectFromArray.clear();
 
       candidate.collegeProject?.forEach(collegeProject => {
-        collegeProject.collegeProjectSkills = collegeProject?.collegeProjectSkills ? collegeProject.collegeProjectSkills.split(',').map((skill: string) => skill.trim()) : [];
-        collegeProjectFromArray.push(this.createCollegeProjectFormGroup(collegeProject));
+         collegeProjectFromArray.push(this.createCollegeProjectFormGroup(collegeProject));
       });
     }
       }
@@ -863,15 +862,20 @@ export class MobileResumeDetailsComponent {
       });
     }
 
-    createCollegeProjectFormGroup(collegeProject: CollegeProject){
-      return this.fb.group({
-        id:collegeProject.id,
-        collegeProjectName:  collegeProject.collegeProjectName,
-        collegeProjectSkills: collegeProject.collegeProjectSkills,
-        collegeProjectDescription:collegeProject.collegeProjectDescription,
-        
-      });
-    }
+     createCollegeProjectFormGroup(collegeProject: CollegeProject){
+
+      const skillsArray = typeof collegeProject.collegeProjectSkills === 'string'
+    ? collegeProject.collegeProjectSkills.split(',').map(skill => skill.trim())
+    : collegeProject.collegeProjectSkills;
+
+        return this.fb.group({
+          id:collegeProject.id,
+          collegeProjectName:  collegeProject.collegeProjectName,
+          collegeProjectSkills: [skillsArray],
+          collegeProjectDescription:collegeProject.collegeProjectDescription,
+          isDeleted:false,
+        });
+      }
 
     next(){
       this.ref.close();

@@ -309,11 +309,11 @@ candidateForm!: FormGroup;
         payload.dob = this.datePipe.transform(payload.dob,'yyyy-MM-dd');
        }
     
-        if (payload.fresher != null && payload.fresher) {
-          payload['fresher'] = true;
-        } else {
-          payload['fresher'] = false;
-        }
+        // if (payload.fresher != null && payload.fresher) {
+        //   payload['fresher'] = true;
+        // } else {
+        //   payload['fresher'] = false;
+        // }
     
       
     
@@ -321,18 +321,18 @@ candidateForm!: FormGroup;
           payload.experiences = [];
         }  
          
-        if (payload.fresher) {
-        if (Object.is(payload.collegeProject[0].collegeProjectName, '')) {
-            payload.collegeProject = [];
-          } else {
-            payload.collegeProject = payload.collegeProject.map((proj: any) => ({
-              ...proj,
-              collegeProjectSkills: Array.isArray(proj.collegeProjectSkills)
-                ? proj.collegeProjectSkills.join(', ')
-                : proj.collegeProjectSkills
-            }));
-          }
-        } 
+        // if (payload.fresher) {
+        // if (Object.is(payload.collegeProject[0].collegeProjectName, '')) {
+        //     payload.collegeProject = [];
+        //   } else {
+        //     payload.collegeProject = payload.collegeProject.map((proj: any) => ({
+        //       ...proj,
+        //       collegeProjectSkills: Array.isArray(proj.collegeProjectSkills)
+        //         ? proj.collegeProjectSkills.join(', ')
+        //         : proj.collegeProjectSkills
+        //     }));
+        //   }
+        // } 
     
        
         if (!payload.fresher) {
@@ -468,7 +468,7 @@ candidateForm!: FormGroup;
           if (!hasValidProject) {
             payload.collegeProject = [];
           } else {
-            payload.collegeProject = payload.collegeProject.map((project: { collegeProjectSkills: any[]; })  => ({
+            payload.collegeProject = payload.collegeProject.map((project: any) => ({
               ...project,
               collegeProjectSkills: Array.isArray(project.collegeProjectSkills)
                 ? project.collegeProjectSkills.join(', ')
@@ -959,7 +959,6 @@ candidateForm!: FormGroup;
             qualificationEndYear: qualification.qualificationEndYear ? new Date(qualification.qualificationEndYear) : null,
             percentage: qualification.percentage,
             fieldOfStudy: qualification.fieldOfStudy,
-            isDeleted:false,
           });
         }
       
@@ -969,19 +968,23 @@ candidateForm!: FormGroup;
             id:achievement.id,
             achievementsName: achievement.achievementsName,
             achievementsDate:  achievement.achievementsDate ? new Date(achievement.achievementsDate) : null,
-            isDeleted:false,
           });
         }
     
-        createCollegeProjectFormGroup(collegeProject: CollegeProject){
-          return this.fb.group({
-            id:collegeProject.id,
-            collegeProjectName:  collegeProject.collegeProjectName,
-            collegeProjectSkills: collegeProject.collegeProjectSkills,
-            collegeProjectDescription:collegeProject.collegeProjectDescription,
-            isDeleted:false,
-          });
-        }
+          
+          createCollegeProjectFormGroup(collegeProject: CollegeProject){
+
+              const skillsArray = typeof collegeProject.collegeProjectSkills === 'string'
+            ? collegeProject.collegeProjectSkills.split(',').map(skill => skill.trim())
+            : collegeProject.collegeProjectSkills;
+
+                return this.fb.group({
+                  id:collegeProject.id,
+                  collegeProjectName:  collegeProject.collegeProjectName,
+                  collegeProjectSkills: [skillsArray],
+                  collegeProjectDescription:collegeProject.collegeProjectDescription,
+                });
+              }
     
         next(){
           this.ref.close();

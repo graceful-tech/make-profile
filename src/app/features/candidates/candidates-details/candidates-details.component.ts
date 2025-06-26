@@ -256,18 +256,18 @@ export class CandidatesDetailsComponent {
       payload.experiences = [];
     }
 
-    if (payload.fresher) {
-      if (Object.is(payload.collegeProject[0].collegeProjectName, '')) {
-        payload.collegeProject = [];
-      } else {
-        payload.collegeProject = payload.collegeProject.map((proj: any) => ({
-          ...proj,
-          collegeProjectSkills: Array.isArray(proj.collegeProjectSkills)
-            ? proj.collegeProjectSkills.join(', ')
-            : proj.collegeProjectSkills
-        }));
-      }
-    }
+    // if (payload.fresher) {
+    //   if (Object.is(payload.collegeProject[0].collegeProjectName, '')) {
+    //     payload.collegeProject = [];
+    //   } else {
+    //     payload.collegeProject = payload.collegeProject.map((proj: any) => ({
+    //       ...proj,
+    //       collegeProjectSkills: Array.isArray(proj.collegeProjectSkills)
+    //         ? proj.collegeProjectSkills.join(', ')
+    //         : proj.collegeProjectSkills
+    //     }));
+    //   }
+    // }
 
    
 
@@ -402,7 +402,7 @@ export class CandidatesDetailsComponent {
       if (!hasValidProject) {
         payload.collegeProject = [];
       } else {
-        payload.collegeProject = payload.collegeProject.map((project: { collegeProjectSkills: any[]; }) => ({
+        payload.collegeProject = payload.collegeProject.map((project: any) => ({
           ...project,
           collegeProjectSkills: Array.isArray(project.collegeProjectSkills)
             ? project.collegeProjectSkills.join(', ')
@@ -1175,10 +1175,15 @@ export class CandidatesDetailsComponent {
   }
 
    createCollegeProjectFormGroup(collegeProject: CollegeProject){
+
+      const skillsArray = typeof collegeProject.collegeProjectSkills === 'string'
+    ? collegeProject.collegeProjectSkills.split(',').map(skill => skill.trim())
+    : collegeProject.collegeProjectSkills;
+
         return this.fb.group({
           id:collegeProject.id,
           collegeProjectName:  collegeProject.collegeProjectName,
-          collegeProjectSkills: collegeProject.collegeProjectSkills,
+          collegeProjectSkills: [skillsArray],
           collegeProjectDescription:collegeProject.collegeProjectDescription,
           isDeleted:false,
         });
