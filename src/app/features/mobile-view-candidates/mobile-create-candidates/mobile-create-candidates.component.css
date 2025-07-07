@@ -169,3 +169,16 @@
 ::ng-deep .custom-dropdown .p-dropdown {
   width: 200px !important;
 }
+
+.add-details{ 
+  text-decoration: underline;
+  font-size: 1.4rem;
+  font-weight: 500;
+  padding-bottom: 0.5rem;
+   color: #178be9;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  background-color: #d5d5d5;
+}

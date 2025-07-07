@@ -79,6 +79,9 @@ export class CreateCandidatesComponent {
   extraSkills:boolean = true
   qualification:boolean= true;
   isUploading: boolean = false;
+  citiesName: any;
+  stateNames: any;
+  additionalDetailsForm!: FormGroup;
 
 
   constructor(
@@ -110,12 +113,19 @@ export class CreateCandidatesComponent {
     this.getMaritalStatus();
     this.getFieldOfStudy();
     //this.getCandidates();
+    this.createAdditionalDetailsForm();
+    this.getStateNames();
     
 
     if (this.candidates !== null ) {
       this.candidateId = this.candidates.id;
       const candidateClone = JSON.parse(JSON.stringify(this.candidates));
       this.patchCandidateForm(candidateClone);
+       
+
+          setTimeout(() => {
+     this.getAdditionaDetails(this.candidates.mobileNumber);
+    }, 2000);
     }
     else{
       this.getCandidates();
@@ -135,7 +145,7 @@ export class CreateCandidatesComponent {
       name: ['', Validators.required],
       mobileNumber: ['',Validators.compose([Validators.required, Validators.minLength(10)]),],
       email: ['', Validators.compose([Validators.required, Validators.email])],
-      gender: [''],
+      gender: ['',Validators.required],
       nationality: [''],
       languagesKnown: [''],
       fresher: [''],
@@ -404,12 +414,13 @@ export class CreateCandidatesComponent {
         localStorage.setItem('candidateId',this.candidateId);
           this.returnCandidate = response;
           this.uploadCandidateImage();
-
-      
         this.returnCandidate.candidateLogo = this.candidateImageUrl;
-
-
         response.candidateLogo = this.candidateImageUrl; 
+
+       if(!response?.fresher){
+        this.saveCandidateAddtionalDetails(this.candidateId,response?.mobileNumber);
+        }
+
         this.close(this.returnCandidate);
       
         this.gs.showMessage('Success', 'Create Successfully');
@@ -949,7 +960,8 @@ export class CreateCandidatesComponent {
 
           this.patchCandidateForm(candidateClone);
           this.getCandidateImage(candidate?.id);
-
+          this.getAdditionaDetails(candidate?.mobileNumber);
+          
           if (this.candidateId !== null && this.candidateId !== undefined) {
             this.candidateForm.controls['mobileNumber'].disable();
           }
@@ -1017,6 +1029,155 @@ export class CreateCandidatesComponent {
     this.isUploading = true;
    }
     
+
+   
+ createAdditionalDetailsForm(){
+    this.additionalDetailsForm=this.fb.group({
+      stateName:['',Validators.required],
+      preferredLocation:['',Validators.required],
+      currentCostToCompany:[''],
+      expectedCostToCompany:[''],
+      totalWorkExperience:[''],
+      relevantExperience:[''],
+      companyName:[''],
+       qualification:['']
+    });
+  }
+
+  selectedState(event:any){
+
+    const stateId = event.value;
+ 
+    const route = 'cities/retrive-cities';
+    const stateIdList: Array<any> = [];
+    stateId.forEach((state: any) => {
+      stateIdList.push(state);
+    });
+
+    const postData = { stateIdList: stateIdList };
+    this.api.retrieve(route, postData).subscribe({
+      next: (response: any) => {
+        this.citiesName = response;
+      },
+    });
+
+  }
+
+  getStateNames() {
+    const route = 'cities';    
+    this.api.get(route).subscribe({
+      next: (response: any) => {
+        this.stateNames = response;
+      },
+    });
+  }
+
+
+   saveCandidateAddtionalDetails(id:any,mobile:any){
+    if(this.additionalDetailsForm.valid){
+      
+
+
+      const stateIds = this.additionalDetailsForm.controls['stateName'].value; 
+
+      const selectedStateNames = stateIds
+        .map((id: any) => {
+          const state = this.stateNames.find((s: any) => s.id == id);
+          return state ? state.stateName : null;
+        })
+        .filter((name: string | null) => name !== null)  
+        .join(', ');  
+
+      const location =  this.additionalDetailsForm.controls['preferredLocation'].value;
+
+        const preferredLocation = location.join(", ")
+
+      const route = 'candidate/save-additoinal-details';  
+       const payload = this.additionalDetailsForm.getRawValue(); 
+
+       payload['stateName'] = selectedStateNames;
+       payload['candidateId'] = id;
+       payload['preferredLocation'] = preferredLocation;
+      payload['mobileNumber'] = mobile;
+
+    this.api.retrieve(route,payload).subscribe({
+      next: (response: any) => {
+      },
+    });
+   }
+  }
+
+  patchAdditionalDetails(additonalDetails:any){
+ 
+   const stateNameArray = additonalDetails?.stateName
+    ? additonalDetails.stateName.split(',').map((state: string) => state.trim())
+    : [];
+
+  const matchedStateIds = stateNameArray.map((name: string) => {
+    const state = this.stateNames.find((s: any) => s.stateName === name);
+    return state ? state.id : null;
+  }).filter((id: any) => id !== null); 
+
+ const preferredLocationArray = additonalDetails?.preferredLocation
+    ? additonalDetails.preferredLocation
+        .split(',')
+        .map((city: string) => city.trim())
+        .filter((city: string) => city && this.citiesName.some((c: any) => c.cityName === city))
+    : [];
+
+    
+    this.additionalDetailsForm.patchValue({
+      stateName:matchedStateIds,
+      preferredLocation:preferredLocationArray,
+      currentCostToCompany:additonalDetails?.currentCostToCompany,
+      expectedCostToCompany:additonalDetails?.expectedCostToCompany,
+      totalWorkExperience:additonalDetails?.totalWorkExperience,
+      relevantExperience:additonalDetails?.relevantExperience,
+      companyName:additonalDetails?.companyName,
+      qualification:additonalDetails?.qualification,
+    });
+
+  }
+
+  getAdditionaDetails(mobile:any){
+
+   const route = `candidate/by_mobile?mobile=${mobile}`;  
+    this.api.get(route).subscribe({
+      next: (response: any) => {
+        if(response){
+         const candidateAdditinalDetails = response;
+
+        this.getPrefferedLocationByStateId(response);
+        }
+      },
+      error: (error) => {
+      },
+    });
+  }
+
+  getPrefferedLocationByStateId(additonalDetails:any){
+
+    const stateNameArray = additonalDetails?.stateName
+    ? additonalDetails.stateName.split(',').map((state: string) => state.trim())
+    : [];
+
+    const matchedStateIds = stateNameArray.map((name: string) => {
+      const state = this.stateNames.find((s: any) => s.stateName === name);
+      return state ? state.id : null;
+    }).filter((id: any) => id !== null); 
+
+    const route = 'cities/retrive-cities';
+    const postData = { stateIdList: matchedStateIds };
+    this.api.retrieve(route, postData).subscribe({
+      next: (response: any) => {
+        this.citiesName = response;
+
+         this.patchAdditionalDetails(additonalDetails)
+      },
+    });
+
+
+  }
 
   }
    

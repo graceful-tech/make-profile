@@ -581,6 +581,103 @@
            </form>
   
            <app-make-profile-divider></app-make-profile-divider>
+
+
+                   <div>
+          <form [formGroup]="additionalDetailsForm">
+            <div class="add-details mt-3">
+                <Span>This information won’t appear on your resume, but it will help us match you with the right job</Span>
+
+                  
+          </div>
+
+            <div class="grid">     
+              <div class="col-12 md:col-6 lg:col-3">
+                      <div class="field-wrapper">
+                        <label>State</label>
+                        <div class="input-wrapper">
+                            <p-multiSelect appendTo="body" [options]="stateNames"
+                                          defaultLabel="Select State" [showHeader]="false"
+                                          optionLabel="stateName" optionValue="id"
+                                          formControlName="stateName" (onChange)="selectedState($event)">
+                                      </p-multiSelect>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-12 md:col-6 lg:col-3">
+                      <div class="field-wrapper">
+                        <label>Preffered Location</label>
+                        <div class="input-wrapper">
+                          <p-multiSelect appendTo="body" [options]="citiesName" defaultLabel="Select Preffered Location"
+                                          [showHeader]="false" optionLabel="cityName" optionValue="cityName"
+                                          formControlName="preferredLocation">
+                                      </p-multiSelect>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-12 md:col-6 lg:col-3">
+                      <div class="field-wrapper">
+                          <label>Current CTC (in Lakhs)</label>
+                        <div class="input-wrapper">
+                          <input pKeyFilter="num"[maxlength]="5" pInputText formControlName="currentCostToCompany"/>
+                        </div>
+                      </div>
+                    </div>
+
+
+                    <div class="col-12 md:col-6 lg:col-3">
+                      <div class="field-wrapper">
+                          <label>Expected CTC (in Lakhs)</label>
+                        <div class="input-wrapper">
+                          <input pKeyFilter="num"  [maxlength]="5"   pInputText  formControlName="expectedCostToCompany" />
+                        </div>
+                      </div>
+                    </div>
+
+
+                    <div class="col-12 md:col-6 lg:col-3">
+                      <div class="field-wrapper">
+                        <label>Total Experience</label>
+                        <div class="input-wrapper">
+                          <input pKeyFilter="num" [maxlength]="5" pInputText  formControlName="totalWorkExperience" />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-12 md:col-6">
+                      <div class="field-wrapper">
+                        <label>Relevant Experience</label>
+                        <div class="input-wrapper">
+                          <input  pKeyFilter="num"  [maxlength]="5"  pInputText  formControlName="relevantExperience" />
+                        </div>
+                      </div>
+                    </div>
+
+                      <div class="col-12 md:col-6 lg:col-3">
+                      <div class="field-wrapper">
+                        <label>Current Company Name</label>
+                        <div class="input-wrapper">
+                          <input    pInputText type="text"  formControlName="companyName" placeholder="Company Name" />
+                        </div>
+                      </div>
+                    </div>
+
+                      <div class="col-12 md:col-6">
+                    <div class="field-wrapper">
+                      <label>Highest Qualification</label>
+                      <div class="input-wrapper">
+                        <input    pInputText type="text"  formControlName="qualification" placeholder="Company Name" />
+                      </div>
+                    </div>
+                </div>
+
+
+
+              </div>
+          </form> 
+          </div>
   
            <div class="button-wrapper" *ngIf="!payments">
             <p-button class="mr-2" [label]="dataLoaded ? 'Generate' : 'Generating..'"
