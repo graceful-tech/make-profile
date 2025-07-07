@@ -88,7 +88,7 @@ export class LoginComponent {
     const baseUrl = window.location.origin;
     const redirectUri = isMobile ? `${baseUrl}/#/mob-candidate` : `${baseUrl}/#/candidate`;
     document.cookie = `redirect_uri=${encodeURIComponent(redirectUri)}; path=/`;
-    const url = `${restUrl}/oauth2/authorization/google`;
+    const url = `https://makeprofiles.com/profilev2rest/oauth2/authorization/google`;
     window.location.href = url;
   }
 
