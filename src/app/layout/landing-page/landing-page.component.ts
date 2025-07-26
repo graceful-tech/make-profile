@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DialogService } from 'primeng/dynamicdialog';
@@ -13,6 +13,9 @@ import { GlobalService } from 'src/app/services/global.service';
   styleUrl: './landing-page.component.css'
 })
 export class LandingPageComponent {
+    @ViewChild('logoContainer') logoContainer!: ElementRef;
+
+ 
 
 
 
@@ -22,6 +25,10 @@ export class LandingPageComponent {
   ngOnInit() {
     this.deviceServiceService.directlyTo('landing');
    }
+
+   ngAfterViewInit() {
+    this.onWindowScroll();  
+  }
 
   candidate() {
     this.router.navigate(['/candidates'],
@@ -36,5 +43,42 @@ export class LandingPageComponent {
     this.router.navigate(['/login']);
   }
 
+// @HostListener('window:scroll', [])
+//   onWindowScroll() {
+//     const scrollTop = window.scrollY;
+//     const maxScroll = document.body.scrollHeight - window.innerHeight;
+
+//     const scrollPercent = Math.min(scrollTop / maxScroll, 1); 
+//     const shiftPercent = scrollPercent * 1000;  
+
+//     const logoEl = this.logoContainer.nativeElement;
+
+//     logoEl.style.transform = `translateX(-${shiftPercent}%) scale(1.5)`; 
+//     logoEl.style.transition = 'transform 0.2s ease-out';
+//   }
+
+
+  @HostListener('window:scroll', [])
+  onWindowScroll() {
+    const scrollTop = window.scrollY;
+    const maxShiftPx = 400;  
+
+    const currentShift = Math.min(scrollTop, maxShiftPx);
+    const shiftPercent = (currentShift / maxShiftPx) * 500;  
+
+    const logoEl = this.logoContainer.nativeElement;
+
+    console.log('currentShift'+currentShift,);
+    console.log('scrollTop'+scrollTop,);
+
+
+    if (scrollTop >= 100) {
+      logoEl.style.left = '10px';
+      logoEl.style.transform = 'translateX(0%) scale(0.8)';
+    } else {
+      logoEl.style.left = '40%';
+      logoEl.style.transform = `translateX(-${shiftPercent}%) scale(1.5)`;
+    }
+  }
 
 }

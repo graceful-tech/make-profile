@@ -213,3 +213,28 @@ p {
     /* box-shadow: 0 10px 25px -5px rgba(44, 179, 240, 0.6); */
     font-family: 'Poppins';
 }
+
+#logoContainer {
+  position: fixed;
+  top: 40px;
+  left: 50%;
+  transform: translateX(-10%) scale(2);
+  transition: all 1s ease-in-out;
+  
+}
+
+#logoContainer.scrolled {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  transform: translateX(20) scale(1.2);  
+}
+
+#logoContainer img {
+  width: 200px;  
+  transition: all 1.5s ease-in-out;
+}
+
+#logoContainer.scrolled img {
+  width: 120px;  
+}
