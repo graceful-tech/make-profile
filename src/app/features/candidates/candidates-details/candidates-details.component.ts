@@ -84,6 +84,12 @@ export class CandidatesDetailsComponent {
   citiesName:any;
   additionalDetailsForm!:FormGroup
   statusList: any;
+  showDetails = false;
+  showResumeTable: boolean = false;
+  showAppliedJobs:boolean = false;
+  showSuggestJobs:boolean = false;
+  showCandidates: boolean = false;
+
 
 
   constructor(
@@ -130,7 +136,7 @@ export class CandidatesDetailsComponent {
     this.toggleAccountMenu();
     this.createAdditionalDetailsForm();
     this.getStateNames();
-    // this.getAppliedJobs();
+      
 
   }
 
@@ -761,7 +767,7 @@ export class CandidatesDetailsComponent {
      
     const payload = {
       userId:userId,
-      templateName: "Applied job"
+      templateName: "Applied Job"
     }
 
     this.api.retrieve(route,payload).subscribe({
@@ -773,7 +779,7 @@ export class CandidatesDetailsComponent {
             //  this.matchingJob = false;
         }
         else{
-          this.gs.showMessage('error','You dont have credits');
+        this.gs.customMessage('Oops..!','You don’t have enough credits to check eligibility.','Applied Job')
           this.matchingJob = false;
         }
         
@@ -880,8 +886,8 @@ export class CandidatesDetailsComponent {
         const candidateClone = JSON.parse(JSON.stringify(candidate));
         this.patchCandidateForm(candidateClone);
         this.candidateImageUrl = response.candidateLogo;
-
       }
+       this.getAvailableCredits();
     });
 
     // this.router.navigate(['candidate/mob-create/view-templates'])
@@ -895,8 +901,9 @@ export class CandidatesDetailsComponent {
       },
       closable: true,
       width: '70%',
-      height: '90%',
+      height: '95%',
       header: 'Update Your Resume',
+      styleClass: 'update-dialog-header',
     });
 
     ref.onClose.subscribe(response => {
@@ -905,12 +912,11 @@ export class CandidatesDetailsComponent {
         this.candidateId = response.id;
         const candidate = response as Candidate
         const candidateClone = JSON.parse(JSON.stringify(candidate));
-        this.patchCandidateForm(candidate);
+        this.patchCandidateForm(candidateClone);
 
         this.candidateImageUrl = response.candidateLogo;
-
-        console.log(this.candidateImageUrl)
       }
+      this.getAvailableCredits();
     });
   }
 
@@ -931,6 +937,7 @@ export class CandidatesDetailsComponent {
         this.candidateImageUrl = response.candidateLogo;
         console.log(this.candidateImageUrl)
       }
+       this.getAvailableCredits();
     });
   }
 
@@ -1162,9 +1169,9 @@ export class CandidatesDetailsComponent {
   }
 
   getAppliedJobs() {
-    const id = localStorage.getItem('candidateId')
+    const id = localStorage.getItem('candidateId');
 
-    const route = `applied-jobs/candidateId=${id}`;
+    const route = `applied-job?candidateId=${id}`;
     this.api.get(route).subscribe({
       next: (response) => {
         this.appliedJobs = response;
@@ -1285,25 +1292,32 @@ export class CandidatesDetailsComponent {
         this.resume = null;
         
       }
+       this.getAvailableCredits();
     });
   }
    
   payment(templateName:any){
-     const confirmedAmount = prompt("Enter final amount in ₹", "10");
+  
+  const confirmedAmount = prompt("Enter final amount in ₹", "10");
 
-  if (confirmedAmount && !isNaN(+confirmedAmount) && +confirmedAmount > 0) {
-    const amount = +confirmedAmount * 100;  
+  const amountNum = Number(confirmedAmount);
+
+   if (!isNaN(amountNum) && Number.isInteger(amountNum) && amountNum >= 10) {
+    const amount = amountNum * 100;  
     const paymentType = 'Resume';
 
     this.ps.initRazorPays(() => {
-      
-    });
+
+      console.log('keerthi')
+     this.getAvailableCredits();
+    
+     });
 
     this.ps.payWithRazorPay(amount, templateName);
-
   } else {
-    alert("Invalid amount entered.");
+    alert("Please enter a valid amount ₹10 or more.");
   }
+
    
   }
 
@@ -1342,13 +1356,15 @@ export class CandidatesDetailsComponent {
 
 
       }
+       this.getAvailableCredits();
     });
 
   }
 
-  navigateToVerify(templateName:any){
+  navigateToVerify(templateName:any,creditAvailable:any){
+
+    if(creditAvailable >0){
  
-     
          const ref = this.dialog.open(VerifyCandidatesComponent, {
            data: {
              candidates: this.candidates,
@@ -1362,17 +1378,23 @@ export class CandidatesDetailsComponent {
            height: '90%',
            header: 'Check Your Details',
          });
-     
-     
-    
+
+        }
+        else{
+          this.gs.customMessage('Oops..!','You don’t have enough credits to check eligibility.',templateName)
+
+        }
+
   }
 
   payForApplyingJOb(){
 
-     const confirmedAmount = prompt("Enter final amount in ₹", "10");
+   const confirmedAmount = prompt("Enter final amount in ₹", "10");
 
-  if (confirmedAmount && !isNaN(+confirmedAmount) && +confirmedAmount > 0) {
-    const amount = +confirmedAmount * 100;  
+  const amountNum = Number(confirmedAmount);
+
+   if (!isNaN(amountNum) && Number.isInteger(amountNum) && amountNum >= 10) {
+    const amount = amountNum * 100;  
     const paymentType = 'Resume';
 
     this.ps.initRazorPays(() => {
@@ -1381,7 +1403,7 @@ export class CandidatesDetailsComponent {
 
     this.ps.payWithRazorPay(amount, "Applied Job");
   } else {
-    alert("Invalid amount entered.");
+    alert("Please enter a valid amount ₹10 or more.");
   }
   }
 
@@ -1534,6 +1556,57 @@ export class CandidatesDetailsComponent {
 
 
   }
+
+  
+
+openDetails() {
+  this.showDetails = true;
+}
+
+closeDetails() {
+  this.showDetails = false;
+}
+
+toggleSection(section: string) {
+  switch (section) {
+    case 'resume':
+      this.showResumeTable = !this.showResumeTable;
+      break;
+    case 'applied':
+      this.showAppliedJobs = !this.showAppliedJobs;
+      
+      if(this.showAppliedJobs){
+      this.getAppliedJobs();
+      }
+      break;
+    case 'suggested':
+      this.showSuggestJobs = !this.showSuggestJobs;
+      break;
+    case 'showCandidates':
+      this.showCandidates = !this.showCandidates;
+      break;
+  }
+
+}
+
+ isButtonEnabled(requirement: any): boolean {
+  return (
+    this.candidateScore?.related &&
+    this.candidateScore?.score !== null &&
+    requirement.jobId === this.candidateScore?.jobId
+  );
+}
+
+handleApply(requirement: any): void {
+  const isEnabled = this.isButtonEnabled(requirement);
+
+  if (isEnabled) {
+    this.applyJob(requirement.jobId, requirement.tenant);
+  } else {
+    alert('Error: You cannot apply for this job at the moment.');
+  }
+}
+
 
 }
 

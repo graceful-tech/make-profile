@@ -28,7 +28,9 @@ export class MobilePaymentOptionComponent {
   availableCredits: any;
   isUploading:boolean=false;
   templateName:any;
- planetImagePath: any;
+  planetImagePath: any;
+  userId:any;
+  nickName:any;
   
 
   constructor(
@@ -48,6 +50,10 @@ export class MobilePaymentOptionComponent {
      this.gs.resumeName$.subscribe(response =>{
       this.templateName = response
     })
+
+    this.gs.candidateDetails$.subscribe(response => {
+      this.candidates = response;
+    });
   }
 
   ngOnInit() {
@@ -58,20 +64,32 @@ export class MobilePaymentOptionComponent {
       this.getCandidates();
       this.getAvailableCredits();
   } 
- 
-  
 
-  async payRupees() {
-    const amount = 1 * 100;
+
+ async payRupees() {
+  const confirmedAmount = prompt("Enter final amount in ₹", "10");
+
+  const amountNum = Number(confirmedAmount);
+
+   if (!isNaN(amountNum) && Number.isInteger(amountNum) && amountNum >= 10) {
+    const amount = amountNum * 100;  
+    const paymentType = 'Resume';
+
     this.ps.initRazorPays(() => {
-       
-      this.redeem();
+      setTimeout(() => {
+
+        // this.redeem();
+        this.saveNickName();
+
+      }, 2000);
     });
-    this.ps.payWithRazorPay(amount,this.templateName);
-    this.ref.close();
+
+    this.ps.payWithRazorPay(amount, this.templateName);
+  } else {
+    alert("Please enter a valid amount ₹10 or more.");
   }
-  
-  
+}
+
 
     redeem() {
     this.ngxLoaderStart();
@@ -248,6 +266,30 @@ export class MobilePaymentOptionComponent {
     });
     
   }
+
+  saveNickName(){
+  const route = "credits/save-nickname"
+  const formData = new FormData();
+
+   this.userId = sessionStorage.getItem('userId');
+  this.nickName = localStorage.getItem('nickName');
+
+  formData.append('nickName', this.nickName);
+  formData.append('userId', this.userId);
+  formData.append('templateName', this.templateName);
+
+   this.api.upload(route,formData).subscribe({
+      next: (response) => {
+         
+       this.redeem();
+      },
+      error: (error) => {
+        this.ngxLoaderStop();
+        this.gs.showMessage('error','Error in  creating Resume')
+      },
+    });
+
+}
   
 
 }

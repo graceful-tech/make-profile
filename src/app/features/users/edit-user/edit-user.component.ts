@@ -53,13 +53,10 @@ export class EditUserComponent {
     const route = `user/update_user/${userName}`;
     this.api.update(route, this.user).subscribe({
       next: () => {
-        alert('User updated successfully.');
-        // Optional: redirect after save
-        // this.router.navigate(['/dashboard']);
+        this.gs.showMessage('success','User Updated Successfully')
       },
-      error: (err) => {
-        console.error('Error updating user:', err);
-        alert('Failed to update user.');
+      error: (error) => {
+         this.gs.showMessage('error', error.error?.message)
       }
     });
   }

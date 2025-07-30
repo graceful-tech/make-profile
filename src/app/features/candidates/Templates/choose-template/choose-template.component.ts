@@ -16,6 +16,7 @@ import { Candidate } from 'src/app/models/candidates/candidate.model';
 import { LocalStorage } from '@ng-idle/core';
 import { AddCandidatesComponent } from '../../add-candidates/add-candidates.component';
 import { VerifyCandidatesComponent } from '../../verify-candidates/verify-candidates.component';
+import { NickNameComponent } from '../../nick-name/nick-name.component';
 
 @Component({
   selector: 'app-choose-template',
@@ -185,6 +186,27 @@ export class ChooseTemplateComponent {
     });
   
   }
+
+
+    openNickName(resumeName: any){
+      this.ref.close();
+     localStorage.setItem('templateName',resumeName);
+
+      const ref = this.dialog.open(NickNameComponent, {
+      data: {
+         payments:true,
+         resumeName:resumeName,
+        candidateImage :this.candidateImageUrl,
+        candidates: this.candidates,
+
+      },
+      closable: true,
+      width: '30%',
+      header: 'Enter the nick for this resume',
+    });
+
+    }
+
 
   createResume(resumeName: any) {
     this.ref.close();

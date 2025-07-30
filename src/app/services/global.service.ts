@@ -9,6 +9,8 @@ import { MessageComponent } from '../shared/message/message.component';
 import { Candidate } from '../models/candidates/candidate.model';
 import { LoginPopupComponent } from '../shared/popup/login-popup/login-popup.component';
 import { MobileMessageComponent } from '../shared/mobile-message/mobile-message.component';
+import { CustomMessageComponent } from '../shared/custom-message/custom-message.component';
+import { CustomMobileMessageComponent } from '../shared/custom-mobile-message/custom-mobile-message.component';
 
 @Injectable({
   providedIn: 'root',
@@ -127,6 +129,17 @@ export class GlobalService {
     });
   }
 
+   customMessage(status: string, message: String ,templateName:String) {
+    this.dialog.open(CustomMessageComponent, {
+      data: {
+        message: message,
+        templateName:templateName
+      },
+      closable: false,
+      header: status+'☺️',
+    });
+  }
+
   openLogin(status:string,message:string){
     this.dialog.open(LoginPopupComponent,{
       data:{
@@ -134,6 +147,20 @@ export class GlobalService {
       },
       closable:false,
       header:status,
+    });
+  }
+
+  customMobileMessage(status: string, message: String ,templateName:String) {
+    this.dialog.open(CustomMobileMessageComponent, {
+      data: {
+        message: message,
+        templateName:templateName
+      },
+      //  width: '100%',
+      //  height:'100%',
+      closable: false,
+      header: status+'☺️',
+        styleClass: 'payment-dialog-header',
     });
   }
 
@@ -255,6 +282,7 @@ export class GlobalService {
       },
       closable: false,
       header: status,
+      //  styleClass: 'payment-dialog-header',
     });
   }
 

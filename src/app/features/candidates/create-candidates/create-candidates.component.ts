@@ -409,11 +409,11 @@ export class CreateCandidatesComponent {
     this.api.retrieve(route, payload).subscribe({
       next: (response) => {
 
+       
         this.candidateId = response?.id;
         this.dataLoaded = true;
-        localStorage.setItem('candidateId',this.candidateId);
-          this.returnCandidate = response;
-          this.uploadCandidateImage();
+        this.returnCandidate = response;
+        this.uploadCandidateImage();
         this.returnCandidate.candidateLogo = this.candidateImageUrl;
         response.candidateLogo = this.candidateImageUrl; 
 
@@ -421,7 +421,7 @@ export class CreateCandidatesComponent {
         this.saveCandidateAddtionalDetails(this.candidateId,response?.mobileNumber);
         }
 
-        this.close(this.returnCandidate);
+        this.close(response);
       
         this.gs.showMessage('Success', 'Create Successfully');
       },

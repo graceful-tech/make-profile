@@ -34,6 +34,10 @@
     <div>
       <img class="header-images" src="assets/img/make-profile.png" alt="Header Image" />
     </div>
+
+     
+    
+    
     <div class="wrapper1">
       <div class="credit">
         Balance Credits : {{ totalCreditsAvailable}}
@@ -77,143 +81,160 @@
 </header>
 
 <div class="wrapper">
-  <div class="left-section">
-    <div class="profile-wrapper">
-      <h5 class="section-heading">Upload Resume</h5>
-      <div class="grid grid-nogutter">
-        <div class="col-12">
-          <div class="px-1">
-            <input type="file" #attachment style="display: none;" (change)="addAttachment($event)"
-              accept=".doc, .docx, .pdf" />
-            <div class="file-wrapper d-flex align-items-center">
-              <i class="icon pi pi-cloud-upload" (click)="attachment.click()"></i>
-              <div class="ml-2">
-                <span *ngIf="resume?.fileName">
-                  <i class="pi pi-paperclip mr-2"></i>
-                  <span>{{ resume?.fileName }}</span>
-                </span>
-                <span *ngIf="!resume?.fileName" style="color: #171717;">
-                  Upload Your Resume
-                </span>
-                <span class="header-middle" *ngIf="!resume?.fileName">
-                  OR
-                </span>
-                <span class="header-button" *ngIf="!resume?.fileName">
-                  <p-button *ngIf="!candidateId" (onClick)="enterDetails()" label="Enter Details"></p-button>
-                  <p-button *ngIf="candidateId" (onClick)="UpdateCandidate()" label="Update Details"></p-button>
-                </span>
-                <!-- <span class="header-button" *ngIf="resume?.fileName">
-                  <button class="resume-btn" (click)="parseResume()">Next Step</button>
-                </span> -->
-              </div>
-            </div>
+  
+
+      <div class="profile-wrapper">
+          <div class="section-heading">
+              <span> Upload Resume</span>
+              <span class="link-button" (click)="viewHistory()">View History</span>
           </div>
+
+      
+             
+        <div class="full-page-center">
+              <div class="upload-container">
+
+                   <div class="upload-title">Upload Your Existing/Old Resume</div>
+                    <input type="file"  #attachment  style="display: none;"  (change)="addAttachment($event)"  accept=".doc, .docx, .pdf"/>
+                        <div class="upload-box">
+                          <p *ngIf="!resume?.fileName">Drag & drop your old resume here, or</p>
+                          <button class="browse-btn" (click)="attachment.click()">Browse Files</button>
+                          <div *ngIf="resume?.fileName" class="uploaded-file mt-3">
+                            <i class="pi pi-paperclip mr-2"></i>
+                            <span>{{ resume?.fileName }}</span>
+                          </div>
+                        </div>
+                              <div class="or-divider" *ngIf="!resume?.fileName">— or —</div>
+                          <div class="details-btns" *ngIf="!resume?.fileName">
+                            <button class="details-btn" *ngIf="!candidateId" (click)="enterDetails()">Enter Details</button>
+                            <button class="details-btn" *ngIf="candidateId" (click)="UpdateCandidate()">Update Details</button>
+                          </div>
+                </div>
         </div>
+
+       
+
+         <!-- <div>
+                <p-button class="mr-2" (onClick)="createResume()" label="Create Resume"></p-button>
+              </div> -->
+ 
+
+   <div class="section-header" (click)="toggleSection('resume')">
+      <span class="section-title">Your Resume</span>
+        <span *ngIf="showResumeTable">Hide</span>
+       <span *ngIf="!showResumeTable">View</span>
+  </div>
+
+
+  <div class="table-container mt-2" *ngIf="showResumeTable">
+    <p-table class="mobile" [value]="availableCredits">
+      <ng-template pTemplate="header">
+        <tr>
+          <!-- <th style="width: 10%;">CREDIT USED</th> -->
+          <th style="width: 10%;">PAYMENT DATE</th>
+          <th style="width: 10%;">CREDIT AVAILABLE</th>
+          <th style="width: 10%;">TEMPLATE NAME</th>
+          <th style="width: 10%;">NICK NAME</th>
+          <th style="width: 10%;">PAY AMOUNT</th>
+          <th style="width: 10%;">RECREATE RESUME</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-credits>
+        <tr>
+          <!-- <td>{{ credits.creditUsed ?? 0 }}</td> -->
+          <td>{{ credits.paymentDate }}</td>
+          <td>{{ credits.creditAvailable }}</td>
+          <td>{{ credits.templateName }}</td>
+          <td>{{ credits.nickName }}</td>
+          <td>
+            <button type="button" class="custom-btn" (click)="payment(credits.templateName)">Add Credit</button>
+          </td>
+          <ng-container *ngIf="credits.templateName !== 'Applied Job'; else emptyCell">
+            <td>
+              <button type="button" class="modify-btn" (click)="navigateToVerify(credits.templateName,credits.creditAvailable)">Generate Resume</button>
+            </td>
+          </ng-container>
+          <ng-template #emptyCell>
+            <td></td>
+          </ng-template>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="6">No records found.</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+ 
+
+
+    <div style="padding-top: 25px;">
+
+    
+
+     <div class="section-header" (click)="toggleSection('applied')">
+        <span class="section-title">Applied Jobs</span>
+           <span *ngIf="showAppliedJobs">Hide</span>
+       <span *ngIf="!showAppliedJobs">View</span>
       </div>
 
-      <div class="table-header">
-        <div class="grid grid-nogutter">
-          <div class="col-12">
-            <div class="file-wrapper mt-2 d-flex justify-content-between">
-              <div class="pl-2">
 
-                <h5 class="styled-text">Your Resume</h5>
+
+        <div class="table-container"  *ngIf="showAppliedJobs">
+                <div style="display: flex; justify-content: flex-end; padding-top: 10px;">
+                <!-- <span class="applied-job-button" (click)="payForApplyingJOb()">
+                  Pay for Applying job
+                </span> -->
               </div>
-              <div>
-                <p-button class="mr-2" (onClick)="createResume()" label="Create Resume"></p-button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- <h5 class="styled-text">Your Resume</h5>
-          <div>
-          <p-button class="mr-2" (onClick)="attachment.click()" label="Create"></p-button>
-          </div> -->
-        <div class="table-container">
-          <p-table class="mobile" [value]="availableCredits">
-            <ng-template pTemplate="header">
-              <tr>
-                <th style="width: 10%;">CREDIT USED</th>
-                <th style="width: 10%;">CREDIT AVAILABLE</th>
-                <th style="width: 10%;">PAYMENT DATE</th>
-                <th style="width: 10%;">TEMPLATE NAME</th>
-                <th style="width: 10%;">PAY AMOUNT</th>
-                <th style="width: 10%;">RECREATE RESUME</th>
-              </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-credits>
-              <tr>
-                <td>{{ credits.creditUsed ?? 0 }}</td>
-                <td>{{ credits.creditAvailable }}</td>
-                <td>{{ credits.paymentDate }}</td> 
-                <td>{{ credits.templateName }}</td>
-                <td> <button type="button" class="custom-btn" (click)="payment(credits.templateName)">Just Pay</button> </td>
-                
-                
-                <ng-container *ngIf="credits.templateName !== 'Applied Job'; else emptyCell">
-                    <td>
-                      <button 
-                        type="button" 
-                        class="modify-btn"  
-                        (click)="navigateToVerify(credits.templateName)">
-                        Re-Create
-                      </button>
-                    </td>
-                  </ng-container>
-                  <ng-template #emptyCell>
-                    <td></td>
-                  </ng-template>
-
-              </tr>
-            </ng-template>
-            <ng-template pTemplate="emptymessage">
-              <tr>
-                <td colspan="6">No records found.</td>
-              </tr>
-            </ng-template>
-          </p-table>
-        </div>
-
-        <div class="styled-text">
-        <h5>Applied Jobs</h5>
-           <!-- <p-button type="button"  label="Pay for job"  (onClick)="payForApplyingJOb()"></p-button> -->
-            <span class="applied-job-button" (click)="payForApplyingJOb()">Pay for Applying job</span>
-
-        </div>
-        <div class="table-container">
             <p-table   [value]="appliedJobs">
                 <ng-template pTemplate="header">
                     <tr>
                         <th style="width: 5%;">JOB ID</th>
                         <th style="width: 10%;">SKILLS</th>
-                        <th style="width: 10%;">LOCATION</th>
+                        <!-- <th style="width: 10%;">LOCATION</th> -->
                         <th style="width: 10%;">SOURCE</th>
                         <th style="width: 10%;">STATUS</th>
-                        <th style="width: 10%;">ACTION</th>
+                        <!-- <th style="width: 10%;">ACTION</th> -->
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-jobs>
                     <tr>
-                        <td>{{ jobs.id }}</td>
-                        <td>{{ jobs.name }}</td>
-                        <td>{{ jobs.remainingEdits }}</td>
-                        <td>{{ jobs.amountPaid }}</td>
-                        <td>{{ jobs.amountPaid }}</td>
-                        <td>
+                        <td>{{ jobs.jobId }}</td>
+                        <td>{{ jobs.skills }}</td>
+                        <!-- <td>{{ jobs.location }}</td> -->
+                        <td>{{ jobs.source }}</td>
+                        <td>{{ jobs.status }}</td>
+                        <!-- <td>
                           <i class="pi pi-pencil" style="cursor: pointer;" (click)="onEdit(resume.id)" title="Edit"></i>
-                        </td>
+                        </td> -->
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="emptymessage">
                   <tr>
-                      <td colspan="6">No records found.</td>
+                      <td colspan="4">No records found.</td>
                   </tr>
               </ng-template>
             </p-table>
+             <div class="pagination-wrapper">
+            <p-paginator (onPageChange)="onPageChange($event)" [totalRecords]="totalRecords"
+              [rowsPerPageOptions]="[10, 20, 30]" [rows]="maxLimitPerPage">
+            </p-paginator>
+
+          </div>
+        </div>
+   </div>
+
+      <div style="padding-top: 25px;">
+        
+           <div class="section-header" (click)="toggleSection('suggested')">
+          <span class="section-title">Suggest Jobs</span>
+           <span *ngIf="showSuggestJobs">Hide</span>
+           <span *ngIf="!showSuggestJobs">View</span>
         </div>
 
-
-        <div>
+        <ng-container *ngIf="showSuggestJobs">
+ 
           <form [formGroup]="requirementForm" class="search-form">
             <div class="search-wrapper">
               <div class="col-12 md:col-6 lg:col-3">
@@ -246,11 +267,13 @@
               </div>
             </div>
           </form>
-        </div>
+        
 
 
+        <div style="padding-top: 25px;">
 
-        <h5 class="styled-text">Suggest Jobs</h5>
+
+       
         <div class="table-container">
           <p-table [value]="requirements">
             <ng-template pTemplate="header">
@@ -260,11 +283,11 @@
                 <th style="width: 10%;">LOCATION</th>
                 <th style="width: 10%;">SOURCE</th>
                 <th style="width: 10%;">EXPERIENCE</th>
-                <th style="width: 10%;">CTC</th>
+                <th style="width: 10%;">MAX CTC (SALARY)</th>
                 <th style="width: 5%;">SCORE</th>
                 <th style="width: 10%;">SUITE</th>
-                <th style="width: 10%;">GET SCORE</th>
-                <th style="width: 10%;">APPLY</th>
+                <th style="width: 10%;">CHECK ELIGIBILITY</th>
+                <th style="width: 10%;">ACTION</th>
               </tr>
             </ng-template>
             <ng-template pTemplate="body" let-requirement>
@@ -294,31 +317,60 @@
                   <td>-</td>
                 </ng-template>
                 <td>
-                  <button class="small-btn" (click)="getScore(requirement.jobId,requirement.tenant)">Get Score</button>
+                  <button class="small-btn" (click)="getScore(requirement.jobId,requirement.tenant)">Check Eligibility</button>
                 </td>
                 <td>
                   <!-- <button class="apply-btn"
                     [disabled]="!(candidateScore?.related && candidateScore?.score !== null && requirement.jobId === candidateScore?.jobId)"
                     (click)="applyJob(requirement.jobId,requirement.tenant)">Apply</button> -->
-                    <button class="apply-btn"
-                     
-                    (click)="applyJob(requirement.jobId,requirement.tenant)">Apply</button>
+                    <!-- <button class="apply-btn"
+                    (click)="applyJob(requirement.jobId,requirement.tenant)">Apply</button> -->
+
+                      <div (click)="handleApply(requirement)">
+                      <button class="apply-btn"
+                        [disabled]="!isButtonEnabled(requirement)"
+                      >Apply</button>
+                    </div>
                 </td>
 
               </tr>
             </ng-template>
+
+            <ng-template pTemplate="emptymessage">
+                  <tr>
+                      <td colspan="10">No records found.</td>
+                  </tr>
+              </ng-template>
           </p-table>
           <div class="pagination-wrapper">
             <p-paginator (onPageChange)="onPageChange($event)" [totalRecords]="totalRecords"
               [rowsPerPageOptions]="[10, 20, 30]" [rows]="maxLimitPerPage">
             </p-paginator>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <div class="right-section">
+          </div>
+         
+        </div>
+        
+      </div>  
+       </ng-container>
+    </div>
+
+     <div style="padding-top: 25px;">
+
+     </div>
+
+
+    
+       <div class="section-header" (click)="toggleSection('showCandidates')">
+        <span class="section-title">View Details</span>
+           <span *ngIf="showCandidates">Hide</span>
+       <span *ngIf="!showCandidates">View</span>
+      </div>
+
+      
+  
+
+  <div class="table-container" style="padding-top: 25px;" *ngIf="showCandidates">
     <div class="profile-wrapper">
       <div style="text-align: left; color: rgb(239, 233, 233);">
        <span style="font-size: 20px; font-weight: bold; background-color: #1a8c8c; padding: 5px 5px; border-radius: 50px;">Your Details</span>
@@ -422,7 +474,7 @@
             </div>
           </div>
 
-          <div class="col-12 md:col-6">
+          <div class="col-12 sm:col-6 md:col-4">
             <div class="field-wrapper">
               <label>Address</label>
               <div class="input-wrapper">
@@ -431,7 +483,7 @@
             </div>
           </div>
 
-          <div class="col-12 md:col-6">
+          <div class="col-12 sm:col-6 md:col-4">
             <div class="field-wrapper">
               <input type="file" #attachment1 (change)="addCandidateImage($event)" style="display: none" />
               <div class="image-container">
@@ -483,10 +535,10 @@
         <ng-container *ngIf="!candidateForm.get('fresher')?.value">
           <div formArrayName="experiences">
             <div *ngFor="let experience of experienceControls.controls; let i = index" [formGroupName]="i"
-              class="experience-container">
+              class="experience-container">  
 
-              <!-- Experience Details -->
-              <div class="grid">
+              
+                <div class="grid">
                 <div class="col-12 sm:col-6 md:col-4">
                   <div class="field-wrapper">
                     <label>Company Name</label>
@@ -543,7 +595,7 @@
                 </div>
               </div>
 
-              <!-- Project Details -->
+              
               <div formArrayName="projects">
                 <div class="bysection-heading mt-4">
                   <div>Project Details</div>
@@ -938,17 +990,32 @@
 
         </div>
    </form> 
-</div>
+</div> 
+
+      </div>
+    </div>
+  </div>  
+    
+    
+    </div>
+
+  
+
+  
+  
+
+  
 
 
-      <div class="button-wrapper" >
+      <!-- <div class="button-wrapper" >
         <p-button class="mr-2" [label]="dataLoaded ? 'Generate' : 'Generating..'" [icon]="dataLoaded ? '' : 'pi pi-spin pi-spinner'" [disabled]="!dataLoaded"
             (onClick)="createCandidate()"></p-button>
         <p-button  styleClass="p-button-secondary" label="Reset" (onClick)="reset()"> </p-button>
-        </div>
-    </div>
-  </div>
-</div>
+        </div> -->
+    <!-- </div>
+  </div> -->
+ 
 
+    
  
 

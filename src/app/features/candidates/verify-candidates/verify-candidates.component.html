@@ -553,13 +553,13 @@
          <app-make-profile-divider></app-make-profile-divider>
 
          <div class="button-wrapper" *ngIf="!payments">
-          <p-button class="mr-2" [label]="dataLoaded ? 'Generate' : 'Generating..'"  [icon]="dataLoaded ? '' : 'pi pi-spin pi-spinner'" [disabled]="!dataLoaded"
-              (onClick)="createCandidate()"></p-button>
+          <!-- <p-button class="mr-2" [label]="dataLoaded ? 'Generate' : 'Generating..'"  [icon]="dataLoaded ? '' : 'pi pi-spin pi-spinner'" [disabled]="!dataLoaded"
+              (onClick)="createCandidate()"></p-button> -->
       
           <p-button  styleClass="p-button-secondary" label="Reset" (onClick)="reset()"> </p-button>
           </div>
           <div class="button-wrapper" *ngIf="payments">
-            <p-button class="mr-2" label="Next"  (onClick)="verifyDetails()"></p-button>
+            <p-button class="mr-2" label="Next"  (onClick)="createCandidate()"></p-button>
           </div>
           
   </div>

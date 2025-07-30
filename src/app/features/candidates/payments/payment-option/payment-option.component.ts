@@ -34,6 +34,7 @@ export class PaymentOptionComponent  {
   planetImagePath:any;
   availableCredits:any;
   generating:boolean=false;
+  nickName: any;
   
 
   constructor(
@@ -53,6 +54,7 @@ export class PaymentOptionComponent  {
     this.candidates = this.config.data?.candidates;
     this.candidateId = this.config.data?.candidateId;
     this.templateName = this.config.data?.resumeName;
+    this.nickName = this.config.data?.nickName;
 
     const userId =   sessionStorage.getItem('userId')
 
@@ -67,27 +69,57 @@ export class PaymentOptionComponent  {
 
   
   async payRupees() {
-   const confirmedAmount = prompt("Enter final amount in ₹", "10");
+  const confirmedAmount = prompt("Enter final amount in ₹", "10");
 
-  if (confirmedAmount && !isNaN(+confirmedAmount) && +confirmedAmount > 0) {
-    const amount = +confirmedAmount * 100;    
+  const amountNum = Number(confirmedAmount);
+
+   if (!isNaN(amountNum) && Number.isInteger(amountNum) && amountNum >= 10) {
+    const amount = amountNum * 100;  
     const paymentType = 'Resume';
 
     this.ps.initRazorPays(() => {
       setTimeout(() => {
-        this.redeem();
+        this.saveNickName();
       }, 2000);
     });
 
     this.ps.payWithRazorPay(amount, this.templateName);
+
+    
+
   } else {
-    alert("Invalid amount entered.");
+    alert("Please enter a valid amount ₹10 or more.");
   }
-   
-  }
+}
+
+saveNickName(){
+  const route = "credits/save-nickname"
+  const formData = new FormData();
+
+   const userIds = sessionStorage.getItem('userId');
+    this.userId=userIds;
+
+  formData.append('nickName', this.nickName);
+  formData.append('userId', this.userId);
+  formData.append('templateName', this.templateName);
+
+   this.api.upload(route,formData).subscribe({
+      next: (response) => {
+         
+       this.redeem();
+      },
+      error: (error) => {
+        this.ngxLoaderStop();
+        this.gs.showMessage('error','Error in  creating Resume')
+      },
+    });
+
+}
+
   
   redeem() {
-     this.ngxLoaderStart();
+    
+    this.ngxLoaderStart();
     const route = 'credits/redeem'
 
     if(!this.templateName){
@@ -105,8 +137,8 @@ export class PaymentOptionComponent  {
         
         if(this.credits){
           this.ngxLoaderStop();
-            // this.createResume();
-            this.goToOpenAi();
+          //this.createResume();
+          this.goToOpenAi();
         }
         else{
           this.gs.showMessage('error','You dont have credits');
@@ -153,13 +185,15 @@ export class PaymentOptionComponent  {
 
         this.gs.showMessage('Success', 'Your resume is created successfully');
         localStorage.removeItem('resumeName');
-        this.ngxLoaderStop();
+         this.generating = false
+        this.ref.close();
       }
-       this.ngxLoaderStop();
+       this.generating = false
       },
       error: (error) => {
-        this.ngxLoaderStop();
-        this.gs.showMessage('error', error.error?.message)
+        this.gs.showMessage('Oops..!', error.error?.message)
+        this.generating = false
+        this.ref.close();
 
       },
 
@@ -167,7 +201,6 @@ export class PaymentOptionComponent  {
   }
 
   ngxLoaderStop(){
-    
     setTimeout(() => {
       this.isUploading = false;
     }, 2000);
@@ -202,6 +235,7 @@ export class PaymentOptionComponent  {
       next: (response:any) => {
 
         if(response){
+            
         const responseCandidate =  response as Candidate;
         this.openCreateResumeDialog(responseCandidate,this.templateName);
           this.generating = false
@@ -209,7 +243,7 @@ export class PaymentOptionComponent  {
               this.generating = false
       },
       error: (error) => {
-          this.generating = false
+        this.generating = false
         this.gs.showMessage('error', error.error?.message)
 
       },

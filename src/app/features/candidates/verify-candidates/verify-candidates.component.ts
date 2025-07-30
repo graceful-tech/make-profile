@@ -80,6 +80,7 @@ export class VerifyCandidatesComponent {
   achievements:boolean = true;
   extraSkills:boolean = true
   qualification:boolean= true;
+  nickName: any;
 
   constructor(
     private api: ApiService,
@@ -100,8 +101,10 @@ export class VerifyCandidatesComponent {
     this.candidateImageUrl = this.config.data?.candidateImage;
     this.resumeName = this.config.data?.resumeName;
     this.fieldsName = this.config.data?.fieldsName;
+    this.nickName = this.config.data?.nickName;
 
     console.log(this.resumeName);
+    console.log(this.candidates);
   }
 
 
@@ -224,18 +227,7 @@ export class VerifyCandidatesComponent {
       payload.experiences = [];
     }  
      
-    // if (payload.fresher) {
-    // if (Object.is(payload.collegeProject[0].collegeProjectName, '')) {
-    //     payload.collegeProject = [];
-    //   } else {
-    //     payload.collegeProject = payload.collegeProject.map((proj: any) => ({
-    //       ...proj,
-    //       collegeProjectSkills: Array.isArray(proj.collegeProjectSkills)
-    //         ? proj.collegeProjectSkills.join(', ')
-    //         : proj.collegeProjectSkills
-    //     }));
-    //   }
-    // } 
+    
 
     if (!payload.fresher) {
       if (Object.is(payload.experiences?.[0]?.companyName, '')) {
@@ -399,15 +391,18 @@ export class VerifyCandidatesComponent {
          this.returnCandidate = response;
          this.uploadCandidateImage();
         this.returnCandidate.candidateLogo = this.candidateImageUrl;
+        this.candidates = response;
 
         response.candidateLogo = this.candidateImageUrl; 
         this.close(this.returnCandidate);
+
+        this.verifyDetails();
       
-        this.gs.showMessage('Success', 'Create Successfully');
+        // this.gs.showMessage('Success', 'Create Successfully');
       },
       error: (error) => {
         this.dataLoaded = true;
-        this.gs.showMessage('Error', 'Error in Creating Resume');
+        this.gs.showMessage('Error', 'Error in Saving Details Please Recheck the Details');
 
         console.log(error);
       },
@@ -868,7 +863,6 @@ export class VerifyCandidatesComponent {
 
 
     verifyDetails() {
-
         const route = 'template/checker';
      const payload = {
       ...this.candidates,
@@ -932,6 +926,7 @@ export class VerifyCandidatesComponent {
               candidates: this.candidates,
               candidateId: this.candidates?.id,
               resumeName:this.resumeName,
+              nickName:this.nickName
             },
             closable: true,
             width: '30%',

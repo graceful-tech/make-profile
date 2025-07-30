@@ -1055,3 +1055,8 @@ table::-webkit-scrollbar-thumb {
     overflow-x: hidden;
     padding: 40px;
 }
+
+.update-dialog-header .p-dialog-header {
+    padding: 0.5rem !important;
+
+}

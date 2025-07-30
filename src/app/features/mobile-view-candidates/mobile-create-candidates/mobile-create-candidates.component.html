@@ -248,7 +248,9 @@
                       <div class="field-wrapper">
                         <label>Responsibilities</label>
                         <div class="input-wrapper">
-                          <p-chips separator=","  formControlName="responsibilities" [addOnBlur]="true" [addOnTab]="true"></p-chips>
+                          <p-chips separator=","  formControlName="responsibilities" [addOnBlur]="true" [addOnTab]="true" inputId="responsibilityInput"></p-chips>
+                          <p-button type="button" (onClick)="addSkill('responsibilities','responsibilityInput')">Add</p-button>
+
                         </div>
                       </div>
                     </div>
@@ -585,13 +587,11 @@
 
                    <div>
           <form [formGroup]="additionalDetailsForm">
-            <div class="add-details mt-3">
+            <div style="font-weight: bold;">
                 <Span>This information won’t appear on your resume, but it will help us match you with the right job</Span>
-
-                  
           </div>
 
-            <div class="grid">     
+            <div class="grid" style="padding-top:10px">     
               <div class="col-12 md:col-6 lg:col-3">
                       <div class="field-wrapper">
                         <label>State</label>
@@ -679,16 +679,7 @@
           </form> 
           </div>
   
-           <div class="button-wrapper" *ngIf="!payments">
-            <p-button class="mr-2" [label]="dataLoaded ? 'Generate' : 'Generating..'"
-                [icon]="dataLoaded ? '' : 'pi pi-spin pi-spinner'" [disabled]="!dataLoaded"
-                (onClick)="createCandidate()"></p-button>
-        
-            <p-button  styleClass="p-button-secondary" label="Reset"
-                (onClick)="reset()">
-            </p-button>
-            
-            </div>
+      
             <!-- <div class="button-wrapper" *ngIf="payments">
               <p-button class="mr-2" label="Next"
                   (onClick)="next()"></p-button>
@@ -706,4 +697,17 @@
             
     </div>
   </div>
+
+      <div class="button-bar">
+           <div class="button-wrapper" *ngIf="!payments">
+            <p-button class="mr-2" [label]="dataLoaded ? 'Generate' : 'Generating..'"
+                [icon]="dataLoaded ? '' : 'pi pi-spin pi-spinner'" [disabled]="!dataLoaded"
+                (onClick)="createCandidate()"></p-button>
+        
+            <p-button  styleClass="p-button-secondary" label="Reset"
+                (onClick)="reset()">
+            </p-button>
+            
+            </div>
+          </div>
   

@@ -419,6 +419,9 @@ export class MobileCreateCandidatesComponent {
 
         window.alert('Created Successfully');
 
+
+         this.router.navigate(['mob-candidate']);
+
       },
       error: (error) => {
         this.dataLoaded = true;
@@ -801,16 +804,18 @@ export class MobileCreateCandidatesComponent {
         const experienceFormArray = this.candidateForm.get('experiences') as FormArray;
         experienceFormArray.clear();
         experiences?.forEach((experience) => {
-        
+          const responsibilities = experience?.responsibilities ? experience.responsibilities.split(',').map((res: string) => res.trim()) : [];
+
           const experienceForm = this.createExperience();
           experienceForm.patchValue({
+            
             id:experience.id,
             companyName: experience.companyName,
             role: experience.role,
             experienceYearStartDate:  experience.experienceYearStartDate ? new Date(experience.experienceYearStartDate) : null,
             experienceYearEndDate:  experience.experienceYearEndDate ? new Date(experience.experienceYearEndDate) : null,
             currentlyWorking: experience.currentlyWorking,
-            responsibilities:experience.responsibilities,
+            responsibilities:responsibilities,
             
           });
          

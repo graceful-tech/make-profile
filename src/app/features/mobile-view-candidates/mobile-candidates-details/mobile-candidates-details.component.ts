@@ -79,6 +79,13 @@ export class MobileCandidatesDetailsComponent {
   additionalDetailsForm!:FormGroup;
   stateNames: any;
   citiesName: any;
+  showResumeTable: boolean = false;
+  showAppliedJobs:boolean = false;
+  showSuggestJobs:boolean = false;
+  showCandidates: boolean = false;
+  isEligibile:boolean = false;
+
+
 
 
   constructor(
@@ -124,6 +131,7 @@ export class MobileCandidatesDetailsComponent {
     this.getCandidates();
     this.createAdditionalDetailsForm();
     this.getStateNames();
+
   }
 
 
@@ -731,14 +739,14 @@ export class MobileCandidatesDetailsComponent {
   }
 
    getScore(jobId: any, tenant: any) {
-     this.ngxLoaderStart();
+     this.isEligibile =  true;
     const route = 'credits/redeem'
    
     const userId =   sessionStorage.getItem('userId')
      
     const payload = {
       userId:userId,
-      templateName: "Applied job"
+      templateName: "Applied Job"
     }
 
     this.api.retrieve(route,payload).subscribe({
@@ -749,13 +757,13 @@ export class MobileCandidatesDetailsComponent {
             this.checkScore(jobId,tenant);
         }
         else{
-          this.gs.showMessage('error','You dont have credits');
-           this.ngxLoaderStop();
+        this.gs.customMobileMessage('Oops..!','You don’t have enough credits to check eligibility.','Applied Job')
+            this.isEligibile =  false;
         }
       },
       error: (error) => {
-        this.ngxLoaderStop();
-        this.gs.showMessage('error','Error in Matching job')
+      this.isEligibile =  false;
+        this.gs.showMobileMessage('error','Error in Matching job')
       },
     });
   }
@@ -977,6 +985,8 @@ export class MobileCandidatesDetailsComponent {
       ) as FormArray;
       experienceFormArray.clear();
       experiences?.forEach((experience) => {
+      const responsibilities = experience?.responsibilities ? experience.responsibilities.split(',').map((res: string) => res.trim()) : [];
+
         const experienceForm = this.createExperience();
         experienceForm.patchValue({
           id: experience.id,
@@ -989,7 +999,7 @@ export class MobileCandidatesDetailsComponent {
             ? new Date(experience.experienceYearEndDate)
             : null,
           currentlyWorking: experience.currentlyWorking,
-          responsibilities: experience.responsibilities,
+          responsibilities: responsibilities,
         
         });
 
@@ -1124,8 +1134,7 @@ export class MobileCandidatesDetailsComponent {
   getAppliedJobs() {
     const id = localStorage.getItem('candidateId');
 
-    const route = `applied-jobs/${id}`;
-
+    const route = `applied-job?candidateId=${id}`;
     this.api.get(route).subscribe({
       next: (response) => {
         this.appliedJobs = response;
@@ -1271,8 +1280,10 @@ export class MobileCandidatesDetailsComponent {
   payment(templateName:any){
     const confirmedAmount = prompt("Enter final amount in ₹", "10");
 
-  if (confirmedAmount && !isNaN(+confirmedAmount) && +confirmedAmount > 0) {
-    const amount = +confirmedAmount * 100;  
+  const amountNum = Number(confirmedAmount);
+
+   if (!isNaN(amountNum) && Number.isInteger(amountNum) && amountNum >= 10) {
+    const amount = amountNum * 100;  
     const paymentType = 'Resume';
 
     this.ps.initRazorPays(() => {
@@ -1281,7 +1292,7 @@ export class MobileCandidatesDetailsComponent {
 
     this.ps.payWithRazorPay(amount, templateName);
   } else {
-    alert("Invalid amount entered.");
+    alert("Please enter a valid amount ₹10 or more.");
   }
   }
 
@@ -1289,7 +1300,9 @@ export class MobileCandidatesDetailsComponent {
     this.router.navigate(['mob-candidate/view-history'])
   }
 
-  navigateToVerify(templateName:any){
+  navigateToVerify(templateName:any,availableCredits:any){
+
+    if(availableCredits>0){
 
      localStorage.setItem('templateName',templateName);
     this.gs.setResumeName(templateName);
@@ -1299,12 +1312,20 @@ export class MobileCandidatesDetailsComponent {
     }
     this.router.navigate(['mob-candidate/edit-candidate']);
   }
+  else{
+    this.gs.customMobileMessage('Oops..!','You don’t have enough credits to check eligibility.',templateName)
+
+    // this.gs.showMobileMessage('error','Pay to use this template');
+  }
+  }
 
   payForApplyingJOb(){
-      const confirmedAmount = prompt("Enter final amount in ₹", "10");
+     const confirmedAmount = prompt("Enter final amount in ₹", "10");
 
-  if (confirmedAmount && !isNaN(+confirmedAmount) && +confirmedAmount > 0) {
-    const amount = +confirmedAmount * 100;  
+  const amountNum = Number(confirmedAmount);
+
+   if (!isNaN(amountNum) && Number.isInteger(amountNum) && amountNum >= 10) {
+    const amount = amountNum * 100;  
     const paymentType = 'Resume';
 
     this.ps.initRazorPays(() => {
@@ -1313,7 +1334,7 @@ export class MobileCandidatesDetailsComponent {
 
     this.ps.payWithRazorPay(amount, "Applied Job");
   } else {
-    alert("Invalid amount entered.");
+    alert("Please enter a valid amount ₹10 or more.");
   }
   }
 
@@ -1464,6 +1485,49 @@ export class MobileCandidatesDetailsComponent {
 
 
   }
+
+
+
+  
+toggleSection(section: string) {
+  switch (section) {
+    case 'resume':
+      this.showResumeTable = !this.showResumeTable;
+      break;
+    case 'applied':
+      this.showAppliedJobs = !this.showAppliedJobs;
+      
+      if(this.showAppliedJobs){
+      this.getAppliedJobs();
+      }
+      break;
+    case 'suggested':
+      this.showSuggestJobs = !this.showSuggestJobs;
+      break;
+    case 'showCandidates':
+      this.showCandidates = !this.showCandidates;
+      break;
+  }
+
+}
+
+ isButtonEnabled(requirement: any): boolean {
+  return (
+    this.candidateScore?.related &&
+    this.candidateScore?.score !== null &&
+    requirement.jobId === this.candidateScore?.jobId
+  );
+}
+
+handleApply(requirement: any): void {
+  const isEnabled = this.isButtonEnabled(requirement);
+
+  if (isEnabled) {
+    this.applyJob(requirement.jobId, requirement.tenant);
+  } else {
+    alert('Error: You cannot apply for this job at the moment.');
+  }
+}
 
   
 

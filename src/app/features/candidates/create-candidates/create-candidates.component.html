@@ -78,13 +78,15 @@
         
             <div class="col-12 md:col-6 lg:col-3">
               <div class="field-wrapper">
-                <label>Gender</label>
+                <label class="required">Gender</label>
                 <div class="input-wrapper">
                   <p-dropdown [options]="genderList" optionLabel="displayValue" optionValue="dataValue"  placeholder="Select Gender"
                     formControlName="gender">
                   </p-dropdown>
                 </div>
               </div>
+                <small class="error-message" *ngIf="candidateForm.controls['gender'].invalid && showError" >
+                Gender is required</small>
             </div>
 
             <div class="col-12 md:col-6 lg:col-3">
@@ -474,6 +476,10 @@
             <app-make-profile-divider></app-make-profile-divider>
             <div class="section-heading mt-3">
               <div>Course & Certificates</div>
+
+              <div style="color: #313133; font-weight: bold; background-color: rgb(235, 235, 235); border-radius: 50px; padding: 5px 5px;">
+            <p-checkbox [binary]="true" formControlName="certificatesMandatory"  label="Is Mandatory"></p-checkbox>
+            </div>
             </div>
       
             <div formArrayName="certificates" class="border-line" id="course">
@@ -527,8 +533,13 @@
       
              <app-make-profile-divider></app-make-profile-divider>
             <div class="section-heading mt-3">
-              <div>Achievements & Awards</div>
+          <Span>Achievements & Awards</Span>
+
+          <div style="color: #313133; font-weight: bold; background-color: rgb(235, 235, 235); border-radius: 50px; padding: 5px 5px;">
+            <p-checkbox [binary]="true" formControlName="achievementsMandatory" label="Is Mandatory"></p-checkbox>
             </div>
+        </div>
+        
       
             <div formArrayName="achievements" class="border-line" id="achievements">
                <div *ngFor="let certificate of achievementsControls.controls; let i = index" [formGroupName]="i" class="experience-container">
@@ -569,25 +580,37 @@
 
             <app-make-profile-divider></app-make-profile-divider>
 
-            <div class="grid">
-              <div class="col-12 md:col-6">
+            
+              <div class="col-12">
                <div class="field-wrapper">
-                <label>Soft Skills</label>
+               <div style="color: #040404;display: flex; justify-content: space-between;">
+                <Span>Soft Skills</Span>
+                <div style="color: #040404; font-weight: bold; background-color: rgb(235, 235, 235); border-radius: 50px; padding: 5px 5px;">
+                 <p-checkbox [binary]="true" formControlName="softSkillsMandatory" label="Is Mandatory"></p-checkbox>
+                </div>
+                </div>
                  <div class="input-wrapper">
                   <p-chips separator="," formControlName="softSkills" [addOnBlur]="true" [addOnTab]="true"></p-chips>
                  </div>
                </div>
               </div>
 
-              <div class="col-12 md:col-6">
-                <div class="field-wrapper">
-                 <label>Core Competencies</label>
+
+
+              <div class="col-12">
+                 <div class="field-wrapper">
+               <div style="color: #0d0d0e;display: flex; justify-content: space-between;">
+                <Span>Core Competencies</Span>
+                <div style="color: #313133; font-weight: bold; background-color: rgb(235, 235, 235); border-radius: 50px; padding: 5px 5px;">
+                 <p-checkbox [binary]="true" formControlName="coreCompentenciesMandatory" label="Is Mandatory"></p-checkbox>
+              </div>
+               </div>
                   <div class="input-wrapper">
                    <p-chips separator="," formControlName="coreCompentencies" [addOnBlur]="true" [addOnTab]="true"></p-chips>
                   </div>
                 </div>
                </div>
-           </div>
+           
          </form>
 
          <app-make-profile-divider></app-make-profile-divider>
@@ -595,13 +618,19 @@
 
           <div>
     <form [formGroup]="additionalDetailsForm">
-      <div class="add-details mt-3">
+      <!-- <div class="add-details mt-3">
           <Span>This information won’t appear on your resume, but it will help us match you with the right job</Span>
 
            
-  </div>
+  </div> -->
 
-      <div class="grid">     
+         <div style="color: black;font-weight: bold; font-size: 20px;">
+            <Span>This information won’t appear on your resume, but it will help us match you with the right job</Span>
+         </div>
+
+
+
+      <div class="grid" style="padding-top:10px">     
         <div class="col-12 md:col-6">
                 <div class="field-wrapper">
                   <label>State</label>
@@ -693,15 +722,24 @@
 
 
 
-         <div class="button-wrapper" *ngIf="!payments">
-          <p-button class="mr-2" [label]="dataLoaded ? 'Generate' : 'Generating..'"  [icon]="dataLoaded ? '' : 'pi pi-spin pi-spinner'" [disabled]="!dataLoaded"
-              (onClick)="createCandidate()"></p-button>
-      
-          <p-button  styleClass="p-button-secondary" label="Reset" (onClick)="reset()"> </p-button>
-          </div>
-          <div class="button-wrapper" *ngIf="payments">
-            <p-button class="mr-2" label="Next"  (onClick)="next()"></p-button>
-          </div>
+          
+            <div class="button-bar">
+              <div class="button-wrapper" *ngIf="!payments">
+                <p-button class="mr-2" 
+                          [label]="dataLoaded ? 'Generate' : 'Generating..'"  
+                          [icon]="dataLoaded ? '' : 'pi pi-spin pi-spinner'" 
+                          [disabled]="!dataLoaded"
+                          (onClick)="createCandidate()">
+                </p-button>
+
+                <p-button styleClass="p-button-secondary" label="Reset" (onClick)="reset()"> </p-button>
+              </div>
+
+              <div class="button-wrapper" *ngIf="payments">
+                <p-button class="mr-2" label="Next" (onClick)="next()"></p-button>
+              </div>
+            </div>
+
           
   </div>
   <!-- <section class="preview-resume" >

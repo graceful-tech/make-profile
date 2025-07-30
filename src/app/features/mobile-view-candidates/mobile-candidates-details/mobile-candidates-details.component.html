@@ -20,6 +20,15 @@
   </div>
 </div>
 
+<div class="overlay"  *ngIf="isEligibile">
+  <div class="spinner-container">
+    <mat-spinner [diameter]="80" strokeWidth="5"   class="custom-blue" ></mat-spinner>
+    <p class="loading-text">
+  Checking Eligibility<span class="dot dot1">.</span><span class="dot dot2">.</span><span class="dot dot3">.</span>
+</p>
+  </div>
+</div>
+
 
 
 
@@ -76,7 +85,7 @@
     <div class="wrapper">
      <div class="left-section">
         <div class="profile-wrapper">
-          <div class="section-heading">
+          <!-- <div class="section-heading">
             <span>Upload Resume</span>
             <span class="link-button" (click)="viewHistory()">View History</span>
           </div>
@@ -105,12 +114,50 @@
               <p-button *ngIf="!candidateId" (onClick)="enterDetails()" label="Enter Details"></p-button>
               <p-button *ngIf="candidateId" (onClick)="UpdateCandidate()" label="Update Details"></p-button>
             </div>
-            <!-- <div class="bottom-section" *ngIf="resume?.fileName">
-              <button class="resume-btn" (click)="parseResume()">Next Step</button>
-            </div> -->
+             
+          </div> -->
+
+
+           
+          <div class="section-heading">
+              <span> Upload Resume</span>
+              <span class="link-button" (click)="viewHistory()">View History</span>
           </div>
-          
-            <div class="table-header">
+
+        <div>
+             
+        <div class="full-page-center">
+            <div class="upload-container">
+
+                <div class="upload-title">Upload Your Existing/Old Resume</div>
+                    <input type="file"  #attachment  style="display: none;"  (change)="addAttachment($event)"  accept=".doc, .docx, .pdf"/>
+                    <div class="upload-box">
+                      <p *ngIf="!resume?.fileName">Drag & drop your old resume here, or</p>
+                      <button class="browse-btn" (click)="attachment.click()">Browse Files</button>
+                      <div *ngIf="resume?.fileName" class="uploaded-file mt-3">
+                        <i class="pi pi-paperclip mr-2"></i>
+                        <span>{{ resume?.fileName }}</span>
+                      </div>
+                    </div>
+                    <div class="or-divider" *ngIf="!resume?.fileName">— or —</div>
+                    <div class="details-btns" *ngIf="!resume?.fileName">
+                      <button class="details-btn" *ngIf="!candidateId" (click)="enterDetails()">Enter Details</button>
+                      <button class="details-btn" *ngIf="candidateId" (click)="UpdateCandidate()">Update Details</button>
+                    </div>
+                  </div>
+            </div>
+
+            <div>
+                <p-button class="mr-2"  (onClick)="createResume()" label="Create Resume"></p-button>
+              </div>
+
+          <div class="section-header" (click)="toggleSection('resume')">
+                <span class="section-title">Your Resume</span>
+                  <span *ngIf="showResumeTable">Hide</span>
+                <span *ngIf="!showResumeTable">View</span>
+            </div>
+
+            <!-- <div class="table-header">
               <div class="grid grid-nogutter">
                 <div class="col-12">
                     <div class="file-wrapper mt-2 d-flex justify-content-between">
@@ -123,26 +170,25 @@
                       </div>
                     </div>
                 </div>
-              </div>
-              <!-- <h5 class="styled-text">Your Resume</h5>
-              <div>
-              <p-button class="mr-2" (onClick)="attachment.click()" label="Create"></p-button>
               </div> -->
-             <div class="table-container">
+              
+             <div class="table-container mt-2" *ngIf="showResumeTable">
               <p-table  [value]="availableCredits">
                 <ng-template pTemplate="header">
                   <tr>
-                    <th style="max-width: 5%;">CREDIT USED</th>
+                    <!-- <th style="max-width: 5%;">CREDIT USED</th> -->
+
                     <th  style="max-width: 5%;">CREDIT AVAILABLE</th>
+                    <th style="max-width: 5%;">NICK NAME</th>
                     <!-- <th>PAYMENT DATE</th> -->
                     <!-- <th>TEMPLATE NAME</th> -->
                     <th  style="max-width: 5%;">PAYMENT</th>
-                    <th  style="max-width: 5%;">RECREATE RESUME</th>
+                    <th  style="max-width: 5%;">GENERATE RESUME</th>
                   </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-credits>
                   <tr>
-                    <td>{{ credits.creditUsed ?? 'N/A' }}</td>
+                    <!-- <td>{{ credits.creditUsed ?? 'N/A' }}</td> -->
 
                      <td>
                         <div class="applied-job">
@@ -151,16 +197,16 @@
                         </div>
                       </td> 
 
-                    <!-- <td>{{ credits.paymentDate }}</td> -->
+                    <td>{{ credits.nickName }}</td>
                     <!-- <td>{{ credits.templateName }}</td> -->
-                   <td> <button type="button" class="custom-btn" (click)="payment(credits.templateName)">Pay</button> </td>
+                   <td> <button type="button" class="custom-btn" (click)="payment(credits.templateName)">Add Create</button> </td>
                  <ng-container *ngIf="credits.templateName !== 'Applied Job'; else emptyCell">
                     <td>
                       <button 
                         type="button" 
                         class="modify-btn"  
-                        (click)="navigateToVerify(credits.templateName)">
-                        Re-Create
+                        (click)="navigateToVerify(credits.templateName,credits.creditAvailable)">
+                        Generate Resume
                       </button>
                     </td>
                   </ng-container>
@@ -179,34 +225,43 @@
             </div>
 
 
-            <div class="styled-text">
+            <!-- <div class="styled-text">
               <h5 >Applied Jobs</h5>
-                <!-- <button type="button" style="background-color: rgb(74, 74, 182); border-radius: 5%; color: white;"    (click)="payForApplyingJOb()">Pay for job</button> -->
-                            <span class="applied-job-button" (click)="payForApplyingJOb()">Pay for applying job</span>
+                             <span class="applied-job-button" (click)="payForApplyingJOb()">Pay for applying job</span>
 
-            </div>
-            <div class="table-container">
+            </div> -->
+
+             <div style="padding-top: 25px;">
+
+    
+
+     <div class="section-header" (click)="toggleSection('applied')">
+        <span class="section-title">Applied Jobs</span>
+           <span *ngIf="showAppliedJobs">Hide</span>
+       <span *ngIf="!showAppliedJobs">View</span>
+      </div>
+            <div class="table-container" *ngIf="showAppliedJobs">
                 <p-table   [value]="appliedJobs">
                     <ng-template pTemplate="header">
                         <tr>
                             <th style="width: 5%;">JOB ID</th>
                             <th style="width: 10%;">SKILLS</th>
-                            <th style="width: 10%;">LOCATION</th>
+                            <!-- <th style="width: 10%;">LOCATION</th> -->
                             <th style="width: 10%;">SOURCE</th>
                             <th style="width: 10%;">STATUS</th>
-                            <th style="width: 10%;">ACTION</th>
+                            <!-- <th style="width: 10%;">ACTION</th> -->
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="body" let-jobs>
                         <tr>
-                            <td>{{ jobs.id }}</td>
-                            <td>{{ jobs.name }}</td>
-                            <td>{{ jobs.remainingEdits }}</td>
-                            <td>{{ jobs.amountPaid }}</td>
-                            <td>{{ jobs.amountPaid }}</td>
-                            <td>
+                            <td>{{ jobs.jobId }}</td>
+                            <td>{{ jobs.skills }}</td>
+                            <!-- <td>{{ jobs.source }}</td> -->
+                            <td>{{ jobs.source }}</td>
+                            <td>{{ jobs.status }}</td>
+                            <!-- <td>
                               <i class="pi pi-pencil" style="cursor: pointer;" (click)="onEdit(resume.id)" title="Edit"></i>
-                            </td>
+                            </td> -->
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="emptymessage">
@@ -216,9 +271,19 @@
                   </ng-template>
                 </p-table>
             </div>
+          </div>   
     
+           <div style="padding-top: 25px;"></div>
     
-            <div>
+             <div class="section-header" (click)="toggleSection('suggested')">
+             <span class="section-title">Suggest Jobs</span>
+           <span *ngIf="showSuggestJobs">Hide</span>
+           <span *ngIf="!showSuggestJobs">View</span>
+           </div>
+
+
+
+            <div *ngIf="showSuggestJobs">
               <form [formGroup]="requirementForm" class="search-form">
                 <div class="search-wrapper">
                   <div class="col-12 md:col-6 lg:col-3">
@@ -257,8 +322,8 @@
             
          
     
-            <h5 class="suggest-style">Suggest Jobs</h5>
-            <div class="table-container">
+             
+            <div class="table-container" *ngIf="showSuggestJobs">
                 <p-table    [value]="requirements">
                     <ng-template pTemplate="header">
                         <tr>
@@ -267,11 +332,11 @@
                             <th style="width: 10%;">LOCATION</th>
                             <th style="width: 10%;">SOURCE</th>
                             <th style="width: 10%;">EXPERIENCE</th>
-                            <th style="width: 10%;">CTC</th>
+                            <th style="width: 10%;">MAX CTC</th>
                             <th style="width: 5%;">SCORE</th>
                             <th style="width: 10%;">SUITE</th>
-                            <th style="width: 10%;">GET SCORE</th>
-                            <th style="width: 10%;">APPLY</th>
+                            <th style="width: 10%;">CHECK ELIGIBILITY</th>
+                            <th style="width: 10%;">ACTION</th>
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="body" let-requirement>
@@ -302,7 +367,15 @@
                               <button   class="small-btn" (click)="getScore(requirement.jobId,requirement.tenant)" >Get Score</button>
                             </td>
                             <td>
-                              <button   class="apply-btn" [disabled]="!(this.candidateScore?.related && this.candidateScore?.score !== null && requirement.jobId === this.candidateScore?.jobId)"  (click)="applyJob(requirement.jobId,requirement.tenant)" >Apply</button>
+                              <!-- <button   class="apply-btn" [disabled]="!(this.candidateScore?.related && this.candidateScore?.score !== null && requirement.jobId === this.candidateScore?.jobId)"  (click)="applyJob(requirement.jobId,requirement.tenant)" >Apply</button> -->
+                            
+                             <div (click)="handleApply(requirement)">
+                         <button class="apply-btn"
+                        [disabled]="!isButtonEnabled(requirement)"
+                      >Apply</button>
+                    </div>
+                            
+                            
                             </td>
     
                         </tr>
@@ -320,10 +393,20 @@
               </div>
             </div>
           </div>  
-        </div>
-     </div>
-     
-     <div class="right-section">
+      
+        
+  <div style="padding-top: 25px;"></div>
+
+    
+       <div class="section-header" (click)="toggleSection('showCandidates')">
+        <span class="section-title">View Details</span>
+           <span *ngIf="showCandidates">Hide</span>
+       <span *ngIf="!showCandidates">View</span>
+      </div>
+
+
+
+     <div *ngIf="showCandidates">
         <div class="profile-wrapper">
 
            <div style="text-align: center; color: rgb(239, 233, 233); padding-bottom: 20px;">
@@ -559,6 +642,17 @@
                           </div>
                         </div>
                       </div>
+
+                       <div class="col-12">
+                      <div class="field-wrapper">
+                        <label>Responsibilities</label>
+                        <div class="input-wrapper">
+                          <p-chips separator=","  formControlName="responsibilities" [addOnBlur]="true" [addOnTab]="true" inputId="responsibilityInput"></p-chips>
+                          <p-button type="button" (onClick)="addSkill('responsibilities','responsibilityInput')">Add</p-button>
+
+                        </div>
+                      </div>
+                    </div>
                 
                       <!-- Project Details -->
                       <div formArrayName="projects">
@@ -856,13 +950,11 @@
 
                 <div>
           <form [formGroup]="additionalDetailsForm">
-            <div class="add-details mt-3">
+            <div style="font-weight: bold;">
                 <Span>This information won’t appear on your resume, but it will help us match you with the right job</Span>
-
-                  
           </div>
 
-            <div class="grid">     
+            <div class="grid" style="padding-top:10px">     
               <div class="col-12 md:col-6 lg:col-3">
                       <div class="field-wrapper">
                         <label>State</label>
@@ -963,3 +1055,7 @@
         
      </div>
     </div>  
+
+      </div>
+     </div>
+     

@@ -12,7 +12,9 @@ import { LoginPopupComponent } from "./popup/login-popup/login-popup.component";
 import { MatIconModule } from '@angular/material/icon'; 
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MobileMessageComponent } from "./mobile-message/mobile-message.component";
- 
+import { CustomMessageComponent } from "./custom-message/custom-message.component";
+import { CustomMobileMessageComponent } from "./custom-mobile-message/custom-mobile-message.component";
+   
  
  
 @NgModule({
@@ -21,7 +23,9 @@ import { MobileMessageComponent } from "./mobile-message/mobile-message.componen
    ClickedOutsideDirective,
    MessageComponent,
    LoginPopupComponent,
-   MobileMessageComponent
+   MobileMessageComponent,
+   CustomMessageComponent,
+   CustomMobileMessageComponent
   ],
   imports: [
     CommonModule,
@@ -31,10 +35,7 @@ import { MobileMessageComponent } from "./mobile-message/mobile-message.componen
     ReactiveFormsModule,
     NgxUiLoaderModule,
     MatIconModule,
-    MatProgressSpinnerModule,
-   
-    
-  ],
+    MatProgressSpinnerModule,  ],
   exports: [
     CommonModule,
     FormsModule,
@@ -49,7 +50,10 @@ import { MobileMessageComponent } from "./mobile-message/mobile-message.componen
     MatIconModule,
     NgxUiLoaderModule,
     MatProgressSpinnerModule,
-    MobileMessageComponent
+    MobileMessageComponent,
+    CustomMessageComponent,
+    CustomMobileMessageComponent
+    
   ]
 })
 export class SharedModule { }

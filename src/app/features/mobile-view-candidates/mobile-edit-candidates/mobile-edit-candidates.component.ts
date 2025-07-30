@@ -222,18 +222,6 @@ candidateForm!: FormGroup;
       payload.experiences = [];
     }  
      
-    // if (payload.fresher) {
-    // if (Object.is(payload.collegeProject[0].collegeProjectName, '')) {
-    //     payload.collegeProject = [];
-    //   } else {
-    //     payload.collegeProject = payload.collegeProject.map((proj: any) => ({
-    //       ...proj,
-    //       collegeProjectSkills: Array.isArray(proj.collegeProjectSkills)
-    //         ? proj.collegeProjectSkills.join(', ')
-    //         : proj.collegeProjectSkills
-    //     }));
-    //   }
-    // } 
  
         if (!payload.fresher) {
       if (Object.is(payload.experiences?.[0]?.companyName, '')) {
@@ -400,20 +388,18 @@ candidateForm!: FormGroup;
        if (this.candidateImageUrl !== undefined && this.multipartFile !== undefined) {
           this.uploadCandidateImage();
         }
-
-        // response.softSkills = response?.softSkills || [];
-        // response.coreCompentencies = response?.coreCompentencies || [];
         response.candidateLogo = this.candidateImageUrl; 
 
-         this.gs.setCandidateDetails(this.candidates);
-        
-        window.alert('Updated Successfully'); 
+        this.gs.setCandidateDetails(this.candidates);
+        if(this.resumeName !== null && this.resumeName !== undefined){
+          this.gs.setResumeName(this.resumeName);
       
+          this.router.navigate(['mob-candidate/verify-components']);  
+          }
       },
       error: (error) => {
         this.dataLoaded = true;
         window.alert('Error in Updating please try again');
-
         console.log(error);
       },
     });
@@ -787,6 +773,9 @@ candidateForm!: FormGroup;
         const experienceFormArray = this.candidateForm.get('experiences') as FormArray;
         experienceFormArray.clear();
         experiences?.forEach((experience) => {
+
+        const responsibilities = experience?.responsibilities ? experience.responsibilities.split(',').map((res: string) => res.trim()) : [];
+
         
           const experienceForm = this.createExperience();
           experienceForm.patchValue({
@@ -796,7 +785,7 @@ candidateForm!: FormGroup;
             experienceYearStartDate:  experience.experienceYearStartDate ? new Date(experience.experienceYearStartDate) : null,
             experienceYearEndDate:  experience.experienceYearEndDate ? new Date(experience.experienceYearEndDate) : null,
             currentlyWorking: experience.currentlyWorking,
-            responsibilities:experience.responsibilities,
+            responsibilities:responsibilities,
             
           });
          

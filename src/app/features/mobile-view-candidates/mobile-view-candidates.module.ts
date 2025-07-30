@@ -14,6 +14,7 @@ import { MobileResumeDetailsComponent } from './mobile-resume-details/mobile-res
 import { ViewMobileHistoryCandidatesComponent } from './view-mobile-history-candidates/view-mobile-history-candidates.component';
 import { ResumeDetailsMobileComponent } from './resume-details-mobile/resume-details-mobile.component';
 import { FinalVerifyComponent } from './final-verify/final-verify.component';
+import { NickNameMobileComponent } from './nick-name-mobile/nick-name-mobile.component';
   
 
 @NgModule({
@@ -28,7 +29,8 @@ import { FinalVerifyComponent } from './final-verify/final-verify.component';
     MobileResumeDetailsComponent,
     ViewMobileHistoryCandidatesComponent,
     ResumeDetailsMobileComponent,
-    FinalVerifyComponent
+    FinalVerifyComponent,
+    NickNameMobileComponent
  
   ],
   imports: [

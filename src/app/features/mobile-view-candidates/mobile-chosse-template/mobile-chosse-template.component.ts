@@ -16,6 +16,7 @@ import {
 import { ApiService } from 'src/app/services/api.service';
 import { GlobalService } from 'src/app/services/global.service';
 import { Candidate } from 'src/app/models/candidates/candidate.model';
+import { NickNameMobileComponent } from '../nick-name-mobile/nick-name-mobile.component';
 
 @Component({
   selector: 'app-mobile-chosse-template',
@@ -184,6 +185,34 @@ export class MobileChosseTemplateComponent {
       this.gs.setCandidateImage(this.candidateImageUrl);
     }
     this.router.navigate(['mob-candidate/edit-candidate']);
+  }
+
+  openNickNameField(templateName:any){
+    const ref = this.dialog.open(NickNameMobileComponent,{
+          data: {
+             resume:templateName,
+          },
+          closable: true,
+          width: '70%',
+          height: '90%',
+          header: 'Enter the Nick Name',
+          styleClass: 'payment-dialog-header',
+        });
+    
+        // ref.onClose.subscribe(response => {
+        //   if (response) {
+    
+        //     this.candidates = response;
+        //     this.candidateId = response.id;
+        //     const candidate = response as Candidate
+        //     const candidateClone = JSON.parse(JSON.stringify(candidate));
+        //     this.patchCandidateForm(candidateClone);
+        //     this.candidateImageUrl = response.candidateLogo;
+    
+        //     this.resume = null;
+            
+        //   }
+        // });
   }
 
   getCandidateById(id: any) {
