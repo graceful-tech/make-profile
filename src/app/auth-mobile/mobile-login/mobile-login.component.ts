@@ -19,6 +19,7 @@ export class MobileLoginComponent {
   error!: String;
   showError = false;
   loadingFlag: boolean = false;
+  loginType: string | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -47,7 +48,8 @@ export class MobileLoginComponent {
 
   createLoginForm() {
     this.loginForm = this.fb.group({
-      mobileNumber: ['', Validators.required],
+      mobileNumber: [''],
+      userName: [''],
       password: ['', Validators.required],
     });
   }
@@ -87,5 +89,21 @@ export class MobileLoginComponent {
     window.location.href = url;
   }
 
+  setLoginType(type: string): void {
+    this.loginType = type;
+
+    this.loginForm.get('mobileNumber')?.clearValidators();
+    this.loginForm.get('userName')?.clearValidators();
+
+    // Apply validator only to the selected field
+    if (type === 'mobile') {
+      this.loginForm.get('mobileNumber')?.setValidators([Validators.required, Validators.pattern(/^[0-9]{10}$/)]);
+    } else if (type === 'userName') {
+      this.loginForm.get('userName')?.setValidators([Validators.required]);
+    }
+    // Update validation status
+    this.loginForm.get('mobileNumber')?.updateValueAndValidity();
+    this.loginForm.get('userName')?.updateValueAndValidity();
+  }
 
 }

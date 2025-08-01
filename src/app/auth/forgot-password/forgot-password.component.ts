@@ -114,7 +114,7 @@ export class ForgotPasswordComponent {
       });
     } else {
       this.showError = true;
-      this.gs.showMessage('Error', 'Please enter the email id');
+      this.gs.showMessage('Error', 'Error In Mail Sending');
     }
   }
 

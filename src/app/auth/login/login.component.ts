@@ -20,6 +20,7 @@ export class LoginComponent {
   error!: String;
   showError = false;
   loadingFlag: boolean = false;
+  loginType: string | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -39,17 +40,19 @@ export class LoginComponent {
         this.gs.setPaymentStatus(null);
       }
     });
+
   }
 
   createLoginForm() {
     this.loginForm = this.fb.group({
-      mobileNumber: ['', Validators.required],
+      mobileNumber: [''],
+      userName: [''],
       password: ['', Validators.required],
     });
   }
 
   login() {
-    this.loadingFlag = true;
+
     if (this.loginForm.valid) {
       this.loadingFlag = true;
       const route = 'auth/login';
@@ -88,14 +91,31 @@ export class LoginComponent {
     const baseUrl = window.location.origin;
     const redirectUri = isMobile ? `${baseUrl}/#/mob-candidate` : `${baseUrl}/#/candidate`;
     document.cookie = `redirect_uri=${encodeURIComponent(redirectUri)}; path=/`;
-    const url = `https://makeprofiles.com/profilev2rest/oauth2/authorization/google`;
+    const url = `${restUrl}/oauth2/authorization/google`;
     window.location.href = url;
   }
 
   goBack() {
     this.router.navigate(['']);
   }
- ForgotPassword(){
+  ForgotPassword() {
     this.router.navigate(['Forgot-password']);
+  }
+
+  setLoginType(type: string): void {
+    this.loginType = type;
+
+    this.loginForm.get('mobileNumber')?.clearValidators();
+    this.loginForm.get('userName')?.clearValidators();
+
+    // Apply validator only to the selected field
+    if (type === 'mobile') {
+      this.loginForm.get('mobileNumber')?.setValidators([Validators.required, Validators.pattern(/^[0-9]{10}$/)]);
+    } else if (type === 'userName') {
+      this.loginForm.get('userName')?.setValidators([Validators.required]);
+    }
+    // Update validation status
+    this.loginForm.get('mobileNumber')?.updateValueAndValidity();
+    this.loginForm.get('userName')?.updateValueAndValidity();
   }
 }

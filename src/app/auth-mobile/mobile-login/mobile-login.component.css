@@ -140,9 +140,10 @@ label.required::after {
     margin-right: 20px;
 }
 
-/* html, body {
-    margin: 0;
+.field-wrapper{
     padding: 0;
-    background-color: #fff; /* Ensures full white background */
-/* height: 100%; */
-/* } */
+}
+
+.col-12{
+    padding: 0;
+}

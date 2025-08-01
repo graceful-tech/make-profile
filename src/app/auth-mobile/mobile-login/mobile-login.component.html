@@ -28,12 +28,43 @@
                 </div>
 
                 <form [formGroup]="loginForm">
-                    <div class="field-wrapper">
+                    <!-- <div class="field-wrapper">
                         <label class="required">Mobile Number</label>
                         <input type="text" maxlength="10" pInputText formControlName="mobileNumber" />
                         <small class="error-message" *ngIf="loginForm.controls['mobileNumber'].invalid && showError">
                             Mobile Number is required
                         </small>
+                    </div> -->
+                    <div class="col-12">
+                        <div class="field-wrapper">
+                            <input type="radio" name="loginOption" (change)="setLoginType('mobile')">
+                            Mobile Number
+                            <input type="radio" name="loginOption" (change)="setLoginType('userName')">
+                            User Name
+                        </div>
+                    </div>
+                    <div class="col-12" *ngIf="loginType === 'mobile'">
+                        <div class="field-wrapper">
+                            <label class="required">Mobile Number</label>
+                            <div class="input-wrapper">
+                                <input type="text" maxlength="10" pInputText formControlName="mobileNumber">
+                            </div>
+                            <small class="error-message"
+                                *ngIf="loginForm.controls['mobileNumber'].invalid && showError">
+                                Mobile Number is required
+                            </small>
+                        </div>
+                    </div>
+                    <div class="col-12" *ngIf="loginType === 'userName'">
+                        <div class="field-wrapper">
+                            <label class="required">User Name</label>
+                            <div class="input-wrapper">
+                                <input type="text" pInputText formControlName="userName">
+                            </div>
+                            <small class="error-message" *ngIf="loginForm.controls['userName'].invalid && showError">
+                                Username is required
+                            </small>
+                        </div>
                     </div>
 
                     <div class="field-wrapper">
