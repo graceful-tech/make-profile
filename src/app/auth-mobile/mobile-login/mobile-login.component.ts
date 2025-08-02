@@ -55,8 +55,29 @@ export class MobileLoginComponent {
   }
 
   login() {
-    this.loadingFlag = true;
+    this.showError = true;
+    const selectedLoginType = this.loginType;
+    const password = this.loginForm.get('password')?.value;
+    const mobile = this.loginForm.get('mobileNumber')?.value;
+    const username = this.loginForm.get('username')?.value;
+
+    if (!selectedLoginType) {
+      this.error = 'Please select a login method (Mobile Number or Username)';
+      return;
+    }
+
+    if (
+      (selectedLoginType === 'mobile' && (!mobile || mobile.trim() === '')) ||
+      (selectedLoginType === 'username' && (!username || username.trim() === ''))
+    ) {
+      return;
+    }
+
+    if (!password || password.trim() === '') {
+      return;
+    }
     if (this.loginForm.valid) {
+      this.showError = false;
       this.loadingFlag = true;
       const route = 'auth/login';
       const postData = this.loginForm.value;
@@ -95,13 +116,15 @@ export class MobileLoginComponent {
     this.loginForm.get('mobileNumber')?.clearValidators();
     this.loginForm.get('userName')?.clearValidators();
 
-    // Apply validator only to the selected field
+    this.loginForm.get('mobileNumber')?.reset();
+    this.loginForm.get('userName')?.reset();
+
     if (type === 'mobile') {
       this.loginForm.get('mobileNumber')?.setValidators([Validators.required, Validators.pattern(/^[0-9]{10}$/)]);
     } else if (type === 'userName') {
       this.loginForm.get('userName')?.setValidators([Validators.required]);
     }
-    // Update validation status
+    
     this.loginForm.get('mobileNumber')?.updateValueAndValidity();
     this.loginForm.get('userName')?.updateValueAndValidity();
   }

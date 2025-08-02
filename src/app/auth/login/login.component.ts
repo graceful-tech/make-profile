@@ -52,6 +52,27 @@ export class LoginComponent {
   }
 
   login() {
+    this.showError = true;
+    const selectedLoginType = this.loginType;
+    const password = this.loginForm.get('password')?.value;
+    const mobile = this.loginForm.get('mobileNumber')?.value;
+    const username = this.loginForm.get('username')?.value;
+
+    if (!selectedLoginType) {
+      this.error = 'Please select a login method (Mobile Number or Username)';
+      return;
+    }
+
+    if (
+      (selectedLoginType === 'mobile' && (!mobile || mobile.trim() === '')) ||
+      (selectedLoginType === 'username' && (!username || username.trim() === ''))
+    ) {
+      return;
+    }
+
+    if (!password || password.trim() === '') {
+      return;
+    }
 
     if (this.loginForm.valid) {
       this.loadingFlag = true;
@@ -60,7 +81,7 @@ export class LoginComponent {
 
       this.api.retrieve(route, postData).subscribe({
         next: (response) => {
-          console.log(response)
+          console.log(response);
           sessionStorage.setItem('authType', 'custom');
           sessionStorage.setItem('token', response.token);
           sessionStorage.setItem('userName', response.userName);
@@ -72,10 +93,9 @@ export class LoginComponent {
           this.loadingFlag = false;
         },
       });
-    } else {
-      this.showError = true;
     }
   }
+
 
   // openSendPasswordResetEmailModal() {
   //   this.dialog.open(SendPasswordResetMailComponent, {
@@ -108,13 +128,15 @@ export class LoginComponent {
     this.loginForm.get('mobileNumber')?.clearValidators();
     this.loginForm.get('userName')?.clearValidators();
 
-    // Apply validator only to the selected field
+    this.loginForm.get('mobileNumber')?.reset();
+    this.loginForm.get('userName')?.reset();
+
     if (type === 'mobile') {
       this.loginForm.get('mobileNumber')?.setValidators([Validators.required, Validators.pattern(/^[0-9]{10}$/)]);
     } else if (type === 'userName') {
       this.loginForm.get('userName')?.setValidators([Validators.required]);
     }
-    // Update validation status
+
     this.loginForm.get('mobileNumber')?.updateValueAndValidity();
     this.loginForm.get('userName')?.updateValueAndValidity();
   }
