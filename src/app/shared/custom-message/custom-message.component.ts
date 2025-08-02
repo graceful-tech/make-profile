@@ -36,7 +36,9 @@ export class CustomMessageComponent {
     const paymentType = 'Resume';
 
     this.ps.initRazorPays(() => {
-      
+      //  setTimeout(() => {
+      //   window.location.reload();
+      // }, 2000);
     });
 
     this.ps.payWithRazorPay(amount, this.templateName);

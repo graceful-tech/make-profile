@@ -147,9 +147,9 @@
                   </div>
             </div>
 
-            <div>
+            <!-- <div>
                 <p-button class="mr-2"  (onClick)="createResume()" label="Create Resume"></p-button>
-              </div>
+              </div> -->
 
           <div class="section-header" (click)="toggleSection('resume')">
                 <span class="section-title">Your Resume</span>
@@ -347,7 +347,7 @@
                             <td>{{ requirement.source }}</td>
                             <td>{{ requirement.minExperience }} - {{ requirement.maxExperience }}</td>
                             <td>{{ requirement.maxCostToCompany }}</td>
-                            <td *ngIf="requirement.jobId === this.candidateScore?.jobId; else noScore">
+                            <!-- <td *ngIf="requirement.jobId === this.candidateScore?.jobId; else noScore">
                               <span [ngClass]="{'green' : this.candidateScore?.score > '59','red': this.candidateScore?.score <= 59}"> 
                                 {{ this.candidateScore?.score !== null ? this.candidateScore?.score : '-' }} </span> 
                             </td>
@@ -362,21 +362,61 @@
                             </ng-template>
                             <ng-template #noRelated>
                               <td>-</td>
-                            </ng-template>
-                            <td>
-                              <button   class="small-btn" (click)="getScore(requirement.jobId,requirement.tenant)" >Get Score</button>
-                            </td>
-                            <td>
-                              <!-- <button   class="apply-btn" [disabled]="!(this.candidateScore?.related && this.candidateScore?.score !== null && requirement.jobId === this.candidateScore?.jobId)"  (click)="applyJob(requirement.jobId,requirement.tenant)" >Apply</button> -->
-                            
-                             <div (click)="handleApply(requirement)">
-                         <button class="apply-btn"
-                        [disabled]="!isButtonEnabled(requirement)"
-                      >Apply</button>
-                    </div>
-                            
-                            
-                            </td>
+                            </ng-template> -->
+
+
+                <td *ngIf="getCheckedScoreFor(requirement) as score; else noCheckedScore">
+                  <span [ngClass]="{'green': score?.score > 59, 'red': score?.score <= 59}">
+                    {{ score?.score !== null ? score?.score : '-' }}
+                  </span>
+                </td>
+
+                <td *ngIf="getCheckedScoreFor(requirement) as score; else noCheckedRelated">
+                          <span  [ngClass]="{  'green': score?.related === true,  'red': score?.related === false}">
+                    {{  score?.score !== null && score?.related === true   ? 'MATCHED'  : score?.score === null
+                        ? '-'  : 'NOT MATCHED'
+                    }}
+                  </span>
+                </td>
+
+                 <ng-template #noCheckedScore>
+                <td *ngIf="requirement.jobId === candidateScore?.jobId; else noScore">
+                  <span
+                    [ngClass]="{'green' : candidateScore?.score > '59','red': candidateScore?.score <= 59}">
+                    {{ candidateScore?.score !== null ? candidateScore?.score : '-' }} </span>
+                </td>
+                </ng-template>
+
+                <ng-template #noCheckedRelated>
+                <td *ngIf="requirement.jobId === candidateScore?.jobId; else noRelated">
+                  <span [ngClass]="{'green' : candidateScore?.related === true,   
+                            'red': candidateScore?.related === false }"> {{ candidateScore?.score !== null
+                    && candidateScore?.related === true ? 'MATCHED' : candidateScore?.score === null ? '-' :
+                    'NOT MATCHED' }}</span>
+                </td>
+                </ng-template>
+
+                <ng-template #noScore>
+                  <td>-</td>
+                </ng-template>
+                <ng-template #noRelated>
+                  <td>-</td>
+                </ng-template>
+
+                      <td>
+                        <button   class="small-btn" (click)="getScore(requirement.jobId,requirement.tenant)" >Get Score</button>
+                      </td>
+                      <td>
+                        <!-- <button   class="apply-btn" [disabled]="!(this.candidateScore?.related && this.candidateScore?.score !== null && requirement.jobId === this.candidateScore?.jobId)"  (click)="applyJob(requirement.jobId,requirement.tenant)" >Apply</button> -->
+                      
+                      <div (click)="handleApply(requirement)">
+                  <button class="apply-btn"
+                  [disabled]="!isButtonEnabled(requirement)"
+                >Apply</button>
+              </div>
+                      
+                      
+                      </td>
     
                         </tr>
                     </ng-template>
@@ -637,7 +677,7 @@
                         <div class="col-12">
                           <div class="field-wrapper">
                             <div class="input-wrapper"   style="display: flex; align-items: left; white-space: nowrap;"> 
-                              <p-checkbox [binary]="true" formControlName="currentlyWorking" label="Working Here"></p-checkbox>
+                              <p-checkbox [binary]="true" formControlName="currentlyWorking" label="Currently Working"></p-checkbox>
                             </div>
                           </div>
                         </div>
@@ -1040,7 +1080,6 @@
               </div>
           </form> 
           </div>
-               
                <div class="button-wrapper">
                 <p-button class="mr-2" [label]="dataLoaded ? 'Generate' : 'Generating..'"
                     [icon]="dataLoaded ? '' : 'pi pi-spin pi-spinner'" [disabled]="!dataLoaded"
@@ -1049,13 +1088,10 @@
                 <p-button  styleClass="p-button-secondary" label="Reset"
                     (onClick)="reset()">
                 </p-button>
-                
                 </div>
         </div>
-        
      </div>
     </div>  
-
       </div>
      </div>
      

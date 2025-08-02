@@ -202,7 +202,7 @@ export class ChooseTemplateComponent {
       },
       closable: true,
       width: '30%',
-      header: 'Enter the nick for this resume',
+      header: 'Enter the nick name for this resume',
     });
 
     }

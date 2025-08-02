@@ -356,3 +356,15 @@ margin-top: 10px;
     opacity: 1;
   }
 }
+
+
+.fresher-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.fresher-checkbox label {
+  white-space: nowrap;
+  margin: 0;
+}

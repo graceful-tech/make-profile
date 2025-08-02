@@ -84,6 +84,7 @@ export class MobileCandidatesDetailsComponent {
   showSuggestJobs:boolean = false;
   showCandidates: boolean = false;
   isEligibile:boolean = false;
+  checkedScore: any;
 
 
 
@@ -728,12 +729,17 @@ export class MobileCandidatesDetailsComponent {
 
     this.api.upload(route, formData).subscribe({
       next: (response) => {
+        if(response){
          this.candidateScore = response;
          this.ngxLoaderStop();
+         this.isEligibile =  false;
+        }
+        this.isEligibile =  false;
       },
       error: (error) => {
         this.ngxLoaderStop();
-        window.alert('Error in  matching job')
+        window.alert('Error in  matching job');
+        this.isEligibile =  false;
       },
     });
   }
@@ -780,13 +786,18 @@ export class MobileCandidatesDetailsComponent {
 
     this.api.retrieve(route, payload).subscribe({
       next: (response) => {
-        this.candidateScore = {
-          id: 1,
-          score: '55%',
-          related: true,
-          jobId: 'GT0002',
-        };
+       if(response){
+          this.toggleSection('suggested');
+          this.toggleSection('applied');
+        }
       },
+       error: error => {
+        this.ngxLoaderStop();
+        window.confirm(
+          'Error in applying job please reapply it'
+        );
+      }
+      
     });
   }
 
@@ -1070,8 +1081,11 @@ export class MobileCandidatesDetailsComponent {
 
       this.api.retrieve(route, payload).subscribe({
         next: (response) => {
+          if(response){
+          this.getCheckedScore();
           this.requirements = response?.results as Requirement[];
           this.totalRecords = response?.totalRecords;
+          }
         },
       });
     } else {
@@ -1148,8 +1162,8 @@ export class MobileCandidatesDetailsComponent {
         next: (response) => {
           const candidate = response as Candidate;
           if(candidate !== null){
-           
             this.candidateId =  candidate?.id;
+            localStorage.setItem('candidateId', this.candidateId);
             this.candidates = candidate;
             const candidateClone = JSON.parse(JSON.stringify(candidate)); 
             this.patchCandidateForm(candidateClone);
@@ -1287,7 +1301,10 @@ export class MobileCandidatesDetailsComponent {
     const paymentType = 'Resume';
 
     this.ps.initRazorPays(() => {
-      
+
+       setTimeout(() => {
+       this.getAvailableCredits();
+       },2000); 
     });
 
     this.ps.payWithRazorPay(amount, templateName);
@@ -1511,13 +1528,21 @@ toggleSection(section: string) {
 
 }
 
- isButtonEnabled(requirement: any): boolean {
-  return (
+isButtonEnabled(requirement: any): boolean {
+  const hasCandidateMatch =
     this.candidateScore?.related &&
     this.candidateScore?.score !== null &&
-    requirement.jobId === this.candidateScore?.jobId
+    requirement.jobId === this.candidateScore?.jobId;
+
+  const hasCheckedMatch = this.checkedScore?.some(
+    (score: any) =>
+      score.jobId === requirement.jobId &&
+      score.tenant === requirement.tenant
   );
+
+  return hasCandidateMatch || hasCheckedMatch;
 }
+
 
 handleApply(requirement: any): void {
   const isEnabled = this.isButtonEnabled(requirement);
@@ -1529,6 +1554,27 @@ handleApply(requirement: any): void {
   }
 }
 
-  
+getCheckedScore() {
+   const candidateId = localStorage.getItem('candidateId');
+   const route = `score-check/get-checked-score?candidateId=${candidateId}`
+
+    this.api.get(route).subscribe({
+      next: (response) => {
+      if(response){
+         this.checkedScore = response;
+        }
+      },
+       error: (error) => {
+          this.dataLoaded = true;
+         },
+    });
+  }
+
+  getCheckedScoreFor(requirement: any): any {
+  return this.checkedScore?.find(
+    (score: any) =>
+      score.jobId === requirement.jobId && score.tenant === requirement.tenant
+  );
+}
 
 }

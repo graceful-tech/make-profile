@@ -89,6 +89,7 @@ export class CandidatesDetailsComponent {
   showAppliedJobs:boolean = false;
   showSuggestJobs:boolean = false;
   showCandidates: boolean = false;
+  checkedScore:any;
 
 
 
@@ -208,6 +209,7 @@ export class CandidatesDetailsComponent {
   }
 
   signOut() {
+    localStorage.clear();
     sessionStorage.clear();
     this.router.navigate(['']);
   }
@@ -745,10 +747,9 @@ export class CandidatesDetailsComponent {
 
     this.api.upload(route, formData).subscribe({
       next: (response) => {
-
+        
         this.candidateScore = response;
-
-         this.matchingJob = false;
+        this.matchingJob = false;
       },
        error: (error) => {
           this.dataLoaded = true;
@@ -804,8 +805,14 @@ export class CandidatesDetailsComponent {
 
     this.api.retrieve(route, payload).subscribe({
       next: (response) => {
-
-        this.candidateScore = { id: 1, score: '55%', related: true, jobId: 'GT0002' };
+        if(response){
+          this.toggleSection('suggested');
+          this.toggleSection('applied');
+        }
+       },
+      error: error => {
+        this.ngxLoaderStop();
+        this.gs.showMessage('error', error.error?.message);
       }
     });
   }
@@ -1099,16 +1106,18 @@ export class CandidatesDetailsComponent {
     if (this.requirementForm.controls['locations'].value !== "" && this.requirementForm.controls['skills'].value.length > 0) {
 
       const route = "hurecom/get-requirements";
-
       const payload = this.requirementForm.getRawValue();
-
+      
       payload['page'] = this.currentPage,
-        payload['limit'] = this.maxLimitPerPage
+      payload['limit'] = this.maxLimitPerPage
 
       this.api.retrieve(route, payload).subscribe({
         next: (response) => {
+          if(response){
+          this.getCheckedScore();
           this.requirements = response?.results as Requirement[];
           this.totalRecords = response?.totalRecords;
+          }
         }
       });
     }
@@ -1219,6 +1228,7 @@ export class CandidatesDetailsComponent {
         if (candidate !== null) {
           this.candidates = response as any;
           this.candidateId = candidate?.id;
+          localStorage.setItem('candidateId', this.candidateId); 
 
           const candidateClone = JSON.parse(JSON.stringify(candidate));
           this.patchCandidateForm(candidateClone);
@@ -1453,9 +1463,7 @@ export class CandidatesDetailsComponent {
 
    saveCandidateAddtionalDetails(id:any,number:any){
     if(this.additionalDetailsForm.valid){
-      
-
-
+    
       const stateIds = this.additionalDetailsForm.controls['stateName'].value; 
 
       const selectedStateNames = stateIds
@@ -1581,6 +1589,9 @@ toggleSection(section: string) {
       break;
     case 'suggested':
       this.showSuggestJobs = !this.showSuggestJobs;
+      if(this.showSuggestJobs){
+      this.getCheckedScore();
+      }
       break;
     case 'showCandidates':
       this.showCandidates = !this.showCandidates;
@@ -1589,13 +1600,22 @@ toggleSection(section: string) {
 
 }
 
- isButtonEnabled(requirement: any): boolean {
-  return (
+isButtonEnabled(requirement: any): boolean {
+  const hasCandidateMatch =
     this.candidateScore?.related &&
     this.candidateScore?.score !== null &&
-    requirement.jobId === this.candidateScore?.jobId
+    requirement.jobId === this.candidateScore?.jobId;
+
+  const hasCheckedMatch = this.checkedScore?.some(
+    (score: any) =>
+      score.jobId === requirement.jobId &&
+      score.tenant === requirement.tenant
   );
+
+  return hasCandidateMatch || hasCheckedMatch;
 }
+
+
 
 handleApply(requirement: any): void {
   const isEnabled = this.isButtonEnabled(requirement);
@@ -1607,6 +1627,31 @@ handleApply(requirement: any): void {
   }
 }
 
+  getCheckedScore() {
+   const candidateId = localStorage.getItem('candidateId');
+  
+   const route = `score-check/get-checked-score?candidateId=${candidateId}`
+
+    this.api.get(route).subscribe({
+      next: (response) => {
+      if(response){
+         this.checkedScore = response;
+        }
+      },
+       error: (error) => {
+          this.dataLoaded = true;
+           this.matchingJob = false;
+        },
+    });
+
+  }
+
+  getCheckedScoreFor(requirement: any): any {
+  return this.checkedScore?.find(
+    (score: any) =>
+      score.jobId === requirement.jobId && score.tenant === requirement.tenant
+  );
+}
 
 }
 

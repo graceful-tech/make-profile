@@ -122,8 +122,7 @@ export class CreateCandidatesComponent {
       const candidateClone = JSON.parse(JSON.stringify(this.candidates));
       this.patchCandidateForm(candidateClone);
        
-
-          setTimeout(() => {
+      setTimeout(() => {
      this.getAdditionaDetails(this.candidates.mobileNumber);
     }, 2000);
     }
