@@ -15,13 +15,12 @@
   <div class="profile-wrapper">
       <form [formGroup]="candidateForm">
        
-        <div class="grid">
+        <!-- <div class="grid">
            <div class="col-12">
                  <div class="field-wrapper">
                   <div class="label-wrapper">
                       <label>Summary</label>
-                      <!-- <button type="button" class="ai-summary-btn" Placehos="Enter your summary, or let our AI generate it for you." (click)="getResumeContent('Summary')"  >Use AI&#10024; For Summary</button> -->
-                    </div>
+                     </div>
                    <div class="input-wrapper">
                     <textarea rows="5" type="text" placeholder="Enter your summary, or let our AI generate it for you." pInputText formControlName="summary"></textarea>
                    </div>
@@ -32,15 +31,14 @@
                  <div class="field-wrapper">
                   <div class="label-wrapper">
                       <label>Career Objective</label>
-                      <!-- <button type="button" class="ai-summary-btn"  (click)="getResumeContent('Career Objective')" >Use AI&#10024; For Objective</button> -->
-                    </div>
+                     </div>
                    <div class="input-wrapper">
                     <textarea rows="5" type="text" placeholder="Enter your carrer objective or let our AI generate it for you." pInputText formControlName="careerObjective"></textarea>
                    </div>
                  </div>
             </div>
 
-         </div>
+         </div> -->
           <app-make-profile-divider></app-make-profile-divider>
           <div class="section-heading">Personal Details</div>
             <div class="grid">
@@ -727,7 +725,7 @@
             <div class="button-bar">
               <div class="button-wrapper" *ngIf="!payments">
                 <p-button class="mr-2" 
-                          [label]="dataLoaded ? 'Generate' : 'Generating..'"  
+                          [label]="dataLoaded ? 'Update' : 'Updating..'"  
                           [icon]="dataLoaded ? '' : 'pi pi-spin pi-spinner'" 
                           [disabled]="!dataLoaded"
                           (onClick)="createCandidate()">

@@ -182,3 +182,14 @@
   justify-content: center;
   padding-top: 10px;
   }
+
+  .fresher-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.fresher-checkbox label {
+  white-space: nowrap;
+  margin: 0;
+}

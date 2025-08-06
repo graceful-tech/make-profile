@@ -97,24 +97,30 @@
                    <div class="upload-title">Upload Your Existing/Old Resume</div>
                     <input type="file"  #attachment  style="display: none;"  (change)="addAttachment($event)"  accept=".doc, .docx, .pdf"/>
                         <div class="upload-box">
-                          <p *ngIf="!resume?.fileName">Drag & drop your old resume here, or</p>
+                          <p *ngIf="!resume?.fileName">Upload your old resume here</p>
                           <button class="browse-btn" (click)="attachment.click()">Browse Files</button>
                           <div *ngIf="resume?.fileName" class="uploaded-file mt-3">
                             <i class="pi pi-paperclip mr-2"></i>
                             <span>{{ resume?.fileName }}</span>
                           </div>
                         </div>
-                              <div class="or-divider" *ngIf="!resume?.fileName">— or —</div>
+                          <div class="or-divider" *ngIf="!resume?.fileName">— or —</div>
                           <div class="details-btns" *ngIf="!resume?.fileName">
                             <button class="details-btn" *ngIf="!candidateId" (click)="enterDetails()">Enter Details</button>
                             <button class="details-btn" *ngIf="candidateId" (click)="UpdateCandidate()">Update Details</button>
                           </div>
-                </div>
-        </div>
-         <div>
-                <p-button class="mr-2" (onClick)="createResume()" label="Create Resume"></p-button>
+                         
+                              </div>
+
+
+                     
+          </div>
+             
+              <div style="display: flex; justify-content: center; ">
+               <button class="create-button"   (click)="createResume()">Create Resume</button>
               </div>
  
+<br>
 
    <div class="section-header" (click)="toggleSection('resume')">
       <span class="section-title">Your Resume</span>

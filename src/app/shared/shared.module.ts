@@ -14,6 +14,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MobileMessageComponent } from "./mobile-message/mobile-message.component";
 import { CustomMessageComponent } from "./custom-message/custom-message.component";
 import { CustomMobileMessageComponent } from "./custom-mobile-message/custom-mobile-message.component";
+import { MatDialogModule } from '@angular/material/dialog';
+
    
  
  
@@ -25,7 +27,7 @@ import { CustomMobileMessageComponent } from "./custom-mobile-message/custom-mob
    LoginPopupComponent,
    MobileMessageComponent,
    CustomMessageComponent,
-   CustomMobileMessageComponent
+   CustomMobileMessageComponent,
   ],
   imports: [
     CommonModule,
@@ -35,7 +37,9 @@ import { CustomMobileMessageComponent } from "./custom-mobile-message/custom-mob
     ReactiveFormsModule,
     NgxUiLoaderModule,
     MatIconModule,
-    MatProgressSpinnerModule,  ],
+    MatProgressSpinnerModule,
+    MatDialogModule,
+    ],
   exports: [
     CommonModule,
     FormsModule,
@@ -52,7 +56,8 @@ import { CustomMobileMessageComponent } from "./custom-mobile-message/custom-mob
     MatProgressSpinnerModule,
     MobileMessageComponent,
     CustomMessageComponent,
-    CustomMobileMessageComponent
+    CustomMobileMessageComponent,
+    MatDialogModule
     
   ]
 })

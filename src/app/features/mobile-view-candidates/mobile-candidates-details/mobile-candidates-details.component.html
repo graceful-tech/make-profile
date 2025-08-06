@@ -132,7 +132,7 @@
                 <div class="upload-title">Upload Your Existing/Old Resume</div>
                     <input type="file"  #attachment  style="display: none;"  (change)="addAttachment($event)"  accept=".doc, .docx, .pdf"/>
                     <div class="upload-box">
-                      <p *ngIf="!resume?.fileName">Drag & drop your old resume here, or</p>
+                      <p *ngIf="!resume?.fileName">Upload your old resume here</p>
                       <button class="browse-btn" (click)="attachment.click()">Browse Files</button>
                       <div *ngIf="resume?.fileName" class="uploaded-file mt-3">
                         <i class="pi pi-paperclip mr-2"></i>
@@ -145,11 +145,19 @@
                       <button class="details-btn" *ngIf="candidateId" (click)="UpdateCandidate()">Update Details</button>
                     </div>
                   </div>
+
+                   <!-- <div class="demo-btn-wrapper">
+                          <input   type="image"    src="assets/img/CreateResume2.png"   alt="Submit Button"     (click)="createResume()"   width="100" 
+                            height="90"  />
+                    </div> -->
             </div>
 
-            <!-- <div>
-                <p-button class="mr-2"  (onClick)="createResume()" label="Create Resume"></p-button>
-              </div> -->
+           <div style="display: flex; justify-content: center; ">
+               <button class="create-button"    (click)="createResume()">Create Resume</button>
+              </div>
+
+          
+              <br>
 
           <div class="section-header" (click)="toggleSection('resume')">
                 <span class="section-title">Your Resume</span>
@@ -157,20 +165,7 @@
                 <span *ngIf="!showResumeTable">View</span>
             </div>
 
-            <!-- <div class="table-header">
-              <div class="grid grid-nogutter">
-                <div class="col-12">
-                    <div class="file-wrapper mt-2 d-flex justify-content-between">
-                      <div class="pl-2">
-                         
-                        <h5 class="styled-text">Your Resume</h5>
-                      </div>
-                      <div>
-                        <p-button class="mr-2"  (onClick)="createResume()" label="Create Resume"></p-button>
-                      </div>
-                    </div>
-                </div>
-              </div> -->
+           
               
              <div class="table-container mt-2" *ngIf="showResumeTable">
               <p-table  [value]="availableCredits">
@@ -619,18 +614,18 @@
                   <div>Professional Details</div>
                 </div>
               
-                <div class="grid">
-                  <div class="col-12 md:col-6 lg:col-3">
-                    <div class="fresher-checkbox pb-3">
-                      <p-checkbox
-                        [binary]="true"
-                        inputId="fresher"
-                        formControlName="fresher" Style="padding-right: 5px;"
-                      ></p-checkbox>    
-                      <label>Fresher</label>
-                    </div>
-                  </div>
-                </div>
+                  <div class="grid">
+          <div class="col-12 md:col-6 lg:col-3">
+            <div class="fresher-checkbox pb-3" style="display: flex; align-items: center; gap: 8px;">
+              <p-checkbox
+                [binary]="true"
+                inputId="fresher"
+                formControlName="fresher"
+              ></p-checkbox>
+              <label for="fresher" style="margin: 0;">If you are fresher, click on the checkbox</label>
+            </div>
+          </div>
+    </div>
               
                 <ng-container *ngIf="!candidateForm.get('fresher')?.value">
                   <div formArrayName="experiences">

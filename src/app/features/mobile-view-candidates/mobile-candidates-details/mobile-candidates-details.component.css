@@ -890,7 +890,7 @@ ngx-ui-loader .ngx-ui-loader__fg {
 }
 
 .browse-btn {
-  background-color: #2563eb;
+  background: linear-gradient(to right,#5577e6, #1043e9);
   color: white;
   border: none;
   padding: 10px 20px;
@@ -918,7 +918,7 @@ ngx-ui-loader .ngx-ui-loader__fg {
 }
 
 .details-btn {
-  background-color: #f97316;
+  background: linear-gradient(to right,#e39258, #f86d0a);
   color: white;
   border: none;
   padding: 10px 22px;
@@ -1058,4 +1058,28 @@ ngx-ui-loader .ngx-ui-loader__fg {
 .pi-chevron-up,
 .pi-chevron-down {
   font-size: 1rem;
+}
+
+.fresher-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.fresher-checkbox label {
+  white-space: nowrap;
+  margin: 0;
+}
+
+.create-button{
+  background: linear-gradient(to right,#b668eb, rgb(82, 55, 123));
+  color: white;
+  border: none;
+  padding: 10px 80px;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+
 }

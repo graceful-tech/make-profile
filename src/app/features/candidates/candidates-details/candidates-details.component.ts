@@ -105,6 +105,7 @@ export class CandidatesDetailsComponent {
     public ref: DynamicDialogRef,
     private ngxLoader: NgxUiLoaderService,
      private ps: PaymentService,
+     
   
   ) { }
 
@@ -865,6 +866,7 @@ export class CandidatesDetailsComponent {
       error: error => {
         this.ngxLoaderStop();
         this.gs.showMessage('error', 'Error in uploading resume please reupload it ');
+        window.location.reload();
       }
 
     });

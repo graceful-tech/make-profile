@@ -155,18 +155,18 @@
               <div>Professional Details</div>
             </div>
           
-            <div class="grid">
-              <div class="col-12 md:col-6 lg:col-3">
-                <div class="fresher-checkbox pb-3">
-                  <p-checkbox
-                    [binary]="true"
-                    inputId="fresher"
-                    formControlName="fresher" Style="padding-right: 5px;"
-                  ></p-checkbox>
-                  <label>Fresher</label>
+             <div class="grid">
+                <div class="col-12 md:col-6 lg:col-3">
+                  <div class="fresher-checkbox pb-3" style="display: flex; align-items: center; gap: 8px;">
+                    <p-checkbox
+                      [binary]="true"
+                      inputId="fresher"
+                      formControlName="fresher"
+                    ></p-checkbox>
+                    <label for="fresher" style="margin: 0;">If you are fresher, click on the checkbox</label>
+                  </div>
                 </div>
-              </div>
-            </div>
+          </div>
           
             <ng-container *ngIf="!candidateForm.get('fresher')?.value">
               <div formArrayName="experiences" class="border-line" id="experiences">

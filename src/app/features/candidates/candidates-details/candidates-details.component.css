@@ -695,10 +695,10 @@ img {
 }
 
 .browse-btn {
-  background-color: #2563eb;
+  background: linear-gradient(to right,#6884de, #0e3fe0);
   color: white;
   border: none;
-  padding: 10px 20px;
+  padding: 10px 30px;
   font-size: 14px;
   font-weight: 500;
   border-radius: 8px;
@@ -723,10 +723,10 @@ img {
 }
 
 .details-btn {
-  background-color: #f97316;
+  background: linear-gradient(to right,#db9b6e, #fb6b04);
   color: white;
   border: none;
-  padding: 10px 22px;
+  padding: 10px 30px;
   font-size: 14px;
   font-weight: 500;
   border-radius: 8px;
@@ -886,4 +886,24 @@ img {
 .fresher-checkbox label {
   white-space: nowrap;
   margin: 0;
+}
+
+.demo-btn-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+  position:sticky;
+
+}
+
+.create-button{
+  padding: 1% 20%;
+  background: linear-gradient(to right,#b668eb, rgb(82, 55, 123));
+  color: white;
+  border: none;
+  font-size: 18px;
+  font-weight: 500;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
 }

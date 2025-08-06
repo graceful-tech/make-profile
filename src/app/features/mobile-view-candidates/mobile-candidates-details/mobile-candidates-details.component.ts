@@ -866,6 +866,8 @@ export class MobileCandidatesDetailsComponent {
         window.confirm(
           'Error in uploading resume please reupload it'
         );
+
+        window.location.reload();
       }
     });
   }
