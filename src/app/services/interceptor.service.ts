@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class InterceptorService implements HttpInterceptor {
-  constructor(private router: Router) {}
+  constructor(private router: Router) { }
 
   intercept(
     request: HttpRequest<any>,
@@ -31,7 +31,8 @@ export class InterceptorService implements HttpInterceptor {
       return next.handle(request);
     }
     const token = sessionStorage.getItem('token');
-    if (token !== null) {
+    if (token !== undefined && token === '' && token !== null) {
+
       const payloadBase64 = token.split('.')[1];
       const payloadJson = atob(payloadBase64);
       const payload = JSON.parse(payloadJson);
@@ -39,7 +40,7 @@ export class InterceptorService implements HttpInterceptor {
       const expiryTime = payload.exp * 1000; // Convert seconds to ms
       const currentTime = Date.now();
 
-      if (token !== undefined && currentTime < expiryTime) {
+      if (currentTime < expiryTime) {
         const clonedRequest = request.clone({
           setHeaders: {
             Authorization: `Bearer ${token}`,
@@ -52,7 +53,7 @@ export class InterceptorService implements HttpInterceptor {
         console.log('Token missing. Redirecting based on route:', currentUrl);
 
         if (currentUrl.includes('/mob-candidate')) {
-          this.router.navigate(['/mobile-login']);
+          this.router.navigate(['/mob-login']);
         } else if (currentUrl.includes('/candidate')) {
           this.router.navigate(['/login']);
         } else {
@@ -60,6 +61,15 @@ export class InterceptorService implements HttpInterceptor {
         }
 
         return EMPTY;
+      }
+    } else {
+      const currentUrl = this.router.url;
+      if (currentUrl.includes('/mob-candidate')) {
+        this.router.navigate(['/mob-login']);
+      } else if (currentUrl.includes('/candidate')) {
+        this.router.navigate(['/login']);
+      } else {
+        this.router.navigate(['/login']); // fallback
       }
     }
 
