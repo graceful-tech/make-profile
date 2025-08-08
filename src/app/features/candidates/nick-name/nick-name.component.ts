@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { VerifyCandidatesComponent } from '../verify-candidates/verify-candidates.component';
 import { Candidate } from 'src/app/models/candidates/candidate.model';
+import { ApiService } from 'src/app/services/api.service';
+import { GlobalService } from 'src/app/services/global.service';
 
 @Component({
   selector: 'app-nick-name',
@@ -19,6 +21,7 @@ export class NickNameComponent {
   candidates: any;
   candidateId: any;
   candidateImageUrl: any;
+  nickNames:any;
 
   constructor(
      private dialog: DialogService,
@@ -27,6 +30,9 @@ export class NickNameComponent {
         private router: Router,
         public ref: DynamicDialogRef,
         private config: DynamicDialogConfig,
+        private api:ApiService,
+        private gs:GlobalService
+
     ) 
     {
     this.candidates = this.config.data?.candidates;
@@ -36,12 +42,20 @@ export class NickNameComponent {
   
     }
 
-
+  ngOnInit() {
+     this.getNickNames();
+    }
 
   submit() {
     if (this.nickName) {
       this.showError = false;
-      this.createResume();
+     
+      if(!this.nickNames.includes(this.nickName.trim())){
+       this.createResume();
+      }
+      else{
+        this.gs.showMessage('error','Nick name already exist');
+      }
 
     } else {
       this.showError = true;
@@ -73,6 +87,18 @@ export class NickNameComponent {
           const candidate = response as Candidate;
          }
       });
+    }
+
+    getNickNames(){
+        const route ='credits/get-nicknames'
+
+       this.api.get(route).subscribe({
+      next: (response) => {
+         if(response){
+        this.nickNames = response;
+         }
+      },
+    });
     }
   
 

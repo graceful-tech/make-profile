@@ -1,6 +1,6 @@
 
 import { DatePipe } from '@angular/common';
-import { ChangeDetectorRef, Component, } from '@angular/core';
+import { ChangeDetectorRef, Component, ViewChild, } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
@@ -23,6 +23,7 @@ import { ResumeDetailsComponent } from '../resume-details/resume-details.compone
 import { PaymentService } from 'src/app/services/payment.service';
 import { ViewHistoryCandidatesComponent } from '../view-history-candidates/view-history-candidates.component';
 import { VerifyCandidatesComponent } from '../verify-candidates/verify-candidates.component';
+import { LoaderComponent } from 'src/app/shared/components/loader/loader.component';
 
 
 @Component({
@@ -32,6 +33,7 @@ import { VerifyCandidatesComponent } from '../verify-candidates/verify-candidate
   styleUrl: './candidates-details.component.css'
 })
 export class CandidatesDetailsComponent {
+ @ViewChild(LoaderComponent)loaderComponent!: LoaderComponent;
 
 
   yourResume: Array<any> = [];
@@ -860,6 +862,7 @@ export class CandidatesDetailsComponent {
         else{
           this.ngxLoaderStop();
           this.gs.showMessage('Note!..', 'Error in uploading resume please reupload it ');
+          window.location.reload();
         }
         this.ngxLoaderStop();
       },
@@ -930,7 +933,8 @@ export class CandidatesDetailsComponent {
   }
 
   createResume() {
-    const ref = this.dialog.open(ChooseTemplateComponent, {
+     
+     const ref = this.dialog.open(ChooseTemplateComponent, {
       data: {
         candidates: this.candidates,
         candidateImage: this.candidateImageUrl
@@ -940,6 +944,8 @@ export class CandidatesDetailsComponent {
       height: '90%',
       styleClass: 'custom-dialog-header',
     });
+    
+    
 
     ref.onClose.subscribe(response => {
       if (response) {

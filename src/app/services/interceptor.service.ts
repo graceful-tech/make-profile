@@ -31,7 +31,7 @@ export class InterceptorService implements HttpInterceptor {
       return next.handle(request);
     }
     const token = sessionStorage.getItem('token');
-    if (token !== undefined && token === '' && token !== null) {
+    if (token !== undefined && token !== '' && token !== null) {
 
       const payloadBase64 = token.split('.')[1];
       const payloadJson = atob(payloadBase64);

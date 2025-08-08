@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import {ChangeDetectorRef,Component,} from '@angular/core';
+import {ChangeDetectorRef,Component, ViewChild,} from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
@@ -17,6 +17,7 @@ import { PaymentService } from 'src/app/services/payment.service';
  import { CollegeProject } from 'src/app/models/candidates/college-project';
 import { ChooseTemplateComponent } from '../../candidates/Templates/choose-template/choose-template.component';
 import { PaymentOptionComponent } from '../../candidates/payments/payment-option/payment-option.component';
+import { MobileLoaderComponent } from 'src/app/shared/components/mobile-loader/mobile-loader.component';
  
 @Component({
   selector: 'app-mobile-resume-details',
@@ -25,6 +26,8 @@ import { PaymentOptionComponent } from '../../candidates/payments/payment-option
   styleUrl: './mobile-resume-details.component.css'
 })
 export class MobileResumeDetailsComponent {
+    @ViewChild(MobileLoaderComponent)mobileLoaderComponent!: MobileLoaderComponent;
+  
 
   candidateForm!: FormGroup;
   genderList: Array<ValueSet> = [];

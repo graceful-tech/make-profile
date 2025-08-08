@@ -13,8 +13,8 @@
   <div class="spinner-container">
     <mat-spinner [diameter]="80" strokeWidth="5"   class="custom-blue" ></mat-spinner>
     <p class="loading-text">
-  Uploading Resume<span class="dot dot1">.</span><span class="dot dot2">.</span><span class="dot dot3">.</span>
-</p>
+     Analysing  Resume<span class="dot dot1">.</span><span class="dot dot2">.</span><span class="dot dot3">.</span>
+   </p>
   </div>
 </div>
 
@@ -26,6 +26,8 @@
 </p>
   </div>
 </div>
+
+<app-loader></app-loader>
 
 
  
@@ -85,7 +87,7 @@
 
       <div class="profile-wrapper">
           <div class="section-heading">
-              <span> Upload Resume</span>
+              <!-- <span> Upload Resume</span> -->
               <span class="link-button" (click)="viewHistory()">View History</span>
           </div>
 
@@ -111,9 +113,6 @@
                           </div>
                          
                               </div>
-
-
-                     
           </div>
              
               <div style="display: flex; justify-content: center; ">

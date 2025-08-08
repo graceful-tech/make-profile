@@ -38,7 +38,7 @@
         
             <div class="col-12 md:col-6 lg:col-3">
               <div class="field-wrapper">
-                <label>Gender</label>
+                <label class="required">Gender</label>
                 <div class="input-wrapper">
                   <p-dropdown [options]="genderList" optionLabel="displayValue" optionValue="dataValue"  placeholder="Select Gender"
                     formControlName="gender">
@@ -552,14 +552,17 @@
 
          <app-make-profile-divider></app-make-profile-divider>
 
+          <div class="button-bar">
+
          <div class="button-wrapper" *ngIf="!payments">
 
-          <p-button class="mr-2" [label]="dataLoaded ? 'save' : 'saving..'"  [icon]="dataLoaded ? '' : 'pi pi-spin pi-spinner'" [disabled]="!dataLoaded"
+          <p-button class="mr-2" [label]="dataLoaded ? 'Save' : 'Saving..'"  [icon]="dataLoaded ? '' : 'pi pi-spin pi-spinner'" [disabled]="!dataLoaded"
               (onClick)="createCandidate()"></p-button>
 
 
-           <p-button  styleClass="p-button-secondary" label="Save&CreateResume" (onClick)="saveandcreateresume()"> </p-button> 
+           <p-button  styleClass="p-button-secondary" label="Save & Create Resume" (onClick)="saveandcreateresume()"> </p-button> 
           </div>
+       </div>   
           
   </div>
 </div>

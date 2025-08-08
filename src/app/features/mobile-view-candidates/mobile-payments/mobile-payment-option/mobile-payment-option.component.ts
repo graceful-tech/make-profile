@@ -199,16 +199,14 @@ export class MobilePaymentOptionComponent {
   }
 
   ngxLoaderStop(){
-    // this.ngxLoader.stop();  
-    setTimeout(() => {
+     setTimeout(() => {
       this.isUploading = false;
     }, 2000);
   }
 
   ngxLoaderStart(){
       this.isUploading = true;
-      // this.ngxLoader.start();
-   }
+    }
 
    getCandidates() {
       const route = 'candidate';
@@ -285,7 +283,7 @@ export class MobilePaymentOptionComponent {
       },
       error: (error) => {
         this.ngxLoaderStop();
-        this.gs.showMessage('error','Error in  creating Resume')
+        this.gs.showMobileMessage('error',error.error?.message)
       },
     });
 

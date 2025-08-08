@@ -16,6 +16,7 @@ import { PaymentService } from 'src/app/services/payment.service';
 import { CollegeProject } from 'src/app/models/candidates/college-project';
 import { DatePipe } from '@angular/common';
 import { PaymentOptionComponent } from '../../candidates/payments/payment-option/payment-option.component';
+import { MobileLoaderComponent } from 'src/app/shared/components/mobile-loader/mobile-loader.component';
 
 @Component({
   selector: 'app-final-verify',
@@ -25,6 +26,7 @@ import { PaymentOptionComponent } from '../../candidates/payments/payment-option
 })
 export class FinalVerifyComponent {
  @ViewChild('chipInput', { static: false }) chipInputRef!: ElementRef;
+@ViewChild(MobileLoaderComponent) mobileLoaderComponent!: MobileLoaderComponent;
 
   candidateForm!: FormGroup;
   genderList: Array<ValueSet> = [];
@@ -396,11 +398,6 @@ export class FinalVerifyComponent {
        
         
          this.createResume(this.candidates);
-
-       
-
-         
-
       },
       error: (error) => {
         this.dataLoaded = true;
@@ -1029,8 +1026,8 @@ export class FinalVerifyComponent {
       }
           this.ngxLoaderStop();
       },
-      error: (err) => {
-         window.alert('Error in creating Resume');
+      error: (error) => {
+        this.gs.showMobileMessage('error',error.error?.message);
         this.ngxLoaderStop();
       }
     });
@@ -1054,7 +1051,7 @@ export class FinalVerifyComponent {
 
     goToOpenAi(){
 
-    this.isUploading = true
+    this.mobileLoaderComponent.startLoader();
 
     const route = 'resume/get-content';
     const payload = {...this.candidates};
@@ -1074,12 +1071,12 @@ export class FinalVerifyComponent {
          const candidateClone = JSON.parse(JSON.stringify(this.candidates)); 
          this.patchCandidateForm(candidateClone);
 
-            this.isUploading = false
+           this.mobileLoaderComponent.stopLoader();
         }
-              this.isUploading = false
+           this.mobileLoaderComponent.stopLoader();
       },
       error: (error) => {
-          this.isUploading = false
+           this.mobileLoaderComponent.stopLoader();
         this.gs.showMessage('error', error.error?.message)
 
       },
@@ -1091,7 +1088,7 @@ export class FinalVerifyComponent {
 
   getResumeContent(content:any){
       
-      this.ngxLoaderStart();
+    this.mobileLoaderComponent.startLoader();
 
        const route =`content/openai?content=${content}`
   
@@ -1103,12 +1100,12 @@ export class FinalVerifyComponent {
             if(content === 'Summary'){
                this.candidateForm.get('summary')?.setValue(responseContent?.resumeContent);
 
-               this.ngxLoaderStop();
+           this.mobileLoaderComponent.stopLoader();
             }
             else{
                this.candidateForm.get('careerObjective')?.setValue(responseContent?.resumeContent);
 
-                this.ngxLoaderStop();
+           this.mobileLoaderComponent.stopLoader();
             }
           }
           

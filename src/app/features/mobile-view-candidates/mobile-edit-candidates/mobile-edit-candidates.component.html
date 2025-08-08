@@ -1,7 +1,7 @@
  
 <Header>
   <div class="header-image">
-  <h5>Verify Your Details</h5>
+  <h5>Verify your details</h5>
   </div>
 </Header>
 
@@ -145,6 +145,8 @@
                  <label>Skills</label>
                   <div class="input-wrapper">
                    <p-chips separator="," formControlName="skills" [addOnBlur]="true" [addOnTab]="true"></p-chips>
+                    <p-button type="button" (onClick)="addSkill('skills','chipInput')">Add</p-button>
+
                   </div>
                 </div>
                </div>
@@ -224,6 +226,8 @@
                         <label>Responsibilities</label>
                         <div class="input-wrapper">
                           <p-chips separator=","  formControlName="responsibilities" [addOnBlur]="true" [addOnTab]="true"></p-chips>
+                          <p-button type="button" (onClick)="addSkill('responsibilities','responsibilityInput')">Add</p-button>
+
                         </div>
                       </div>
                     </div>
@@ -266,6 +270,8 @@
                             <label>Project Skills</label>
                             <div class="input-wrapper">
                               <p-chips separator=","  formControlName="projectSkills" [addOnBlur]="true" [addOnTab]="true"></p-chips>
+                              <p-button type="button" (onClick)="addSkill('projectSkills','projectInput')">Add</p-button>
+
                             </div>
                           </div>
                         </div>
@@ -323,6 +329,8 @@
                         <label>Project Skills</label>
                         <div class="input-wrapper">
                           <p-chips separator=","  formControlName="collegeProjectSkills" [addOnBlur]="true" [addOnTab]="true"></p-chips>
+                          <p-button type="button" (onClick)="addSkill('collegeProjectSkills','collegeProjectInput')">Add</p-button>
+
                         </div>
                       </div>
                     </div>
@@ -533,6 +541,8 @@
                   <label>Soft Skills</label>
                    <div class="input-wrapper">
                     <p-chips separator="," formControlName="softSkills" [addOnBlur]="true" [addOnTab]="true"></p-chips>
+                  <p-button type="button" (onClick)="addSkill('softSkills','softSkillsInput')">Add</p-button>
+
                    </div>
                  </div>
                 </div>
@@ -542,6 +552,8 @@
                    <label>Core Competencies</label>
                     <div class="input-wrapper">
                      <p-chips separator="," formControlName="coreCompentencies" [addOnBlur]="true" [addOnTab]="true"></p-chips>
+                    <p-button type="button" (onClick)="addSkill('coreCompentencies','coreCompentenciesInput')">Add</p-button>
+
                     </div>
                   </div>
                  </div>
@@ -550,10 +562,12 @@
   
            <app-make-profile-divider></app-make-profile-divider>
   
-            <div class="button-wrapper">
-              <p-button type="button"   label="Back" (click)="goBack()"></p-button>
-               <p-button type="button"   label="Next" (onClick)="generatingResume()"></p-button>
-            </div>
+           <div class="button-bar"> 
+              <div class="button-wrapper">
+                <p-button type="button"   label="Back" (click)="goBack()"></p-button>
+                <p-button type="button"   label="Next" (onClick)="generatingResume()"></p-button>
+              </div>
+             </div>
 
           </div>
   </div>

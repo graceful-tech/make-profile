@@ -3,20 +3,30 @@
   <div class="spinner-container">
     <mat-spinner [diameter]="80" strokeWidth="5"   class="custom-blue" ></mat-spinner>
     <p class="loading-text">
-   Creating Resume<span class="dot dot1">.</span><span class="dot dot2">.</span><span class="dot dot3">.</span>
+   Generating Resume<span class="dot dot1">.</span><span class="dot dot2">.</span><span class="dot dot3">.</span>
 </p>
   </div>
 </div>
 
+<app-mobile-loader></app-mobile-loader>
 
-<header>
-  <div style="margin-top: 10px; font-weight: bold; display: flex; background-color: rgb(246, 251, 255);">
-  <span style="font-size: 15pt; text-align: center;">Kindly check your summary, objective, and the information below for any spelling errors.</span>
+<!-- <div class="overlay" *ngIf="isUploading">
+  <div class="spinner-container">
+    <mat-spinner [diameter]="80" strokeWidth="5"   class="custom-blue" ></mat-spinner>
+    <p class="loading-text">
+      Payment Proccessing<span class="dot dot1">.</span><span class="dot dot2">.</span><span class="dot dot3">.</span>
+</p>
   </div>
+</div> -->
 
-</header>
 
-<div class="wrapper">
+<Header>
+  <div class="header-image">
+  <h5>Reconfirm Your Details</h5>
+  </div>
+</Header>
+ 
+<div class="wrapper" style="margin-top: 30px;">
     <div class="profile-wrapper">
 
         <div class="grid">
@@ -265,6 +275,8 @@
                         <label>Responsibilities</label>
                         <div class="input-wrapper">
                           <p-chips separator=","  formControlName="responsibilities" [addOnBlur]="true" [addOnTab]="true"></p-chips>
+                          <p-button type="button" (onClick)="addSkill('responsibilities','responsibilityInput')">Add</p-button>
+
                         </div>
                       </div>
                     </div>

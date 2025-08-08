@@ -501,8 +501,10 @@ candidateForm!: FormGroup;
              this.generating = false;
 
             }
+            else{
+             this.generating = false;
+            }
            // this.close(this.returnCandidate);
-           this.generating = false;
            // this.gs.showMessage('Success', 'Create Successfully');
           },
           error: (error) => {

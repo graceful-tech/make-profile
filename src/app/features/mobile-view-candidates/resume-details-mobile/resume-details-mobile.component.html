@@ -1,3 +1,6 @@
+
+<app-mobile-loader></app-mobile-loader>
+
 <div class="wrapper">
   
   <div class="profile-wrapper">
@@ -46,7 +49,7 @@
         
             <div class="col-12 md:col-6 lg:col-3">
               <div class="field-wrapper">
-                <label>Gender</label>
+                <label class="required">Gender</label>
                 <div class="input-wrapper">
                   <p-dropdown [options]="genderList" optionLabel="displayValue" optionValue="dataValue"  placeholder="Select Gender"
                     formControlName="gender">
@@ -135,6 +138,8 @@
                <label [ngClass]="{ required: isRequired('skills') }">Skills</label>
                 <div class="input-wrapper">
                  <p-chips separator="," formControlName="skills" [addOnBlur]="true" [addOnTab]="true"></p-chips>
+                  <p-button type="button" (onClick)="addSkill('skills','chipInput')">Add</p-button>
+
                 </div>
               </div>
                <small class="error-message" *ngIf="candidateForm.controls['skills'].invalid && showError">
@@ -218,6 +223,8 @@
                       <label>Responsibilities</label>
                       <div class="input-wrapper">
                         <p-chips separator=","  formControlName="responsibilities" [addOnBlur]="true" [addOnTab]="true"></p-chips>
+                        <p-button type="button" (onClick)="addSkill('responsibilities','responsibilityInput')">Add</p-button>
+
                       </div>
                     </div>
                   </div>
@@ -260,6 +267,8 @@
                           <label>Project Skills</label>
                           <div class="input-wrapper">
                             <p-chips separator=","  formControlName="projectSkills" [addOnBlur]="true" [addOnTab]="true"></p-chips>
+                            <p-button type="button" (onClick)="addSkill('projectSkills','projectInput')">Add</p-button>
+
                           </div>
                         </div>
                       </div>
@@ -325,6 +334,7 @@
                       <label>Project Skills</label>
                       <div class="input-wrapper">
                         <p-chips separator=","  formControlName="collegeProjectSkills" [addOnBlur]="true" [addOnTab]="true"></p-chips>
+                        <p-button type="button" (onClick)="addSkill('collegeProjectSkills','collegeProjectInput')">Add</p-button>
                       </div>
                     </div>
                   </div>
@@ -544,6 +554,8 @@
                 <label>Soft Skills</label>
                  <div class="input-wrapper">
                   <p-chips separator="," formControlName="softSkills" [addOnBlur]="true" [addOnTab]="true"></p-chips>
+                  <p-button type="button" (onClick)="addSkill('softSkills','softSkillsInput')">Add</p-button>
+
                  </div>
                </div>
               </div>
@@ -553,6 +565,8 @@
                  <label>Core Competencies</label>
                   <div class="input-wrapper">
                    <p-chips separator="," formControlName="coreCompentencies" [addOnBlur]="true" [addOnTab]="true"></p-chips>
+                    <p-button type="button" (onClick)="addSkill('coreCompentencies','coreCompentenciesInput')">Add</p-button>
+
                   </div>
                 </div>
                </div>
@@ -561,11 +575,15 @@
 
          <app-make-profile-divider></app-make-profile-divider>
 
+         <div class="button-bar"> 
+
          <div class="button-wrapper" *ngIf="!payments">
 
-          <p-button class="mr-2" [label]="dataLoaded ? 'save' : 'saving..'"  [icon]="dataLoaded ? '' : 'pi pi-spin pi-spinner'" [disabled]="!dataLoaded"
+          <p-button class="mr-2" [label]="dataLoaded ? 'Save' : 'Saving..'"  [icon]="dataLoaded ? '' : 'pi pi-spin pi-spinner'" [disabled]="!dataLoaded"
               (onClick)="createCandidate()"></p-button>
-           <p-button  styleClass="p-button-secondary" label="Save&CreateResume" (onClick)="saveandcreateresume()"> </p-button> 
+           <p-button  styleClass="p-button-secondary" label="Save & Create Resume" (onClick)="saveandcreateresume()"> </p-button> 
           </div>
+       </div>
+
   </div>
 </div>

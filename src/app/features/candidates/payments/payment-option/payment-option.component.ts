@@ -110,7 +110,7 @@ saveNickName(){
       },
       error: (error) => {
         this.ngxLoaderStop();
-        this.gs.showMessage('error','Error in  creating Resume')
+        this.gs.showMessage('error',error.error?.message)
       },
     });
 
@@ -263,7 +263,7 @@ saveNickName(){
         width: '80%',
         height: '90%',
        
-        header: 'Kindly check your summary, objective, and the information below for any spelling errors.',
+        header: 'Reconfirm your details',
       });
   
       // ref.onClose.subscribe(response => {

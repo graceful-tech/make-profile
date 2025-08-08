@@ -940,4 +940,20 @@ candidateForm!: FormGroup;
         }
       });
     }
+
+     addSkill(controlName: string, inputId: string) {
+    const inputEl = document.getElementById(inputId) as HTMLInputElement;
+    const value = inputEl?.value?.trim();
+  
+    if (value) {
+      const control = this.candidateForm.get(controlName);
+      const current = control?.value || [];
+  
+      if (!current.includes(value)) {
+        control?.setValue([...current, value]);
+      }
+  
+      inputEl.value = '';
+    }
+  }
 }

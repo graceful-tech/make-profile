@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import {ChangeDetectorRef,Component,} from '@angular/core';
+import {ChangeDetectorRef,Component, ViewChild,} from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
@@ -15,6 +15,7 @@ import { Certificates } from 'src/app/models/candidates/certificates';
 import { Achievements } from 'src/app/models/candidates/achievements';
 import { PaymentService } from 'src/app/services/payment.service';
  import { CollegeProject } from 'src/app/models/candidates/college-project';
+import { MobileLoaderComponent } from 'src/app/shared/components/mobile-loader/mobile-loader.component';
  
 @Component({
   selector: 'app-resume-details-mobile',
@@ -23,6 +24,8 @@ import { PaymentService } from 'src/app/services/payment.service';
   styleUrl: './resume-details-mobile.component.css'
 })
 export class ResumeDetailsMobileComponent {
+  @ViewChild(MobileLoaderComponent)mobileLoaderComponent!: MobileLoaderComponent;
+  
 
   candidateForm!: FormGroup;
   genderList: Array<ValueSet> = [];
@@ -955,6 +958,7 @@ export class ResumeDetailsMobileComponent {
     }
 
     saveandcreateresume() {
+    this.mobileLoaderComponent.startLoader();
        if(this.candidateForm.valid){
     
     this.dataLoaded = false;
@@ -1154,11 +1158,14 @@ export class ResumeDetailsMobileComponent {
          this.candidates = response;
         this.uploadCandidateImage();
 
+       this.mobileLoaderComponent.stopLoader();
         this.chooseTemplate();
 
           this.dataLoaded = true;  
+
       },
       error: (error) => {
+        this.mobileLoaderComponent.stopLoader();
         this.dataLoaded = true;
         window.alert('Error in Creating Resume');
         console.log(error);
@@ -1168,8 +1175,10 @@ export class ResumeDetailsMobileComponent {
 
     }
     else{
+        this.mobileLoaderComponent.stopLoader();
       this.gs.showMessage('error','Please fill the mandatory fields');
       this.showError = true;
+      
     }
      
     }
@@ -1189,4 +1198,20 @@ export class ResumeDetailsMobileComponent {
       window.alert("Please enter the details")
      }
     }
+
+    addSkill(controlName: string, inputId: string) {
+    const inputEl = document.getElementById(inputId) as HTMLInputElement;
+    const value = inputEl?.value?.trim();
+  
+    if (value) {
+      const control = this.candidateForm.get(controlName);
+      const current = control?.value || [];
+  
+      if (!current.includes(value)) {
+        control?.setValue([...current, value]);
+      }
+  
+      inputEl.value = '';
+    }
+  }
 }

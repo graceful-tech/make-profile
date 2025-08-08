@@ -15,6 +15,8 @@ import { MobileMessageComponent } from "./mobile-message/mobile-message.componen
 import { CustomMessageComponent } from "./custom-message/custom-message.component";
 import { CustomMobileMessageComponent } from "./custom-mobile-message/custom-mobile-message.component";
 import { MatDialogModule } from '@angular/material/dialog';
+import { LoaderComponent } from "./components/loader/loader.component";
+import { MobileLoaderComponent } from "./components/mobile-loader/mobile-loader.component";
 
    
  
@@ -28,6 +30,8 @@ import { MatDialogModule } from '@angular/material/dialog';
    MobileMessageComponent,
    CustomMessageComponent,
    CustomMobileMessageComponent,
+   LoaderComponent,
+   MobileLoaderComponent
   ],
   imports: [
     CommonModule,
@@ -57,7 +61,9 @@ import { MatDialogModule } from '@angular/material/dialog';
     MobileMessageComponent,
     CustomMessageComponent,
     CustomMobileMessageComponent,
-    MatDialogModule
+    MatDialogModule,
+    LoaderComponent,
+    MobileLoaderComponent
     
   ]
 })
