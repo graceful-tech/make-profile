@@ -10,6 +10,7 @@ import { ResumeDetailsComponent } from '../candidates/resume-details/resume-deta
 import { ViewMobileHistoryCandidatesComponent } from './view-mobile-history-candidates/view-mobile-history-candidates.component';
 import { ResumeDetailsMobileComponent } from './resume-details-mobile/resume-details-mobile.component';
 import { FinalVerifyComponent } from './final-verify/final-verify.component';
+import { UseExistingTemplateComponent } from './use-existing-template/use-existing-template.component';
 
 const routes: Routes = [
 
@@ -30,6 +31,8 @@ const routes: Routes = [
   {path: 'view-history', component:ViewMobileHistoryCandidatesComponent},
 
   {path: 'final-verify', component:FinalVerifyComponent},
+
+  {path: 'Use-existing',component:UseExistingTemplateComponent}
 
 
   

@@ -20,6 +20,8 @@ import { ChooseTemplateComponent } from '../../candidates/Templates/choose-templ
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { CollegeProject } from 'src/app/models/candidates/college-project';
 import { PaymentService } from 'src/app/services/payment.service';
+import { ChooseTemplateWayComponent } from '../../candidates/choose-template-way/choose-template-way.component';
+import { ChooseNewTemplateComponent } from '../choose-new-template/choose-new-template.component';
 
 @Component({
   selector: 'app-mobile-candidates-details',
@@ -136,7 +138,10 @@ export class MobileCandidatesDetailsComponent {
   }
 
 
-  ngAfterViewInit() { }
+  ngAfterViewInit() {
+
+    this.showResumeTable = true;
+   }
 
   createCandidateForm() {
     this.candidateForm = this.fb.group({
@@ -882,15 +887,30 @@ export class MobileCandidatesDetailsComponent {
     this.router.navigate(['mob-candidate/create-candidate']);
   }
 
+  // createResume() {
+  //    this.gs.setCandidateDetails(this.candidates)
+  //    if(this.candidates !== null && this.candidates !== undefined){
+  //   this.router.navigate(['mob-candidate/choose-Template']);
+  //    }
+  //    else{
+  //     window.alert("Please enter the details")
+  //    }
+  // }
+
   createResume() {
-     this.gs.setCandidateDetails(this.candidates)
-     if(this.candidates !== null && this.candidates !== undefined){
-    this.router.navigate(['mob-candidate/choose-Template']);
-     }
-     else{
-      window.alert("Please enter the details")
-     }
+
+    this.dialog.open(ChooseNewTemplateComponent, {
+
+      data:{
+
+      },
+      closable: true,
+      styleClass: 'custom-dialog-headers',
+
+    })
+
   }
+
 
   patchCandidateForm(candidate: Candidate) {
 

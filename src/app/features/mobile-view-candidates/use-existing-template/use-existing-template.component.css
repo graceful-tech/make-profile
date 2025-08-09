@@ -1,0 +1,41 @@
+.header-image{
+    background-color: rgb(249, 250, 251);
+}
+.custom-btn:hover {
+    background-color: #3716dc;
+    /* padding-right: 50px; */
+  }
+
+  .custom-btn {
+  background-color: #366fe0;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  font-size: 11px;
+  border-radius: 8px;
+  cursor: pointer;
+  /* margin-right: 15px; */
+  font-style: italic;
+}
+
+.modify-btn {
+  background-color: #19671c;
+  color: white;
+  border: none;
+  padding: 6px 5px;
+  font-size: 11px;
+  border-radius: 8px;
+  cursor: pointer;
+  /* margin-right: 15px; */
+  font-style: italic;
+}
+
+.applied-job {
+    display: flex;
+    flex-direction: column;
+}
+
+.applied-job span {
+    margin-top: 3px;
+    margin-bottom: 3px;
+}

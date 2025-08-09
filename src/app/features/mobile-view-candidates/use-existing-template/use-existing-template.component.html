@@ -1,0 +1,66 @@
+ 
+<div class="wrapper">
+
+<div class="grid">
+            <div class="col-12 md:col-6 lg:col-3">
+              <div class="mb-2 back-button">
+                <p-button type="button" label="Back" (click)="goBack()"></p-button>
+              </div>
+            </div>
+</div>
+<div class="profile-wrapper">
+<Header>
+  <div class="header-image">
+    <h5>Choose Your Existing Template</h5>
+  </div>
+</Header>
+</div>
+
+
+<div class="table-container">
+              <p-table  [value]="availableCredits">
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th  style="max-width: 5%;">CREDIT AVAILABLE</th>
+                    <th style="max-width: 5%;">NICK NAME</th>
+                    <th  style="max-width: 5%;">PAYMENT</th>
+                    <th  style="max-width: 5%;">GENERATE RESUME</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-credits>
+                  <tr>
+                     <td>
+                        <div class="applied-job">
+                           <span>{{ credits.creditAvailable }}</span>
+                            <span>{{ credits.templateName }}</span>
+                        </div>
+                      </td> 
+
+                    <td>{{ credits.nickName }}</td>
+                    <!-- <td>{{ credits.templateName }}</td> -->
+                   <td> <button type="button" class="custom-btn" (click)="payment(credits.templateName)">Add Create</button> </td>
+                 <ng-container *ngIf="credits.templateName !== 'Applied Job'; else emptyCell">
+                    <td>
+                      <button 
+                        type="button" 
+                        class="modify-btn"  
+                        (click)="navigateToVerify(credits.templateName,credits.creditAvailable)">
+                        Generate Resume
+                      </button>
+                    </td>
+                  </ng-container>
+                  <ng-template #emptyCell>
+                    <td></td>
+                  </ng-template>
+
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                  <tr>
+                    <td colspan="5">No records found.</td>
+                  </tr>
+                </ng-template>
+              </p-table>
+</div>
+
+</div> 
