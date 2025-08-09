@@ -118,6 +118,11 @@ saveNickName(){
 
   
   redeem() {
+
+    setTimeout(() => {
+          this.saveNickNameBeforeRedeem();
+
+    }, 1000);
     
     this.ngxLoaderStart();
     const route = 'credits/redeem'
@@ -273,6 +278,29 @@ saveNickName(){
       //   }
       // });
     }
+
+    saveNickNameBeforeRedeem(){
+  const route = "credits/save-nickname"
+  const formData = new FormData();
+
+   const userIds = sessionStorage.getItem('userId');
+    this.userId=userIds;
+
+  formData.append('nickName', this.nickName);
+  formData.append('userId', this.userId);
+  formData.append('templateName', this.templateName);
+
+   this.api.upload(route,formData).subscribe({
+      next: (response) => {
+
+      },
+      error: (error) => {
+        this.ngxLoaderStop();
+        this.gs.showMessage('error',error.error?.message)
+      },
+    });
+
+}
   
 
 }

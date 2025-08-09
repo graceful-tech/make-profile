@@ -24,6 +24,7 @@ import { PaymentService } from 'src/app/services/payment.service';
 import { ViewHistoryCandidatesComponent } from '../view-history-candidates/view-history-candidates.component';
 import { VerifyCandidatesComponent } from '../verify-candidates/verify-candidates.component';
 import { LoaderComponent } from 'src/app/shared/components/loader/loader.component';
+import { ChooseTemplateWayComponent } from '../choose-template-way/choose-template-way.component';
 
 
 @Component({
@@ -857,7 +858,8 @@ export class CandidatesDetailsComponent {
           this.ngxLoaderStop();
           this.candidates = response;
           this.candidateId = response.id;
-          this.resumeDetailComponent(response);
+        //  this.resumeDetailComponent(response);
+        this.chooseTemplate(response);
         }
         else{
           this.ngxLoaderStop();
@@ -932,29 +934,44 @@ export class CandidatesDetailsComponent {
     });
   }
 
-  createResume() {
+  // createResume() {
      
-     const ref = this.dialog.open(ChooseTemplateComponent, {
-      data: {
-        candidates: this.candidates,
-        candidateImage: this.candidateImageUrl
-      },
-      closable: true,
-      width: '40%',
-      height: '90%',
-      styleClass: 'custom-dialog-header',
-    });
+  //    const ref = this.dialog.open(ChooseTemplateComponent, {
+  //     data: {
+  //       candidates: this.candidates,
+  //       candidateImage: this.candidateImageUrl
+  //     },
+  //     closable: true,
+  //     width: '40%',
+  //     height: '90%',
+  //     styleClass: 'custom-dialog-header',
+  //   });
     
     
 
-    ref.onClose.subscribe(response => {
-      if (response) {
-        this.candidateImageUrl = response.candidateLogo;
-        console.log(this.candidateImageUrl)
-      }
-       this.getAvailableCredits();
+  //   ref.onClose.subscribe(response => {
+  //     if (response) {
+  //       this.candidateImageUrl = response.candidateLogo;
+  //       console.log(this.candidateImageUrl)
+  //     }
+  //      this.getAvailableCredits();
+  //   });
+  // }
+
+  createResume(){
+
+    const ref = this.dialog.open(ChooseTemplateWayComponent, {
+      data: {
+         candidates: this.candidates,
+         candidateImage: this.candidateImageUrl
+      },
+      closable: true,
+        styleClass: 'custom-dialog-headers',
     });
+
   }
+
+  
 
   patchCandidateForm(candidate: Candidate) {
 
@@ -1202,11 +1219,14 @@ export class CandidatesDetailsComponent {
     const route = `credits?userId=${id}`;
     this.api.get(route).subscribe({
       next: (response) => {
+        if(response){
         this.availableCredits = response as any;
          this.totalCreditsAvailable = this.availableCredits.reduce(
           (sum: any, credit: { creditAvailable: any; }) => sum + (credit.creditAvailable || 0),
           0
         );
+        this.toggleSection('resume');
+      }
       },
     });
   }
@@ -1660,6 +1680,21 @@ handleApply(requirement: any): void {
       score.jobId === requirement.jobId && score.tenant === requirement.tenant
   );
 }
+
+ chooseTemplate(candidate:any) {
+     
+     const ref = this.dialog.open(ChooseTemplateComponent, {
+      data: {
+        candidates: candidate,
+        candidateImage: this.candidateImageUrl
+      },
+      closable: true,
+      width: '40%',
+      height: '90%',
+      styleClass: 'custom-dialog-header',
+    });
+
+  }
 
 }
 

@@ -572,7 +572,7 @@
            <app-make-profile-divider></app-make-profile-divider>
   
            <div class="button-wrapper" *ngIf="!payments">
-            <p-button class="mr-2" [label]="dataLoaded ? 'Generate' : 'Generating..'"
+            <p-button class="mr-2" [label]="dataLoaded ? 'Proceed to create resume' : 'Generating..'"
                 [icon]="dataLoaded ? '' : 'pi pi-spin pi-spinner'" [disabled]="!dataLoaded"
                 (onClick)="createCandidate()"></p-button>
             </div>

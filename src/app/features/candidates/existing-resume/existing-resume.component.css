@@ -1,0 +1,32 @@
+.custom-btn {
+  background-color: #366fe0;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  font-size: 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  /* margin-right: 15px; */
+  font-style: italic;
+}
+
+.custom-btn:hover {
+  background-color: #3716dc;
+}
+
+.modify-btn {
+  background-color: #19671c;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  font-size: 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  /* margin-right: 15px; */
+  font-style: italic;
+}
+
+ .modify-btn:hover {
+    background-color: #30dc16;
+    color:black;
+  }

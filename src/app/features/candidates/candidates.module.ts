@@ -16,6 +16,8 @@ import { VerifyCandidatesComponent } from './verify-candidates/verify-candidates
 import { ViewHistoryCandidatesComponent } from './view-history-candidates/view-history-candidates.component';
 import { ResumeCreatingComponent } from './resume-creating/resume-creating.component';
 import { NickNameComponent } from './nick-name/nick-name.component';
+import { ChooseTemplateWayComponent } from './choose-template-way/choose-template-way.component';
+import { ExistingResumeComponent } from './existing-resume/existing-resume.component';
 
 
 @NgModule({
@@ -31,7 +33,9 @@ import { NickNameComponent } from './nick-name/nick-name.component';
     ResumeDetailsComponent,
     ViewHistoryCandidatesComponent,
     ResumeCreatingComponent,
-    NickNameComponent
+    NickNameComponent,
+    ChooseTemplateWayComponent,
+    ExistingResumeComponent
   ],
   imports: [
     CommonModule,

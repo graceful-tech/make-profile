@@ -92,6 +92,11 @@ export class MobilePaymentOptionComponent {
 
 
     redeem() {
+
+      setTimeout(() => {
+        this.saveNickNameBeforeRedeem();
+      }, 1000);
+
     this.ngxLoaderStart();
     const route = 'credits/redeem';
 
@@ -280,6 +285,29 @@ export class MobilePaymentOptionComponent {
       next: (response) => {
          
        this.redeem();
+      },
+      error: (error) => {
+        this.ngxLoaderStop();
+        this.gs.showMobileMessage('error',error.error?.message)
+      },
+    });
+
+}
+
+ saveNickNameBeforeRedeem(){
+  const route = "credits/save-nickname"
+  const formData = new FormData();
+
+   this.userId = sessionStorage.getItem('userId');
+  this.nickName = localStorage.getItem('nickName');
+
+  formData.append('nickName', this.nickName);
+  formData.append('userId', this.userId);
+  formData.append('templateName', this.templateName);
+
+   this.api.upload(route,formData).subscribe({
+      next: (response) => {
+        
       },
       error: (error) => {
         this.ngxLoaderStop();
