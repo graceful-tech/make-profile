@@ -43,7 +43,7 @@ export class UseExistingTemplateComponent {
     });
   }
 
-  payment(templateName:any){
+  payment(templateName:any,nickName:any){
     const confirmedAmount = prompt("Enter final amount in ₹", "10");
 
   const amountNum = Number(confirmedAmount);
@@ -59,26 +59,30 @@ export class UseExistingTemplateComponent {
        },2000); 
     });
 
-    this.ps.payWithRazorPay(amount, templateName);
+    // this.ps.payWithRazorPay(amount, templateName);
+    this.ps.payWithRazorNewPay(amount,templateName,nickName)
   } else {
     alert("Please enter a valid amount ₹10 or more.");
   }
   }
 
-   navigateToVerify(templateName:any,availableCredits:any){
+   navigateToVerify(templateName:any,availableCredits:any,nickName:any){
 
     if(availableCredits>0){
 
      localStorage.setItem('templateName',templateName);
-    this.gs.setResumeName(templateName);
-    
+     this.gs.setResumeName(templateName);
+
+     localStorage.setItem('nickName',nickName);
+      this.gs.setNickName(nickName);
+
     if (this.candidateImageUrl != null &&this.candidateImageUrl !== undefined) {
       this.gs.setCandidateImage(this.candidateImageUrl);
     }
     this.router.navigate(['mob-candidate/edit-candidate']);
   }
   else{
-    this.gs.customMobileMessage('Oops..!','You don’t have enough credits to check eligibility.',templateName)
+    this.gs.customMobileMessageWithNickName('Oops..!','You don’t have enough credits to check eligibility.',templateName,nickName)
    }
   }
 

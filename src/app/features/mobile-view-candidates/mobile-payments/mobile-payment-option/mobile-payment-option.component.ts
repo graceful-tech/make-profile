@@ -51,13 +51,17 @@ export class MobilePaymentOptionComponent {
       this.templateName = response
     })
 
+    this.gs.nickName$.subscribe(response =>{
+      this.nickName = response
+    })
+
     this.gs.candidateDetails$.subscribe(response => {
       this.candidates = response;
     });
   }
 
   ngOnInit() {
-     if(this.templateName === null || this.templateName === undefined){
+    if(this.templateName === null || this.templateName === undefined){
       this.templateName = localStorage.getItem('templateName')
     }
       this.planetImagePath ='./assets/img/'+this.templateName+'.png';
@@ -78,13 +82,16 @@ export class MobilePaymentOptionComponent {
     this.ps.initRazorPays(() => {
       setTimeout(() => {
 
-        // this.redeem();
-        this.saveNickName();
+         this.redeem();
+      //  this.saveNickName();
 
       }, 2000);
     });
 
-    this.ps.payWithRazorPay(amount, this.templateName);
+   const nickName = localStorage.getItem('nickName');
+    // this.ps.payWithRazorPay(amount, this.templateName);
+    this.ps.payWithRazorNewPay(amount, this.templateName,nickName);
+
   } else {
     alert("Please enter a valid amount ₹10 or more.");
   }
@@ -93,9 +100,9 @@ export class MobilePaymentOptionComponent {
 
     redeem() {
 
-      setTimeout(() => {
-        this.saveNickNameBeforeRedeem();
-      }, 1000);
+      // setTimeout(() => {
+      //   this.saveNickNameBeforeRedeem();
+      // }, 1000);
 
     this.ngxLoaderStart();
     const route = 'credits/redeem';
@@ -104,16 +111,19 @@ export class MobilePaymentOptionComponent {
       this.templateName = localStorage.getItem('templateName')
     }
 
+    this.nickName = localStorage.getItem('nickName');
     const userIds = sessionStorage.getItem('userId');
+
     const  payload = {
       userId:userIds,
-      templateName:this.templateName
+      templateName:this.templateName,
+      nickName:this.nickName
      
     }
     this.api.retrieve(route,payload).subscribe({
       next: (response) => {
         this.credits = response as any;
-        if( this.credits){
+        if(this.credits){
           this.gs.setResumeName(this.templateName);
           this.gs.setCandidateDetails(this.candidates);
           // this.createResume();
@@ -195,8 +205,7 @@ export class MobilePaymentOptionComponent {
   }
 
   handleRedeemClick(event: Event): void {
-    console.log('keerthi')
-    if (this.balanceCredits === 0) {
+     if (this.balanceCredits === 0) {
       this.redeem();
     } else {
       event.preventDefault();
@@ -229,10 +238,13 @@ export class MobilePaymentOptionComponent {
     getAvailableCredits() {
        if(this.templateName === null || this.templateName === undefined){
       this.templateName = localStorage.getItem('templateName')
-    }
-        const userId = sessionStorage.getItem('userId');
+      }
+        const nickName = localStorage.getItem('nickName');
 
-     const route = `credits/get-available-credits?templateName=${this.templateName}&userId=${userId}`;
+      
+     const userId = sessionStorage.getItem('userId');
+
+     const route = `credits/get-available-credits?nickName=${this.nickName}&userId=${userId}`;
 
     this.api.get(route).subscribe({
       next: (response) => {

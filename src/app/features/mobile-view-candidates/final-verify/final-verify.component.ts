@@ -72,6 +72,7 @@ export class FinalVerifyComponent {
   isUploading:boolean = false;
   certificateEmptyFields: boolean = false;
   achievementsEmptyFields :boolean = false;
+  isLoading:boolean = false;
 
   constructor(
     private api: ApiService,
@@ -933,8 +934,6 @@ export class FinalVerifyComponent {
 
             this.getResumeContent('Career Objective');
 
-
-
             //set global
            // this.gs.setCandidateDetails(candidate);
          
@@ -1051,7 +1050,7 @@ export class FinalVerifyComponent {
 
     goToOpenAi(){
 
-    this.mobileLoaderComponent.startLoader();
+    this.isLoading = true;
 
     const route = 'resume/get-content';
     const payload = {...this.candidates};
@@ -1071,12 +1070,12 @@ export class FinalVerifyComponent {
          const candidateClone = JSON.parse(JSON.stringify(this.candidates)); 
          this.patchCandidateForm(candidateClone);
 
-           this.mobileLoaderComponent.stopLoader();
+          this.isLoading = false;
         }
-           this.mobileLoaderComponent.stopLoader();
+          this.isLoading = false;
       },
       error: (error) => {
-           this.mobileLoaderComponent.stopLoader();
+          this.isLoading = false;
         this.gs.showMessage('error', error.error?.message)
 
       },

@@ -194,8 +194,8 @@ export class ChooseTemplateComponent {
 
       const ref = this.dialog.open(NickNameComponent, {
       data: {
-         payments:true,
-         resumeName:resumeName,
+        payments:true,
+        resumeName:resumeName,
         candidateImage :this.candidateImageUrl,
         candidates: this.candidates,
 

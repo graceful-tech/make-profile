@@ -139,8 +139,6 @@ export class MobileCandidatesDetailsComponent {
 
 
   ngAfterViewInit() {
-
-    this.showResumeTable = true;
    }
 
   createCandidateForm() {
@@ -768,7 +766,7 @@ export class MobileCandidatesDetailsComponent {
             this.checkScore(jobId,tenant);
         }
         else{
-        this.gs.customMobileMessage('Oops..!','You don’t have enough credits to check eligibility.','Applied Job')
+        this.gs.customMobileMessageWithNickName('Oops..!','You don’t have enough credits to check eligibility.','Applied Job','Applied Job')
             this.isEligibile =  false;
         }
       },
@@ -902,7 +900,8 @@ export class MobileCandidatesDetailsComponent {
     this.dialog.open(ChooseNewTemplateComponent, {
 
       data:{
-
+            candidates:this.candidates,
+            
       },
       closable: true,
       styleClass: 'custom-dialog-headers',
@@ -1207,11 +1206,16 @@ export class MobileCandidatesDetailsComponent {
     const route = `credits?userId=${id}`;
     this.api.get(route).subscribe({
       next: (response) => {
+        if(response){
         this.availableCredits = response as any;
         this.totalCreditsAvailable = this.availableCredits.reduce(
           (sum: any, credit: { creditAvailable: any; }) => sum + (credit.creditAvailable || 0),
           0
         );
+         if(Array.isArray(response) && response.length > 0){
+          this.toggleSection('resume');
+        }
+      }
       },
     });
   }
@@ -1313,7 +1317,7 @@ export class MobileCandidatesDetailsComponent {
     accountMenu?.classList.remove('show-account-menu');
   }
 
-  payment(templateName:any){
+  payment(templateName:any,nickName:any){
     const confirmedAmount = prompt("Enter final amount in ₹", "10");
 
   const amountNum = Number(confirmedAmount);
@@ -1329,7 +1333,7 @@ export class MobileCandidatesDetailsComponent {
        },2000); 
     });
 
-    this.ps.payWithRazorPay(amount, templateName);
+    this.ps.payWithRazorNewPay(amount, templateName,nickName);
   } else {
     alert("Please enter a valid amount ₹10 or more.");
   }
@@ -1339,7 +1343,7 @@ export class MobileCandidatesDetailsComponent {
     this.router.navigate(['mob-candidate/view-history'])
   }
 
-  navigateToVerify(templateName:any,availableCredits:any){
+  navigateToVerify(templateName:any,availableCredits:any,nickName:any){
 
     if(availableCredits>0){
 
@@ -1352,7 +1356,7 @@ export class MobileCandidatesDetailsComponent {
     this.router.navigate(['mob-candidate/edit-candidate']);
   }
   else{
-    this.gs.customMobileMessage('Oops..!','You don’t have enough credits to check eligibility.',templateName)
+    this.gs.customMobileMessageWithNickName('Oops..!','You don’t have enough credits to check eligibility.',templateName,nickName)
 
     // this.gs.showMobileMessage('error','Pay to use this template');
   }
@@ -1371,7 +1375,7 @@ export class MobileCandidatesDetailsComponent {
       
     });
 
-    this.ps.payWithRazorPay(amount, "Applied Job");
+    this.ps.payWithRazorNewPay(amount, "Applied Job","Applied Job");
   } else {
     alert("Please enter a valid amount ₹10 or more.");
   }

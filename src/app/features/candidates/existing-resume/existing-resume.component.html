@@ -23,11 +23,11 @@
           <td>{{ credits.templateName }}</td>
           <td>{{ credits.nickName }}</td>
           <td>
-            <button type="button" class="custom-btn" (click)="payment(credits.templateName)">Add Credit</button>
+            <button type="button" class="custom-btn" (click)="payment(credits.templateName,credits.nickName)">Add Credit</button>
           </td>
           <ng-container *ngIf="credits.templateName !== 'Applied Job'; else emptyCell">
             <td>
-              <button type="button" class="modify-btn" (click)="navigateToVerify(credits.templateName,credits.creditAvailable)">Generate Resume</button>
+              <button type="button" class="modify-btn" (click)="navigateToVerify(credits.templateName,credits.creditAvailable,credits.nickName)">Generate Resume</button>
             </td>
           </ng-container>
           <ng-template #emptyCell>

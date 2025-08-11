@@ -49,6 +49,9 @@ export class GlobalService {
   private resumeName = new BehaviorSubject(null);
   public resumeName$ = this.resumeName.asObservable();
 
+  private nickName = new BehaviorSubject(null);
+  public nickName$ = this.nickName.asObservable();
+
 
 
   todayEvents: Array<any> = [];
@@ -119,6 +122,10 @@ export class GlobalService {
     this.resumeName.next(data);
   }
 
+   public setNickName(data: any) {
+    this.nickName.next(data);
+  }
+
   showMessage(status: string, message: string) {
     this.dialog.open(MessageComponent, {
       data: {
@@ -134,6 +141,18 @@ export class GlobalService {
       data: {
         message: message,
         templateName:templateName
+      },
+      closable: false,
+      header: status+'☺️',
+    });
+  }
+
+    customWebMessage(status: string, message: String ,templateName:String,nickName:String) {
+    this.dialog.open(CustomMessageComponent, {
+      data: {
+        message: message,
+        templateName:templateName,
+        nickName:nickName
       },
       closable: false,
       header: status+'☺️',
@@ -164,6 +183,20 @@ export class GlobalService {
     });
   }
 
+  customMobileMessageWithNickName(status: string, message: String ,templateName:String,nickName:any) {
+    this.dialog.open(CustomMobileMessageComponent, {
+      data: {
+        message: message,
+        templateName:templateName,
+        nickName:nickName
+      },
+      //  width: '100%',
+      //  height:'100%',
+      closable: false,
+      header: status+'☺️',
+        styleClass: 'payment-dialog-header',
+    });
+  }
 
   parseTimeToString(time: any) {
     const date = new Date(time);

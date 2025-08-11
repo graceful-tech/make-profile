@@ -38,13 +38,13 @@
 
                     <td>{{ credits.nickName }}</td>
                     <!-- <td>{{ credits.templateName }}</td> -->
-                   <td> <button type="button" class="custom-btn" (click)="payment(credits.templateName)">Add Create</button> </td>
+                   <td> <button type="button" class="custom-btn" (click)="payment(credits.templateName,credits.nickName)">Add Create</button> </td>
                  <ng-container *ngIf="credits.templateName !== 'Applied Job'; else emptyCell">
                     <td>
                       <button 
                         type="button" 
                         class="modify-btn"  
-                        (click)="navigateToVerify(credits.templateName,credits.creditAvailable)">
+                        (click)="navigateToVerify(credits.templateName,credits.creditAvailable,credits.nickName)">
                         Generate Resume
                       </button>
                     </td>

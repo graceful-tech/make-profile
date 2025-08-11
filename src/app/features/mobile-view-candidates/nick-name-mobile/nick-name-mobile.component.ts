@@ -35,13 +35,13 @@ export class NickNameMobileComponent {
     }
       
   submit() {
-    if (this.nickName) {
-          this.showError = false;
+    if (this.nickName && this.nickName.trim() !== '') {
+       this.showError = false;
          if(this.templateName!== null && this.templateName!==undefined){
 
           if(!this.nickNames.includes(this.nickName.trim())){
             localStorage.setItem('nickName',this.nickName);
-            this.naviagteToVerifyPage(this.templateName)
+            this.naviagteToVerifyPage(this.templateName,this.nickName)
             }
             else{
               this.gs.showMobileMessage('error','Nick name already exist');
@@ -52,7 +52,7 @@ export class NickNameMobileComponent {
           if(!this.nickNames.includes(this.nickName.trim())){
              localStorage.setItem('nickName',this.nickName);
             const templateName = localStorage.getItem('templateName');
-            this.naviagteToVerifyPage(templateName);
+            this.naviagteToVerifyPage(templateName,this.nickName);
             }
             else{
               this.gs.showMobileMessage('error','Nick name already exist');
@@ -63,9 +63,10 @@ export class NickNameMobileComponent {
      }
   }
 
-  naviagteToVerifyPage(templateName: any) {
+  naviagteToVerifyPage(templateName: any,nickName:any) {
      this.ref.close();
     this.gs.setResumeName(templateName);
+    this.gs.setNickName(nickName);
     this.router.navigate(['mob-candidate/edit-candidate']);
   }
 

@@ -64,7 +64,7 @@ export class PaymentOptionComponent  {
 
   ngOnInit() {
    this.planetImagePath ='./assets/img/'+this.templateName+'.png';
-   this.getAvailableCredits(this.templateName,this.userId)
+   this.getAvailableCredits(this.nickName,this.userId)
   }
 
   
@@ -79,12 +79,13 @@ export class PaymentOptionComponent  {
 
     this.ps.initRazorPays(() => {
       setTimeout(() => {
-        this.saveNickName();
+         this.redeem();
       }, 2000);
     });
 
-    this.ps.payWithRazorPay(amount, this.templateName);
+    // this.ps.payWithRazorPay(amount, this.templateName);
 
+    this.ps.payWithRazorNewPay(amount, this.templateName,this.nickName);
     
 
   } else {
@@ -119,21 +120,21 @@ saveNickName(){
   
   redeem() {
 
-    setTimeout(() => {
-          this.saveNickNameBeforeRedeem();
+    // setTimeout(() => {
+    //       this.saveNickNameBeforeRedeem();
 
-    }, 1000);
+    // }, 1000);
     
     this.ngxLoaderStart();
     const route = 'credits/redeem'
 
-    if(!this.templateName){
-      this.templateName = localStorage.getItem('templateName')
+    if(!this.nickName){
+      this.nickName = localStorage.getItem('nickName');
     }
 
     const payload = {
       userId:this.userId,
-      templateName: this.templateName
+      nickName: this.nickName
     }
 
     this.api.retrieve(route,payload).subscribe({
@@ -216,8 +217,8 @@ saveNickName(){
      
    }
 
-   getAvailableCredits(templateName:any,userId:any) {
-     const route = `credits/get-available-credits?templateName=${templateName}&userId=${userId}`;
+   getAvailableCredits(nickName:any,userId:any) {
+     const route = `credits/get-available-credits?nickName=${nickName}&userId=${userId}`;
 
     this.api.get(route).subscribe({
       next: (response) => {

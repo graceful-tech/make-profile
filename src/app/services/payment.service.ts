@@ -22,6 +22,7 @@ export class PaymentService {
   status:any;
   userId:any;
   templateName: any;
+  nickName: any;
   
 
   constructor(private winRef: WindowRefService, private api: ApiService, private gs: GlobalService, private zone: NgZone) {
@@ -37,6 +38,50 @@ export class PaymentService {
   payWithRazorPay(amount: number,templateName:any){
 
     this.templateName = templateName;
+    
+    const userIds = sessionStorage.getItem('userId');
+    this.userId=userIds;
+    
+    this.amount = amount / 100;
+    //this.initRazorPay();
+
+    const route = 'payment/generate-order';
+    const postData = { amount: amount, userId: userIds };
+    this.api.create(route, postData).subscribe({
+      next: response => {
+        const orderId = response.orderId;
+        this.paymentOrderId = response.id;
+      // this.candidateId = response.candiateId;
+        this.userId= response.userId
+        this.razorPayOptions['order_id'] = orderId;
+        this.razorPayOptions.prefill['name'] = this.candidates?.name;
+        this.razorPayOptions.prefill['email'] = this.candidates?.email;
+        this.razorPayOptions.prefill['contact'] = this.candidates?.mobileNumber;
+
+        var rzp1 = new Razorpay(this.razorPayOptions);
+        rzp1.open();
+        rzp1.on('payment.failed', (response: any) => {
+          const payload = {
+            userId:this.userId,
+            orderId: response?.error?.metadata?.order_id,
+            paymentId: response?.error?.metadata?.payment_id,
+            paymentOrderId: this.paymentOrderId,
+            amount: this.amount,
+            paymentStatus: 'Failed',
+          }
+          this.savePayment(payload);
+        });
+      },
+      error: error => { 
+
+      }
+    });
+  }
+
+  payWithRazorNewPay(amount: number,templateName:any,nickName:any){
+
+    this.templateName = templateName;
+    this.nickName = nickName;
     
     const userIds = sessionStorage.getItem('userId');
     this.userId=userIds;
@@ -165,9 +210,14 @@ export class PaymentService {
     this.templateName =  localStorage.getItem('templateName');
     }
 
+    if(!this.nickName){
+    this.nickName = localStorage.getItem('nickName');
+    }
+
      const updatedPayload = {
      ...payload,
-     templateName: this.templateName
+     templateName: this.templateName,
+     nickName: this.nickName
     };
 
      this.api.create(route, updatedPayload).subscribe({
@@ -178,7 +228,8 @@ export class PaymentService {
 
       }
     });
-  }
+
+   }
 
 
   getCandidateById(candidateId:any) {

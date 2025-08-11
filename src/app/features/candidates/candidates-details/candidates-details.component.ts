@@ -784,7 +784,7 @@ export class CandidatesDetailsComponent {
             //  this.matchingJob = false;
         }
         else{
-        this.gs.customMessage('Oops..!','You don’t have enough credits to check eligibility.','Applied Job')
+        this.gs.customWebMessage('Oops..!','You don’t have enough credits to check eligibility.','Applied Job','Applied Jobs')
           this.matchingJob = false;
         }
         
@@ -1225,7 +1225,10 @@ export class CandidatesDetailsComponent {
           (sum: any, credit: { creditAvailable: any; }) => sum + (credit.creditAvailable || 0),
           0
         );
+        if(Array.isArray(response) && response.length > 0){
         this.toggleSection('resume');
+
+        }
       }
       },
     });
@@ -1334,7 +1337,7 @@ export class CandidatesDetailsComponent {
     });
   }
    
-  payment(templateName:any){
+  payment(templateName:any,nickName:any){
   
   const confirmedAmount = prompt("Enter final amount in ₹", "10");
 
@@ -1346,12 +1349,13 @@ export class CandidatesDetailsComponent {
 
     this.ps.initRazorPays(() => {
 
-      console.log('keerthi')
-     this.getAvailableCredits();
+        setTimeout(() => {
+          this.getAvailableCredits();
+        }, 1000);
     
      });
 
-    this.ps.payWithRazorPay(amount, templateName);
+    this.ps.payWithRazorNewPay(amount, templateName,nickName);
   } else {
     alert("Please enter a valid amount ₹10 or more.");
   }
@@ -1399,7 +1403,7 @@ export class CandidatesDetailsComponent {
 
   }
 
-  navigateToVerify(templateName:any,creditAvailable:any){
+  navigateToVerify(templateName:any,creditAvailable:any,nickName:any){
 
     if(creditAvailable >0){
  
@@ -1409,7 +1413,7 @@ export class CandidatesDetailsComponent {
              payments:true,
              candidateImage :this.candidateImageUrl,
              resumeName:templateName,
-            // fieldsName:resumeName
+             nickName:nickName
            },
            closable: true,
            width: '70%',
@@ -1419,7 +1423,7 @@ export class CandidatesDetailsComponent {
 
         }
         else{
-          this.gs.customMessage('Oops..!','You don’t have enough credits to check eligibility.',templateName)
+          this.gs.customWebMessage('Oops..!','You don’t have enough credits to check eligibility.',templateName,nickName)
 
         }
 
@@ -1439,7 +1443,7 @@ export class CandidatesDetailsComponent {
       
     });
 
-    this.ps.payWithRazorPay(amount, "Applied Job");
+    this.ps.payWithRazorNewPay(amount, "Applied Job",'Applied Job');
   } else {
     alert("Please enter a valid amount ₹10 or more.");
   }

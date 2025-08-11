@@ -11,13 +11,15 @@ import { PaymentService } from 'src/app/services/payment.service';
 export class CustomMobileMessageComponent {
 
   message!: String;
- templateName: any;
+  templateName: any;
+  nickName:any
   
     constructor(public ref: DynamicDialogRef, public config: DynamicDialogConfig,private ps: PaymentService,) { }
   
     ngOnInit() {
       this.message = this.config.data?.message;
       this.templateName = this.config.data?.templateName;
+      this.nickName = this.config.data?.nickName;
 
     }
   
@@ -43,7 +45,9 @@ export class CustomMobileMessageComponent {
       
     });
 
-    this.ps.payWithRazorPay(amount, this.templateName);
+     //this.ps.payWithRazorPay(amount, this.templateName);
+     this.ps.payWithRazorNewPay(amount, this.templateName,this.nickName);
+
   } else {
     alert("Please enter a valid amount ₹10 or more.");
   }

@@ -47,8 +47,8 @@ export class NickNameComponent {
     }
 
   submit() {
-    if (this.nickName) {
-      this.showError = false;
+    if (this.nickName && this.nickName.trim() !== '') {
+       this.showError = false;
      
       if(!this.nickNames.includes(this.nickName.trim())){
        this.createResume();

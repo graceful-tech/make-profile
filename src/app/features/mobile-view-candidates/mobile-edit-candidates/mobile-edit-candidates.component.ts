@@ -64,6 +64,7 @@ candidateForm!: FormGroup;
   returnImage:any;
   candidatesUpdateData: any;
   resumeName:any;
+  nickName: any;
 
   constructor(
     private api: ApiService,
@@ -93,6 +94,11 @@ candidateForm!: FormGroup;
     this.gs.resumeName$.subscribe(response =>{
         if(response !== null){
         this.resumeName = response
+        }
+      })
+      this.gs.nickName$.subscribe(response =>{
+        if(response !== null){
+        this.nickName = response
         }
       })
      

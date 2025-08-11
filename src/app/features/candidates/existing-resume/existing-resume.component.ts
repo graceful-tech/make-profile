@@ -68,7 +68,7 @@ constructor(
 
 
 
-   payment(templateName:any){
+   payment(templateName:any,nickName:any){
   
   const confirmedAmount = prompt("Enter final amount in ₹", "10");
 
@@ -84,14 +84,14 @@ constructor(
     
      });
 
-    this.ps.payWithRazorPay(amount, templateName);
+    this.ps.payWithRazorNewPay(amount, templateName,nickName);
   } else {
     alert("Please enter a valid amount ₹10 or more.");
   }
 
 }
 
-navigateToVerify(templateName:any,creditAvailable:any){
+navigateToVerify(templateName:any,creditAvailable:any,nickName:any){
 
   this.ref.close();
 
@@ -103,6 +103,7 @@ navigateToVerify(templateName:any,creditAvailable:any){
              payments:true,
              candidateImage :this.candidateImageUrl,
              resumeName:templateName,
+             nickName:nickName
             },
            closable: true,
            width: '70%',
@@ -112,7 +113,7 @@ navigateToVerify(templateName:any,creditAvailable:any){
 
         }
         else{
-          this.gs.customMessage('Oops..!','You don’t have enough credits to check eligibility.',templateName)
+          this.gs.customWebMessage('Oops..!','You don’t have enough credits to check eligibility.',templateName,nickName)
         }
 
   }
