@@ -80,17 +80,16 @@ export class MobilePaymentOptionComponent {
     const paymentType = 'Resume';
 
     this.ps.initRazorPays(() => {
+      
       setTimeout(() => {
-
          this.redeem();
-      //  this.saveNickName();
-
-      }, 2000);
+       }, 2000);
     });
 
    const nickName = localStorage.getItem('nickName');
+   const templateName = localStorage.getItem('templateName');
     // this.ps.payWithRazorPay(amount, this.templateName);
-    this.ps.payWithRazorNewPay(amount, this.templateName,nickName);
+    this.ps.payWithRazorNewPay(amount, templateName,nickName);
 
   } else {
     alert("Please enter a valid amount ₹10 or more.");
@@ -239,12 +238,12 @@ export class MobilePaymentOptionComponent {
        if(this.templateName === null || this.templateName === undefined){
       this.templateName = localStorage.getItem('templateName')
       }
-        const nickName = localStorage.getItem('nickName');
 
-      
+      const nickName = localStorage.getItem('nickName');
+
      const userId = sessionStorage.getItem('userId');
 
-     const route = `credits/get-available-credits?nickName=${this.nickName}&userId=${userId}`;
+     const route = `credits/get-available-credits?nickName=${nickName}&userId=${userId}`;
 
     this.api.get(route).subscribe({
       next: (response) => {

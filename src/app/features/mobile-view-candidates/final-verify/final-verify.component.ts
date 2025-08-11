@@ -26,8 +26,7 @@ import { MobileLoaderComponent } from 'src/app/shared/components/mobile-loader/m
 })
 export class FinalVerifyComponent {
  @ViewChild('chipInput', { static: false }) chipInputRef!: ElementRef;
-@ViewChild(MobileLoaderComponent) mobileLoaderComponent!: MobileLoaderComponent;
-
+ 
   candidateForm!: FormGroup;
   genderList: Array<ValueSet> = [];
   languages: Array<ValueSet> = [];
@@ -196,6 +195,9 @@ export class FinalVerifyComponent {
   }
 
   createCandidate() {
+
+    this.ngxLoaderStart();
+
   if(this.candidateForm.valid){
     this.dataLoaded = false;
 
@@ -397,10 +399,11 @@ export class FinalVerifyComponent {
         this.dataLoaded = true;
         this.candidates = response as Candidate
        
-        
+         this.ngxLoaderStop();
          this.createResume(this.candidates);
       },
       error: (error) => {
+         this.ngxLoaderStop();
         this.dataLoaded = true;
          window.alert('Error in creating please try again');
         console.log(error);
@@ -917,6 +920,8 @@ export class FinalVerifyComponent {
 
     
     getCandidates() {
+      this.startLoader();
+
       const route = 'candidate';
       this.api.get(route).subscribe({
         next: (response) => {
@@ -934,11 +939,13 @@ export class FinalVerifyComponent {
 
             this.getResumeContent('Career Objective');
 
-            //set global
-           // this.gs.setCandidateDetails(candidate);
+          this.stopLoader();
          
         }
         },
+        error: (err) => {
+          this.stopLoader();
+       }
       });
     }
   
@@ -1026,8 +1033,8 @@ export class FinalVerifyComponent {
           this.ngxLoaderStop();
       },
       error: (error) => {
-        this.gs.showMobileMessage('error',error.error?.message);
         this.ngxLoaderStop();
+        this.gs.showMobileMessage('error',error.error?.message);
       }
     });
   }
@@ -1050,7 +1057,7 @@ export class FinalVerifyComponent {
 
     goToOpenAi(){
 
-    this.isLoading = true;
+   this.startLoader();
 
     const route = 'resume/get-content';
     const payload = {...this.candidates};
@@ -1070,12 +1077,12 @@ export class FinalVerifyComponent {
          const candidateClone = JSON.parse(JSON.stringify(this.candidates)); 
          this.patchCandidateForm(candidateClone);
 
-          this.isLoading = false;
+          this.stopLoader();
         }
-          this.isLoading = false;
+        this.stopLoader();
       },
       error: (error) => {
-          this.isLoading = false;
+          this.stopLoader();
         this.gs.showMessage('error', error.error?.message)
 
       },
@@ -1087,8 +1094,7 @@ export class FinalVerifyComponent {
 
   getResumeContent(content:any){
       
-    this.mobileLoaderComponent.startLoader();
-
+ 
        const route =`content/openai?content=${content}`
   
       this.api.get(route).subscribe({
@@ -1099,13 +1105,11 @@ export class FinalVerifyComponent {
             if(content === 'Summary'){
                this.candidateForm.get('summary')?.setValue(responseContent?.resumeContent);
 
-           this.mobileLoaderComponent.stopLoader();
-            }
+             }
             else{
                this.candidateForm.get('careerObjective')?.setValue(responseContent?.resumeContent);
 
-           this.mobileLoaderComponent.stopLoader();
-            }
+             }
           }
           
         },
@@ -1116,6 +1120,14 @@ export class FinalVerifyComponent {
         console.log(error);
       },
       });
+    }
+
+    startLoader(){
+      this.isLoading = true;
+    }
+
+    stopLoader(){
+      this.isLoading = false;
     }
 
 }

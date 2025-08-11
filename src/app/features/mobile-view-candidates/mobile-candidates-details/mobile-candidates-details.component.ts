@@ -1,6 +1,6 @@
 
 import { DatePipe } from '@angular/common';
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
@@ -22,6 +22,7 @@ import { CollegeProject } from 'src/app/models/candidates/college-project';
 import { PaymentService } from 'src/app/services/payment.service';
 import { ChooseTemplateWayComponent } from '../../candidates/choose-template-way/choose-template-way.component';
 import { ChooseNewTemplateComponent } from '../choose-new-template/choose-new-template.component';
+import { MobileLoaderComponent } from 'src/app/shared/components/mobile-loader/mobile-loader.component';
 
 @Component({
   selector: 'app-mobile-candidates-details',
@@ -30,6 +31,7 @@ import { ChooseNewTemplateComponent } from '../choose-new-template/choose-new-te
   styleUrl: './mobile-candidates-details.component.css',
 })
 export class MobileCandidatesDetailsComponent {
+  @ViewChild(MobileLoaderComponent) mobileLoaderComponent!: MobileLoaderComponent;
 
   yourResume: Array<any> = [];
   candidateForm!: FormGroup;
@@ -223,6 +225,9 @@ export class MobileCandidatesDetailsComponent {
   }
 
   createCandidate() {
+
+    this.mobileLoaderComponent.startLoader();
+    
    if(this.candidateForm.valid){
     this.dataLoaded = false;
 
@@ -407,11 +412,6 @@ export class MobileCandidatesDetailsComponent {
       payload.collegeProject = [];
     }
 
-      
-
-
-
-
     this.api.retrieve(route, payload).subscribe({
       next: (response) => {
         this.candidateId = response?.id;
@@ -429,10 +429,13 @@ export class MobileCandidatesDetailsComponent {
         this.saveCandidateAddtionalDetails(this.candidateId,response?.mobileNumber);
         }
 
+      this.mobileLoaderComponent.stopLoader();
+
         window.alert('Created Successfully');
 
       },
       error: (error) => {
+        this.mobileLoaderComponent.stopLoader();
         this.dataLoaded = true;
         window.alert('Error in Creating Resume');
 
@@ -442,6 +445,7 @@ export class MobileCandidatesDetailsComponent {
     this.dataLoaded = true;
      }
     else{
+     this.mobileLoaderComponent.stopLoader();
       this.showError = true;
       window.alert("Enter the mandatory details")
     }

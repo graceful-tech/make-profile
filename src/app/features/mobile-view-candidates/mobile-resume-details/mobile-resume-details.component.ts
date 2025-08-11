@@ -26,7 +26,7 @@ import { MobileLoaderComponent } from 'src/app/shared/components/mobile-loader/m
   styleUrl: './mobile-resume-details.component.css'
 })
 export class MobileResumeDetailsComponent {
-    @ViewChild(MobileLoaderComponent)mobileLoaderComponent!: MobileLoaderComponent;
+@ViewChild(MobileLoaderComponent)mobileLoaderComponent!: MobileLoaderComponent;
   
 
   candidateForm!: FormGroup;
@@ -973,7 +973,10 @@ export class MobileResumeDetailsComponent {
     }
 
     saveandcreateresume() {
-       if(this.candidateForm.valid){
+
+    this.mobileLoaderComponent.startLoader();
+
+    if(this.candidateForm.valid){
     
     this.dataLoaded = false;
 
@@ -1171,12 +1174,17 @@ export class MobileResumeDetailsComponent {
         localStorage.setItem('candidateId',this.candidateId);
         this.candidates = response;
          this.uploadCandidateImage();
+
+         this.mobileLoaderComponent.stopLoader();
+
          
           this.router.navigate(['mob-candidate/choose-Template'])
         
           this.dataLoaded = true;  
       },
       error: (error) => {
+      this.mobileLoaderComponent.stopLoader();
+
         this.dataLoaded = true;
         window.alert('Error in Creating Resume');
         console.log(error);
@@ -1186,6 +1194,8 @@ export class MobileResumeDetailsComponent {
 
     }
     else{
+      this.mobileLoaderComponent.stopLoader();
+
       this.gs.showMessage('error','Please fill the mandatory fields');
       this.showError = true;
     }

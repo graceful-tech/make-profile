@@ -16,6 +16,7 @@ import { PaymentService } from 'src/app/services/payment.service';
 import { CollegeProject } from 'src/app/models/candidates/college-project';
 import { DatePipe } from '@angular/common';
 import { PaymentOptionComponent } from '../../candidates/payments/payment-option/payment-option.component';
+import { MobileLoaderComponent } from 'src/app/shared/components/mobile-loader/mobile-loader.component';
 
 @Component({
   selector: 'app-mobile-verify-component',
@@ -25,6 +26,8 @@ import { PaymentOptionComponent } from '../../candidates/payments/payment-option
 })
 export class MobileVerifyComponentComponent {
  @ViewChild('chipInput', { static: false }) chipInputRef!: ElementRef;
+ @ViewChild(MobileLoaderComponent)mobileLoaderComponent!: MobileLoaderComponent;
+ 
 
   candidateForm!: FormGroup;
   genderList: Array<ValueSet> = [];
@@ -201,6 +204,7 @@ export class MobileVerifyComponentComponent {
   }
 
   createCandidate() {
+    this.mobileLoaderComponent.startLoader();
     this.dataLoaded = false;
 
     const route = 'candidate/create';
@@ -400,7 +404,7 @@ export class MobileVerifyComponentComponent {
           this.uploadCandidateImage();
         }
        // response.candidateLogo = this.candidateImageUrl; 
-
+        this.mobileLoaderComponent.stopLoader();
         this.verifyDetails(this.candidates);
 
         //this.gs.setCandidateDetails(this.candidates);
@@ -408,6 +412,7 @@ export class MobileVerifyComponentComponent {
 
       },
       error: (error) => {
+        this.mobileLoaderComponent.stopLoader();
         this.dataLoaded = true;
          window.alert('Error in creating please try again');
         console.log(error);

@@ -891,7 +891,7 @@ export class VerifyCandidatesComponent {
     const candidateId = localStorage.getItem('candidateId');
    
     // localStorage.setItem('resumeName',resumeName);
-      const resumeNames = localStorage.getItem('resumeName');
+      const resumeNames = localStorage.getItem('templateName');
 
     const ref = this.dialog.open(AddCandidatesComponent, {
       data: {

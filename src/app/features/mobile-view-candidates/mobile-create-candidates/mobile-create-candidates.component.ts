@@ -16,6 +16,7 @@ import { PaymentService } from 'src/app/services/payment.service';
 import { CollegeProject } from 'src/app/models/candidates/college-project';
 import { DatePipe } from '@angular/common';
 import { PaymentOptionComponent } from '../../candidates/payments/payment-option/payment-option.component';
+import { MobileLoaderComponent } from 'src/app/shared/components/mobile-loader/mobile-loader.component';
 
 @Component({
   selector: 'app-mobile-create-candidates',
@@ -25,6 +26,8 @@ import { PaymentOptionComponent } from '../../candidates/payments/payment-option
 })
 export class MobileCreateCandidatesComponent {
   @ViewChild('chipInput', { static: false }) chipInputRef!: ElementRef;
+  @ViewChild(MobileLoaderComponent) mobileLoaderComponent!: MobileLoaderComponent;
+  
 
   candidateForm!: FormGroup;
   genderList: Array<ValueSet> = [];
@@ -200,7 +203,9 @@ export class MobileCreateCandidatesComponent {
   }
 
   createCandidate() {
+    this.mobileLoaderComponent.startLoader();
   if(this.candidateForm.valid){
+    
     this.dataLoaded = false;
 
     const route = 'candidate/create';
@@ -213,9 +218,9 @@ export class MobileCreateCandidatesComponent {
       );
     }
 
-   if(payload.dob !=null){
-    payload.dob = this.datePipe.transform(payload.dob,'yyyy-MM-dd');
-   }
+    if (payload.dob != null) {
+      payload.dob = this.datePipe.transform(payload.dob, 'yyyy-MM-dd');
+    }
 
     if (payload.fresher != null && payload.fresher) {
       payload['fresher'] = true;
@@ -223,14 +228,12 @@ export class MobileCreateCandidatesComponent {
       payload['fresher'] = false;
     }
 
-  
-
     if (payload.fresher) {
       payload.experiences = [];
-    }  
-     
+    }
+
     // if (payload.fresher) {
-    // if (Object.is(payload.collegeProject[0].collegeProjectName, '')) {
+    //   if (Object.is(payload.collegeProject[0].collegeProjectName, '')) {
     //     payload.collegeProject = [];
     //   } else {
     //     payload.collegeProject = payload.collegeProject.map((proj: any) => ({
@@ -240,8 +243,8 @@ export class MobileCreateCandidatesComponent {
     //         : proj.collegeProjectSkills
     //     }));
     //   }
-    // } 
- 
+    // }
+
         if (!payload.fresher) {
       if (Object.is(payload.experiences?.[0]?.companyName, '')) {
         payload.experiences = [];
@@ -288,7 +291,7 @@ export class MobileCreateCandidatesComponent {
     
     }
     
-     
+
     if (Object.is(payload.qualification[0].institutionName, '')) {
       payload.qualification = [];
     } else {
@@ -303,10 +306,10 @@ export class MobileCreateCandidatesComponent {
         );
       });
     }
-    
+
     if (Object.is(payload.achievements[0].achievementsName, '')) {
-        payload.achievements = [];
-    } else{
+      payload.achievements = [];
+    } else {
       payload.achievements.forEach((cert: any) => {
         cert.achievementsDate = this.datePipe.transform(
           cert.achievementsDate,
@@ -314,8 +317,8 @@ export class MobileCreateCandidatesComponent {
         );
       });
     }
-   
-    if (Object.is(payload.certificates[0].courseName, ''))  {
+
+    if (Object.is(payload.certificates[0].courseName, '')) {
       payload.certificates = [];
     } else {
       payload.certificates.forEach((cert: any) => {
@@ -329,12 +332,12 @@ export class MobileCreateCandidatesComponent {
         );
       });
     }
-    
+
 
     if (Object.is(payload.languagesKnown, '')) {
       payload.languagesKnown = '';
     }
-    else{
+    else {
       const stringList: string[] = payload.languagesKnown;
       const commaSeparatedString: string = stringList.join(', ');
       payload.languagesKnown = commaSeparatedString;
@@ -342,7 +345,7 @@ export class MobileCreateCandidatesComponent {
 
     if (Object.is(payload.skills, '')) {
       payload.skills = '';
-    }else{
+    } else {
       const stringList: string[] = payload.skills;
       const commaSeparatedString: string = stringList.join(', ');
       payload.skills = commaSeparatedString;
@@ -351,7 +354,7 @@ export class MobileCreateCandidatesComponent {
     if (Object.is(payload.softSkills, '')) {
       payload.softSkills = '';
     }
-    else{
+    else {
       const stringList: string[] = payload.softSkills;
       const commaSeparatedString: string = stringList.join(', ');
       payload.softSkills = commaSeparatedString;
@@ -360,22 +363,22 @@ export class MobileCreateCandidatesComponent {
     if (Object.is(payload.coreCompentencies, '')) {
       payload.coreCompentencies = '';
     }
-    else{
+    else {
       const stringList: string[] = payload.coreCompentencies;
       const commaSeparatedString: string = stringList.join(', ');
       payload.coreCompentencies = commaSeparatedString;
     }
- 
+
 
     if (payload.fresher) {
       const hasValidProject = payload.collegeProject.some((project: { collegeProjectName: string; }) =>
         project.collegeProjectName && project.collegeProjectName.trim() !== ''
       );
-    
+
       if (!hasValidProject) {
         payload.collegeProject = [];
       } else {
-        payload.collegeProject = payload.collegeProject.map((project: any)  => ({
+        payload.collegeProject = payload.collegeProject.map((project: any ) => ({
           ...project,
           collegeProjectSkills: Array.isArray(project.collegeProjectSkills)
             ? project.collegeProjectSkills.join(', ')
@@ -385,6 +388,7 @@ export class MobileCreateCandidatesComponent {
     } else {
       payload.collegeProject = [];
     }
+
     
      payload.coreCompentenciesMandatory =  this.candidates?.coreCompentenciesMandatory !== null ? this.candidates?.coreCompentenciesMandatory: false;
 
@@ -417,13 +421,15 @@ export class MobileCreateCandidatesComponent {
         this.saveCandidateAddtionalDetails(this.candidateId,response?.mobileNumber);
         }
 
+        this.mobileLoaderComponent.stopLoader();
+        
         window.alert('Created Successfully');
-
-
-         this.router.navigate(['mob-candidate']);
+        this.router.navigate(['mob-candidate']);
 
       },
       error: (error) => {
+      this.mobileLoaderComponent.stopLoader();
+
         this.dataLoaded = true;
          window.alert('Error in creating please try again');
         console.log(error);
@@ -432,6 +438,7 @@ export class MobileCreateCandidatesComponent {
     this.dataLoaded = true;
   }
     else{
+      this.mobileLoaderComponent.stopLoader();
       this.showError = true;
        window.alert("Enter the mandatory details")
     }

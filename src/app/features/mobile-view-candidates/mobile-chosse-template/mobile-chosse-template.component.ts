@@ -188,6 +188,7 @@ export class MobileChosseTemplateComponent {
   }
 
   openNickNameField(templateName:any){
+    localStorage.setItem('templateName',templateName);
     const ref = this.dialog.open(NickNameMobileComponent,{
           data: {
              resume:templateName,

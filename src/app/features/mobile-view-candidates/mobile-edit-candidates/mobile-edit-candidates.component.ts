@@ -1,4 +1,4 @@
-import {ChangeDetectorRef,Component} from '@angular/core';
+import {ChangeDetectorRef,Component, ViewChild} from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
@@ -16,6 +16,7 @@ import { PaymentService } from 'src/app/services/payment.service';
 import { CollegeProject } from 'src/app/models/candidates/college-project';
 import { DatePipe } from '@angular/common';
 import { PaymentOptionComponent } from '../../candidates/payments/payment-option/payment-option.component';
+import { MobileLoaderComponent } from 'src/app/shared/components/mobile-loader/mobile-loader.component';
 
 @Component({
   selector: 'app-mobile-edit-candidates',
@@ -24,6 +25,8 @@ import { PaymentOptionComponent } from '../../candidates/payments/payment-option
   styleUrl: './mobile-edit-candidates.component.css'
 })
 export class MobileEditCandidatesComponent {
+ @ViewChild(MobileLoaderComponent) mobileLoaderComponent!: MobileLoaderComponent;
+
 candidateForm!: FormGroup;
   genderList: Array<ValueSet> = [];
   languages: Array<ValueSet> = [];
@@ -65,6 +68,7 @@ candidateForm!: FormGroup;
   candidatesUpdateData: any;
   resumeName:any;
   nickName: any;
+  isUploading:boolean =false;
 
   constructor(
     private api: ApiService,
@@ -131,11 +135,11 @@ candidateForm!: FormGroup;
 
   createCandidateForm() {
     this.candidateForm = this.fb.group({
-      id: [''],
+     id: [''],
       name: ['', Validators.required],
       mobileNumber: ['',Validators.compose([Validators.required, Validators.minLength(10)]),],
       email: ['', Validators.compose([Validators.required, Validators.email])],
-      gender: [''],
+      gender: ['',Validators.required],
       nationality: [''],
       languagesKnown: [[]],
       fresher: [''],
@@ -151,14 +155,12 @@ candidateForm!: FormGroup;
       softSkills:[''],
       coreCompentencies:[''],
       collegeProject: this.fb.array([this.createCollegeProject()]),
+      summary:[''],
+      careerObjective:[''],
       coreCompentenciesMandatory:[''],
       softSkillsMandatory:[''],
       achievementsMandatory:[''],
       certificatesMandatory:[''],
-      summary:[''],
-      careerObjective:['']
-
-
     });
   }
 
@@ -200,7 +202,10 @@ candidateForm!: FormGroup;
   }
 
   generatingResume() {
-   this.dataLoaded = false;
+    this.startLoader();
+   if(this.candidateForm.valid){
+    
+    this.dataLoaded = false;
 
     const route = 'candidate/create';
     const payload = this.candidateForm.getRawValue();
@@ -212,9 +217,9 @@ candidateForm!: FormGroup;
       );
     }
 
-   if(payload.dob !=null){
-    payload.dob = this.datePipe.transform(payload.dob,'yyyy-MM-dd');
-   }
+    if (payload.dob != null) {
+      payload.dob = this.datePipe.transform(payload.dob, 'yyyy-MM-dd');
+    }
 
     if (payload.fresher != null && payload.fresher) {
       payload['fresher'] = true;
@@ -222,13 +227,23 @@ candidateForm!: FormGroup;
       payload['fresher'] = false;
     }
 
-  
-
     if (payload.fresher) {
       payload.experiences = [];
-    }  
-     
- 
+    }
+
+    // if (payload.fresher) {
+    //   if (Object.is(payload.collegeProject[0].collegeProjectName, '')) {
+    //     payload.collegeProject = [];
+    //   } else {
+    //     payload.collegeProject = payload.collegeProject.map((proj: any) => ({
+    //       ...proj,
+    //       collegeProjectSkills: Array.isArray(proj.collegeProjectSkills)
+    //         ? proj.collegeProjectSkills.join(', ')
+    //         : proj.collegeProjectSkills
+    //     }));
+    //   }
+    // }
+
         if (!payload.fresher) {
       if (Object.is(payload.experiences?.[0]?.companyName, '')) {
         payload.experiences = [];
@@ -275,7 +290,7 @@ candidateForm!: FormGroup;
     
     }
     
-     
+
     if (Object.is(payload.qualification[0].institutionName, '')) {
       payload.qualification = [];
     } else {
@@ -290,10 +305,10 @@ candidateForm!: FormGroup;
         );
       });
     }
-    
+
     if (Object.is(payload.achievements[0].achievementsName, '')) {
-        payload.achievements = [];
-    } else{
+      payload.achievements = [];
+    } else {
       payload.achievements.forEach((cert: any) => {
         cert.achievementsDate = this.datePipe.transform(
           cert.achievementsDate,
@@ -301,8 +316,8 @@ candidateForm!: FormGroup;
         );
       });
     }
-   
-    if (Object.is(payload.certificates[0].courseName, ''))  {
+
+    if (Object.is(payload.certificates[0].courseName, '')) {
       payload.certificates = [];
     } else {
       payload.certificates.forEach((cert: any) => {
@@ -316,12 +331,12 @@ candidateForm!: FormGroup;
         );
       });
     }
-    
+
 
     if (Object.is(payload.languagesKnown, '')) {
       payload.languagesKnown = '';
     }
-    else{
+    else {
       const stringList: string[] = payload.languagesKnown;
       const commaSeparatedString: string = stringList.join(', ');
       payload.languagesKnown = commaSeparatedString;
@@ -329,7 +344,7 @@ candidateForm!: FormGroup;
 
     if (Object.is(payload.skills, '')) {
       payload.skills = '';
-    }else{
+    } else {
       const stringList: string[] = payload.skills;
       const commaSeparatedString: string = stringList.join(', ');
       payload.skills = commaSeparatedString;
@@ -338,7 +353,7 @@ candidateForm!: FormGroup;
     if (Object.is(payload.softSkills, '')) {
       payload.softSkills = '';
     }
-    else{
+    else {
       const stringList: string[] = payload.softSkills;
       const commaSeparatedString: string = stringList.join(', ');
       payload.softSkills = commaSeparatedString;
@@ -347,22 +362,22 @@ candidateForm!: FormGroup;
     if (Object.is(payload.coreCompentencies, '')) {
       payload.coreCompentencies = '';
     }
-    else{
+    else {
       const stringList: string[] = payload.coreCompentencies;
       const commaSeparatedString: string = stringList.join(', ');
       payload.coreCompentencies = commaSeparatedString;
     }
- 
+
 
     if (payload.fresher) {
       const hasValidProject = payload.collegeProject.some((project: { collegeProjectName: string; }) =>
         project.collegeProjectName && project.collegeProjectName.trim() !== ''
       );
-    
+
       if (!hasValidProject) {
         payload.collegeProject = [];
       } else {
-        payload.collegeProject = payload.collegeProject.map((project:any)  => ({
+        payload.collegeProject = payload.collegeProject.map((project: any ) => ({
           ...project,
           collegeProjectSkills: Array.isArray(project.collegeProjectSkills)
             ? project.collegeProjectSkills.join(', ')
@@ -373,13 +388,15 @@ candidateForm!: FormGroup;
       payload.collegeProject = [];
     }
 
-      payload.coreCompentenciesMandatory =  this.candidates?.coreCompentenciesMandatory !== null ? this.candidates?.coreCompentenciesMandatory: false;
+    
+     payload.coreCompentenciesMandatory =  this.candidates?.coreCompentenciesMandatory !== null ? this.candidates?.coreCompentenciesMandatory: false;
 
     payload.softSkillsMandatory =  this.candidates?.softSkillsMandatory !== null ? this.candidates?.softSkillsMandatory: false;
 
     payload.certificatesMandatory =  this.candidates?.certificatesMandatory !== null ? this.candidates?.certificatesMandatory: false;
 
     payload.achievementsMandatory =  this.candidates?.achievementsMandatory !== null ? this.candidates?.achievementsMandatory: false;
+
 
 
 
@@ -397,19 +414,39 @@ candidateForm!: FormGroup;
         response.candidateLogo = this.candidateImageUrl; 
 
         this.gs.setCandidateDetails(this.candidates);
+
+        this.stopLoader();
+
         if(this.resumeName !== null && this.resumeName !== undefined){
           this.gs.setResumeName(this.resumeName);
-      
           this.router.navigate(['mob-candidate/verify-components']);  
           }
+          else{
+          const resumeName =  localStorage.getItem('templateName');
+          this.gs.setResumeName(this.resumeName);
+          this.router.navigate(['mob-candidate/verify-components']);
+          }
+
+          
       },
       error: (error) => {
-        this.dataLoaded = true;
+        this.stopLoader();
+
+         this.dataLoaded = true;
         window.alert('Error in Updating please try again');
         console.log(error);
       },
     });
     this.dataLoaded = true;
+
+  }
+  else{
+    this.stopLoader();
+
+       this.showError = true;
+       window.alert("Enter the mandatory details")
+    
+  }
   }
 
   reset() {
@@ -961,5 +998,13 @@ candidateForm!: FormGroup;
   
       inputEl.value = '';
     }
+  }
+
+  startLoader(){
+    this.isUploading = true;
+  }
+
+   stopLoader(){
+    this.isUploading = false;
   }
 }
