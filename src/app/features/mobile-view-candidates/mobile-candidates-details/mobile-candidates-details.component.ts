@@ -915,7 +915,7 @@ export class MobileCandidatesDetailsComponent {
     })
   }
   else{
-    window.alert('Enter Your D  etails');
+    window.alert('Enter Your Details');
   }
 
   }

@@ -521,12 +521,10 @@
                    </div>
                        <div class="col-12 md:col-6 lg:col-3" style="padding-left: 15px;" *ngIf="i>0">
                         <button type="button" class="remove-btn" icon="pi pi-trash" (click)="removeaddAchievements(i)">Remove Achievements</button>
-                          <!-- <p-button type="button" label="Remove Achievements" styleClass="p-buttonFailure" (click)="removeaddAchievements(i)"></p-button> -->
-                       </div>
+                        </div>
                 </div>
                     <div class="col-12 md:col-6 lg:col-3">
-                       <!-- <p-button type="button" styleClass="p-resumeButton" label="+ Add Achievements" (click)="addAchievements()"></p-button> -->
-                       <button type="button" class="custom-btn"  (click)="addAchievements()">+ Add Achievements</button>
+                        <button type="button" class="custom-btn"  (click)="addAchievements()">+ Add Achievements</button>
                     </div>
               </div>    
   
@@ -645,20 +643,9 @@
                       </div>
                     </div>
                 </div>
-
-
-
               </div>
           </form> 
           </div>
-  
-      
-            <!-- <div class="button-wrapper" *ngIf="payments">
-              <p-button class="mr-2" label="Next"
-                  (onClick)="next()"></p-button>
-          
-              </div> -->
-
               <div class="grid" style="margin-bottom: 50px;">
                 <div class="col-12 md:col-6 lg:col-3">
                   <div class="">
@@ -666,12 +653,11 @@
                    
                   </div>
                 </div>
-              </div>
-            
+              </div> 
     </div>
   </div>
 
-      <div class="button-bar">
+    <div class="button-bar">
            <div class="button-wrapper" *ngIf="!payments">
             <p-button class="mr-2" [label]="dataLoaded ? 'Update' : 'Updating..'"
                 [icon]="dataLoaded ? '' : 'pi pi-spin pi-spinner'" [disabled]="!dataLoaded"
@@ -682,5 +668,5 @@
             </p-button>
             
             </div>
-          </div>
+    </div>
   

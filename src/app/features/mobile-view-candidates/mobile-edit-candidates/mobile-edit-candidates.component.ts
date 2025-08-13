@@ -68,8 +68,7 @@ candidateForm!: FormGroup;
   candidatesUpdateData: any;
   resumeName:any;
   nickName: any;
-  isUploading:boolean =false;
-
+ 
   constructor(
     private api: ApiService,
     private fb: FormBuilder,

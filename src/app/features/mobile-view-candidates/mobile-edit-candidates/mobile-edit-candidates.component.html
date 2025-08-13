@@ -1,28 +1,14 @@
  
-<div class="overlay"  *ngIf="isUploading">
-  <div class="spinner-container">
-    <mat-spinner [diameter]="80" strokeWidth="5"   class="custom-blue" ></mat-spinner>
-     
-  </div>
-</div>
-
-
-
-
+ 
 <Header>
   <div class="header-image">
   <h5>Verify your details</h5>
   </div>
 </Header>
 
-
-
 <div class="wrapper mt-2">
     <div class="profile-wrapper">
-
        <div class="headers">
-          <!-- <button class="go-back-btn btn btn-outline-primary" (click)="goBack()">Back</button> -->
-
         <button class="go-dashboard-btn btn btn-outline-primary d-flex align-items-center gap-2" (click)="goToCandidatepage()">
             <img class="profile" src="assets/img/new-home.jpg" alt="Home" />
             Home
@@ -554,7 +540,7 @@
   
               <app-make-profile-divider></app-make-profile-divider>
   
-              <div class="grid">
+              <div class="grid" style="margin-bottom: 40px;">
                 <div class="col-12 md:col-6">
                  <div class="field-wrapper">
                   <label>Soft Skills</label>
@@ -571,8 +557,7 @@
                    <label>Core Competencies</label>
                     <div class="input-wrapper">
                      <p-chips separator="," formControlName="coreCompentencies" [addOnBlur]="true" [addOnTab]="true"></p-chips>
-                    <p-button type="button" (onClick)="addSkill('coreCompentencies','coreCompentenciesInput')">Add</p-button>
-
+                     <p-button type="button" (onClick)="addSkill('coreCompentencies','coreCompentenciesInput')">Add</p-button>
                     </div>
                   </div>
                  </div>

@@ -21,6 +21,10 @@ export class ExistingResumeComponent {
   candidateImageUrl: any;
   availableCredits: any;
   totalCreditsAvailable: any;
+  totalRecords!: number;
+  currentPage: number = 1;
+  maxLimitPerPageForResume:number = 5;
+
 
 
 constructor(
@@ -49,24 +53,28 @@ constructor(
      }
 
  getAvailableCredits() {
-  
     const id = sessionStorage.getItem('userId');
 
-    const route = `credits?userId=${id}`;
-    this.api.get(route).subscribe({
+    const route = 'credits';
+    const payload={
+            userId:id,
+            page:this.currentPage,
+            limit:this.maxLimitPerPageForResume
+
+    }
+    this.api.create(route,payload).subscribe({
       next: (response) => {
         if(response){
-        this.availableCredits = response as any;
+        this.availableCredits = response?.results as any;
          this.totalCreditsAvailable = this.availableCredits.reduce(
           (sum: any, credit: { creditAvailable: any; }) => sum + (credit.creditAvailable || 0),
           0
         );
-         
       }
+       this.totalRecords = response?.totalRecords; 
       },
     });
   }
-
 
 
    payment(templateName:any,nickName:any){
@@ -120,5 +128,11 @@ navigateToVerify(templateName:any,creditAvailable:any,nickName:any){
         }
 
   }
+
+    onPageChangeTemplate(event: any) {
+    this.currentPage = event.page + 1;
+    this.maxLimitPerPageForResume = event.rows;
+    this.getAvailableCredits();
+    }
 
 }

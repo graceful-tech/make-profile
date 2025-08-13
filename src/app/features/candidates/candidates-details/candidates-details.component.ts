@@ -960,7 +960,7 @@ export class CandidatesDetailsComponent {
   // }
 
   createResume(){
-    if(this.candidates !== null && this.candidates !== undefined){
+    if(this.candidateId !== null && this.candidateId !== undefined){
 
       const ref = this.dialog.open(ChooseTemplateWayComponent, {
       data: {
