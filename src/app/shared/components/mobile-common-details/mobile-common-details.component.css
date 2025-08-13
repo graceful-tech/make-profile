@@ -87,8 +87,7 @@
   .button-wrapper {
     margin-top: 1rem;
     margin-left: 0.3rem;
-    display: flex;
-    justify-content: space-between;
+    text-align: right;
   }
   
   .delete-btn {
@@ -133,6 +132,7 @@
   .image{
     width: 130px; 
     height: 130px;
+    
   }
   .edit-icon {
     position: absolute;
@@ -157,41 +157,30 @@
   }
   
   .back-button{
+
     text-align: right;
+   
   }
 
-  .header-button{
-    margin-top: 2rem;
-    margin-bottom: 1rem;
-    margin-left: 0.2rem;
-    display: flex;
-    justify-content: right;  
-    
+  .error-message {
+    padding-left: 1rem;
   }
 
- 
-  .header-image {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  background: #c1bdbd;
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding-top: 10px;
-  }
-
-  .fresher-checkbox {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+::ng-deep .custom-dropdown .p-dropdown {
+  width: 200px !important;
 }
 
-.fresher-checkbox label {
-  white-space: nowrap;
-  margin: 0;
+.add-details{ 
+  text-decoration: underline;
+  font-size: 1.4rem;
+  font-weight: 500;
+  padding-bottom: 0.5rem;
+   color: #178be9;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  background-color: #d5d5d5;
 }
 
 .button-bar {
@@ -215,100 +204,13 @@
   position: sticky;
 }
 
-.overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  backdrop-filter: blur(6px);
-  background-color: rgba(255, 255, 255, 0.4);
-  z-index: 9999;
+.fresher-checkbox {
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 8px;
 }
 
- 
-.spinner-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.fresher-checkbox label {
+  white-space: nowrap;
+  margin: 0;
 }
-
-.blurred {
-  filter: blur(4px);
-  pointer-events: none;
-  user-select: none;
-  transition: filter 0.3s ease;
-}
-
-.loading-text {
-  font-size: 24px;
-  font-weight: bold;
-  color: #0a0a0a;  
-  margin-top: 12px;
-  
-}
-
- 
-.dot {
-   font-size: 34px;
-  opacity: 0;
-  animation: blink 1.5s infinite;
-}
-
-.dot1 {
-  animation-delay: 0s;
- }
-.dot2 {
-  animation-delay: 0.2s;
-}
-.dot3 {
-  animation-delay: 0.4s;
-}
-
-@keyframes blink {
-  0%, 80%, 100% {
-    opacity: 0;
-  }
-  40% {
-    opacity: 1;
-  }
-}
-
-.headers{
-  position: relative;
-  top: 0;
-  left: 0;
-  right: 0;
-  margin-top: 2rem;
-  display: flex;
-  justify-content: flex-end;
- }
-
-.go-back-btn,
-.go-dashboard-btn {
-    font-size: 17px;
-}
-
-.go-dashboard-btn {
-    display: flex;
-    align-items: center;
-    font-size: 19px;
-    gap: 8px;
-    background-color: #a0b7d6;
-    color: #0a0a0a;
-}
-
-.profile {
-    height: 25px;
-    width: auto;           
-    border-radius: 50%;     
-    object-fit: contain;    
-    display: block;
-}
-
- 
- 
- 

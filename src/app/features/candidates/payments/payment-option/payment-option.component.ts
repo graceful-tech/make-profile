@@ -239,9 +239,7 @@ saveNickName(){
 
      this.api.retrieve(route, payload).subscribe({
       next: (response:any) => {
-
         if(response){
-            
         const responseCandidate =  response as Candidate;
         this.openCreateResumeDialog(responseCandidate,this.templateName);
           this.generating = false

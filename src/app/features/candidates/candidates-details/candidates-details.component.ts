@@ -23,8 +23,9 @@ import { ResumeDetailsComponent } from '../resume-details/resume-details.compone
 import { PaymentService } from 'src/app/services/payment.service';
 import { ViewHistoryCandidatesComponent } from '../view-history-candidates/view-history-candidates.component';
 import { VerifyCandidatesComponent } from '../verify-candidates/verify-candidates.component';
-import { LoaderComponent } from 'src/app/shared/components/loader/loader.component';
-import { ChooseTemplateWayComponent } from '../choose-template-way/choose-template-way.component';
+ import { ChooseTemplateWayComponent } from '../choose-template-way/choose-template-way.component';
+import { LoaderService } from 'src/app/services/loader.service';
+import { CandidateCommonDetailsComponent } from 'src/app/shared/components/candidate-common-details/candidate-common-details.component';
 
 
 @Component({
@@ -34,8 +35,7 @@ import { ChooseTemplateWayComponent } from '../choose-template-way/choose-templa
   styleUrl: './candidates-details.component.css'
 })
 export class CandidatesDetailsComponent {
- @ViewChild(LoaderComponent)loaderComponent!: LoaderComponent;
-
+ 
 
   yourResume: Array<any> = [];
   candidateForm!: FormGroup;
@@ -66,6 +66,7 @@ export class CandidatesDetailsComponent {
   totalRecords!: number;
   currentPage: number = 1;
   maxLimitPerPage: number = 10;
+  maxLimitPerPageForResume:number = 5;
   requirementForm!: FormGroup;
   candidateScore: any;
   candidateRelated: any;
@@ -108,8 +109,8 @@ export class CandidatesDetailsComponent {
     public ref: DynamicDialogRef,
     private ngxLoader: NgxUiLoaderService,
      private ps: PaymentService,
-     
-  
+     private loader:LoaderService
+    
   ) { }
 
   ngOnInit() {
@@ -959,8 +960,9 @@ export class CandidatesDetailsComponent {
   // }
 
   createResume(){
+    if(this.candidates !== null && this.candidates !== undefined){
 
-    const ref = this.dialog.open(ChooseTemplateWayComponent, {
+      const ref = this.dialog.open(ChooseTemplateWayComponent, {
       data: {
          candidates: this.candidates,
          candidateImage: this.candidateImageUrl
@@ -969,6 +971,12 @@ export class CandidatesDetailsComponent {
         styleClass: 'custom-dialog-headers',
     });
 
+    }
+    else{
+      this.gs.showMessage('error','Enter Your Details');
+    }
+
+    
   }
 
   
@@ -1216,20 +1224,26 @@ export class CandidatesDetailsComponent {
   getAvailableCredits() {
     const id = sessionStorage.getItem('userId');
 
-    const route = `credits?userId=${id}`;
-    this.api.get(route).subscribe({
+    const route = 'credits';
+    const payload={
+            userId:id,
+            page:this.currentPage,
+            limit:this.maxLimitPerPageForResume
+
+    }
+    this.api.create(route,payload).subscribe({
       next: (response) => {
         if(response){
-        this.availableCredits = response as any;
+        this.availableCredits = response?.results as any;
          this.totalCreditsAvailable = this.availableCredits.reduce(
           (sum: any, credit: { creditAvailable: any; }) => sum + (credit.creditAvailable || 0),
           0
         );
-        if(Array.isArray(response) && response.length > 0){
+        if(response?.totalRecords > 0){
         this.toggleSection('resume');
-
         }
       }
+       this.totalRecords = response?.totalRecords; 
       },
     });
   }
@@ -1364,12 +1378,19 @@ export class CandidatesDetailsComponent {
   }
 
   viewHistory(){
+    this.loader.start();
+
    const route = "history/candidate"
 
    this.api.get(route).subscribe({
       next: response => {
       const candidateList = response;
        this.viewCandidateSHistory(candidateList);
+       this.loader.stop();
+      },
+      error: (err) => {
+        this.loader.stop();
+         this.dataLoaded = false;
       }
     });
   }
@@ -1699,6 +1720,65 @@ handleApply(requirement: any): void {
     });
 
   }
+
+  enterNewDetails(){
+    const ref = this.dialog.open(CandidateCommonDetailsComponent, {
+      data: {
+        
+      },
+      closable: true,
+      width: '70%',
+      height: '90%',
+      header: 'Enter Your New Details',
+    });
+
+    ref.onClose.subscribe(response => {
+      if (response) {
+
+        localStorage.setItem('candidateId', response.id);
+        this.candidates = response;
+        this.candidateId = response.id;
+        const candidate = response as Candidate
+        const candidateClone = JSON.parse(JSON.stringify(candidate));
+        this.patchCandidateForm(candidateClone);
+        this.candidateImageUrl = response.candidateLogo;
+      }
+       this.getAvailableCredits();
+    });
+  }
+
+   getAvailableCreditss() {
+    const id = sessionStorage.getItem('userId');
+
+    const route = 'credits';
+    const payload={
+            userId:id,
+            page:this.currentPage,
+            limit:this.maxLimitPerPageForResume
+
+    }
+    this.api.create(route,payload).subscribe({
+      next: (response) => {
+        if(response){
+        this.availableCredits = response?.results as any;
+         this.totalCreditsAvailable = this.availableCredits.reduce(
+          (sum: any, credit: { creditAvailable: any; }) => sum + (credit.creditAvailable || 0),
+          0
+        );
+        
+      }
+       this.totalRecords = response?.totalRecords; 
+      },
+    });
+  }
+
+    onPageChangeTemplate(event: any) {
+    this.currentPage = event.page + 1;
+    this.maxLimitPerPageForResume = event.rows;
+    this.getAvailableCreditss();
+    }
+
+
 
 }
 

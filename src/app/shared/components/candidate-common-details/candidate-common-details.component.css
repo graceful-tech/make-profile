@@ -149,6 +149,7 @@ border-radius: 10px;
 animation: fadeInRotate 3s ease-in-out;
 }
 
+
 /* Second image animation (appears after 3 seconds) */
 .second-image img {
 max-width: 100%;
@@ -161,6 +162,10 @@ animation-delay: 3s;
 margin-top: 10px;
 }
 
+.error-message {
+    padding-left: 1rem;
+  }
+  
 @keyframes fadeInRotate {
 0% {
   opacity: 0;
@@ -261,15 +266,108 @@ margin-top: 10px;
     }
 
 
-    .fresher-checkbox {
+  .label-wrapper {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 8px;
+  margin-bottom: 5px;
 }
 
-.fresher-checkbox label {
-  white-space: nowrap;
-  margin: 0;
+.ai-summary-btn {
+  background-color: #9bc1eb;
+  color: rgb(37, 34, 34);
+  border: none;
+  padding: 4px 10px;
+  font-size: 15px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.ai-summary-btn:hover {
+  background-color: #85a8cd;
+ 
+  border: 1px solid black;
+}
+
+
+ 
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  backdrop-filter: blur(6px);
+  background-color: rgba(255, 255, 255, 0.4);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+ 
+.spinner-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+ 
+ 
+
+ 
+.blurred {
+  filter: blur(4px);
+  pointer-events: none;
+  user-select: none;
+  transition: filter 0.3s ease;
+}
+
+.loading-text {
+  font-size: 24px;
+  font-weight: bold;
+  color: #0a0a0a;  
+  margin-top: 12px;
+  
+}
+
+ 
+.dot {
+   font-size: 34px;
+  opacity: 0;
+  animation: blink 1.5s infinite;
+}
+
+.dot1 {
+  animation-delay: 0s;
+ }
+.dot2 {
+  animation-delay: 0.2s;
+}
+.dot3 {
+  animation-delay: 0.4s;
+}
+
+@keyframes blink {
+  0%, 80%, 100% {
+    opacity: 0;
+  }
+  40% {
+    opacity: 1;
+  }
+}
+
+.add-details{ 
+  text-decoration: underline;
+  font-size: 1.4rem;
+  font-weight: 500;
+  padding-bottom: 0.5rem;
+   color: #178be9;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  background-color: #d5d5d5;
 }
 
 .button-bar {
@@ -283,4 +381,20 @@ margin-top: 10px;
   display: flex;
   justify-content: flex-end;
   z-index: 1000;
+}
+
+.button-wrapper {
+  display: flex;
+  gap: 10px;
+}
+
+.fresher-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.fresher-checkbox label {
+  white-space: nowrap;
+  margin: 0;
 }

@@ -136,7 +136,7 @@
             <div class="grid border-line" id="skills">
                <div class="col-12">
                 <div class="field-wrapper">
-                 <label>Skills</label>
+                 <label [ngClass]="{ required: isRequired('skills') }">Skills</label>
                   <div class="input-wrapper">
                    <p-chips separator="," formControlName="skills" [addOnBlur]="true" [addOnTab]="true" inputId="chipInput" placeholder="Add Skills"></p-chips>
     
@@ -144,6 +144,8 @@
             
                   </div>
                 </div>
+                <small class="error-message" *ngIf="candidateForm.controls['skills'].invalid && showError">
+                Skills is required</small>
                </div>
             </div>
        </section>     

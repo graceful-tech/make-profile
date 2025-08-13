@@ -12,38 +12,10 @@
               </div>
             </div>
           </div>
-
-           
-
         <form [formGroup]="candidateForm">
             <app-make-profile-divider></app-make-profile-divider>
             <div class="section-heading">Personal Details</div>
               <div class="grid">
-
-
-<!--                       
-           <div class="col-12">
-                 <div class="field-wrapper">
-                  <div class="label-wrapper">
-                      <label>Summary</label>
-                     </div>
-                   <div class="input-wrapper">
-                    <textarea rows="5" type="text" placeholder="Enter your summary, or let our AI generate it for you." pInputText formControlName="summary"></textarea>
-                   </div>
-                 </div>
-            </div>
-
-             <div class="col-12">
-                 <div class="field-wrapper">
-                  <div class="label-wrapper">
-                      <label>Career Objective</label>
-                     </div>
-                   <div class="input-wrapper">
-                    <textarea rows="5" type="text" placeholder="Enter your carrer objective or let our AI generate it for you." pInputText formControlName="careerObjective"></textarea>
-                   </div>
-                 </div>
-            </div> -->
-              
                 <div class="col-12 md:col-6">
                   <div class="field-wrapper">
                       <input type="file" #attachment1 (change)="addCandidateImage($event)" style="display: none" />
@@ -687,7 +659,7 @@
           
               </div> -->
 
-              <div class="grid">
+              <div class="grid" style="margin-bottom: 50px;">
                 <div class="col-12 md:col-6 lg:col-3">
                   <div class="">
                     <p-button type="button" label="Back" (click)="goBack()"></p-button>

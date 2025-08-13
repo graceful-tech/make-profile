@@ -1,21 +1,8 @@
  
-<div class="overlay" *ngIf="isUploading">
-  <div class="spinner-container">
-    <mat-spinner [diameter]="80" strokeWidth="5"   class="custom-blue" ></mat-spinner>
-    <p class="loading-text">
-   Generating Resume<span class="dot dot1">.</span><span class="dot dot2">.</span><span class="dot dot3">.</span>
-</p>
-  </div>
-</div>
 
+<app-mobile-loader></app-mobile-loader>
 
-<Header>
-  <div class="header-image">
-  <h5>Reconfirm Your Details</h5>
-  </div>
-</Header>
- 
-<div class="wrapper" style="margin-top: 30px;">
+<div class="wrapper">
     <div class="profile-wrapper">
 
         <div class="grid">
@@ -25,6 +12,7 @@
               </div>
             </div>
           </div>
+
            
 
         <form [formGroup]="candidateForm">
@@ -32,13 +20,13 @@
             <div class="section-heading">Personal Details</div>
               <div class="grid">
 
-                 
+
+<!--                       
            <div class="col-12">
                  <div class="field-wrapper">
                   <div class="label-wrapper">
                       <label>Summary</label>
-                      <!-- <button type="button" class="ai-summary-btn" Placehos="Enter your summary, or let our AI generate it for you." (click)="getResumeContent('Summary')"  >Use AI&#10024; For Summary</button> -->
-                    </div>
+                     </div>
                    <div class="input-wrapper">
                     <textarea rows="5" type="text" placeholder="Enter your summary, or let our AI generate it for you." pInputText formControlName="summary"></textarea>
                    </div>
@@ -49,16 +37,14 @@
                  <div class="field-wrapper">
                   <div class="label-wrapper">
                       <label>Career Objective</label>
-                      <!-- <button type="button" class="ai-summary-btn"  (click)="getResumeContent('Career Objective')" >Use AI&#10024; For Objective</button> -->
-                    </div>
+                     </div>
                    <div class="input-wrapper">
                     <textarea rows="5" type="text" placeholder="Enter your carrer objective or let our AI generate it for you." pInputText formControlName="careerObjective"></textarea>
                    </div>
                  </div>
-            </div>
-
-         
-                <!-- <div class="col-12 md:col-6">
+            </div> -->
+              
+                <div class="col-12 md:col-6">
                   <div class="field-wrapper">
                       <input type="file" #attachment1 (change)="addCandidateImage($event)" style="display: none" />
                       <div class="image-container">
@@ -76,7 +62,7 @@
                           </ng-template>
                       </div>
                   </div>
-              </div> -->
+              </div>
 
               <div class="col-12 md:col-6 lg:col-3">
                 <div class="field-wrapper">
@@ -195,18 +181,18 @@
               <div>Professional Details</div>
             </div>
           
-             <div class="grid">
-                    <div class="col-12 md:col-6 lg:col-3">
-                <div class="fresher-checkbox pb-3" style="display: flex; align-items: center; gap: 8px;">
-                  <p-checkbox
-                    [binary]="true"
-                    inputId="fresher"
-                    formControlName="fresher"
-                  ></p-checkbox>
-                  <label for="fresher" style="margin: 0;">If you are fresher, click on the checkbox</label>
+            <div class="grid">
+                <div class="col-12 md:col-6 lg:col-3">
+                  <div class="fresher-checkbox pb-3" style="display: flex; align-items: center; gap: 8px;">
+                    <p-checkbox
+                      [binary]="true"
+                      inputId="fresher"
+                      formControlName="fresher"
+                    ></p-checkbox>
+                    <label for="fresher" style="margin: 0;">If you are fresher, click on the checkbox</label>
+                  </div>
                 </div>
-              </div>
-           </div>
+          </div>
           
             <ng-container *ngIf="!candidateForm.get('fresher')?.value">
               <div formArrayName="experiences">
@@ -263,18 +249,22 @@
                       <div class="field-wrapper">
                         <label>Responsibilities</label>
                         <div class="input-wrapper">
-                          <p-chips separator=","  formControlName="responsibilities" [addOnBlur]="true" [addOnTab]="true"></p-chips>
+                          <p-chips separator=","  formControlName="responsibilities" [addOnBlur]="true" [addOnTab]="true" inputId="responsibilityInput"></p-chips>
                           <p-button type="button" (onClick)="addSkill('responsibilities','responsibilityInput')">Add</p-button>
 
                         </div>
                       </div>
                     </div>
             
-                     
+                    <div class="col-12 md:col-6 lg:col-3" *ngIf="i>0">
+                      <button type="button" class="remove-btn" (click)="removeExperience(i)">Remove Experience</button>
+        
+                      <!-- <p-button type="button"  label="Remove Experience" styleClass="p-buttonFailure" (click)="removeExperience(i)"></p-button> -->
+                    </div>
                   </div>
             
                   <!-- Project Details -->
-                  <div formArrayName="projects" *ngIf="getProjectContentCount(i)">
+                  <div formArrayName="projects">
                     <div class="bysection-heading mt-4">
                       <div>Project Details</div>
                     </div>
@@ -319,18 +309,29 @@
                           </div>
                         </div>
             
-                        
+                        <div class="col-12 md:col-6 lg:col-3" *ngIf="j>0">
+                          <button type="button" class="remove-btn" (click)="removeProject(i, j)">Remove Project</button>
+        
+                          <!-- <p-button type="button" label="Remove Project" styleClass="p-buttonFailure" (click)="removeProject(i, j)"></p-button> -->
+                        </div>
         
                       </div>
         
-                      
+                      <div class="col-12 md:col-6 lg:col-3" *ngIf="j === getProjectCount(i) - 1">
+                        <button type="button" class="custom-btn" (click)="addProject(i)">+ Add Project</button>
+                        <!-- <p-button type="button" label="+ Add Project" (click)="addProject(i)"></p-button> -->
+                      </div>
         
                       <hr class="sub-section-divider" />
         
                     </div>
                   </div>
                    
-                   
+                  <div class="col-12 md:col-6 lg:col-3" *ngIf="i === getExperienceCount(i) -1" >
+                    <button type="button" class="custom-btn" (click)="addExperience()">+ Add Experience</button>
+        
+                    <!-- <p-button type="button" label="+ Add Experience" (click)="addExperience()"></p-button> -->
+                  </div>
                 </div>
                 
               </div>
@@ -370,10 +371,14 @@
                       </div>
                     </div>
             
-                    
+                    <div class="col-12 md:col-6 lg:col-3" *ngIf="i>0">
+                      <button type="button" class="remove-btn" (click)="removeCollegeProject(i)">Remove Project</button>
+                    </div>
                   </div>
             
-                 
+                  <div class="col-12 md:col-6 lg:col-3" *ngIf="i === getCollegeProjectCount(i) -1" >
+                    <button type="button" class="custom-btn" (click)="addCollegeProject()">+ Add Project</button>
+                  </div>
                 </div>
                 
               </div>
@@ -447,21 +452,28 @@
                         </div>
                       </div>
                     </div>
-
-                <hr>
-                
-                  </div>
+            
                    
+                  </div>
+                  <div class="col-12 md:col-6 lg:col-3" style="padding-left: 15px;" *ngIf="i>0">
+                    <button type="button" class="remove-btn" (click)="removeQualification(i)">Remove Qualification</button>
+        
+                    <!-- <p-button type="button" label="Remove Qualification" styleClass="p-buttonFailure" (click)="removeQualification(i)"></p-button> -->
+                  </div>
                 </div>
-                 
+                <div class="col-12 md:col-6 lg:col-3">
+                  <button type="button" class="custom-btn" (click)="addQualication()">+ Add Qualifications</button>
+        
+                  <!-- <p-button type="button" label="+ Add Qualifications" (click)="addQualication()"></p-button> -->
+                </div>
               </div>
             
               <app-make-profile-divider></app-make-profile-divider>
-              <div class="section-heading mt-3" *ngIf="!certificateEmptyFields">
+              <div class="section-heading mt-3">
                 <div>Course & Certificates</div>
               </div>
         
-              <div formArrayName="certificates" *ngIf="!certificateEmptyFields">
+              <div formArrayName="certificates">
                 <div *ngFor="let certificate of certificateControls.controls; let i = index" [formGroupName]="i" class="experience-container">
         
                   <div class="grid">
@@ -494,18 +506,25 @@
                     </div>
         
                  </div>
-                   
+                  <div class="col-12 md:col-6 lg:col-3" style="padding-left: 15px;" *ngIf="i>0">
+                    <button type="button" class="remove-btn" (click)="removeCertificates(i)">Remove Course</button>
+        
+                  <!-- <p-button type="button" label="Remove Course" styleClass="p-buttonFailure" (click)="removeCertificates(i)"></p-button> -->
+                   </div>
                  </div>
-                    
+                   <div class="col-12 md:col-6 lg:col-3">
+                      <!-- <p-button type="button" label="+ Add Couse" (click)="addCertificates()"></p-button> -->
+                      <button type="button" class="custom-btn" (click)="addCertificates()">+ Add Couse</button>
+                   </div>
                </div>
         
         
                <app-make-profile-divider></app-make-profile-divider>
-              <div class="section-heading mt-3" *ngIf="!achievementsEmptyFields">
+              <div class="section-heading mt-3">
                 <div>Achievements & Awards</div>
               </div>
         
-              <div formArrayName="achievements" *ngIf="!achievementsEmptyFields">
+              <div formArrayName="achievements">
                  <div *ngFor="let certificate of achievementsControls.controls; let i = index" [formGroupName]="i" class="experience-container">
         
                    <div class="grid">
@@ -528,9 +547,15 @@
                      </div>
              
                    </div>
-                      
+                       <div class="col-12 md:col-6 lg:col-3" style="padding-left: 15px;" *ngIf="i>0">
+                        <button type="button" class="remove-btn" icon="pi pi-trash" (click)="removeaddAchievements(i)">Remove Achievements</button>
+                          <!-- <p-button type="button" label="Remove Achievements" styleClass="p-buttonFailure" (click)="removeaddAchievements(i)"></p-button> -->
+                       </div>
                 </div>
-                     
+                    <div class="col-12 md:col-6 lg:col-3">
+                       <!-- <p-button type="button" styleClass="p-resumeButton" label="+ Add Achievements" (click)="addAchievements()"></p-button> -->
+                       <button type="button" class="custom-btn"  (click)="addAchievements()">+ Add Achievements</button>
+                    </div>
               </div>    
   
               <app-make-profile-divider></app-make-profile-divider>
@@ -559,12 +584,131 @@
            </form>
   
            <app-make-profile-divider></app-make-profile-divider>
+
+
+                   <div>
+          <form [formGroup]="additionalDetailsForm">
+            <div style="font-weight: bold;">
+                <Span>This information won’t appear on your resume, but it will help us match you with the right job</Span>
+          </div>
+
+            <div class="grid" style="padding-top:10px">     
+              <div class="col-12 md:col-6 lg:col-3">
+                      <div class="field-wrapper">
+                        <label>State</label>
+                        <div class="input-wrapper">
+                            <p-multiSelect appendTo="body" [options]="stateNames"
+                                          defaultLabel="Select State" [showHeader]="false"
+                                          optionLabel="stateName" optionValue="id"
+                                          formControlName="stateName" (onChange)="selectedState($event)">
+                                      </p-multiSelect>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-12 md:col-6 lg:col-3">
+                      <div class="field-wrapper">
+                        <label>Preffered Location</label>
+                        <div class="input-wrapper">
+                          <p-multiSelect appendTo="body" [options]="citiesName" defaultLabel="Select Preffered Location"
+                                          [showHeader]="false" optionLabel="cityName" optionValue="cityName"
+                                          formControlName="preferredLocation">
+                                      </p-multiSelect>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-12 md:col-6 lg:col-3">
+                      <div class="field-wrapper">
+                          <label>Current CTC (in Lakhs)</label>
+                        <div class="input-wrapper">
+                          <input pKeyFilter="num"[maxlength]="5" pInputText formControlName="currentCostToCompany"/>
+                        </div>
+                      </div>
+                    </div>
+
+
+                    <div class="col-12 md:col-6 lg:col-3">
+                      <div class="field-wrapper">
+                          <label>Expected CTC (in Lakhs)</label>
+                        <div class="input-wrapper">
+                          <input pKeyFilter="num"  [maxlength]="5"   pInputText  formControlName="expectedCostToCompany" />
+                        </div>
+                      </div>
+                    </div>
+
+
+                    <div class="col-12 md:col-6 lg:col-3">
+                      <div class="field-wrapper">
+                        <label>Total Experience</label>
+                        <div class="input-wrapper">
+                          <input pKeyFilter="num" [maxlength]="5" pInputText  formControlName="totalWorkExperience" />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-12 md:col-6">
+                      <div class="field-wrapper">
+                        <label>Relevant Experience</label>
+                        <div class="input-wrapper">
+                          <input  pKeyFilter="num"  [maxlength]="5"  pInputText  formControlName="relevantExperience" />
+                        </div>
+                      </div>
+                    </div>
+
+                      <div class="col-12 md:col-6 lg:col-3">
+                      <div class="field-wrapper">
+                        <label>Current Company Name</label>
+                        <div class="input-wrapper">
+                          <input    pInputText type="text"  formControlName="companyName" placeholder="Company Name" />
+                        </div>
+                      </div>
+                    </div>
+
+                      <div class="col-12 md:col-6">
+                    <div class="field-wrapper">
+                      <label>Highest Qualification</label>
+                      <div class="input-wrapper">
+                        <input    pInputText type="text"  formControlName="qualification" placeholder="Company Name" />
+                      </div>
+                    </div>
+                </div>
+
+
+
+              </div>
+          </form> 
+          </div>
   
-           <div class="button-wrapper" *ngIf="!payments">
-            <p-button class="mr-2" [label]="dataLoaded ? 'Proceed to create resume' : 'Generating..'"
-                [icon]="dataLoaded ? '' : 'pi pi-spin pi-spinner'" [disabled]="!dataLoaded"
-                (onClick)="createCandidate()"></p-button>
-            </div>
+      
+            <!-- <div class="button-wrapper" *ngIf="payments">
+              <p-button class="mr-2" label="Next"
+                  (onClick)="next()"></p-button>
+          
+              </div> -->
+
+              <div class="grid" style="margin-bottom: 50px;">
+                <div class="col-12 md:col-6 lg:col-3">
+                  <div class="">
+                    <p-button type="button" label="Back" (click)="goBack()"></p-button>
+                   
+                  </div>
+                </div>
+              </div>
+            
     </div>
   </div>
+
+      <div class="button-bar">
+           <div class="button-wrapper" *ngIf="!payments">
+            <p-button class="mr-2" [label]="dataLoaded ? 'Update' : 'Updating..'"
+                [icon]="dataLoaded ? '' : 'pi pi-spin pi-spinner'" [disabled]="!dataLoaded"
+                (onClick)="createCandidate()"></p-button>
+        
+            <p-button  styleClass="p-button-secondary" label="Reset"
+                (onClick)="reset()">
+            </p-button>
+            
+            </div>
+          </div>
   

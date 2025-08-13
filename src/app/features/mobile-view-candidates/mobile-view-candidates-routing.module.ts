@@ -11,6 +11,7 @@ import { ViewMobileHistoryCandidatesComponent } from './view-mobile-history-cand
 import { ResumeDetailsMobileComponent } from './resume-details-mobile/resume-details-mobile.component';
 import { FinalVerifyComponent } from './final-verify/final-verify.component';
 import { UseExistingTemplateComponent } from './use-existing-template/use-existing-template.component';
+import { MobileCommonDetailsComponent } from 'src/app/shared/components/mobile-common-details/mobile-common-details.component';
 
 const routes: Routes = [
 
@@ -32,7 +33,11 @@ const routes: Routes = [
 
   {path: 'final-verify', component:FinalVerifyComponent},
 
-  {path: 'Use-existing',component:UseExistingTemplateComponent}
+  {path: 'Use-existing',component:UseExistingTemplateComponent},
+
+  {path: 'enter-new-details',component:MobileCommonDetailsComponent},
+
+
 
 
   

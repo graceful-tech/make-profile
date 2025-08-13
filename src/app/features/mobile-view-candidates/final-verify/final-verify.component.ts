@@ -17,6 +17,7 @@ import { CollegeProject } from 'src/app/models/candidates/college-project';
 import { DatePipe } from '@angular/common';
 import { PaymentOptionComponent } from '../../candidates/payments/payment-option/payment-option.component';
 import { MobileLoaderComponent } from 'src/app/shared/components/mobile-loader/mobile-loader.component';
+import { MobileLoaderService } from 'src/app/services/mobile.loader.service';
 
 @Component({
   selector: 'app-final-verify',
@@ -85,6 +86,7 @@ export class FinalVerifyComponent {
     public ref: DynamicDialogRef,
     private config: DynamicDialogConfig,
     private ps: PaymentService,
+    private loader: MobileLoaderService
   ) 
   {
      this.gs.resumeName$.subscribe(response =>{
@@ -395,12 +397,14 @@ export class FinalVerifyComponent {
     this.api.retrieve(route, payload).subscribe({
       next: (response) => {
       
+        if(response){
         this.candidateId = response?.id;
         this.dataLoaded = true;
         this.candidates = response as Candidate
        
          this.ngxLoaderStop();
          this.createResume(this.candidates);
+        }
       },
       error: (error) => {
          this.ngxLoaderStop();
@@ -412,6 +416,7 @@ export class FinalVerifyComponent {
     this.dataLoaded = true;
   }
     else{
+       this.ngxLoaderStop();
       this.showError = true;
        window.alert("Enter the mandatory details")
     }
@@ -920,7 +925,7 @@ export class FinalVerifyComponent {
 
     
     getCandidates() {
-      this.startLoader();
+      this.loader.start();
 
       const route = 'candidate';
       this.api.get(route).subscribe({
@@ -939,12 +944,12 @@ export class FinalVerifyComponent {
 
             this.getResumeContent('Career Objective');
 
-          this.stopLoader();
+          this.loader.stop();
          
         }
         },
         error: (err) => {
-          this.stopLoader();
+          this.loader.stop();
        }
       });
     }
@@ -1057,7 +1062,7 @@ export class FinalVerifyComponent {
 
     goToOpenAi(){
 
-   this.startLoader();
+   this.loader.start();
 
     const route = 'resume/get-content';
     const payload = {...this.candidates};
@@ -1077,12 +1082,12 @@ export class FinalVerifyComponent {
          const candidateClone = JSON.parse(JSON.stringify(this.candidates)); 
          this.patchCandidateForm(candidateClone);
 
-          this.stopLoader();
+          this.loader.stop();
         }
-        this.stopLoader();
+        this.loader.stop();
       },
       error: (error) => {
-          this.stopLoader();
+          this.loader.stop();
         this.gs.showMessage('error', error.error?.message)
 
       },
@@ -1122,12 +1127,6 @@ export class FinalVerifyComponent {
       });
     }
 
-    startLoader(){
-      this.isLoading = true;
-    }
-
-    stopLoader(){
-      this.isLoading = false;
-    }
+   
 
 }

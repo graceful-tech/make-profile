@@ -99,9 +99,6 @@ export class MobilePaymentOptionComponent {
 
     redeem() {
 
-      // setTimeout(() => {
-      //   this.saveNickNameBeforeRedeem();
-      // }, 1000);
 
     this.ngxLoaderStart();
     const route = 'credits/redeem';

@@ -15,13 +15,20 @@
   </div>
 </Header>
 
+
+
 <div class="wrapper mt-2">
     <div class="profile-wrapper">
 
-        <div class="header-button">
-          <!-- <span style="font-weight: 500; font-size: large;">Verify Your Details</span> -->
-            <p-button type="button"  label="Back" (click)="goBack()"></p-button>
-        </div>
+       <div class="headers">
+          <!-- <button class="go-back-btn btn btn-outline-primary" (click)="goBack()">Back</button> -->
+
+        <button class="go-dashboard-btn btn btn-outline-primary d-flex align-items-center gap-2" (click)="goToCandidatepage()">
+            <img class="profile" src="assets/img/new-home.jpg" alt="Home" />
+            Home
+        </button>
+  </div>
+
 
         <form [formGroup]="candidateForm">
             <app-make-profile-divider></app-make-profile-divider>
@@ -152,12 +159,14 @@
             <div class="grid">
                <div class="col-12">
                 <div class="field-wrapper">
-                 <label>Skills</label>
+                 <label [ngClass]="{ required: isRequired('skills') }">Skills</label>
                   <div class="input-wrapper">
                    <p-chips separator="," formControlName="skills" [addOnBlur]="true" [addOnTab]="true"></p-chips>
                     <p-button type="button" (onClick)="addSkill('skills','chipInput')">Add</p-button>
 
                   </div>
+                    <small class="error-message" *ngIf="candidateForm.controls['email'].invalid && showError" >
+                  Email is required</small>
                 </div>
                </div>
             </div>

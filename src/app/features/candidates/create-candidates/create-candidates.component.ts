@@ -117,7 +117,7 @@ export class CreateCandidatesComponent {
     this.getStateNames();
     
 
-    if (this.candidates !== null ) {
+    if (this.candidates !== null && this.candidates !== undefined ) {
       this.candidateId = this.candidates.id;
       const candidateClone = JSON.parse(JSON.stringify(this.candidates));
       this.patchCandidateForm(candidateClone);

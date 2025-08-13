@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { LoaderService } from 'src/app/services/loader.service';
 
 @Component({
   selector: 'app-loader',
@@ -8,6 +9,8 @@ import { Component } from '@angular/core';
 })
 export class LoaderComponent {
   isUploading: boolean = false;
+
+  constructor(public  loaderService: LoaderService) {}
 
 
   startLoader(){

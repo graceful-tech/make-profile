@@ -127,7 +127,7 @@
           <div class="grid">
              <div class="col-12">
               <div class="field-wrapper">
-               <label>Skills</label>
+               <label [ngClass]="{ required: isRequired('skills') }">Skills</label>
                 <div class="input-wrapper">
                  <p-chips separator="," formControlName="skills" [addOnBlur]="true" [addOnTab]="true"></p-chips>
                 </div>
@@ -552,6 +552,8 @@
 
          <app-make-profile-divider></app-make-profile-divider>
 
+              <div class="button-bar">
+
          <div class="button-wrapper" *ngIf="!payments">
           <!-- <p-button class="mr-2" [label]="dataLoaded ? 'Generate' : 'Generating..'"  [icon]="dataLoaded ? '' : 'pi pi-spin pi-spinner'" [disabled]="!dataLoaded"
               (onClick)="createCandidate()"></p-button> -->
@@ -561,6 +563,7 @@
           <div class="button-wrapper" *ngIf="payments">
             <p-button class="mr-2" label="Next"  (onClick)="createCandidate()"></p-button>
           </div>
+       </div>   
           
   </div>
   <!-- <section class="preview-resume" >

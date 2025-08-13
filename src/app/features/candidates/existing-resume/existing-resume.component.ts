@@ -49,6 +49,7 @@ constructor(
      }
 
  getAvailableCredits() {
+  
     const id = sessionStorage.getItem('userId');
 
     const route = `credits?userId=${id}`;
@@ -80,8 +81,10 @@ constructor(
 
     this.ps.initRazorPays(() => {
 
-     this.getAvailableCredits();
-    
+      setTimeout(() => {
+            this.getAvailableCredits();
+      }, 1000);
+ 
      });
 
     this.ps.payWithRazorNewPay(amount, templateName,nickName);

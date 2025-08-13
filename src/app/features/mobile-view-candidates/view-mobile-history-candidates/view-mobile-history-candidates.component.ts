@@ -6,6 +6,7 @@ import { ApiService } from '../../../services/api.service';
 import { GlobalService } from '../../../services/global.service';
 import { PaymentService } from 'src/app/services/payment.service';
 import { FormBuilder } from '@angular/forms';
+import { MobileLoaderService } from 'src/app/services/mobile.loader.service';
 
 @Component({
   selector: 'app-view-mobile-history-candidates',
@@ -29,6 +30,7 @@ export class ViewMobileHistoryCandidatesComponent {
       public ref: DynamicDialogRef,
       private config: DynamicDialogConfig,
       private ps: PaymentService,
+      private loader:MobileLoaderService
     ) 
     {}
 
@@ -38,13 +40,21 @@ export class ViewMobileHistoryCandidatesComponent {
 
 
   viewHistory(){
+    this.loader.start();
+
     const route = "history/candidate"
 
    this.api.get(route).subscribe({
       next: response => {
-      this.candidates = response;
-      //  this.viewCandidateSHistory(candidateList);
-      }
+        if(response){
+        this.candidates = response;
+         this.loader.stop();
+        }
+          this.loader.stop();
+       },
+       error: (error) => {
+         this.loader.stop();
+      },
     });
   }
 

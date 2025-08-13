@@ -1,9 +1,9 @@
 
-
  
 <div class="wrapper">
   <div class="profile-wrapper">
       <form [formGroup]="candidateForm">
+
           <app-make-profile-divider></app-make-profile-divider>
           <div class="section-heading">Personal Details</div>
             <div class="grid">
@@ -48,6 +48,8 @@
                   </p-dropdown>
                 </div>
               </div>
+                <small class="error-message" *ngIf="candidateForm.controls['gender'].invalid && showError" >
+                Gender is required</small>
             </div>
 
             <div class="col-12 md:col-6 lg:col-3">
@@ -143,18 +145,19 @@
             <div>Professional Details</div>
           </div>
         
-           <div class="grid">
-                <div class="col-12 md:col-6 lg:col-3">
-                  <div class="fresher-checkbox pb-3" style="display: flex; align-items: center; gap: 8px;">
-                    <p-checkbox
-                      [binary]="true"
-                      inputId="fresher"
-                      formControlName="fresher"
-                    ></p-checkbox>
-                    <label for="fresher" style="margin: 0;">If you are fresher, click on the checkbox</label>
-                  </div>
-                </div>
-          </div>
+         <div class="grid">
+      <div class="col-12 md:col-6 lg:col-3">
+        <div class="fresher-checkbox pb-3" style="display: flex; align-items: center; gap: 8px;">
+          <p-checkbox
+            [binary]="true"
+            inputId="fresher"
+            formControlName="fresher"
+          ></p-checkbox>
+          <label for="fresher" style="margin: 0;">If you are fresher, click on the checkbox</label>
+        </div>
+      </div>
+    </div>
+
         
           <ng-container *ngIf="!candidateForm.get('fresher')?.value">
             <div formArrayName="experiences" class="border-line" id="experiences">
@@ -202,7 +205,7 @@
                     <div class="field-wrapper">
                       <div class="input-wrapper">
                         <p-checkbox [binary]="true"   [disabled]="experience.get('experienceYearEndDate')?.value"  formControlName="currentlyWorking"></p-checkbox>
-                        <label style="padding-left:5px ;">Currently Working</label>
+                        <label style="padding-left:5px; white-space: nowrap;">Currently Working</label>
                       </div>
                     </div>
                   </div>
@@ -437,6 +440,10 @@
             <app-make-profile-divider></app-make-profile-divider>
             <div class="section-heading mt-3">
               <div>Course & Certificates</div>
+
+              <div style="color: #313133; font-weight: bold; background-color: rgb(235, 235, 235); border-radius: 50px; padding: 5px 5px;">
+            <p-checkbox [binary]="true" formControlName="certificatesMandatory"  label="Is Mandatory"></p-checkbox>
+            </div>
             </div>
       
             <div formArrayName="certificates" class="border-line" id="course">
@@ -490,8 +497,13 @@
       
              <app-make-profile-divider></app-make-profile-divider>
             <div class="section-heading mt-3">
-              <div>Achievements & Awards</div>
+          <Span>Achievements & Awards</Span>
+
+          <div style="color: #313133; font-weight: bold; background-color: rgb(235, 235, 235); border-radius: 50px; padding: 5px 5px;">
+            <p-checkbox [binary]="true" formControlName="achievementsMandatory" label="Is Mandatory"></p-checkbox>
             </div>
+        </div>
+        
       
             <div formArrayName="achievements" class="border-line" id="achievements">
                <div *ngFor="let certificate of achievementsControls.controls; let i = index" [formGroupName]="i" class="experience-container">
@@ -532,41 +544,161 @@
 
             <app-make-profile-divider></app-make-profile-divider>
 
-            <div class="grid">
-              <div class="col-12 md:col-6">
+            
+              <div class="col-12">
                <div class="field-wrapper">
-                <label>Soft Skills</label>
+               <div style="color: #040404;display: flex; justify-content: space-between;">
+                <Span>Soft Skills</Span>
+                <div style="color: #040404; font-weight: bold; background-color: rgb(235, 235, 235); border-radius: 50px; padding: 5px 5px;">
+                 <p-checkbox [binary]="true" formControlName="softSkillsMandatory" label="Is Mandatory"></p-checkbox>
+                </div>
+                </div>
                  <div class="input-wrapper">
                   <p-chips separator="," formControlName="softSkills" [addOnBlur]="true" [addOnTab]="true"></p-chips>
                  </div>
                </div>
               </div>
 
-              <div class="col-12 md:col-6">
-                <div class="field-wrapper">
-                 <label>Core Competencies</label>
+
+
+              <div class="col-12">
+                 <div class="field-wrapper">
+               <div style="color: #0d0d0e;display: flex; justify-content: space-between;">
+                <Span>Core Competencies</Span>
+                <div style="color: #313133; font-weight: bold; background-color: rgb(235, 235, 235); border-radius: 50px; padding: 5px 5px;">
+                 <p-checkbox [binary]="true" formControlName="coreCompentenciesMandatory" label="Is Mandatory"></p-checkbox>
+              </div>
+               </div>
                   <div class="input-wrapper">
                    <p-chips separator="," formControlName="coreCompentencies" [addOnBlur]="true" [addOnTab]="true"></p-chips>
                   </div>
                 </div>
                </div>
-           </div>
+           
          </form>
 
          <app-make-profile-divider></app-make-profile-divider>
 
-          <div class="button-bar"> 
 
-               <div class="button-wrapper" *ngIf="!payments">
-          <p-button class="mr-2" [label]="dataLoaded ? 'save' : 'saving..'"  [icon]="dataLoaded ? '' : 'pi pi-spin pi-spinner'" [disabled]="!dataLoaded"
-              (onClick)="createCandidate()"></p-button>
+          <div>
+    <form [formGroup]="additionalDetailsForm">
+      <!-- <div class="add-details mt-3">
+          <Span>This information won’t appear on your resume, but it will help us match you with the right job</Span>
 
-      
-           <p-button  styleClass="p-button-secondary" label="Save&CreateResume" (onClick)="saveandcreateresume()"> </p-button> 
-          </div>
+           
+  </div> -->
+
+         <div style="color: black;font-weight: bold; font-size: 20px;">
+            <Span>This information won’t appear on your resume, but it will help us match you with the right job</Span>
          </div>
 
-      
+
+
+      <div class="grid" style="padding-top:10px">     
+        <div class="col-12 md:col-6">
+                <div class="field-wrapper">
+                  <label>State</label>
+                  <div class="input-wrapper">
+                     <p-multiSelect appendTo="body" [options]="stateNames"
+                                    defaultLabel="Select State" [showHeader]="false"
+                                    optionLabel="stateName" optionValue="id"
+                                    formControlName="stateName" (onChange)="selectedState($event)">
+                                </p-multiSelect>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-12 md:col-6">
+                <div class="field-wrapper">
+                  <label>Preferred Location</label>
+                  <div class="input-wrapper">
+                   <p-multiSelect appendTo="body" [options]="citiesName" defaultLabel="Select Preffered Location"
+                                    [showHeader]="false" optionLabel="cityName" optionValue="cityName"
+                                    formControlName="preferredLocation">
+                                </p-multiSelect>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-12 md:col-6">
+                <div class="field-wrapper">
+                   <label>Current CTC (in Lakhs)</label>
+                  <div class="input-wrapper">
+                    <input pKeyFilter="num"[maxlength]="5" pInputText formControlName="currentCostToCompany"/>
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="col-12 md:col-6">
+                <div class="field-wrapper">
+                   <label>Expected CTC (in Lakhs)</label>
+                  <div class="input-wrapper">
+                   <input pKeyFilter="num"  [maxlength]="5"   pInputText  formControlName="expectedCostToCompany" />
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="col-12 md:col-6">
+                <div class="field-wrapper">
+                  <label>Total Experience</label>
+                  <div class="input-wrapper">
+                    <input pKeyFilter="num" [maxlength]="5" pInputText  formControlName="totalWorkExperience" />
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-12 md:col-6">
+                <div class="field-wrapper">
+                  <label>Relevant Experience</label>
+                  <div class="input-wrapper">
+                    <input  pKeyFilter="num"  [maxlength]="5"  pInputText  formControlName="relevantExperience" />
+                  </div>
+                </div>
+              </div>
+
+               <div class="col-12 md:col-6">
+                      <div class="field-wrapper">
+                       <label>Company Name</label>
+                        <div class="input-wrapper">
+                          <input type="text" pInputText formControlName="companyName" />
+                        </div>
+                      </div>
+                </div>
+
+                <div class="col-12 md:col-6">
+                <div class="field-wrapper">
+                  <label>Highest Qualification</label>
+                  <div class="input-wrapper">
+                    <input    pInputText type="text"  formControlName="qualification" placeholder="Company Name" />
+                  </div>
+                </div>
+              </div>
+
+
+        </div>
+   </form> 
+</div>
+
+
+
+
+
+
+          
+            <div class="button-bar">
+              <div class="button-wrapper">
+                <p-button class="mr-2" 
+                          [label]="dataLoaded ? 'Create' : 'Creating..'"  
+                          [icon]="dataLoaded ? '' : 'pi pi-spin pi-spinner'" 
+                          [disabled]="!dataLoaded"
+                          (onClick)="createCandidate()">
+                </p-button>
+                <p-button styleClass="p-button-secondary" label="Reset" (onClick)="reset()"> </p-button>
+              </div>
+            </div>
           
   </div>
+ 
 </div>

@@ -17,6 +17,8 @@ import { CollegeProject } from 'src/app/models/candidates/college-project';
 import { DatePipe } from '@angular/common';
 import { PaymentOptionComponent } from '../../candidates/payments/payment-option/payment-option.component';
 import { MobileLoaderComponent } from 'src/app/shared/components/mobile-loader/mobile-loader.component';
+import { LoaderService } from 'src/app/services/loader.service';
+import { MobileLoaderService } from 'src/app/services/mobile.loader.service';
 
 @Component({
   selector: 'app-mobile-create-candidates',
@@ -26,8 +28,7 @@ import { MobileLoaderComponent } from 'src/app/shared/components/mobile-loader/m
 })
 export class MobileCreateCandidatesComponent {
   @ViewChild('chipInput', { static: false }) chipInputRef!: ElementRef;
-  @ViewChild(MobileLoaderComponent) mobileLoaderComponent!: MobileLoaderComponent;
-  
+   
 
   candidateForm!: FormGroup;
   genderList: Array<ValueSet> = [];
@@ -85,6 +86,7 @@ export class MobileCreateCandidatesComponent {
     public ref: DynamicDialogRef,
     private config: DynamicDialogConfig,
     private ps: PaymentService,
+    private loader:MobileLoaderService
   ) 
   {
     
@@ -203,7 +205,7 @@ export class MobileCreateCandidatesComponent {
   }
 
   createCandidate() {
-    this.mobileLoaderComponent.startLoader();
+   this.loader.start();
   if(this.candidateForm.valid){
     
     this.dataLoaded = false;
@@ -421,14 +423,14 @@ export class MobileCreateCandidatesComponent {
         this.saveCandidateAddtionalDetails(this.candidateId,response?.mobileNumber);
         }
 
-        this.mobileLoaderComponent.stopLoader();
+       this.loader.stop();
         
         window.alert('Created Successfully');
         this.router.navigate(['mob-candidate']);
 
       },
       error: (error) => {
-      this.mobileLoaderComponent.stopLoader();
+      this.loader.stop();
 
         this.dataLoaded = true;
          window.alert('Error in creating please try again');
@@ -438,7 +440,7 @@ export class MobileCreateCandidatesComponent {
     this.dataLoaded = true;
   }
     else{
-      this.mobileLoaderComponent.stopLoader();
+      this.loader.stop();
       this.showError = true;
        window.alert("Enter the mandatory details")
     }

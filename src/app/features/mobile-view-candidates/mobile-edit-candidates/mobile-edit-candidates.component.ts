@@ -17,6 +17,7 @@ import { CollegeProject } from 'src/app/models/candidates/college-project';
 import { DatePipe } from '@angular/common';
 import { PaymentOptionComponent } from '../../candidates/payments/payment-option/payment-option.component';
 import { MobileLoaderComponent } from 'src/app/shared/components/mobile-loader/mobile-loader.component';
+import { MobileLoaderService } from 'src/app/services/mobile.loader.service';
 
 @Component({
   selector: 'app-mobile-edit-candidates',
@@ -25,8 +26,7 @@ import { MobileLoaderComponent } from 'src/app/shared/components/mobile-loader/m
   styleUrl: './mobile-edit-candidates.component.css'
 })
 export class MobileEditCandidatesComponent {
- @ViewChild(MobileLoaderComponent) mobileLoaderComponent!: MobileLoaderComponent;
-
+ 
 candidateForm!: FormGroup;
   genderList: Array<ValueSet> = [];
   languages: Array<ValueSet> = [];
@@ -82,6 +82,7 @@ candidateForm!: FormGroup;
     public ref: DynamicDialogRef,
     private config: DynamicDialogConfig,
     private ps: PaymentService,
+    private loader:MobileLoaderService
   ) 
   {
    
@@ -202,7 +203,7 @@ candidateForm!: FormGroup;
   }
 
   generatingResume() {
-    this.startLoader();
+    this.loader.start();
    if(this.candidateForm.valid){
     
     this.dataLoaded = false;
@@ -415,7 +416,7 @@ candidateForm!: FormGroup;
 
         this.gs.setCandidateDetails(this.candidates);
 
-        this.stopLoader();
+        this.loader.stop();
 
         if(this.resumeName !== null && this.resumeName !== undefined){
           this.gs.setResumeName(this.resumeName);
@@ -427,11 +428,9 @@ candidateForm!: FormGroup;
           this.router.navigate(['mob-candidate/verify-components']);
           }
 
-          
       },
       error: (error) => {
-        this.stopLoader();
-
+         this.loader.stop();
          this.dataLoaded = true;
         window.alert('Error in Updating please try again');
         console.log(error);
@@ -441,8 +440,7 @@ candidateForm!: FormGroup;
 
   }
   else{
-    this.stopLoader();
-
+     this.loader.stop();
        this.showError = true;
        window.alert("Enter the mandatory details")
     
@@ -1000,11 +998,13 @@ candidateForm!: FormGroup;
     }
   }
 
-  startLoader(){
-    this.isUploading = true;
-  }
+   
 
-   stopLoader(){
-    this.isUploading = false;
+    goToCandidatepage(){
+    this.gs.setCandidateDetails(this.candidates);
+      if(this.candidateImageUrl !== null){
+      this.gs.setCandidateImage(this.candidateImageUrl);
+      }
+    this.router.navigate(['mob-candidate']);
   }
 }

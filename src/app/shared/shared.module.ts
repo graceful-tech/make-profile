@@ -17,6 +17,8 @@ import { CustomMobileMessageComponent } from "./custom-mobile-message/custom-mob
 import { MatDialogModule } from '@angular/material/dialog';
 import { LoaderComponent } from "./components/loader/loader.component";
 import { MobileLoaderComponent } from "./components/mobile-loader/mobile-loader.component";
+import { CandidateCommonDetailsComponent } from "./components/candidate-common-details/candidate-common-details.component";
+import { MobileCommonDetailsComponent } from "./components/mobile-common-details/mobile-common-details.component";
 
    
  
@@ -31,7 +33,9 @@ import { MobileLoaderComponent } from "./components/mobile-loader/mobile-loader.
    CustomMessageComponent,
    CustomMobileMessageComponent,
    LoaderComponent,
-   MobileLoaderComponent
+   MobileLoaderComponent,
+   CandidateCommonDetailsComponent,
+   MobileCommonDetailsComponent
   ],
   imports: [
     CommonModule,
@@ -63,8 +67,9 @@ import { MobileLoaderComponent } from "./components/mobile-loader/mobile-loader.
     CustomMobileMessageComponent,
     MatDialogModule,
     LoaderComponent,
-    MobileLoaderComponent
-    
+    MobileLoaderComponent,
+    CandidateCommonDetailsComponent,
+    MobileCommonDetailsComponent
   ]
 })
 export class SharedModule { }

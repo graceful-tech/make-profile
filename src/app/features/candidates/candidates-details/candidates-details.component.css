@@ -907,3 +907,30 @@ img {
   cursor: pointer;
   transition: background 0.3s;
 }
+
+.newDeatils-btn{
+  background: linear-gradient(to right,#6aa16b, #1b7337);
+  color: white;
+  border: none;
+  padding: 10px 30px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+
+}
+
+
+.images{
+  width: 100px;
+  height: auto;
+  color: white;
+  border: none;
+  padding: 10px 30px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+ }
