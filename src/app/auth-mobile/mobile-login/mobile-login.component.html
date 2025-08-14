@@ -52,7 +52,7 @@
                                     <input type="text" maxlength="10" pInputText formControlName="mobileNumber">
                                 </div>
                                 <small class="error-message"
-                                    *ngIf="loginForm.controls['mobileNumber'].invalid && showError">
+                                    *ngIf="loginForm.controls['mobileNumber'].invalid && loginForm.get('mobileNumber')?.touched">
                                     Mobile Number is required
                                 </small>
                             </div>
@@ -64,7 +64,7 @@
                                     <input type="text" pInputText formControlName="userName">
                                 </div>
                                 <small class="error-message"
-                                    *ngIf="loginForm.controls['userName'].invalid && showError">
+                                    *ngIf="loginForm.controls['userName'].invalid && loginForm.get('userName')?.touched">
                                     Username is required
                                 </small>
                             </div>

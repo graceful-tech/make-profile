@@ -24,7 +24,7 @@
             <div class="col-12">
               <label class="required">Mobile Number</label>
               <div class="input-wrapper">
-                <input type="text" maxlength="10" pInputText formControlName="mobileNumber" />
+                <input type="text" pInputText formControlName="mobileNumber" />
               </div>
               <small class="error-message" *ngIf="createAccountForm.controls['mobileNumber'].invalid && showError">
                 Mobile Number is required
