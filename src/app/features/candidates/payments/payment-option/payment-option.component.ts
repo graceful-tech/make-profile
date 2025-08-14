@@ -118,13 +118,7 @@ saveNickName(){
 }
 
   
-  redeem() {
-
-    // setTimeout(() => {
-    //       this.saveNickNameBeforeRedeem();
-
-    // }, 1000);
-    
+  redeem() { 
     this.ngxLoaderStart();
     const route = 'credits/redeem'
 
@@ -267,7 +261,7 @@ saveNickName(){
         width: '80%',
         height: '90%',
        
-        header: 'Reconfirm your details',
+        header: 'Details on your Resume',
       });
   
       // ref.onClose.subscribe(response => {

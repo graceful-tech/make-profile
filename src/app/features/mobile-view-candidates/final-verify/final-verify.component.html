@@ -8,10 +8,19 @@
   </div>
 </div>
 
+<div class="overlay" *ngIf="isVerifying">
+  <div class="spinner-container">
+    <mat-spinner [diameter]="80" strokeWidth="5"   class="custom-blue" ></mat-spinner>
+    <p class="loading-text">
+    Verifying Your Details <span class="dot dot1">.</span><span class="dot dot2">.</span><span class="dot dot3">.</span>
+</p>
+  </div>
+</div>
+
 
 <Header>
   <div class="header-image">
-  <h5>Reconfirm Your Details</h5>
+  <h5>Details on your resume</h5>
   </div>
 </Header>
  

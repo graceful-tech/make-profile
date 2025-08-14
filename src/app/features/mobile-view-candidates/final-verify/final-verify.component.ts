@@ -16,9 +16,8 @@ import { PaymentService } from 'src/app/services/payment.service';
 import { CollegeProject } from 'src/app/models/candidates/college-project';
 import { DatePipe } from '@angular/common';
 import { PaymentOptionComponent } from '../../candidates/payments/payment-option/payment-option.component';
-import { MobileLoaderComponent } from 'src/app/shared/components/mobile-loader/mobile-loader.component';
 import { MobileLoaderService } from 'src/app/services/mobile.loader.service';
-
+ 
 @Component({
   selector: 'app-final-verify',
   standalone: false,
@@ -73,6 +72,7 @@ export class FinalVerifyComponent {
   certificateEmptyFields: boolean = false;
   achievementsEmptyFields :boolean = false;
   isLoading:boolean = false;
+  isVerifying:boolean = false;
 
   constructor(
     private api: ApiService,
@@ -111,16 +111,12 @@ export class FinalVerifyComponent {
     if(this.templateName === null || this.templateName === undefined){
       this.templateName = localStorage.getItem('templateName')
     }
-
    
     if(this.candidatesUpdateData !== null && this.candidatesUpdateData !== undefined){
        this.candidateId = this.candidatesUpdateData?.id;
       this.candidates = this.candidatesUpdateData;
 
        this.goToOpenAi();
-      
-      // const candidateClone = JSON.parse(JSON.stringify(this.candidatesUpdateData)); 
-      // this.patchCandidateForm(candidateClone);
     }
     else{
       this.getCandidates();
@@ -137,7 +133,7 @@ export class FinalVerifyComponent {
       name: ['', Validators.required],
       mobileNumber: ['',Validators.compose([Validators.required, Validators.minLength(10)]),],
       email: ['', Validators.compose([Validators.required, Validators.email])],
-      gender: [''],
+      gender: ['',Validators.required],
       nationality: [''],
       languagesKnown: [[]],
       fresher: [''],
@@ -932,7 +928,6 @@ export class FinalVerifyComponent {
         next: (response) => {
           const candidate = response as Candidate;
           if(candidate !== null){
-           
             this.candidateId =  candidate?.id
              this.candidates = candidate;
 
@@ -942,11 +937,7 @@ export class FinalVerifyComponent {
 
             this.getResumeContent('Summary');
 
-            this.getResumeContent('Career Objective');
-
-          this.loader.stop();
-         
-        }
+          }
         },
         error: (err) => {
           this.loader.stop();
@@ -1062,15 +1053,15 @@ export class FinalVerifyComponent {
 
     goToOpenAi(){
 
-   this.loader.start();
-
+     this.isVerifying = true;
+    
     const route = 'resume/get-content';
     const payload = {...this.candidates};
 
      this.api.retrieve(route, payload).subscribe({
       next: (response:any) => {
+ 
         if(response){
-
           response.coreCompentenciesMandatory = this.candidates?.coreCompentenciesMandatory;
           response.softSkillsMandatory = this.candidates?.softSkillsMandatory;
           response.achievementsMandatory = this.candidates?.achievementsMandatory;
@@ -1079,16 +1070,15 @@ export class FinalVerifyComponent {
           this.candidateId = response.id;
           this.candidates = response;
       
+          this.isVerifying = false;
          const candidateClone = JSON.parse(JSON.stringify(this.candidates)); 
          this.patchCandidateForm(candidateClone);
-
-          this.loader.stop();
         }
-        this.loader.stop();
+       this.isVerifying = false;
       },
-      error: (error) => {
-          this.loader.stop();
-        this.gs.showMessage('error', error.error?.message)
+        error: (error) => {
+        this.isVerifying = false;
+        this.gs.showMobileMessage('error', error.error?.message)
 
       },
 
@@ -1098,33 +1088,42 @@ export class FinalVerifyComponent {
 
 
   getResumeContent(content:any){
-      
- 
+    this.loader.start();
        const route =`content/openai?content=${content}`
-  
-      this.api.get(route).subscribe({
-        next: (response) =>{
-
-          if(response){
-            const responseContent = response as any;
-            if(content === 'Summary'){
-               this.candidateForm.get('summary')?.setValue(responseContent?.resumeContent);
-
-             }
-            else{
-               this.candidateForm.get('careerObjective')?.setValue(responseContent?.resumeContent);
-
-             }
-          }
-          
+        this.api.get(route).subscribe({
+          next: (response) =>{
+            if(response){
+              const responseContent = response as any;
+              this.candidateForm.get('summary')?.setValue(responseContent?.resumeContent);
+              this.loader.stop();
+              this.getResumeContentObjective('Career Objective');
+            }
+           },
+          error: (error) => {
+          this.loader.stop();
+          this.dataLoaded = true;
+          this.gs.showMobileMessage('Error', 'Please try after some time');
         },
-        error: (error) => {
-        this.dataLoaded = true;
-        this.gs.showMessage('Error', 'Please try after some time');
+        });
+    }
 
-        console.log(error);
-      },
-      });
+    getResumeContentObjective(content:any){
+     this.loader.start();
+       const route =`content/openai?content=${content}`
+        this.api.get(route).subscribe({
+          next: (response) =>{
+            if(response){
+              const responseContent = response as any;
+              this.candidateForm.get('careerObjective')?.setValue(responseContent?.resumeContent);
+              this.loader.stop();
+            }
+           },
+          error: (error) => {
+          this.loader.stop();
+          this.dataLoaded = true;
+          this.gs.showMobileMessage('Error', 'Please try after some time');
+        },
+        });
     }
 
    

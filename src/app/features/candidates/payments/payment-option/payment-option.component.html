@@ -1,19 +1,10 @@
-<!--  
-<div *ngIf="isUploading" class="custom-loader-backdrop">
-    <div class="custom-loader-container">
-      <div class="dotted-spinner"></div>
-      <div class="loader-text">
-        Please Wait&nbsp;<span class="dots"></span>
-      </div>
-    </div>
-  </div> -->
 
-  <div class="overlay"  *ngIf="isUploading">
+<div class="overlay"  *ngIf="isUploading">
   <div class="spinner-container">
     <mat-spinner [diameter]="80" strokeWidth="5"   class="custom-blue" ></mat-spinner>
     <p class="loading-text">
      Payment Processing<span class="dot dot1">.</span><span class="dot dot2">.</span><span class="dot dot3">.</span>
-</p>
+    </p>
   </div>
 </div>
 
@@ -21,14 +12,11 @@
   <div class="spinner-container">
     <mat-spinner [diameter]="80" strokeWidth="5"   class="custom-blue" ></mat-spinner>
     <p class="loading-text">
-     Preparing Resume<span class="dot dot1">.</span><span class="dot dot2">.</span><span class="dot dot3">.</span>
-</p>
+     Verifying Your Details<span class="dot dot1">.</span><span class="dot dot2">.</span><span class="dot dot3">.</span>
+     </p>
   </div>
 </div>
    
-
-
-
 <div class="container text-center">
     <div class="row justify-content-center">
         <div class="col-12 col-md-6 col-lg-3">
@@ -36,16 +24,16 @@
         </div>
     </div>
 
-    <div class="row justify-content-center">
-        <div class="col-12 col-md-6 col-lg-3">
-            <div class="image">
-                <img class="header-images img-fluid"  [src]="planetImagePath"  alt="Resume Preview">
-            </div>
+<div class="row justify-content-center">
+    <div class="col-12 col-md-6 col-lg-3">
+        <div class="image">
+            <img class="header-images img-fluid"  [src]="planetImagePath"  alt="Resume Preview">
         </div>
     </div>
+</div>
 
-    <div class="row justify-content-center">
-        <div class="col-12 col-md-6 col-lg-3">
+<div class="row justify-content-center">
+    <div class="col-12 col-md-6 col-lg-3">
             <div class="d-flex justify-content-center align-items-center" *ngIf="balanceCredits >0">
                 <span class="fw-bold text-dark">Use your credits <span class="hand">👉</span></span>
                 <a class="custom-link"  (click)="redeem()">Use Credit</a>

@@ -7,6 +7,7 @@ import {DialogService,DynamicDialogConfig,DynamicDialogRef,} from 'primeng/dynam
 import { Candidate } from 'src/app/models/candidates/candidate.model';
 import { ApiService } from 'src/app/services/api.service';
 import { GlobalService } from 'src/app/services/global.service';
+import { MobileLoaderService } from 'src/app/services/mobile.loader.service';
  
 
 import { PaymentService } from 'src/app/services/payment.service';
@@ -45,8 +46,8 @@ export class MobilePaymentOptionComponent {
     public ref: DynamicDialogRef,
     private config: DynamicDialogConfig,
     private ps: PaymentService,
-    private ngxLoader: NgxUiLoaderService
-  ) {
+    private loader:MobileLoaderService
+   ) {
      this.gs.resumeName$.subscribe(response =>{
       this.templateName = response
     })
@@ -98,8 +99,6 @@ export class MobilePaymentOptionComponent {
 
 
     redeem() {
-
-
     this.ngxLoaderStart();
     const route = 'credits/redeem';
 
@@ -120,17 +119,21 @@ export class MobilePaymentOptionComponent {
       next: (response) => {
         this.credits = response as any;
         if(this.credits){
+          this.ngxLoaderStop();
+
           this.gs.setResumeName(this.templateName);
           this.gs.setCandidateDetails(this.candidates);
-          // this.createResume();
           this.router.navigate(['/mob-candidate/final-verify']);
-
         }
         else{
           this.ngxLoaderStop();
           window.alert('Please pay to create the resume')
         }
+         this.ngxLoaderStop();
       },
+      error: (err) => {
+        this.ngxLoaderStop();
+      }
     });
   }
 
@@ -219,6 +222,9 @@ export class MobilePaymentOptionComponent {
     }
 
    getCandidates() {
+
+    this.loader.start();
+
       const route = 'candidate';
       this.api.get(route).subscribe({
         next: (response) => {
@@ -226,29 +232,39 @@ export class MobilePaymentOptionComponent {
           if(candidate !== null){
             this.candidateId =  candidate?.id
             this.candidates = candidate;
+             this.loader.stop();
         }
+             this.loader.stop();
         },
+         error: (err) => {
+         
+        this.loader.stop();      }
       });
     }
 
     getAvailableCredits() {
+       this.loader.start();
        if(this.templateName === null || this.templateName === undefined){
       this.templateName = localStorage.getItem('templateName')
       }
 
-      const nickName = localStorage.getItem('nickName');
+          const nickName = localStorage.getItem('nickName');
 
-     const userId = sessionStorage.getItem('userId');
+        const userId = sessionStorage.getItem('userId');
 
-     const route = `credits/get-available-credits?nickName=${nickName}&userId=${userId}`;
+        const route = `credits/get-available-credits?nickName=${nickName}&userId=${userId}`;
 
-    this.api.get(route).subscribe({
-      next: (response) => {
-        this.balanceCredits = response as any;
+        this.api.get(route).subscribe({
+          next: (response) => {
+            this.balanceCredits = response as any;
+            const balance = response
+             this.loader.stop();
+          },
+           error: (err) => {
+             this.loader.stop();
+           }
+        });
 
-        const balance = response
-      },
-    });
   }
 
 
@@ -325,5 +341,4 @@ export class MobilePaymentOptionComponent {
 
 }
   
-
 }

@@ -17,6 +17,7 @@ import { PaymentService } from 'src/app/services/payment.service';
 import { PaymentOptionComponent } from '../payments/payment-option/payment-option.component';
 import { CollegeProject } from 'src/app/models/candidates/college-project';
 import { AddCandidatesComponent } from '../add-candidates/add-candidates.component';
+import { LoaderService } from 'src/app/services/loader.service';
 
 @Component({
   selector: 'app-verify-candidates',
@@ -94,6 +95,7 @@ export class VerifyCandidatesComponent {
     public ref: DynamicDialogRef,
     private config: DynamicDialogConfig,
     private ps: PaymentService,
+    private loader:LoaderService
   ) 
   {
     this.candidates = this.config.data?.candidates;
@@ -141,7 +143,7 @@ export class VerifyCandidatesComponent {
       name: ['', Validators.required],
       mobileNumber: ['',Validators.compose([Validators.required, Validators.minLength(10)]),],
       email: ['', Validators.compose([Validators.required, Validators.email])],
-      gender: [''],
+      gender: ['', Validators.required],
       nationality: [''],
       languagesKnown: [''],
       fresher: [''],
@@ -199,6 +201,10 @@ export class VerifyCandidatesComponent {
   }
 
   createCandidate() {
+
+    this.loader.start();
+
+    if(this.candidateForm.valid){
     this.dataLoaded = false;
 
     const route = 'candidate/create';
@@ -395,12 +401,15 @@ export class VerifyCandidatesComponent {
 
         response.candidateLogo = this.candidateImageUrl; 
         this.close(this.returnCandidate);
+        this.loader.stop();
 
         this.verifyDetails();
       
         // this.gs.showMessage('Success', 'Create Successfully');
       },
       error: (error) => {
+        this.loader.stop();
+
         this.dataLoaded = true;
         this.gs.showMessage('Error', 'Error in Saving Details Please Recheck the Details');
 
@@ -408,6 +417,13 @@ export class VerifyCandidatesComponent {
       },
     });
     this.dataLoaded = true;
+
+  }
+  else{
+    this.loader.stop();
+    this.showError = true;
+    this.gs.showMessage('Error','Enter mandatory details');
+  }
   }
 
   reset() {
