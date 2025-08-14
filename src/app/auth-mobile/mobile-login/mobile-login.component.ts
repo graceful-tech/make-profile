@@ -120,7 +120,7 @@ export class MobileLoginComponent {
     this.loginForm.get('userName')?.reset();
 
     if (type === 'mobile') {
-      this.loginForm.get('mobileNumber')?.setValidators([Validators.required, Validators.pattern(/^[0-9]{10}$/)]);
+      this.loginForm.get('mobileNumber')?.setValidators([Validators.required, Validators.pattern(/^[0-9]$/)]);
     } else if (type === 'userName') {
       this.loginForm.get('userName')?.setValidators([Validators.required]);
     }
