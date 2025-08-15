@@ -32,13 +32,6 @@ export class MobileLoginComponent {
 
   ngOnInit() {
     this.createLoginForm();
-
-    this.gs.paymentStatus$.subscribe((response) => {
-      if (response == 'Completed') {
-        this.gs.showMessage('Success', 'Payment completed successfully.');
-        this.gs.setPaymentStatus(null);
-      }
-    });
   }
 
   goBack() {

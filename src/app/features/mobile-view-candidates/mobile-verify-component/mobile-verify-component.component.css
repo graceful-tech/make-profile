@@ -1,163 +1,4 @@
-.wrapper {
-    margin-top: 0rem;
-    padding: 0.5rem;
-    display: flex;
-
-  }
-  .profile-wrapper {
-    background: #e8e6e6;   
-    padding: 1.2rem 1.5rem 1.5rem 1.5rem;
-    border-radius: 5px;
-    box-shadow: 0 1px 2px 0 rgb(0 0 0/8%);
-    max-width: 100%;
-    flex: 1;
-  
-  }
-  
-  .preview-resume {
-  background: #fff;
-  padding: 1.2rem 1.5rem 1.5rem 1.5rem;
-  border-radius: 5px;
-  box-shadow: 0 1px 2px 0 rgb(0 0 0/8%);
-  max-width: 30%;
-  flex: 1;
-  animation: fadeInRotate 3s ease-in-out;
-  
-  }
-  
-  .profile {
-    width: 150px;
-    height: 150px;
-  }
-  
-  .image{
-    width: 110px;
-    height: 110px;
-  }
-  
-  img {
-    width: 100%;
-  }
-  .custom-btn {
-    background-color: #415ddb;  
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    font-size: 12px;
-    border-radius: 8px;
-    cursor: pointer;
-    margin-right: 15px;
-    
-  }
-  
-  .custom-btn:hover {
-    background-color: #3716dc;  
-  }
-  
-  .remove-btn{
-    background-color: #db4141;  
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    font-size: 12px;
-    border-radius: 8px;
-    cursor: pointer;
-    margin-right: 15px;
-  }
-  
-  .remove-btn:hover {
-    background-color: #f40808;  
-  }
-  
-  .p-inputtext {
-    background-color: rgb(255, 255, 255) !important;
-  }
-  
-  
-  
-  .bysection-heading {
-    font-size: 1.1rem;
-    font-weight: 500;
-    padding-bottom: 0.5rem 3rem;
-    color: #178be9;
-    margin-bottom: 1rem;
-    margin-left: 2rem;
-  }
-  
-  .button-wrapper {
-    margin-top: 1rem;
-    margin-left: 0.3rem;
-    display: flex;
-    justify-content: space-between;
-
-  }
-  
-  .delete-btn {
-    background: none;
-    border: none;
-    color: red;
-    font-size: 20px;
-    cursor: pointer;
-  }
-  
-  .first-image img {
-  max-width: 100%;
-  height: auto;
-  display: block;
-  border-radius: 10px;
-  animation: fadeInRotate 3s ease-in-out;
-  }
-   
-  .second-image img {
-  max-width: 100%;
-  height: auto;
-  display: block;
-  border-radius: 10px;
-  opacity: 0;  
-  animation: fadeIn 4s ease-in-out forwards;
-  animation-delay: 3s;  
-  margin-top: 10px;
-  }
-  
-   
-  
-  /* Second image effect (simple fade-in) */
-  
-  
-  .image-container {
-    position: relative;
-    display: inline-block;
-    margin-top: 20px;
-   
-  }
-  
-  .image{
-    width: 130px; 
-    height: 130px;
-    
-  }
-  .edit-icon {
-    position: absolute;
-    bottom: -5px;
-    right: 0px;
-    left: 110px;
-    /* background: white; */
-    border-radius: 50%;
-    padding: 3px;
-    cursor: pointer;
-    box-shadow: 0px 2px 5px rgba(255, 254, 254, 0.2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 30px;
-    height: 30px;
-  }
-  
-  .edit-icon i {
-    font-size: 14px;
-    color: #0c0c0c;
-  }
-  
+ 
   .back-button{
 
     text-align: right;
@@ -219,3 +60,249 @@
   white-space: nowrap;
   margin: 0;
 }
+
+ html, body {
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
+ 
+.wrapper {
+  margin-top: 0rem;
+  padding: 0.5rem;
+  display: flex;
+  flex-wrap: wrap; 
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.profile-wrapper {
+  background: #e8e6e6;   
+  padding: 1.2rem 1.5rem;
+  border-radius: 5px;
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 8%);
+  width: 100%; 
+  box-sizing: border-box;
+}
+
+.preview-resume {
+  background: #fff;
+  padding: 1.2rem 1.5rem;
+  border-radius: 5px;
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 8%);
+  max-width: 30%;
+  flex: 1;
+  animation: fadeInRotate 3s ease-in-out;
+}
+
+ .profile {
+  width: 100%;
+  max-width: 150px;
+  height: auto;
+}
+
+.image {
+  width: 100%;
+  max-width: 130px;
+  height: auto;
+}
+
+img {
+  width: 100%;
+  height: auto;
+}
+
+ .custom-btn {
+  background-color: #415ddb;  
+  color: white;
+  border: none;
+  padding: 8px 5px;
+  font-size: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-right: 15px;
+}
+
+.custom-btn:hover {
+  background-color: #3716dc;  
+}
+
+.remove-btn {
+  background-color: #db4141;  
+  color: white;
+  border: none;
+  padding: 8px 5px;
+  font-size: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-right: 15px;
+}
+
+.remove-btn:hover {
+  background-color: #f40808;  
+}
+
+.p-inputtext {
+  background-color: rgb(255, 255, 255) !important;
+}
+
+ .bysection-heading {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #178be9;
+  margin-bottom: 1rem;
+  margin-left: 1rem;
+}
+
+ .button-wrapper {
+  margin-top: 1rem;
+  text-align: right;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.delete-btn {
+  background: none;
+  border: none;
+  color: red;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+ .image-container {
+  position: relative;
+  display: inline-block;
+  margin-top: 20px;
+  max-width: 100%;
+}
+
+.edit-icon {
+  position: absolute;
+  bottom: -5px;
+  right: 0;
+  border-radius: 50%;
+  padding: 3px;
+  cursor: pointer;
+  box-shadow: 0px 2px 5px rgba(255, 254, 254, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+}
+
+.edit-icon i {
+  font-size: 14px;
+  color: #0c0c0c;
+}
+
+.back-button {
+  text-align: right;
+}
+
+.error-message {
+  padding-left: 1rem;
+}
+
+ ::ng-deep .custom-dropdown .p-dropdown {
+  width: 100% !important;
+  max-width: 200px;
+}
+
+.add-details { 
+  text-decoration: underline;
+  font-size: 1.4rem;
+  font-weight: 500;
+  padding-bottom: 0.5rem;
+  color: #178be9;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  background-color: #d5d5d5;
+}
+
+/* Fixed bottom bar */
+.button-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #d5d5d5;
+  padding: 10px 16px;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: flex-end;
+  z-index: 9999;
+  flex-wrap: wrap;
+}
+
+.fresher-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.fresher-checkbox label {
+  white-space: nowrap;
+  margin: 0;
+}
+
+/* ============================= */
+/*   RESPONSIVE MEDIA QUERIES    */
+/* ============================= */
+
+@media (max-width: 768px) {
+  .preview-resume {
+    max-width: 100%;
+    margin-top: 1rem;
+  }
+
+  .profile-wrapper {
+    padding: 1rem;
+  }
+
+  .button-wrapper {
+    justify-content: center;
+  }
+
+  .bysection-heading {
+    margin-left: 0;
+    text-align: center;
+  }
+
+  ::ng-deep .custom-dropdown .p-dropdown {
+    max-width: 100% !important;
+  }
+
+  .custom-btn, .remove-btn {
+    font-size: 14px;
+    padding: 10px;
+  }
+}
+
+/* @media (max-width: 480px) {
+  .image {
+    max-width: 100px;
+  }
+
+  .edit-icon {
+    width: 25px;
+    height: 25px;
+    bottom: -5px;
+  }
+
+  .custom-btn, .remove-btn {
+    width: 100%;
+    margin-bottom: 8px;
+  }
+
+  .button-bar {
+    justify-content: center;
+  }
+
+  .back-button {
+    text-align: center;
+  }
+} */

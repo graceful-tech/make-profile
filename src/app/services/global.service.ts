@@ -194,7 +194,7 @@ export class GlobalService {
       //  height:'100%',
       closable: false,
       header: status+'☺️',
-        styleClass: 'payment-dialog-header',
+      styleClass: 'payment-dialog-header-mobile',
     });
   }
 

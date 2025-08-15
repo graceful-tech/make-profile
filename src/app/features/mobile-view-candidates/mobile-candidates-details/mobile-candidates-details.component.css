@@ -1109,3 +1109,11 @@ ngx-ui-loader .ngx-ui-loader__fg {
   cursor: pointer;
   transition: background 0.3s;
 }
+
+footer {
+  text-align: center;
+  padding: 1rem;
+  background: #f5f5f5;
+  color: #333;
+  font-size: 0.9rem;
+}

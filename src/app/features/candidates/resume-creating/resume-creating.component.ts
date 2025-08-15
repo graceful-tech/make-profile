@@ -237,6 +237,8 @@ candidateForm!: FormGroup;
         this.gs.showMessage('Success', 'Your resume is created successfully');
         localStorage.removeItem('resumeName');
          this.generating = false;
+
+         this.ref.close();
       }
        this.generating = false;
       },

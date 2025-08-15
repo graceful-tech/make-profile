@@ -821,7 +821,7 @@ export class MobileCandidatesDetailsComponent {
 
   addAttachment(event: any) {
     if (this.candidateId !== null && this.candidateId !== undefined) {
-      const confirmDelete = window.confirm('your existing details will modify based on uploading resume');
+      const confirmDelete = window.confirm('Your existing details will be updated based on your uploaded resume.');
 
       if (confirmDelete && event.target.files[0]) {
         this.multipartFile = event.target.files[0];
@@ -1566,6 +1566,10 @@ toggleSection(section: string) {
       break;
     case 'showCandidates':
       this.showCandidates = !this.showCandidates;
+
+      setTimeout(() => {
+        window.scrollBy({ top: 300, behavior: 'smooth' });
+      }, 100);
       break;
   }
 
@@ -1621,7 +1625,13 @@ getCheckedScore() {
 }
 
 enterNewDetails(){
-  this.router.navigate(['mob-candidate/enter-new-details'])
+const confirmDelete = window.confirm('Your existing details will be updated with the entered details.');
+
+if(confirmDelete){
+  this.router.navigate(['mob-candidate/enter-new-details']);
+}
+
+
 }
 
 getAvailableCreditss() {
