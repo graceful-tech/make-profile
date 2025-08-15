@@ -49,10 +49,10 @@
                             <div class="field-wrapper">
                                 <label class="required">Mobile Number</label>
                                 <div class="input-wrapper">
-                                    <input type="text" maxlength="10" pInputText formControlName="mobileNumber">
+                                    <input type="text" pInputText formControlName="mobileNumber">
                                 </div>
                                 <small class="error-message"
-                                    *ngIf="loginForm.controls['mobileNumber'].invalid && loginForm.get('mobileNumber')?.touched">
+                                    *ngIf="loginForm.controls['mobileNumber'].invalid && showError">
                                     Mobile Number is required
                                 </small>
                             </div>
@@ -64,7 +64,7 @@
                                     <input type="text" pInputText formControlName="userName">
                                 </div>
                                 <small class="error-message"
-                                    *ngIf="loginForm.controls['userName'].invalid && loginForm.get('userName')?.touched">
+                                    *ngIf="loginForm.controls['userName'].invalid  && showError">
                                     Username is required
                                 </small>
                             </div>

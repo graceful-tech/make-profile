@@ -119,12 +119,12 @@ export class MobileLoginComponent {
     this.loginForm.get('mobileNumber')?.reset();
     this.loginForm.get('userName')?.reset();
 
-    if (type === 'mobile') {
-      this.loginForm.get('mobileNumber')?.setValidators([Validators.required, Validators.pattern(/^[0-9]$/)]);
-    } else if (type === 'userName') {
-      this.loginForm.get('userName')?.setValidators([Validators.required]);
-    }
-    
+    // if (type === 'mobile') {
+    //   this.loginForm.get('mobileNumber')?.setValidators([Validators.required, Validators.pattern(/^[0-9]$/)]);
+    // } else if (type === 'userName') {
+    //   this.loginForm.get('userName')?.setValidators([Validators.required]);
+    // }
+
     this.loginForm.get('mobileNumber')?.updateValueAndValidity();
     this.loginForm.get('userName')?.updateValueAndValidity();
   }
