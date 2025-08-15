@@ -986,15 +986,16 @@ table::-webkit-scrollbar-thumb {
 
 }
 
-.custom-dialog-headers .p-dialog-content {
+.custom-dialog-headers  .p-dialog-content {
     border-radius: 20px;
+    padding: 2rem 1.5rem 1.8rem 1.6rem !important;
  }
 
 .custom-dialog-headers .p-icon-wrapper{
     color: rgb(11, 11, 11);
  }
     
-@media (max-width: 740px) {
+/* @media (max-width: 740px) {
     .p-dialog.p-dynamic-dialog.p-component {
       width: 70% !important;
       height: 25% !important;
@@ -1004,11 +1005,22 @@ table::-webkit-scrollbar-thumb {
     .p-dialog .p-dialog-content {
         padding: 0 0.1rem 0.1rem 0.1rem;
     }
-}
+} */
 
 .payment-dialog-header .p-dialog-header {
-    padding: 0rem !important;
+    padding: rem !important;
 }
+
+.payment-dialog-header-mobile .p-dialog-header {
+    padding: 1rem !important;
+}
+
+.payment-dialog-header-mobile .p-dialog-content  {
+    padding:  1 1.1rem 1.1rem 1.1rem !important;
+   
+}
+
+
 
 .custom-mobile-dialog  {
     width: 10vw !important;
@@ -1076,3 +1088,5 @@ table::-webkit-scrollbar-thumb {
     padding: 0.5rem !important;
 
 }
+ 
+
