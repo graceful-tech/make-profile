@@ -17,10 +17,11 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 })
 export class LoginComponent {
   loginForm!: FormGroup;
-  error!: String;
   showError = false;
   loadingFlag: boolean = false;
   loginType: string | null = null;
+  error!: String;
+  loginError!: String;
 
   constructor(
     private fb: FormBuilder,
@@ -33,76 +34,63 @@ export class LoginComponent {
 
   ngOnInit() {
     this.createLoginForm();
-
-    this.gs.paymentStatus$.subscribe((response) => {
-      if (response == 'Completed') {
-        this.gs.showMessage('Success', 'Payment completed successfully.');
-        this.gs.setPaymentStatus(null);
-      }
-    });
-
   }
 
   createLoginForm() {
     this.loginForm = this.fb.group({
       mobileNumber: [''],
       userName: [''],
-      password: ['', Validators.required],
+      password: [''],
     });
   }
 
   login() {
-    this.showError = true;
     const selectedLoginType = this.loginType;
     const password = this.loginForm.get('password')?.value;
     const mobile = this.loginForm.get('mobileNumber')?.value;
-    const username = this.loginForm.get('username')?.value;
+    const username = this.loginForm.get('userName')?.value;
+
+    this.showError = false;
+    this.error = '';
+    this.loginError = '';
 
     if (!selectedLoginType) {
-      this.error = 'Please select a login method (Mobile Number or Username)';
+      this.loginError = 'Please select a login method (Mobile Number or Username)';
       return;
     }
-
     if (
       (selectedLoginType === 'mobile' && (!mobile || mobile.trim() === '')) ||
-      (selectedLoginType === 'username' && (!username || username.trim() === ''))
+      (selectedLoginType === 'userName' && (!username || username.trim() === ''))
     ) {
+      this.showError = true;
+      this.error =
+        selectedLoginType === 'mobile' ? 'Mobile Number is required' : 'Username is required';
       return;
     }
-
     if (!password || password.trim() === '') {
+      this.showError = true;
+      this.error = 'Password is required';
       return;
     }
 
-    if (this.loginForm.valid) {
-      this.loadingFlag = true;
-      const route = 'auth/login';
-      const postData = this.loginForm.value;
+    this.loadingFlag = true;
+    const route = 'auth/login';
+    const postData = this.loginForm.value;
 
-      this.api.retrieve(route, postData).subscribe({
-        next: (response) => {
-          console.log(response);
-          sessionStorage.setItem('authType', 'custom');
-          sessionStorage.setItem('token', response.token);
-          sessionStorage.setItem('userName', response.userName);
-          sessionStorage.setItem('userId', response.id);
-          this.router.navigate(['/candidate']);
-        },
-        error: (error) => {
-          this.error = error.error?.message;
-          this.loadingFlag = false;
-        },
-      });
-    }
+    this.api.retrieve(route, postData).subscribe({
+      next: (response) => {
+        sessionStorage.setItem('authType', 'custom');
+        sessionStorage.setItem('token', response.token);
+        sessionStorage.setItem('userName', response.userName);
+        sessionStorage.setItem('userId', response.id);
+        this.router.navigate(['/candidate']);
+      },
+      error: (error) => {
+        this.loginError = error.error?.message || 'Login failed. Please try again.';
+        this.loadingFlag = false;
+      },
+    });
   }
-
-
-  // openSendPasswordResetEmailModal() {
-  //   this.dialog.open(SendPasswordResetMailComponent, {
-  //     header: 'Forgot Password',
-  //     width: '25%'
-  //   });
-  // }
 
 
   onGoogleLogin() {
@@ -124,20 +112,10 @@ export class LoginComponent {
 
   setLoginType(type: string): void {
     this.loginType = type;
-
-    this.loginForm.get('mobileNumber')?.clearValidators();
-    this.loginForm.get('userName')?.clearValidators();
-
     this.loginForm.get('mobileNumber')?.reset();
     this.loginForm.get('userName')?.reset();
-
-    if (type === 'mobile') {
-      this.loginForm.get('mobileNumber')?.setValidators([Validators.required, Validators.pattern(/^[0-9]+$/)]);
-    } else if (type === 'userName') {
-      this.loginForm.get('userName')?.setValidators([Validators.required]);
-    }
-
-    this.loginForm.get('mobileNumber')?.updateValueAndValidity();
-    this.loginForm.get('userName')?.updateValueAndValidity();
+    this.error = '';
+    this.loginError = '';
+    this.showError = false;
   }
 }

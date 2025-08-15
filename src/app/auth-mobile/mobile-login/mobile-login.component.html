@@ -30,13 +30,6 @@
                     </div>
 
                     <form [formGroup]="loginForm">
-                        <!-- <div class="field-wrapper">
-                        <label class="required">Mobile Number</label>
-                        <input type="text" maxlength="10" pInputText formControlName="mobileNumber" />
-                        <small class="error-message" *ngIf="loginForm.controls['mobileNumber'].invalid && showError">
-                            Mobile Number is required
-                        </small>
-                    </div> -->
                         <div class="col-12">
                             <div class="field-wrapper">
                                 <input type="radio" name="loginOption" (change)="setLoginType('mobile')">
@@ -51,9 +44,8 @@
                                 <div class="input-wrapper">
                                     <input type="text" pInputText formControlName="mobileNumber">
                                 </div>
-                                <small class="error-message"
-                                    *ngIf="loginForm.controls['mobileNumber'].invalid && showError">
-                                    Mobile Number is required
+                                <small class="error-message" *ngIf="showError && error && loginType === 'mobile'">
+                                    {{ error }}
                                 </small>
                             </div>
                         </div>
@@ -63,9 +55,8 @@
                                 <div class="input-wrapper">
                                     <input type="text" pInputText formControlName="userName">
                                 </div>
-                                <small class="error-message"
-                                    *ngIf="loginForm.controls['userName'].invalid  && showError">
-                                    Username is required
+                                <small class="error-message" *ngIf="showError && error && loginType === 'userName'">
+                                    {{ error }}
                                 </small>
                             </div>
                         </div>
@@ -74,8 +65,8 @@
                             <label class="required">Password</label>
                             <p-password formControlName="password" [toggleMask]="true"
                                 autocomplete="one-time-code"></p-password>
-                            <small class="error-message" *ngIf="loginForm.controls['password'].invalid && showError">
-                                Password is required
+                            <small class="error-message" *ngIf="showError && error === 'Password is required'">
+                                {{ error }}
                             </small>
                         </div>
 
@@ -84,8 +75,7 @@
                                 [disabled]="loadingFlag" (onClick)="login()"></p-button>
                             <a routerLink="/mob-login/mob-forgot" class="forgot-password">Forgot Password</a>
                         </div>
-
-                        <small class="error-message" *ngIf="error">{{ error }}</small>
+                        <small class="error-message" *ngIf="loginError">{{ loginError }}</small>
                     </form>
                 </div>
             </div>
