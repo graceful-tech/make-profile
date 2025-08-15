@@ -179,7 +179,7 @@
                     <th style="max-width: 5%;">NICK NAME</th>
                     <!-- <th>PAYMENT DATE</th> -->
                     <!-- <th>TEMPLATE NAME</th> -->
-                    <th  style="max-width: 5%;">PAYMENT</th>
+                    <!-- <th  style="max-width: 5%;">PAYMENT</th> -->
                     <th  style="max-width: 5%;">GENERATE RESUME</th>
                   </tr>
                 </ng-template>
@@ -196,7 +196,7 @@
 
                     <td>{{ credits.nickName }}</td>
                     <!-- <td>{{ credits.templateName }}</td> -->
-                   <td> <button type="button" class="custom-btn" (click)="payment(credits.templateName,credits.nickName)">Add Create</button> </td>
+                   <!-- <td> <button type="button" class="custom-btn" (click)="payment(credits.templateName,credits.nickName)">Add Create</button> </td> -->
                  <ng-container *ngIf="credits.templateName !== 'Applied Job'; else emptyCell">
                     <td>
                       <button 
@@ -1098,3 +1098,8 @@
       </div>
      </div>
      
+ <footer>
+  &copy; 2025 Makeprofiles. All rights reserved.
+</footer>
+
+  
