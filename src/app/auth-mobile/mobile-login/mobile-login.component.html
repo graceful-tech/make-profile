@@ -1,10 +1,6 @@
 <div class="page-wrapper">
   <div class="header-image">
-    <img
-      class="header-images"
-      src="assets/img/make-profile.png"
-      alt="Header Image"
-    />
+    <img class="header-images" src="assets/img/make-profile.png" alt="Header Image" />
     <p-button (onClick)="goBack()" label="Back" class="right-align"></p-button>
   </div>
 
@@ -12,21 +8,13 @@
     <div class="login-card">
       <div class="top-section">
         <div class="top-links">
-          <span class="create-account"
-            ><a routerLink="/mob-login/mob-create">Create Account</a></span
-          >
+          <span class="create-account"><a routerLink="/mob-login/mob-create">Create Account</a></span>
         </div>
         <div class="google-section">
           <p class="easy-login">Easy Login</p>
           <p class="arrow-down">👇</p>
-          <img
-            #googleImage
-            src="assets/img/google.PNG"
-            alt="Google Login"
-            id="google-btn"
-            class="google-img"
-            (click)="onGoogleLogin()"
-          />
+          <img #googleImage src="assets/img/google.PNG" alt="Google Login" id="google-btn" class="google-img"
+            (click)="onGoogleLogin()" />
         </div>
 
         <div class="horizontal-divider">
@@ -43,17 +31,9 @@
           <form [formGroup]="loginForm">
             <div class="col-12">
               <div class="field-wrapper">
-                <input
-                  type="radio"
-                  name="loginOption"
-                  (change)="setLoginType('mobile')"
-                />
+                <input type="radio" name="loginOption" (change)="setLoginType('mobile')" />
                 Mobile Number
-                <input
-                  type="radio"
-                  name="loginOption"
-                  (change)="setLoginType('userName')"
-                />
+                <input type="radio" name="loginOption" (change)="setLoginType('userName')" />
                 User Name
               </div>
             </div>
@@ -61,23 +41,10 @@
               <div class="field-wrapper">
                 <label class="required">Mobile Number</label>
                 <div class="input-wrapper">
-                  <input
-                    type="text"
-                    pKeyFilter="int"
-                    pInputText
-                    formControlName="mobileNumber"
-                  />
+                  <input type="text" pKeyFilter="int" pInputText formControlName="mobileNumber" />
                 </div>
-                <small
-                  class="error-message"
-                  *ngIf="
-                    showError &&
-                    error === 'Mobile Number is required' &&
-                    loginType === 'mobile'
-                  "
-                >
-                  {{ error }}
-                </small>
+                <small class="error-message" *ngIf="  showError && error === 'Mobile Number is required' &&
+                    loginType === 'mobile'">{{ error }}</small>
               </div>
             </div>
             <div class="col-12" *ngIf="loginType === 'userName'">
@@ -86,14 +53,8 @@
                 <div class="input-wrapper">
                   <input type="text" pInputText formControlName="userName" />
                 </div>
-                <small
-                  class="error-message"
-                  *ngIf="
-                    showError &&
-                    error === 'Username is required' &&
-                    loginType === 'userName'
-                  "
-                >
+                <small class="error-message" *ngIf="showError &&error === 'Username is required' &&
+                    loginType === 'userName' ">
                   {{ error }}
                 </small>
               </div>
@@ -101,33 +62,18 @@
 
             <div class="field-wrapper">
               <label class="required">Password</label>
-              <p-password
-                formControlName="password"
-                [toggleMask]="true"
-                autocomplete="one-time-code"
-              ></p-password>
-              <small
-                class="error-message"
-                *ngIf="showError && error === 'Password is required'"
-              >
+              <p-password formControlName="password" [toggleMask]="true" autocomplete="one-time-code"></p-password>
+              <small class="error-message" *ngIf="showError && error === 'Password is required'">
                 {{ error }}
               </small>
             </div>
 
             <div class="button-row">
-              <p-button
-                type="submit"
-                [label]="loadingFlag ? 'Please Wait..' : 'Login'"
-                [disabled]="loadingFlag"
-                (onClick)="login()"
-              ></p-button>
-              <a routerLink="/mob-login/mob-forgot" class="forgot-password"
-                >Forgot Password</a
-              >
+              <p-button type="submit" [label]="loadingFlag ? 'Please Wait..' : 'Login'" [disabled]="loadingFlag"
+                (onClick)="login()"></p-button>
+              <a routerLink="/mob-login/mob-forgot" class="forgot-password">Forgot Password</a>
             </div>
-            <small class="error-message" *ngIf="loginError">{{
-              loginError
-            }}</small>
+            <small class="error-message" *ngIf="loginError">{{loginError}}</small>
           </form>
         </div>
       </div>

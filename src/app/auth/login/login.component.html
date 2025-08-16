@@ -21,9 +21,10 @@
                     <div class="field-wrapper">
                         <label class="required">Mobile Number</label>
                         <div class="input-wrapper">
-                            <input type="text" pInputText formControlName="mobileNumber">
+                            <input type="text" pKeyFilter="int" pInputText formControlName="mobileNumber">
                         </div>
-                        <small class="error-message" *ngIf="showError && error && loginType === 'mobile'">
+                        <small class="error-message"
+                            *ngIf="showError && error === 'Mobile Number is required' && loginType === 'mobile'">
                             {{ error }}
                         </small>
                     </div>
@@ -34,7 +35,8 @@
                         <div class="input-wrapper">
                             <input type="text" pInputText formControlName="userName">
                         </div>
-                        <small class="error-message" *ngIf="showError && error && loginType === 'userName'">
+                        <small class="error-message"
+                            *ngIf="showError && error === 'Username is required' && loginType === 'userName'">
                             {{ error }}
                         </small>
                     </div>

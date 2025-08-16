@@ -40,7 +40,7 @@ export class LoginComponent {
     this.loginForm = this.fb.group({
       mobileNumber: [''],
       userName: [''],
-      password: [''],
+      password: ['', [Validators.required]],
     });
   }
 
@@ -114,6 +114,7 @@ export class LoginComponent {
     this.loginType = type;
     this.loginForm.get('mobileNumber')?.reset();
     this.loginForm.get('userName')?.reset();
+    this.loginForm.get('password')?.reset();
     this.error = '';
     this.loginError = '';
     this.showError = false;
