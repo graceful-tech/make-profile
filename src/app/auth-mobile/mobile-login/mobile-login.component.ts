@@ -86,7 +86,7 @@ export class MobileLoginComponent {
         sessionStorage.setItem('token', response.token);
         sessionStorage.setItem('userName', response.userName);
         sessionStorage.setItem('userId', response.id);
-        this.router.navigate(['/mob-candidate']);
+        this.router.navigate(['/candidate']);
       },
       error: (error) => {
         this.loginError = error.error?.message || 'Login failed. Please try again.';
@@ -109,6 +109,7 @@ export class MobileLoginComponent {
     this.loginType = type;
     this.loginForm.get('mobileNumber')?.reset();
     this.loginForm.get('userName')?.reset();
+    this.loginForm.get('password')?.reset();
     this.error = '';
     this.loginError = '';
     this.showError = false;
