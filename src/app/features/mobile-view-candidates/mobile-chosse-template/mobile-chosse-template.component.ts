@@ -194,10 +194,8 @@ export class MobileChosseTemplateComponent {
              resume:templateName,
           },
           closable: true,
-          width: '70%',
-          height: '90%',
           header: 'Enter the Nick Name',
-          styleClass: 'payment-dialog-header',
+          styleClass: 'for-mobile-payment'
         });
     
         // ref.onClose.subscribe(response => {

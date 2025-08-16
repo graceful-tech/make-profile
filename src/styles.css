@@ -1007,6 +1007,23 @@ table::-webkit-scrollbar-thumb {
     }
 } */
 
+/* .for-mobile-payment .p-dialog.p-dynamic-dialog.p-component {
+
+    width: 70% !important;
+    height: 25% !important;
+    z-index: 1102 !important;
+} */
+
+.for-mobile-payment .p-dialog-header {
+    padding: 1rem !important;
+}
+
+.for-mobile-payment .p-dialog-content {
+   padding:  1 1.1rem 1.1rem 1.1rem !important;
+}
+
+
+
 .payment-dialog-header .p-dialog-header {
     padding: rem !important;
 }

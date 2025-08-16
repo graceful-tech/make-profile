@@ -15,8 +15,6 @@ import { GlobalService } from 'src/app/services/global.service';
 export class LandingPageComponent {
     @ViewChild('logoContainer') logoContainer!: ElementRef;
 
- 
-
 
 
   constructor(private fb: FormBuilder, private api: ApiService, private gs: GlobalService, private router: Router,
