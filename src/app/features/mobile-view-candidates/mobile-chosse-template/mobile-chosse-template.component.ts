@@ -37,23 +37,24 @@ export class MobileChosseTemplateComponent {
   isWorkingHere: boolean = false;
   candidatesArray: Array<Candidate> = [];
 
- // Array of Resume Paths
-  resumePaths: { path: string, name: string }[] = [
-    { path: './assets/img/Mercury.png', name: 'Mercury' },
-    { path: './assets/img/Venus.jpg', name: 'Venus' },
-    { path: './assets/img/Earth.png', name: 'Earth' },
-    { path: './assets/img/Mars.png', name: 'Mars' },
-    { path: './assets/img/Jupiter.jpg', name: 'Jupiter' },
-    { path: './assets/img/Saturn.jpg', name: 'Saturn' },
+  // Array of Resume Paths
+  resumePaths: { path: string, name: string ,type:string }[] = [
+    { path: './assets/img/Mercury.png', name: 'Mercury' , type:'Single Page'},
+    { path: './assets/img/Venus.jpg', name: 'Venus',  type:'Multiple Page'},
+    { path: './assets/img/Earth.png', name: 'Earth' , type:'Single Page'},
+    { path: './assets/img/Mars.png', name: 'Mars' , type:'Single Page'},
+    { path: './assets/img/Jupiter.jpg', name: 'Jupiter', type:'Multiple Page'},
   ];
   
-
+  
   get currentResumeName(): string {
     return this.resumePaths[this.currentIndex].name;
   }
 
   currentIndex = 0;
   currentResume = this.resumePaths[this.currentIndex].path;
+  currentResumePageType = this.resumePaths[this.currentIndex].type;
+  resumeName = this.resumePaths[this.currentIndex].name;
   isSelected: boolean = false;
   candidates: Array<Candidate> = [];
   candidateId: any;
@@ -166,6 +167,10 @@ export class MobileChosseTemplateComponent {
       this.currentIndex = this.resumePaths.length - 1;
     }
     this.currentResume = this.resumePaths[this.currentIndex].path;
+    this.currentResumePageType = this.resumePaths[this.currentIndex].type;
+    this.resumeName = this.resumePaths[this.currentIndex].name;
+
+
     this.resetPosition();
   }
 
@@ -176,6 +181,10 @@ export class MobileChosseTemplateComponent {
       this.currentIndex = 0;
     }
     this.currentResume = this.resumePaths[this.currentIndex].path;
+    this.currentResumePageType = this.resumePaths[this.currentIndex].type;
+    this.resumeName = this.resumePaths[this.currentIndex].name;
+
+
     this.resetPosition();
   }
 
