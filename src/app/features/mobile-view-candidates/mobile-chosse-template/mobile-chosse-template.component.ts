@@ -40,9 +40,11 @@ export class MobileChosseTemplateComponent {
  // Array of Resume Paths
   resumePaths: { path: string, name: string }[] = [
     { path: './assets/img/Mercury.png', name: 'Mercury' },
-    { path: './assets/img/Venus.png', name: 'Venus' },
+    { path: './assets/img/Venus.jpg', name: 'Venus' },
     { path: './assets/img/Earth.png', name: 'Earth' },
     { path: './assets/img/Mars.png', name: 'Mars' },
+    { path: './assets/img/Jupiter.jpg', name: 'Jupiter' },
+    { path: './assets/img/Saturn.jpg', name: 'Saturn' },
   ];
   
 

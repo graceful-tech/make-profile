@@ -38,19 +38,18 @@ export class ChooseTemplateComponent {
   candidatesArray: Array<Candidate> = [];
 
   // Array of Resume Paths
-  resumePaths: { path: string, name: string }[] = [
-    { path: './assets/img/Mercury.png', name: 'Mercury' },
-    { path: './assets/img/Venus.png', name: 'Venus' },
-    { path: './assets/img/Earth.png', name: 'Earth' },
-    { path: './assets/img/Mars.png', name: 'Mars' },
-    { path: './assets/img/Jupiter.png', name: 'Jupiter' },
-    { path: './assets/img/Saturn.png', name: 'Saturn' },
+  resumePaths: { path: string, name: string ,type:string }[] = [
+    { path: './assets/img/Mercury.png', name: 'Mercury' , type:'Single Page'},
+    { path: './assets/img/Venus.jpg', name: 'Venus',  type:'Multiple Page'},
+    { path: './assets/img/Earth.png', name: 'Earth' , type:'Single Page'},
+    { path: './assets/img/Mars.png', name: 'Mars' , type:'Single Page'},
+    { path: './assets/img/Jupiter.jpg', name: 'Jupiter', type:'Multiple Page'},
   ];
   
 
-  
   currentIndex = 0;
   currentResume = this.resumePaths[this.currentIndex].path;
+  currentResumePageType = this.resumePaths[this.currentIndex].type;
   isSelected: boolean = false;
   candidates: Array<Candidate> = [];
   candidateId: any;
@@ -155,7 +154,9 @@ export class ChooseTemplateComponent {
       this.currentIndex = this.resumePaths.length - 1;
     }
     this.currentResume = this.resumePaths[this.currentIndex].path;
-    this.resetPosition();
+    this.currentResumePageType = this.resumePaths[this.currentIndex].type;
+
+    // this.resetPosition();
   }
 
   nextResume() {
@@ -165,7 +166,9 @@ export class ChooseTemplateComponent {
       this.currentIndex = 0;
     }
     this.currentResume = this.resumePaths[this.currentIndex].path;
-    this.resetPosition();
+    this.currentResumePageType = this.resumePaths[this.currentIndex].type;
+
+    // this.resetPosition();
   }
 
   checkSection(resumeName: any){

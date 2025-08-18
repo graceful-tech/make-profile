@@ -17,6 +17,7 @@ export class UseExistingTemplateComponent {
   totalRecords: any;
   currentPage: number =1;
   maxLimitPerPageForResume:number = 5;
+  dataLoaded:boolean =false;
 
   constructor(private route: ActivatedRoute,private router: Router,private api:ApiService,private ps:PaymentService,
     private gs:GlobalService
@@ -29,6 +30,7 @@ export class UseExistingTemplateComponent {
 
  
 getAvailableCredits() {
+  this.dataLoaded = false;
     const id = sessionStorage.getItem('userId');
 
     const route = 'credits';
@@ -41,6 +43,7 @@ getAvailableCredits() {
     this.api.create(route,payload).subscribe({
       next: (response) => {
         if(response){
+          this.dataLoaded = true;
         this.availableCredits = response?.results as any;
          this.totalCreditsAvailable = this.availableCredits.reduce(
           (sum: any, credit: { creditAvailable: any; }) => sum + (credit.creditAvailable || 0),
@@ -50,6 +53,10 @@ getAvailableCredits() {
       }
        this.totalRecords = response?.totalRecords; 
       },
+      error:(Error)=>{
+      this.dataLoaded = true;
+      
+      }
     });
   }
 

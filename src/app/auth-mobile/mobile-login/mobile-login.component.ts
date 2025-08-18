@@ -86,7 +86,7 @@ export class MobileLoginComponent {
         sessionStorage.setItem('token', response.token);
         sessionStorage.setItem('userName', response.userName);
         sessionStorage.setItem('userId', response.id);
-        this.router.navigate(['/candidate']);
+        this.router.navigate(['/mob-candidate']);
       },
       error: (error) => {
         this.loginError = error.error?.message || 'Login failed. Please try again.';

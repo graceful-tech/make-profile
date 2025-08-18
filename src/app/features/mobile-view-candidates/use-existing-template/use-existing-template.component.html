@@ -21,14 +21,40 @@
               <p-table  [value]="availableCredits">
                 <ng-template pTemplate="header">
                   <tr>
-                    <th  style="max-width: 5%;">CREDIT AVAILABLE</th>
+                    <th  style="max-width: 5%;">CREDIT AVAILABLE / TEMPLATE NAME</th>
                     <th style="max-width: 5%;">NICK NAME</th>
                     <th  style="max-width: 5%;">PAYMENT</th>
                     <th  style="max-width: 5%;">GENERATE RESUME</th>
                   </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-credits>
-                  <tr>
+
+
+
+                <tr *ngIf="!dataLoaded">
+
+                <td>
+                     <p-skeleton styleClass="mb-2" height="1rem"></p-skeleton>
+                      <p-skeleton styleClass="mb-2" height="1rem"></p-skeleton>
+                      
+                 </td>
+                <td>
+                    <p-skeleton styleClass="mb-2" height="1rem"></p-skeleton>
+                    
+                </td>
+                <td>
+                     <p-skeleton styleClass="mb-2" height="1rem"></p-skeleton>
+                 </td>
+                <td>
+                     <p-skeleton styleClass="mb-2" height="1rem"></p-skeleton>
+                    <p-skeleton styleClass="mb-2" height="1rem"></p-skeleton>
+                </td>
+                <td>
+                    <p-skeleton height="1rem"></p-skeleton>
+                </td>
+            </tr>
+
+                <tr *ngIf="dataLoaded">
                      <td>
                         <div class="applied-job">
                            <span>{{ credits.creditAvailable }}</span>
