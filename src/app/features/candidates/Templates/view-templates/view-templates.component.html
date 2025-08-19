@@ -1,31 +1,39 @@
 <div class="wrapper">
-    <div class="profile-wrapper">
+  <div class="profile-wrapper">
     <section class="header-section">
-        <div class="headers">
-          <button class="create-resume-btn" (click)="goBack()">
-            <i class="fa fa-arrow-left"></i> Back
+      <button class="create-resume-btn" (click)="goBack()">
+        <i class="fa fa-arrow-left"></i> Back
+      </button>
+
+      <div class="main-container">
+        <div class="resume-container">
+          <button (click)="prevResume()" class="arrow-btn left-arrow">
+            ⬅️
           </button>
-              <h1>Resume Templates</h1>   
-            <div class="content-card">
-                <div class="message">
-                <p style="text-align: start;">
-                  Pick one of our professional resume templates to get started on your job application.
-                  Just fill out your favorite resume template to create a flawless, ATS-friendly resume in
-                  under 5 minutes. Try out one of our 8+ free resume templates to make an impressive
-                  resume and land your dream job in no time!
-                </p>
-                <p style="text-align: start;">
-                   Pick one of our professional resume templates to get started on your job application.
-                    Just fill out your favorite resume template to create a flawless, ATS-friendly resume in
-                    under 5 minutes. Try out one of our 8+ free resume templates to make an impressive
-                    resume and land your dream job in no time!
-                  </p>
-                </div>  
-                <button class="start-btn" (click)="chooseTemplate()" >Start with Random Template</button>
-            </div>
+          <img
+            #resumeImage
+            [src]="currentResume"
+            class="resume-image fade-in"
+          />
+          <button (click)="nextResume()" class="arrow-btn right-arrow">
+            ➡️
+          </button>
         </div>
+
+        <div class="content-card">
+          <div class="resume-type">
+            <span class="resume-name"
+              >{{ resumeName }} - {{ currentResumePageType }}</span
+            >
+          </div>
+
+          <div class="select-btn">
+            <button class="start-btn" (click)="navigateToMainpage(resumeName)">
+              Select Template
+            </button>
+          </div>
+        </div>
+      </div>
     </section>
-         
-          
-    </div>
   </div>
+</div>

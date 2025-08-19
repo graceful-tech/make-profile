@@ -7,7 +7,6 @@
 p-table {
   width: 100%;
   border-collapse: collapse;
-
 }
 
 p-table th,
@@ -29,10 +28,7 @@ p-table th {
 
 .right-section {
   flex: 0.5;
-  
 }
- 
-
 
 .styled-text {
   padding-left: 10px;
@@ -46,7 +42,6 @@ p-table th {
   padding: 0.5rem;
   /* display: flex; */
   gap: 20px;
-
 }
 
 .wrapper1 {
@@ -95,8 +90,6 @@ img {
   background-color: rgb(255, 255, 255) !important;
 }
 
-
-
 .bysection-heading {
   font-size: 1.1rem;
   font-weight: 500;
@@ -143,7 +136,6 @@ img {
   /* align-items: center; */
   justify-content: space-between;
   /* padding: 10px 10px; */
-
 }
 
 .header-images {
@@ -196,7 +188,6 @@ img {
   pointer-events: none;
 }
 
-
 .input-wrapper:hover .hover-box {
   opacity: 1;
   transform: translateX(0);
@@ -205,7 +196,6 @@ img {
 .right-align {
   margin-left: 70%;
 }
-
 
 .image-container {
   position: relative;
@@ -255,7 +245,6 @@ img {
   opacity: 0.6;
 }
 
-
 .upload-resume {
   font-size: 13px;
   padding: 2px 6px;
@@ -303,10 +292,10 @@ img {
   font-style: italic;
 }
 
- .modify-btn:hover {
-    background-color: #30dc16;
-    color:black;
-  }
+.modify-btn:hover {
+  background-color: #30dc16;
+  color: black;
+}
 
 .header-middle {
   color: #000;
@@ -342,7 +331,6 @@ img {
   min-width: 150px;
 }
 
-
 .green {
   color: #0f9640;
   font-weight: 500;
@@ -360,7 +348,6 @@ img {
 
 .resume-btn {
   background-color: #1f883d;
-  ;
   color: white;
   border: none;
   padding: 8px 12px;
@@ -373,7 +360,6 @@ img {
 
 .resume-btn:hover {
   background-color: #1d6d34;
-  ;
   color: white;
 }
 
@@ -409,7 +395,6 @@ img {
   overflow: hidden;
   position: relative;
   padding-left: 20px;
-
 }
 
 .profile-wrapper {
@@ -425,7 +410,7 @@ img {
 .first-letter {
   width: 2.5rem;
   height: 2.5rem;
-  background: #EFF2F7;
+  background: #eff2f7;
   color: #fff;
   border-radius: 50%;
   margin-right: 0.8rem;
@@ -497,7 +482,7 @@ img {
 }
 
 .menu-item:hover {
-  background: #2196F3;
+  background: #2196f3;
   color: #fff;
   cursor: pointer;
 }
@@ -513,13 +498,13 @@ img {
 
 .today-button {
   border: none;
-  background: #64748A;
+  background: #64748a;
   color: #fff;
   padding: 0.3rem 0.5rem;
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
   font-weight: 500;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   cursor: pointer;
 }
 
@@ -528,7 +513,6 @@ img {
 }
 
 .credit {
-
   display: inline-block;
   padding: 8px 20px;
   /* background-color: #2196F3; */
@@ -538,7 +522,7 @@ img {
   /* color: white; */
   font-size: 14px;
   font-weight: bold;
-  color:  #7e7d7d;
+  color: #7e7d7d;
 
   /* font-family: Arial, sans-serif; */
   /* box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1); */
@@ -559,7 +543,7 @@ img {
   color: #0056b3;
 }
 
-.applied-job-button{
+.applied-job-button {
   color: #007bff;
   text-decoration: underline;
   background: none;
@@ -569,13 +553,12 @@ img {
   cursor: pointer;
   font: inherit;
   font-weight: bold;
-  font-size:18px;
+  font-size: 18px;
 }
 
 .applied-job-button:hover {
   color: #0056b3;
 }
-
 
 /* Full-screen overlay with blur */
 .overlay {
@@ -592,7 +575,6 @@ img {
   justify-content: center;
 }
 
- 
 .spinner-container {
   display: flex;
   flex-direction: column;
@@ -609,21 +591,19 @@ img {
 .loading-text {
   font-size: 24px;
   font-weight: bold;
-  color: #0a0a0a;  
+  color: #0a0a0a;
   margin-top: 12px;
-  
 }
 
- 
 .dot {
-   font-size: 34px;
+  font-size: 34px;
   opacity: 0;
   animation: blink 1.5s infinite;
 }
 
 .dot1 {
   animation-delay: 0s;
- }
+}
 .dot2 {
   animation-delay: 0.2s;
 }
@@ -632,7 +612,9 @@ img {
 }
 
 @keyframes blink {
-  0%, 80%, 100% {
+  0%,
+  80%,
+  100% {
     opacity: 0;
   }
   40% {
@@ -640,19 +622,18 @@ img {
   }
 }
 
-.add-details{ 
+.add-details {
   text-decoration: underline;
   font-size: 1.2rem;
   font-weight: 500;
   padding-bottom: 0.5rem;
-   color: #178be9;
+  color: #178be9;
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 1rem;
   background-color: #d5d5d5;
 }
-
 
 .full-page-center {
   display: flex;
@@ -670,7 +651,7 @@ img {
   text-align: center;
   max-width: 700px;
   width: 100%;
-  border: #000  1px solid;
+  border: #000 1px solid;
 }
 
 .upload-title {
@@ -695,7 +676,7 @@ img {
 }
 
 .browse-btn {
-  background: linear-gradient(to right,#6884de, #0e3fe0);
+  background: linear-gradient(to right, #6884de, #0e3fe0);
   color: white;
   border: none;
   padding: 10px 30px;
@@ -723,7 +704,7 @@ img {
 }
 
 .details-btn {
-  background: linear-gradient(to right,#db9b6e, #fb6b04);
+  background: linear-gradient(to right, #db9b6e, #fb6b04);
   color: white;
   border: none;
   padding: 10px 30px;
@@ -765,7 +746,7 @@ img {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 }
 
 .slide-body {
@@ -782,10 +763,6 @@ img {
   border: 1px solid #ccc;
   border-radius: 4px;
 }
-
-
-
-
 
 .view-btn {
   background-color: #2563eb;
@@ -806,7 +783,7 @@ img {
   height: 85%;
   background: #fff;
   border-radius: 12px;
-  box-shadow: 0 0 20px rgba(0,0,0,0.15);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
   animation: slideIn 0.4s ease;
   z-index: 1000;
   overflow: hidden;
@@ -830,13 +807,8 @@ img {
   margin-right: 6px;
 }
 
- 
-
- 
-
-
 .section-header {
-  background: linear-gradient(to right,#7f5af0, #5891b5);
+  background: linear-gradient(to right, #7f5af0, #5891b5);
   color: white;
   border-radius: 8px;
   padding: 3px 20px;
@@ -892,13 +864,12 @@ img {
   display: flex;
   justify-content: center;
   margin-top: 10px;
-  position:sticky;
-
+  position: sticky;
 }
 
-.create-button{
+.create-button {
   padding: 1% 20%;
-  background: linear-gradient(to right,#b668eb, rgb(82, 55, 123));
+  background: linear-gradient(to right, #b668eb, rgb(82, 55, 123));
   color: white;
   border: none;
   font-size: 18px;
@@ -908,8 +879,8 @@ img {
   transition: background 0.3s;
 }
 
-.newDeatils-btn{
-  background: linear-gradient(to right,#6aa16b, #1b7337);
+.newDeatils-btn {
+  background: linear-gradient(to right, #6aa16b, #1b7337);
   color: white;
   border: none;
   padding: 10px 30px;
@@ -918,11 +889,9 @@ img {
   border-radius: 8px;
   cursor: pointer;
   transition: background 0.3s;
-
 }
 
-
-.images{
+.images {
   width: 100px;
   height: auto;
   color: white;
@@ -933,9 +902,9 @@ img {
   border-radius: 8px;
   cursor: pointer;
   transition: background 0.3s;
- }
+}
 
- footer {
+footer {
   text-align: center;
   padding: 1rem;
   background: #f5f5f5;

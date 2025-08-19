@@ -8,7 +8,11 @@ import {
 } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import {
+  DialogService,
+  DynamicDialogConfig,
+  DynamicDialogRef,
+} from 'primeng/dynamicdialog';
 import { ApiService } from 'src/app/services/api.service';
 import { GlobalService } from 'src/app/services/global.service';
 import { CreateCandidatesComponent } from '../../create-candidates/create-candidates.component';
@@ -38,14 +42,17 @@ export class ChooseTemplateComponent {
   candidatesArray: Array<Candidate> = [];
 
   // Array of Resume Paths
-  resumePaths: { path: string, name: string ,type:string }[] = [
-    { path: './assets/img/Mercury.png', name: 'Mercury' , type:'Single Page'},
-    { path: './assets/img/Venus.jpg', name: 'Venus',  type:'Multiple Page'},
-    { path: './assets/img/Earth.png', name: 'Earth' , type:'Single Page'},
-    { path: './assets/img/Mars.png', name: 'Mars' , type:'Single Page'},
-    { path: './assets/img/Jupiter.jpg', name: 'Jupiter', type:'Multiple Page'},
+  resumePaths: { path: string; name: string; type: string }[] = [
+    { path: './assets/img/Mercury.png', name: 'Mercury', type: 'Single Page' },
+    { path: './assets/img/Venus.jpg', name: 'Venus', type: 'Multiple Page' },
+    { path: './assets/img/Earth.png', name: 'Earth', type: 'Single Page' },
+    { path: './assets/img/Mars.png', name: 'Mars', type: 'Single Page' },
+    {
+      path: './assets/img/Jupiter.jpg',
+      name: 'Jupiter',
+      type: 'Multiple Page',
+    },
   ];
-  
 
   currentIndex = 0;
   currentResume = this.resumePaths[this.currentIndex].path;
@@ -69,15 +76,13 @@ export class ChooseTemplateComponent {
     private cdr: ChangeDetectorRef,
     private router: Router,
     public ref: DynamicDialogRef,
-    private config: DynamicDialogConfig,
+    private config: DynamicDialogConfig
   ) {
     this.candidates = this.config.data?.candidates;
     this.candidateImageUrl = this.config.data?.candidateImage;
-
   }
 
   ngOnInit() {
-
     localStorage.removeItem('resumeName');
   }
 
@@ -117,36 +122,6 @@ export class ChooseTemplateComponent {
     this.zoomIn();
   }
 
-  startDragging(event: MouseEvent | TouchEvent) {
-    this.isDragging = true;
-
-    if (event instanceof MouseEvent) {
-      this.startX = event.clientX - this.translateX;
-      this.startY = event.clientY - this.translateY;
-    } else {
-      this.startX = event.touches[0].clientX - this.translateX;
-      this.startY = event.touches[0].clientY - this.translateY;
-    }
-  }
-
-  stopDragging() {
-    this.isDragging = false;
-  }
-
-  dragResume(event: MouseEvent | TouchEvent) {
-    if (!this.isDragging) return;
-
-    if (event instanceof MouseEvent) {
-      this.translateX = event.clientX - this.startX;
-      this.translateY = event.clientY - this.startY;
-    } else {
-      this.translateX = event.touches[0].clientX - this.startX;
-      this.translateY = event.touches[0].clientY - this.startY;
-    }
-
-    this.updateTransform();
-  }
-
   prevResume() {
     if (this.currentIndex > 0) {
       this.currentIndex--;
@@ -156,8 +131,7 @@ export class ChooseTemplateComponent {
     this.currentResume = this.resumePaths[this.currentIndex].path;
     this.currentResumePageType = this.resumePaths[this.currentIndex].type;
 
-    // this.resetPosition();
-  }
+   }
 
   nextResume() {
     if (this.currentIndex < this.resumePaths.length - 1) {
@@ -168,62 +142,55 @@ export class ChooseTemplateComponent {
     this.currentResume = this.resumePaths[this.currentIndex].path;
     this.currentResumePageType = this.resumePaths[this.currentIndex].type;
 
-    // this.resetPosition();
-  }
+   }
 
-  checkSection(resumeName: any){
-
+  checkSection(resumeName: any) {
     const route = 'template/checker';
-     const payload = {
+    const payload = {
       ...this.candidates,
       resumeFormatName: resumeName,
     };
-    localStorage.setItem('resumeName',resumeName);
+    localStorage.setItem('resumeName', resumeName);
 
-    this.api.retrieve(route,payload).subscribe({
+    this.api.retrieve(route, payload).subscribe({
       next: (response) => {
-     console.log('keerthi');
+        console.log('keerthi');
         const name = response?.name;
-         this.createResume(name);
+        this.createResume(name);
       },
     });
-  
   }
 
+  openNickName(resumeName: any) {
+    this.ref.close();
+    localStorage.setItem('templateName', resumeName);
 
-    openNickName(resumeName: any){
-      this.ref.close();
-     localStorage.setItem('templateName',resumeName);
-
-      const ref = this.dialog.open(NickNameComponent, {
+    const ref = this.dialog.open(NickNameComponent, {
       data: {
-        payments:true,
-        resumeName:resumeName,
-        candidateImage :this.candidateImageUrl,
+        payments: true,
+        resumeName: resumeName,
+        candidateImage: this.candidateImageUrl,
         candidates: this.candidates,
-
       },
       closable: true,
       width: '30%',
       header: 'Enter the nick name for this resume',
     });
-
-    }
-
+  }
 
   createResume(resumeName: any) {
     this.ref.close();
     const candidateId = localStorage.getItem('candidateId');
-   
-     localStorage.setItem('templateName',resumeName);
+
+    localStorage.setItem('templateName', resumeName);
 
     const ref = this.dialog.open(VerifyCandidatesComponent, {
       data: {
         candidates: this.candidates,
-        payments:true,
-        candidateImage :this.candidateImageUrl,
-        resumeName:resumeName,
-       // fieldsName:resumeName
+        payments: true,
+        candidateImage: this.candidateImageUrl,
+        resumeName: resumeName,
+        // fieldsName:resumeName
       },
       closable: true,
       width: '70%',
@@ -250,6 +217,4 @@ export class ChooseTemplateComponent {
       },
     });
   }
-
-  
 }

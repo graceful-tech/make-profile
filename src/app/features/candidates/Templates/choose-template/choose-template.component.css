@@ -1,4 +1,3 @@
-
 .resume-container {
   overflow: hidden;
   display: flex;
@@ -6,9 +5,8 @@
   align-items: center;
   position: relative;
   width: 100%;
-  height: 100%; 
+  height: 100%;
 }
-
 
 .resume-image {
   cursor: grab;
@@ -18,7 +16,6 @@
   height: 100%;
   border: 1px solid black;
 }
-
 
 .zoom-controls {
   position: fixed;
@@ -62,7 +59,6 @@
   background-color: rgba(0, 0, 0, 0.8);
 }
 
- 
 .arrow-controls .arrow-btn:first-child {
   left: 7px;
 }
@@ -90,12 +86,11 @@
 }
 
 .tick-icon {
-
   display: flex;
   justify-content: space-around;
 }
 
-.template{
+.template {
   position: absolute;
   top: 1px;
   left: 0;
@@ -105,21 +100,20 @@
   padding: 1px 0px 0px 0px;
   margin-top: 8px;
   border: none;
-  border-radius: 0 10px 10px 0;  
-
+  border-radius: 0 10px 10px 0;
 }
 
-.type{
+.type {
   position: absolute;
   top: 1px;
-  background: linear-gradient(to right,#b668eb, rgb(82, 55, 123));
+  background: linear-gradient(to right, #b668eb, rgb(82, 55, 123));
   color: white;
   font-size: 18px;
   padding: 1px 0px 0px 0px;
   margin-top: 8px;
   border: none;
-  border-radius: 0 10px 0 10px;  
- }
+  border-radius: 0 10px 0 10px;
+}
 
 .p-checkbox .p-checkbox-box {
   border: 2px solid #ced4da !important;
@@ -128,79 +122,77 @@
   height: 25px !important;
   color: #495057 !important;
   border-radius: 3px;
-  transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+    box-shadow 0.2s;
   outline-color: transparent;
   border-radius: 6px;
-
 }
 
 @media (max-width: 1000px) {
-  
-    .arrow-controls .arrow-btn:first-child {
-      left: 1px;
-    }
-    
-    .arrow-controls .arrow-btn:last-child {
-      right: 1px;
-    }
-  
-    .arrow-controls button:hover {
-      background-color: rgba(0, 0, 0, 0.8);
-    }
-  
-    .arrow-controls button {
-      background-color: white;
-      color: white;
-      border: none;
-      font-size: 24px;
-      width: 50px;
-      height: 50px;
-      cursor: pointer;
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      border-radius: 50%;
-    }
-  
-    .create-resume-btn {
-      position: fixed;
-      bottom: 15px;
-      right: 45px;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      border-radius: 20px;
-      padding: 7px 10px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-    
-    .create-resume-btn:hover {
-      background-color: #0056b3;
-    }
-  
-    .zoom-controls {
-      position: fixed;
-      bottom: 20px;
-      left: 25%;
-      transform: translateX(-50%);
-      display: flex;
-      gap: 10px;
-    }
-    
-    .zoom-btn {
-      background-color: #007bff;
-      color: white;
-      border-radius: 50%;
-      width: 15px;
-      height: 20px;
-      border: none;
-      font-size: 18px;
-      cursor: pointer;
-    }
-    
-    .zoom-btn:hover {
-      background-color: #0056b3;
-    }
+  .arrow-controls .arrow-btn:first-child {
+    left: 1px;
   }
- 
+
+  .arrow-controls .arrow-btn:last-child {
+    right: 1px;
+  }
+
+  .arrow-controls button:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+
+  .arrow-controls button {
+    background-color: white;
+    color: white;
+    border: none;
+    font-size: 24px;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    border-radius: 50%;
+  }
+
+  .create-resume-btn {
+    position: fixed;
+    bottom: 15px;
+    right: 45px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 7px 10px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  .create-resume-btn:hover {
+    background-color: #0056b3;
+  }
+
+  .zoom-controls {
+    position: fixed;
+    bottom: 20px;
+    left: 25%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+  }
+
+  .zoom-btn {
+    background-color: #007bff;
+    color: white;
+    border-radius: 50%;
+    width: 15px;
+    height: 20px;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+  }
+
+  .zoom-btn:hover {
+    background-color: #0056b3;
+  }
+}

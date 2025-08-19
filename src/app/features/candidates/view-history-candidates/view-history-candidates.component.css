@@ -1,14 +1,14 @@
-  .mobile {
-    display: flex;
-    border-collapse: collapse;
-    width: 100%;
-  }
-  
-.custom-btn:hover {
-    background-color: #3716dc;
-  }
+.mobile {
+  display: flex;
+  border-collapse: collapse;
+  width: 100%;
+}
 
- .custom-btn {
+.custom-btn:hover {
+  background-color: #3716dc;
+}
+
+.custom-btn {
   background-color: #366fe0;
   color: white;
   border: none;
@@ -18,4 +18,4 @@
   cursor: pointer;
   margin-right: 15px;
   font-style: italic;
-} 
+}

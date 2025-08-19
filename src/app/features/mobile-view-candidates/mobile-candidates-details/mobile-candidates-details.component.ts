@@ -1103,6 +1103,7 @@ export class MobileCandidatesDetailsComponent {
       this.requirementForm.controls['locations'].value !== '' &&
       this.requirementForm.controls['skills'].value.length > 0
     ) {
+      this.loader.start();
       const route = 'hurecom/get-requirements';
 
       const payload = this.requirementForm.getRawValue();
@@ -1112,12 +1113,25 @@ export class MobileCandidatesDetailsComponent {
 
       this.api.retrieve(route, payload).subscribe({
         next: (response) => {
+          this.loader.stop();
+
           if(response){
           this.getCheckedScore();
           this.requirements = response?.results as Requirement[];
           this.totalRecords = response?.totalRecords;
+          
+          if(response?.results.length === 0){
+          window.alert('Sorry... No jobs found. Try again tomorrow or change your search.');
           }
+
+          }
+           this.loader.stop();
+ 
         },
+        error: (err) => {
+           this.loader.stop();
+           window.alert('Error in fetching job try another time');
+        }
       });
     } else {
 

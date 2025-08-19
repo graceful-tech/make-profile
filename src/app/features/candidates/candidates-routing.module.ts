@@ -4,24 +4,19 @@ import { AddCandidatesComponent } from './add-candidates/add-candidates.componen
 import { CreateCandidatesComponent } from './create-candidates/create-candidates.component';
 import { CandidatesDetailsComponent } from './candidates-details/candidates-details.component';
 import { ViewTemplatesComponent } from './Templates/view-templates/view-templates.component';
- 
- 
+
 const routes: Routes = [
-
-
-  {path: '', component:CandidatesDetailsComponent},
+  { path: '', component: CandidatesDetailsComponent },
 
   { path: 'create', component: CreateCandidatesComponent },
 
   { path: 'candidate', component: AddCandidatesComponent },
 
   { path: 'template', component: ViewTemplatesComponent },
-
-
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class CandidatesRoutingModule { }
+export class CandidatesRoutingModule {}

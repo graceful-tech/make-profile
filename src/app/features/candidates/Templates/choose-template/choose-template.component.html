@@ -1,19 +1,5 @@
-
-<!-- 
-<div #resumeContainer class="resume-container"
-     (mousedown)="startDragging($event)"
-     (touchstart)="startDragging($event)"
-     (mouseup)="stopDragging()"
-     (touchend)="stopDragging()"
-     (mousemove)="dragResume($event)"
-     (touchmove)="dragResume($event)"
-     (dblclick)="onDoubleClick()"> -->
-
-    
-
-
-  <div #resumeContainer class="resume-container">
-  <img #resumeImage [src]="currentResume"  class="resume-image">
+<div #resumeContainer class="resume-container">
+  <img #resumeImage [src]="currentResume" class="resume-image" />
 
   <div class="arrow-controls">
     <button (click)="prevResume()" class="arrow-btn">⬅️</button>
@@ -21,22 +7,15 @@
   </div>
 </div>
 
-<!-- <div class="zoom-controls">
-  <button pButton class="zoom-btn" (click)="zoomIn()" icon="pi pi-search-plus" aria-label="Zoom In"></button>
-  <button pButton class="zoom-btn" (click)="zoomOut()" icon="pi pi-search-minus" aria-label="Zoom Out"></button>
-</div> -->
-
 <div class="tick-icon">
   <div>
-  <span class="template">&nbsp;Choose Template&nbsp;</span>
-
+    <span class="template">&nbsp;Choose Template&nbsp;</span>
   </div>
   <div>
-  <span class="type">&nbsp;{{currentResumePageType}}&nbsp;</span>
-
+    <span class="type">&nbsp;{{ currentResumePageType }}&nbsp;</span>
   </div>
 </div>
 
-<button class="create-resume-btn" (click)="openNickName(currentResumeName)">Select</button>
-
-
+<button class="create-resume-btn" (click)="openNickName(currentResumeName)">
+  Select
+</button>
