@@ -10,65 +10,67 @@ import { GlobalService } from 'src/app/services/global.service';
   selector: 'app-landing-page',
   standalone: false,
   templateUrl: './landing-page.component.html',
-  styleUrl: './landing-page.component.css'
+  styleUrl: './landing-page.component.css',
 })
 export class LandingPageComponent {
-    @ViewChild('logoContainer') logoContainer!: ElementRef;
+  @ViewChild('logoContainer') logoContainer!: ElementRef;
 
-
-
-  constructor(private fb: FormBuilder, private api: ApiService, private gs: GlobalService, private router: Router,
-    private dialog: DialogService, private route: ActivatedRoute, private deviceServiceService: DeviceServiceService) { }
+  constructor(
+    private fb: FormBuilder,
+    private api: ApiService,
+    private gs: GlobalService,
+    private router: Router,
+    private dialog: DialogService,
+    private route: ActivatedRoute,
+    private deviceServiceService: DeviceServiceService
+  ) {}
 
   ngOnInit() {
     this.deviceServiceService.directlyTo('landing');
-   }
+  }
 
-   ngAfterViewInit() {
-    this.onWindowScroll();  
+  ngAfterViewInit() {
+    this.onWindowScroll();
   }
 
   candidate() {
-    this.router.navigate(['/candidates'],
-      { relativeTo: this.route });
+    this.router.navigate(['/candidates'], { relativeTo: this.route });
   }
 
   goToLoginPage() {
     this.router.navigate(['/login']);
   }
 
-  toLogin(){
+  toLogin() {
     this.router.navigate(['/login']);
   }
 
-// @HostListener('window:scroll', [])
-//   onWindowScroll() {
-//     const scrollTop = window.scrollY;
-//     const maxScroll = document.body.scrollHeight - window.innerHeight;
+  // @HostListener('window:scroll', [])
+  //   onWindowScroll() {
+  //     const scrollTop = window.scrollY;
+  //     const maxScroll = document.body.scrollHeight - window.innerHeight;
 
-//     const scrollPercent = Math.min(scrollTop / maxScroll, 1); 
-//     const shiftPercent = scrollPercent * 1000;  
+  //     const scrollPercent = Math.min(scrollTop / maxScroll, 1);
+  //     const shiftPercent = scrollPercent * 1000;
 
-//     const logoEl = this.logoContainer.nativeElement;
+  //     const logoEl = this.logoContainer.nativeElement;
 
-//     logoEl.style.transform = `translateX(-${shiftPercent}%) scale(1.5)`; 
-//     logoEl.style.transition = 'transform 0.2s ease-out';
-//   }
-
+  //     logoEl.style.transform = `translateX(-${shiftPercent}%) scale(1.5)`;
+  //     logoEl.style.transition = 'transform 0.2s ease-out';
+  //   }
 
   @HostListener('window:scroll', [])
   onWindowScroll() {
     const scrollTop = window.scrollY;
-    const maxShiftPx = 400;  
+    const maxShiftPx = 400;
 
     const currentShift = Math.min(scrollTop, maxShiftPx);
-    const shiftPercent = (currentShift / maxShiftPx) * 500;  
+    const shiftPercent = (currentShift / maxShiftPx) * 500;
 
     const logoEl = this.logoContainer.nativeElement;
 
-    console.log('currentShift'+currentShift,);
-    console.log('scrollTop'+scrollTop,);
-
+    console.log('currentShift' + currentShift);
+    console.log('scrollTop' + scrollTop);
 
     if (scrollTop >= 100) {
       logoEl.style.left = '10px';
@@ -78,5 +80,4 @@ export class LandingPageComponent {
       logoEl.style.transform = `translateX(-${shiftPercent}%) scale(1.5)`;
     }
   }
-
 }

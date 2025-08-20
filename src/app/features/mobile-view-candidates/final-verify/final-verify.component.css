@@ -1,24 +1,25 @@
- html, body {
+html,
+body {
   overflow-x: hidden;
   margin: 0;
   padding: 0;
 }
- 
+
 .wrapper {
   margin-top: 0rem;
   padding: 0.5rem;
   display: flex;
-  flex-wrap: wrap; 
+  flex-wrap: wrap;
   width: 100%;
   box-sizing: border-box;
 }
 
 .profile-wrapper {
-  background: #e8e6e6;   
+  background: #e8e6e6;
   padding: 1.2rem 1.5rem;
   border-radius: 5px;
   box-shadow: 0 1px 2px 0 rgb(0 0 0 / 8%);
-  width: 100%; 
+  width: 100%;
   box-sizing: border-box;
 }
 
@@ -32,7 +33,7 @@
   animation: fadeInRotate 3s ease-in-out;
 }
 
- .profile {
+.profile {
   width: 100%;
   max-width: 150px;
   height: auto;
@@ -49,8 +50,8 @@ img {
   height: auto;
 }
 
- .custom-btn {
-  background-color: #415ddb;  
+.custom-btn {
+  background-color: #415ddb;
   color: white;
   border: none;
   padding: 8px 5px;
@@ -61,11 +62,11 @@ img {
 }
 
 .custom-btn:hover {
-  background-color: #3716dc;  
+  background-color: #3716dc;
 }
 
 .remove-btn {
-  background-color: #db4141;  
+  background-color: #db4141;
   color: white;
   border: none;
   padding: 8px 5px;
@@ -76,14 +77,14 @@ img {
 }
 
 .remove-btn:hover {
-  background-color: #f40808;  
+  background-color: #f40808;
 }
 
 .p-inputtext {
   background-color: rgb(255, 255, 255) !important;
 }
 
- .bysection-heading {
+.bysection-heading {
   font-size: 1.1rem;
   font-weight: 500;
   color: #178be9;
@@ -91,13 +92,12 @@ img {
   margin-left: 1rem;
 }
 
- .button-wrapper {
+.button-wrapper {
   margin-top: 1rem;
   text-align: right;
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
-  justify-content: flex-end;
 }
 
 .delete-btn {
@@ -108,7 +108,7 @@ img {
   cursor: pointer;
 }
 
- .image-container {
+.image-container {
   position: relative;
   display: inline-block;
   margin-top: 20px;
@@ -143,12 +143,12 @@ img {
   padding-left: 1rem;
 }
 
- ::ng-deep .custom-dropdown .p-dropdown {
+::ng-deep .custom-dropdown .p-dropdown {
   width: 100% !important;
   max-width: 200px;
 }
 
-.add-details { 
+.add-details {
   text-decoration: underline;
   font-size: 1.4rem;
   font-weight: 500;
@@ -201,9 +201,9 @@ img {
     padding: 1rem;
   }
 
-  /* .button-wrapper {
+  .button-wrapper {
     justify-content: center;
-  } */
+  }
 
   .bysection-heading {
     margin-left: 0;
@@ -214,7 +214,8 @@ img {
     max-width: 100% !important;
   }
 
-  .custom-btn, .remove-btn {
+  .custom-btn,
+  .remove-btn {
     font-size: 14px;
     padding: 10px;
   }
@@ -245,7 +246,6 @@ img {
   }
 } */
 
-
 .header-image {
   position: fixed;
   top: 0;
@@ -257,10 +257,9 @@ img {
   align-items: center;
   justify-content: center;
   padding-top: 10px;
-  }
+}
 
-
-  .overlay {
+.overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -274,7 +273,6 @@ img {
   justify-content: center;
 }
 
- 
 .spinner-container {
   display: flex;
   flex-direction: column;
@@ -291,21 +289,19 @@ img {
 .loading-text {
   font-size: 24px;
   font-weight: bold;
-  color: #0a0a0a;  
+  color: #0a0a0a;
   margin-top: 12px;
-  
 }
 
- 
 .dot {
-   font-size: 34px;
+  font-size: 34px;
   opacity: 0;
   animation: blink 1.5s infinite;
 }
 
 .dot1 {
   animation-delay: 0s;
- }
+}
 .dot2 {
   animation-delay: 0.2s;
 }
@@ -314,7 +310,9 @@ img {
 }
 
 @keyframes blink {
-  0%, 80%, 100% {
+  0%,
+  80%,
+  100% {
     opacity: 0;
   }
   40% {
@@ -322,15 +320,25 @@ img {
   }
 }
 
-.add-details{ 
+.add-details {
   text-decoration: underline;
   font-size: 1.4rem;
   font-weight: 500;
   padding-bottom: 0.5rem;
-   color: #178be9;
+  color: #178be9;
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 1rem;
   background-color: #d5d5d5;
+}
+
+.headers {
+  position: relative;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin-top: 2rem;
+  display: flex;
+  justify-content: flex-end;
 }

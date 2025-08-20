@@ -50,6 +50,18 @@
     </div>
 
     <div class="wrapper1">
+      <div class="refer-credit">
+       <button class="refer-btn" (click)="referAndEarn()">
+            Refer & Earn
+          </button>
+        
+      </div>
+
+        <ng-container *ngIf="referral">
+            <app-referral></app-referral>
+        </ng-container>
+
+
       <div class="credit">Balance Credits : {{ totalCreditsAvailable }}</div>
       <div class="account-wrapper" appClickedOutside (clickedOutside)="close()">
         <span class="user-name flex flex-row">
@@ -1459,3 +1471,6 @@
 </div>
 
 <footer>&copy; 2025 Makeprofiles. All rights reserved.</footer>
+
+
+

@@ -38,15 +38,18 @@ export class MobileChosseTemplateComponent {
   candidatesArray: Array<Candidate> = [];
 
   // Array of Resume Paths
-  resumePaths: { path: string, name: string ,type:string }[] = [
-    { path: './assets/img/Mercury.png', name: 'Mercury' , type:'Single Page'},
-    { path: './assets/img/Venus.jpg', name: 'Venus',  type:'Multiple Page'},
-    { path: './assets/img/Earth.png', name: 'Earth' , type:'Single Page'},
-    { path: './assets/img/Mars.png', name: 'Mars' , type:'Single Page'},
-    { path: './assets/img/Jupiter.jpg', name: 'Jupiter', type:'Multiple Page'},
+  resumePaths: { path: string; name: string; type: string }[] = [
+    { path: './assets/img/Mercury.png', name: 'Mercury', type: 'Single Page' },
+    { path: './assets/img/Venus.jpg', name: 'Venus', type: 'Multiple Page' },
+    { path: './assets/img/Earth.png', name: 'Earth', type: 'Single Page' },
+    { path: './assets/img/Mars.png', name: 'Mars', type: 'Single Page' },
+    {
+      path: './assets/img/Jupiter.jpg',
+      name: 'Jupiter',
+      type: 'Multiple Page',
+    },
   ];
-  
-  
+
   get currentResumeName(): string {
     return this.resumePaths[this.currentIndex].name;
   }
@@ -170,7 +173,6 @@ export class MobileChosseTemplateComponent {
     this.currentResumePageType = this.resumePaths[this.currentIndex].type;
     this.resumeName = this.resumePaths[this.currentIndex].name;
 
-
     this.resetPosition();
   }
 
@@ -184,45 +186,47 @@ export class MobileChosseTemplateComponent {
     this.currentResumePageType = this.resumePaths[this.currentIndex].type;
     this.resumeName = this.resumePaths[this.currentIndex].name;
 
-
     this.resetPosition();
   }
 
   chooseTemplate(resume: any) {
-    localStorage.setItem('templateName',resume);
+    localStorage.setItem('templateName', resume);
     this.gs.setResumeName(resume);
-    
-    if (this.candidateImageUrl != null &&this.candidateImageUrl !== undefined) {
+
+    if (
+      this.candidateImageUrl != null &&
+      this.candidateImageUrl !== undefined
+    ) {
       this.gs.setCandidateImage(this.candidateImageUrl);
     }
     this.router.navigate(['mob-candidate/edit-candidate']);
   }
 
-  openNickNameField(templateName:any){
-    localStorage.setItem('templateName',templateName);
-    const ref = this.dialog.open(NickNameMobileComponent,{
-          data: {
-             resume:templateName,
-          },
-          closable: true,
-          header: 'Enter the Nick Name',
-          styleClass: 'for-mobile-payment'
-        });
-    
-        // ref.onClose.subscribe(response => {
-        //   if (response) {
-    
-        //     this.candidates = response;
-        //     this.candidateId = response.id;
-        //     const candidate = response as Candidate
-        //     const candidateClone = JSON.parse(JSON.stringify(candidate));
-        //     this.patchCandidateForm(candidateClone);
-        //     this.candidateImageUrl = response.candidateLogo;
-    
-        //     this.resume = null;
-            
-        //   }
-        // });
+  openNickNameField(templateName: any) {
+    localStorage.setItem('templateName', templateName);
+    const ref = this.dialog.open(NickNameMobileComponent, {
+      data: {
+        resume: templateName,
+      },
+      closable: true,
+      header: 'Enter the Nick Name',
+      styleClass: 'for-mobile-payment',
+    });
+
+    // ref.onClose.subscribe(response => {
+    //   if (response) {
+
+    //     this.candidates = response;
+    //     this.candidateId = response.id;
+    //     const candidate = response as Candidate
+    //     const candidateClone = JSON.parse(JSON.stringify(candidate));
+    //     this.patchCandidateForm(candidateClone);
+    //     this.candidateImageUrl = response.candidateLogo;
+
+    //     this.resume = null;
+
+    //   }
+    // });
   }
 
   getCandidateById(id: any) {
@@ -236,9 +240,11 @@ export class MobileChosseTemplateComponent {
   }
 
   backToCandidates() {
-
     this.gs.setCandidateDetails(this.candidates);
-    if (this.candidateImageUrl != null &&this.candidateImageUrl !== undefined) {
+    if (
+      this.candidateImageUrl != null &&
+      this.candidateImageUrl !== undefined
+    ) {
       this.gs.setCandidateImage(this.candidateImageUrl);
     }
     this.router.navigate(['mob-candidate']);

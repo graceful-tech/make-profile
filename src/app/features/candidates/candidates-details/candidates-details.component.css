@@ -911,3 +911,31 @@ footer {
   color: #333;
   font-size: 0.9rem;
 }
+
+
+
+.refer-btn {
+  background: linear-gradient(to right, #6884de, #0e3fe0);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+  margin-bottom: 10px;
+}
+
+.refer-btn:hover {
+  background-color: #1e40af;
+}
+
+
+.refer-credit {
+  display: inline-block;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #7e7d7d;
+}

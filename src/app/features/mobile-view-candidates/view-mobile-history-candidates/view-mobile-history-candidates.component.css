@@ -1,8 +1,8 @@
 .custom-btn:hover {
-    background-color: #3716dc;
-  }
+  background-color: #3716dc;
+}
 
- .custom-btn {
+.custom-btn {
   background-color: #366fe0;
   color: white;
   border: none;
@@ -12,63 +12,63 @@
   cursor: pointer;
   margin-right: 15px;
   font-style: italic;
-} 
+}
 
 .applied-job {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .applied-job span {
-    margin-top: 3px;
-    margin-bottom: 3px;
+  margin-top: 3px;
+  margin-bottom: 3px;
 }
 
 .flex-start label {
-    font-weight: 500;
-    color: #404040;
+  font-weight: 500;
+  color: #404040;
 }
 
 .pi-info-circle {
-    color: #2196F3;
-    margin-top: 3px;
-    cursor: pointer;
+  color: #2196f3;
+  margin-top: 3px;
+  cursor: pointer;
 }
 
 .green {
-    color: #0f9640;
-    font-weight: 500;
+  color: #0f9640;
+  font-weight: 500;
 }
 
 .orange {
-    color: #dc5512;
-    font-weight: 500;
+  color: #dc5512;
+  font-weight: 500;
 }
 
 .red {
-    color: #d11111;
-    font-weight: 500;
+  color: #d11111;
+  font-weight: 500;
 }
 
 .row-footer {
-    padding: 0.6rem 1rem !important;
-    background: #F9FAFB;
+  padding: 0.6rem 1rem !important;
+  background: #f9fafb;
 }
 
 .no-border {
-    border: none !important;
+  border: none !important;
 }
 
- .truncate {
+.truncate {
   white-space: nowrap;
   overflow: nowrap;
   text-overflow: ellipsis;
   max-width: 200px;
 }
 .wrap-text {
-  white-space: normal;      
-  word-wrap: break-word;   
+  white-space: normal;
+  word-wrap: break-word;
   word-break: break-word;
-  display: block;  
-  max-width: 80%;        
+  display: block;
+  max-width: 80%;
 }

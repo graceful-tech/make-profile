@@ -9,7 +9,7 @@ import { MobileChosseTemplateComponent } from './mobile-chosse-template/mobile-c
 import { MobileEditCandidatesComponent } from './mobile-edit-candidates/mobile-edit-candidates.component';
 import { MobilePaymentOptionComponent } from './mobile-payments/mobile-payment-option/mobile-payment-option.component';
 import { MobilePaymentDetailsComponent } from './mobile-payments/mobile-payment-details/mobile-payment-details.component';
- import { MobileVerifyComponentComponent } from './mobile-verify-component/mobile-verify-component.component';
+import { MobileVerifyComponentComponent } from './mobile-verify-component/mobile-verify-component.component';
 import { MobileResumeDetailsComponent } from './mobile-resume-details/mobile-resume-details.component';
 import { ViewMobileHistoryCandidatesComponent } from './view-mobile-history-candidates/view-mobile-history-candidates.component';
 import { ResumeDetailsMobileComponent } from './resume-details-mobile/resume-details-mobile.component';
@@ -17,7 +17,6 @@ import { FinalVerifyComponent } from './final-verify/final-verify.component';
 import { NickNameMobileComponent } from './nick-name-mobile/nick-name-mobile.component';
 import { ChooseNewTemplateComponent } from './choose-new-template/choose-new-template.component';
 import { UseExistingTemplateComponent } from './use-existing-template/use-existing-template.component';
-  
 
 @NgModule({
   declarations: [
@@ -34,13 +33,8 @@ import { UseExistingTemplateComponent } from './use-existing-template/use-existi
     FinalVerifyComponent,
     NickNameMobileComponent,
     ChooseNewTemplateComponent,
-    UseExistingTemplateComponent
- 
+    UseExistingTemplateComponent,
   ],
-  imports: [
-    CommonModule,
-    MobileViewCandidatesRoutingModule,
-    SharedModule,
-  ]
+  imports: [CommonModule, MobileViewCandidatesRoutingModule, SharedModule],
 })
-export class MobileViewCandidatesModule { }
+export class MobileViewCandidatesModule {}

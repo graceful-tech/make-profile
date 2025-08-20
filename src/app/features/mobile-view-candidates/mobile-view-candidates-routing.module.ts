@@ -14,38 +14,31 @@ import { UseExistingTemplateComponent } from './use-existing-template/use-existi
 import { MobileCommonDetailsComponent } from 'src/app/shared/components/mobile-common-details/mobile-common-details.component';
 
 const routes: Routes = [
+  { path: '', component: MobileCandidatesDetailsComponent },
 
-  {path: '', component:MobileCandidatesDetailsComponent},
+  { path: 'create-candidate', component: MobileCreateCandidatesComponent },
 
-  {path: 'create-candidate', component:MobileCreateCandidatesComponent},
+  { path: 'choose-Template', component: MobileChosseTemplateComponent },
 
-  {path: 'choose-Template', component:MobileChosseTemplateComponent},
+  { path: 'edit-candidate', component: MobileEditCandidatesComponent },
 
-  {path: 'edit-candidate', component:MobileEditCandidatesComponent},
-  
-  {path: 'mobile-payment', component:MobilePaymentOptionComponent},
+  { path: 'mobile-payment', component: MobilePaymentOptionComponent },
 
-  {path: 'verify-components', component:MobileVerifyComponentComponent},
+  { path: 'verify-components', component: MobileVerifyComponentComponent },
 
-  {path: 'resume-details', component:ResumeDetailsMobileComponent},
-  
-  {path: 'view-history', component:ViewMobileHistoryCandidatesComponent},
+  { path: 'resume-details', component: ResumeDetailsMobileComponent },
 
-  {path: 'final-verify', component:FinalVerifyComponent},
+  { path: 'view-history', component: ViewMobileHistoryCandidatesComponent },
 
-  {path: 'Use-existing',component:UseExistingTemplateComponent},
+  { path: 'final-verify', component: FinalVerifyComponent },
 
-  {path: 'enter-new-details',component:MobileCommonDetailsComponent},
+  { path: 'Use-existing', component: UseExistingTemplateComponent },
 
-
-
-
-  
-  
+  { path: 'enter-new-details', component: MobileCommonDetailsComponent },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class MobileViewCandidatesRoutingModule { }
+export class MobileViewCandidatesRoutingModule {}

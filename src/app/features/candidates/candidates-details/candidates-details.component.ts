@@ -25,6 +25,7 @@ import { VerifyCandidatesComponent } from '../verify-candidates/verify-candidate
 import { ChooseTemplateWayComponent } from '../choose-template-way/choose-template-way.component';
 import { LoaderService } from 'src/app/services/loader.service';
 import { CandidateCommonDetailsComponent } from 'src/app/shared/components/candidate-common-details/candidate-common-details.component';
+import { ReferralComponent } from 'src/app/shared/components/referral/referral.component';
 
 @Component({
   selector: 'app-candidates-details',
@@ -33,6 +34,8 @@ import { CandidateCommonDetailsComponent } from 'src/app/shared/components/candi
   styleUrl: './candidates-details.component.css',
 })
 export class CandidatesDetailsComponent {
+@ViewChild(ReferralComponent) referralComponent!: ReferralComponent;
+
   yourResume: Array<any> = [];
   candidateForm!: FormGroup;
   genderList: Array<ValueSet> = [];
@@ -90,6 +93,7 @@ export class CandidatesDetailsComponent {
   showSuggestJobs: boolean = false;
   showCandidates: boolean = false;
   checkedScore: any;
+  referral: boolean = false;
 
   constructor(
     private api: ApiService,
@@ -1823,5 +1827,14 @@ export class CandidatesDetailsComponent {
     this.currentPage = event.page + 1;
     this.maxLimitPerPageForResume = event.rows;
     this.getAvailableCreditss();
+  }
+
+  referAndEarn(){
+
+    console.log('keerthi is refer');
+
+    this.referral = !this.referral;
+
+      
   }
 }

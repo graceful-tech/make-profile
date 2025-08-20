@@ -19,6 +19,7 @@ import { LoaderComponent } from "./components/loader/loader.component";
 import { MobileLoaderComponent } from "./components/mobile-loader/mobile-loader.component";
 import { CandidateCommonDetailsComponent } from "./components/candidate-common-details/candidate-common-details.component";
 import { MobileCommonDetailsComponent } from "./components/mobile-common-details/mobile-common-details.component";
+import { ReferralComponent } from "./components/referral/referral.component";
 
    
  
@@ -35,7 +36,8 @@ import { MobileCommonDetailsComponent } from "./components/mobile-common-details
    LoaderComponent,
    MobileLoaderComponent,
    CandidateCommonDetailsComponent,
-   MobileCommonDetailsComponent
+   MobileCommonDetailsComponent,
+   ReferralComponent
   ],
   imports: [
     CommonModule,
@@ -69,7 +71,8 @@ import { MobileCommonDetailsComponent } from "./components/mobile-common-details
     LoaderComponent,
     MobileLoaderComponent,
     CandidateCommonDetailsComponent,
-    MobileCommonDetailsComponent
+    MobileCommonDetailsComponent,
+    ReferralComponent
   ]
 })
 export class SharedModule { }

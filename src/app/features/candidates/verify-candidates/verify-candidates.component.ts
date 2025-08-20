@@ -935,7 +935,7 @@ export class VerifyCandidatesComponent {
       ...this.candidates,
       templateName: this.resumeName,
     };
-    localStorage.setItem('resumeName', this.resumeName);
+    localStorage.setItem('templateName', this.resumeName);
 
     this.api.retrieve(route, payload).subscribe({
       next: (response: any) => {

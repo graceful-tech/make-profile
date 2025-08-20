@@ -1,0 +1,22 @@
+<div class="refer-popup">
+<div class="refer-content">
+  <h3>✨ Sharing is rewarding!</h3>
+  <!-- <p class="tagline"></p> -->
+   <br>
+  <p>
+    Use your <b>referral code</b> to invite friends.<br>
+    For every successful signup, <b>you earn extra credits</b>! 🚀
+  </p>
+</div>
+ 
+  <div class="referral-code">
+    <span>{{ referralCode }}</span>
+    <button class="copy-btn" (click)="copyReferralCode()">{{copyValue}}</button>
+  </div>
+
+   
+  <button class="whatsapp-btn" (click)="openWhatsApp()">
+    <img src="./assets/img/whatsappImage.jpg" alt="WhatsApp" class="whatsapp-logo">
+    Share on WhatsApp
+  </button>
+</div>

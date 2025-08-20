@@ -1,0 +1,38 @@
+
+<div class="wrapper">
+   <div class="profile-wrapper">
+
+    <div class="page-container">
+  <!-- Left Form -->
+  <div class="form-section">
+    <form>
+      <label>Full Name:</label>
+      <input type="text" [(ngModel)]="candidate.name" name="name" />
+
+      <label>Email:</label>
+      <input type="email" [(ngModel)]="candidate.email" name="email" />
+
+      <label>Phone:</label>
+      <input type="text" [(ngModel)]="candidate.phone" name="phone" />
+
+      <label>Objective:</label>
+      <textarea [(ngModel)]="candidate.objective" name="objective"></textarea>
+
+      <!-- Add other fields -->
+    </form>
+  </div>
+
+  <!-- Right Resume Preview -->
+  <div class="resume-wrapper">
+    <div class="resume-center">
+      <app-resume-preview [candidate]="candidate"></app-resume-preview>
+    </div>
+  </div>
+</div>
+
+
+
+   </div>
+
+</div>
+

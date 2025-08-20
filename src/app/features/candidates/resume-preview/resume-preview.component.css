@@ -1,0 +1,51 @@
+.container {
+  width: 100%;
+  max-height: 100%;      /* limit height to parent */
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  box-sizing: border-box;
+
+  /* Scale down if needed to fit container */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.blur {
+  color: gray;
+  opacity: 0.5;
+  filter: blur(1px);
+}
+
+/* Sections */
+.section {
+  margin-bottom: 6px;
+}
+
+
+
+.header { margin-bottom: 6px; }
+
+.contact-info { font-size: 8px; color: black; font-weight: bold; }
+
+h1 { margin: 0; font-size: 25px; }
+
+h2 { font-size: 8px; color: #003366; border-bottom: 1px solid #003366; margin-top: 8px; margin-bottom: 4px; }
+
+h3 { margin: 4px 0; font-size: 8px; }
+
+p, ul { margin: 3px 0; line-height: 1.5; }
+
+ul { padding-left: 15px; }
+
+ul li { margin: 2px 0; }
+
+.content-wrapper { display: table; width: 100%; }
+
+.left-column { display: table-cell; width: 65%; padding-right: 5mm; vertical-align: top; }
+
+.right-column { display: table-cell; width: 35%; padding-left: 5mm; vertical-align: top; }
+
+.section { margin-bottom: 6px; }
+
+.blur { color: gray; opacity: 0.5; filter: blur(1px); }

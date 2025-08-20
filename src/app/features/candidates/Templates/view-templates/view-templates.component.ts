@@ -125,7 +125,7 @@ export class ViewTemplatesComponent {
       ...this.candidates,
       resumeFormatName: resumeName,
     };
-    localStorage.setItem('resumeName', resumeName);
+    localStorage.setItem('templateName', resumeName);
 
     this.api.retrieve(route, payload).subscribe({
       next: (response) => {

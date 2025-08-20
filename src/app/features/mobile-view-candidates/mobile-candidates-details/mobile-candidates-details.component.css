@@ -8,7 +8,6 @@
 p-table {
   width: 100%;
   border-collapse: collapse;
-
 }
 
 p-table th,
@@ -32,28 +31,18 @@ p-table th {
   flex: 1;
 }
 
-
-/* .styled-text {
-  padding-left: 10px;
-  color: #178be9;
-} */
-
 .wrapper {
   margin-top: 1rem;
   padding: 0.5rem;
   display: flex;
   gap: 20px;
-  /* background: #fff; */
-}
+ }
 
 .wrapper1 {
   padding: 0.5rem;
   display: flex;
   gap: 20px;
-  /* flex-direction: column; */
-  /* position: relative; */
 }
-
 
 .profile {
   width: 150px;
@@ -69,7 +58,6 @@ p-table th {
 img {
   width: 100%;
 }
-
 
 .custom-btn:hover {
   background-color: #3716dc;
@@ -93,8 +81,6 @@ img {
 .p-inputtext {
   background-color: rgb(255, 255, 255) !important;
 }
-
-
 
 .bysection-heading {
   font-size: 1.1rem;
@@ -141,13 +127,11 @@ img {
   align-items: center;
   justify-content: space-around;
   /* padding: 10px 10px; */
-
 }
 
 .header-images {
   width: 100px;
   height: auto;
-
 }
 
 .input-wrapper {
@@ -193,7 +177,6 @@ img {
   pointer-events: none;
 }
 
-
 .input-wrapper:hover .hover-box {
   opacity: 1;
   transform: translateX(0);
@@ -207,7 +190,6 @@ img {
   position: relative;
   display: inline-block;
   margin-top: 20px;
-
 }
 
 .edit-icon {
@@ -292,11 +274,6 @@ img {
   justify-content: space-between;
 }
 
-
-
- 
-
-
 .header-middle {
   color: #000;
   padding-left: 2rem;
@@ -331,7 +308,6 @@ img {
   min-width: 150px;
 }
 
-
 .green {
   color: #0f9640;
   font-weight: 500;
@@ -348,7 +324,6 @@ img {
 }
 
 @media screen and (max-width: 768px) {
-
   .header-image {
     position: fixed;
     top: 0;
@@ -360,14 +335,11 @@ img {
     align-items: center;
     justify-content: space-between;
     /* padding: 10px 10px; */
-
   }
-
 
   .header-images {
     width: 100px;
     height: auto;
-
   }
 
   .right-align {
@@ -386,11 +358,9 @@ img {
     flex: none;
   }
 
-
   .right-section {
     max-width: 100%;
     flex: none;
-
   }
 
   .right-section {
@@ -406,7 +376,7 @@ img {
   .applied-jobs {
     display: flex;
     border-collapse: collapse;
-    width: 10%
+    width: 10%;
   }
 
   /* .styled-text {
@@ -421,16 +391,16 @@ img {
   }
 
   .custom-btn {
-  background-color: #366fe0;
-  color: white;
-  border: none;
-  padding: 6px 10px;
-  font-size: 11px;
-  border-radius: 8px;
-  cursor: pointer;
-  /* margin-right: 15px; */
-  font-style: italic;
-}
+    background-color: #366fe0;
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    font-size: 11px;
+    border-radius: 8px;
+    cursor: pointer;
+    /* margin-right: 15px; */
+    font-style: italic;
+  }
 
   .header-middle {
     color: #000;
@@ -462,8 +432,6 @@ img {
   display: flex;
   justify-content: center;
   align-items: center;
-
-  
 }
 
 .middle-text {
@@ -479,9 +447,7 @@ img {
   align-items: center;
   z-index: 10000;
   background: rgba(13, 13, 13, 0.427);
-
 }
-
 
 .custom-loader-container {
   text-align: center;
@@ -505,7 +471,6 @@ img {
   overflow: hidden;
   position: relative;
   padding-left: 20px;
-
 }
 
 @keyframes spin {
@@ -545,7 +510,6 @@ img {
 
 .resume-btn {
   background-color: #1f883d;
-  ;
   color: white;
   border: none;
   padding: 8px 10px;
@@ -572,7 +536,6 @@ ngx-ui-loader .ngx-ui-loader__fg {
   animation: colorChange 1s infinite;
 }
 
-
 @keyframes colorChange {
   0% {
     border-color: #ff0000;
@@ -595,7 +558,6 @@ ngx-ui-loader .ngx-ui-loader__fg {
   }
 }
 
-
 .profile-wrapper {
   margin-top: 50px;
 }
@@ -609,7 +571,7 @@ ngx-ui-loader .ngx-ui-loader__fg {
 .first-letter {
   width: 2.5rem;
   height: 2.5rem;
-  background: #EFF2F7;
+  background: #eff2f7;
   color: #fff;
   border-radius: 50%;
   margin-right: 0.8rem;
@@ -679,7 +641,7 @@ ngx-ui-loader .ngx-ui-loader__fg {
 }
 
 .menu-item:hover {
-  background: #3591dd; 
+  background: #3591dd;
   color: #fff;
   cursor: pointer;
 }
@@ -695,35 +657,34 @@ ngx-ui-loader .ngx-ui-loader__fg {
 
 .today-button {
   border: none;
-  background: #64748A;
+  background: #64748a;
   color: #fff;
   padding: 0.3rem 0.5rem;
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
   font-weight: 500;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   cursor: pointer;
 }
 
- 
- .credit {
+.credit {
   font-size: 14px;
   font-weight: bold;
-  color:  #7e7d7d;
+  color: #7e7d7d;
 }
 
 .no-border {
-    border: none !important;
+  border: none !important;
 }
 
 .applied-job {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .applied-job span {
-    margin-top: 3px;
-    margin-bottom: 3px;
+  margin-top: 3px;
+  margin-bottom: 3px;
 }
 
 .modify-btn {
@@ -738,14 +699,14 @@ ngx-ui-loader .ngx-ui-loader__fg {
   font-style: italic;
 }
 
-.suggest-style{
-  margin-top: 9px; 
+.suggest-style {
+  margin-top: 9px;
   display: flex;
   justify-content: left;
   color: #178be9;
 }
 
-.addButton{
+.addButton {
   background-color: #2679b9;
   color: white;
   border: none;
@@ -754,10 +715,9 @@ ngx-ui-loader .ngx-ui-loader__fg {
   border-radius: 8px;
   cursor: pointer;
   font-style: italic;
-
 }
 
-.applied-job-button{
+.applied-job-button {
   color: #007bff;
   text-decoration: underline;
   background: none;
@@ -767,7 +727,7 @@ ngx-ui-loader .ngx-ui-loader__fg {
   cursor: pointer;
   font: inherit;
   font-weight: bold;
-  font-size:15px;
+  font-size: 15px;
 }
 
 /* Full-screen overlay with blur */
@@ -785,7 +745,6 @@ ngx-ui-loader .ngx-ui-loader__fg {
   justify-content: center;
 }
 
- 
 .spinner-container {
   display: flex;
   flex-direction: column;
@@ -802,21 +761,19 @@ ngx-ui-loader .ngx-ui-loader__fg {
 .loading-text {
   font-size: 24px;
   font-weight: bold;
-  color: #0a0a0a;  
+  color: #0a0a0a;
   margin-top: 12px;
-  
 }
 
- 
 .dot {
-   font-size: 34px;
+  font-size: 34px;
   opacity: 0;
   animation: blink 1.5s infinite;
 }
 
 .dot1 {
   animation-delay: 0s;
- }
+}
 .dot2 {
   animation-delay: 0.2s;
 }
@@ -825,7 +782,9 @@ ngx-ui-loader .ngx-ui-loader__fg {
 }
 
 @keyframes blink {
-  0%, 80%, 100% {
+  0%,
+  80%,
+  100% {
     opacity: 0;
   }
   40% {
@@ -833,21 +792,18 @@ ngx-ui-loader .ngx-ui-loader__fg {
   }
 }
 
-.add-details{ 
+.add-details {
   text-decoration: underline;
   font-size: 1.4rem;
   font-weight: 500;
   padding-bottom: 0.5rem;
-   color: #178be9;
+  color: #178be9;
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 1rem;
   background-color: #d5d5d5;
 }
-
-
-
 
 .full-page-center {
   display: flex;
@@ -865,7 +821,7 @@ ngx-ui-loader .ngx-ui-loader__fg {
   text-align: center;
   max-width: 700px;
   width: 100%;
-  border: #000  1px solid;
+  border: #000 1px solid;
 }
 
 .upload-title {
@@ -890,7 +846,7 @@ ngx-ui-loader .ngx-ui-loader__fg {
 }
 
 .browse-btn {
-  background: linear-gradient(to right,#5577e6, #1043e9);
+  background: linear-gradient(to right, #5577e6, #1043e9);
   color: white;
   border: none;
   padding: 10px 20px;
@@ -918,7 +874,7 @@ ngx-ui-loader .ngx-ui-loader__fg {
 }
 
 .details-btn {
-  background: linear-gradient(to right,#e39258, #f86d0a);
+  background: linear-gradient(to right, #e39258, #f86d0a);
   color: white;
   border: none;
   padding: 10px 22px;
@@ -960,7 +916,7 @@ ngx-ui-loader .ngx-ui-loader__fg {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 }
 
 .slide-body {
@@ -983,9 +939,6 @@ ngx-ui-loader .ngx-ui-loader__fg {
   opacity: 0.6;
 }
 
-
-
-
 .view-btn {
   background-color: #2563eb;
   color: white;
@@ -1005,7 +958,7 @@ ngx-ui-loader .ngx-ui-loader__fg {
   height: 85%;
   background: #fff;
   border-radius: 12px;
-  box-shadow: 0 0 20px rgba(0,0,0,0.15);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
   animation: slideIn 0.4s ease;
   z-index: 1000;
   overflow: hidden;
@@ -1029,13 +982,8 @@ ngx-ui-loader .ngx-ui-loader__fg {
   margin-right: 6px;
 }
 
- 
-
- 
-
-
 .section-header {
-  background: linear-gradient(to right,#7f5af0, #5891b5);
+  background: linear-gradient(to right, #7f5af0, #5891b5);
   color: white;
   border-radius: 8px;
   padding: 3px 20px;
@@ -1071,8 +1019,8 @@ ngx-ui-loader .ngx-ui-loader__fg {
   margin: 0;
 }
 
-.create-button{
-  background: linear-gradient(to right,#b668eb, rgb(82, 55, 123));
+.create-button {
+  background: linear-gradient(to right, #b668eb, rgb(82, 55, 123));
   color: white;
   border: none;
   padding: 10px 80px;
@@ -1081,12 +1029,10 @@ ngx-ui-loader .ngx-ui-loader__fg {
   border-radius: 8px;
   cursor: pointer;
   transition: background 0.3s;
-
 }
 
-
 .update-btn {
-  background: linear-gradient(to right,#e39258, #f86d0a);
+  background: linear-gradient(to right, #e39258, #f86d0a);
   color: white;
   border: none;
   padding: 8px 5px;
@@ -1097,9 +1043,8 @@ ngx-ui-loader .ngx-ui-loader__fg {
   transition: background 0.3s;
 }
 
-
 .new-btn {
-  background: linear-gradient(to right,#6aa16b, #1b7337);
+  background: linear-gradient(to right, #6aa16b, #1b7337);
   color: white;
   border: none;
   padding: 8px 5px;
@@ -1117,3 +1062,5 @@ footer {
   color: #333;
   font-size: 0.9rem;
 }
+
+

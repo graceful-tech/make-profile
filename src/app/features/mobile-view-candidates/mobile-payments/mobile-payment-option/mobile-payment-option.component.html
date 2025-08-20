@@ -1,56 +1,69 @@
-
-
 <div class="overlay" *ngIf="isUploading">
   <div class="spinner-container">
-    <mat-spinner [diameter]="80" strokeWidth="5"   class="custom-blue" ></mat-spinner>
+    <mat-spinner
+      [diameter]="80"
+      strokeWidth="5"
+      class="custom-blue"
+    ></mat-spinner>
     <p class="loading-text">
-    Verifying Your Details <span class="dot dot1">.</span><span class="dot dot2">.</span><span class="dot dot3">.</span>
-</p>
+      Verifying Your Details <span class="dot dot1">.</span
+      ><span class="dot dot2">.</span><span class="dot dot3">.</span>
+    </p>
   </div>
 </div>
 
 <div class="header">
-    <button class="go-back-btn btn btn-outline-primary" (click)="goBack()">Back</button>
+  <button class="go-back-btn btn btn-outline-primary" (click)="goBack()">
+    Back
+  </button>
 
-    <button class="go-dashboard-btn btn btn-outline-primary d-flex align-items-center gap-2" (click)="goToCandidatepage()">
-        <img class="profile" src="assets/img/new-home.jpg" alt="Home" />
-        Home
-    </button>
+  <button
+    class="go-dashboard-btn btn btn-outline-primary d-flex align-items-center gap-2"
+    (click)="goToCandidatepage()"
+  >
+    <img class="profile" src="assets/img/new-home.jpg" alt="Home" />
+    Home
+  </button>
 </div>
 
- 
 <div class="main-container">
-    <div class="content-box text-center">
-        <h5 class="heading">Your resume has been successfully prepared..!</h5>
+  <div class="content-box text-center">
+    <h5 class="heading">Your resume has been successfully prepared..!</h5>
 
-        <div class="image my-3">
-            <img class="header-images img-fluid"  [src]="planetImagePath" alt="Resume Preview">
-        </div>
-
-        <div class="d-flex flex-column align-items-center">
-           
-            <div class="option" *ngIf="balanceCredits">
-                <span class="fw-bold text-dark">Use your credits <span class="hand">👉</span></span>
-                <a class="custom-link"  (click)="redeem()">Use Credit</a>
-            </div>
-
-   
-            <div class="text-center mt-2">
-                <span class="fw-bold text-dark">Balance credits:
-                    <span class="badge bg-secondary">{{balanceCredits}}</span>
-                </span>
-            </div>
-
-           
-            <div class="divider mt-3">
-                <span class="or-text">OR</span>
-            </div>
-
-            <!-- Pay Option -->
-            <div class="rupees mt-2">
-                <span class="fw-bold text-dark">Pay ₹10 <span class="hand">👉</span></span>
-                <a class="custom-link" (click)="payRupees()">Pay Now</a>
-            </div>
-        </div>
+    <div class="image my-3">
+      <img
+        class="header-images img-fluid"
+        [src]="planetImagePath"
+        alt="Resume Preview"
+      />
     </div>
+
+    <div class="d-flex flex-column align-items-center">
+      <div class="option" *ngIf="balanceCredits">
+        <span class="fw-bold text-dark"
+          >Use your credits <span class="hand">👉</span></span
+        >
+        <a class="custom-link" (click)="redeem()">Use Credit</a>
+      </div>
+
+      <div class="text-center mt-2">
+        <span class="fw-bold text-dark"
+          >Balance credits:
+          <span class="badge bg-secondary">{{ balanceCredits }}</span>
+        </span>
+      </div>
+
+      <div class="divider mt-3">
+        <span class="or-text">OR</span>
+      </div>
+
+      <!-- Pay Option -->
+      <div class="rupees mt-2">
+        <span class="fw-bold text-dark"
+          >Pay ₹10 <span class="hand">👉</span></span
+        >
+        <a class="custom-link" (click)="payRupees()">Pay Now</a>
+      </div>
+    </div>
+  </div>
 </div>

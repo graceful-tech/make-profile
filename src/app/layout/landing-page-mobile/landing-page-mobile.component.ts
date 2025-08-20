@@ -9,54 +9,53 @@ import { GlobalService } from 'src/app/services/global.service';
   selector: 'app-landing-page-mobile',
   standalone: false,
   templateUrl: './landing-page-mobile.component.html',
-  styleUrl: './landing-page-mobile.component.css'
+  styleUrl: './landing-page-mobile.component.css',
 })
 export class LandingPageMobileComponent {
-   @ViewChild('logoContainer') logoContainer!: ElementRef;
+  @ViewChild('logoContainer') logoContainer!: ElementRef;
 
+  constructor(
+    private fb: FormBuilder,
+    private api: ApiService,
+    private gs: GlobalService,
+    private router: Router,
+    private dialog: DialogService,
+    private route: ActivatedRoute
+  ) {}
 
+  ngOnInit() {}
 
-  constructor(private fb: FormBuilder, private api: ApiService, private gs: GlobalService, private router: Router,
-    private dialog: DialogService, private route: ActivatedRoute,) { }
-
-  ngOnInit() { }
-
-    ngAfterViewInit() {
-    this.onWindowScroll();  
+  ngAfterViewInit() {
+    this.onWindowScroll();
   }
 
   candidate() {
-    this.router.navigate(['/candidates'],
-      { relativeTo: this.route });
+    this.router.navigate(['/candidates'], { relativeTo: this.route });
   }
 
-  toLogin(){
-     this.router.navigate(['/mob-login']);
+  toLogin() {
+    this.router.navigate(['/mob-login']);
   }
 
-  
-    @HostListener('window:scroll', [])
-    onWindowScroll() {
-      const scrollTop = window.scrollY;
-      const maxShiftPx = 400;  
-  
-      const currentShift = Math.min(scrollTop, maxShiftPx);
-      const shiftPercent = (currentShift / maxShiftPx) * 500;  
-  
-      const logoEl = this.logoContainer.nativeElement;
-  
-      console.log('currentShift'+currentShift,);
-      console.log('scrollTop'+scrollTop,);
-  
-  
-      if (scrollTop >= 100) {
-        logoEl.style.left = '-60px';
-        logoEl.style.transform = 'translateX(0%) scale(0.5)';
-      } else {
-        logoEl.style.left = '20%';
-        logoEl.style.transform = `translateX(-${shiftPercent}%) scale(1)`;
-      }
+  @HostListener('window:scroll', [])
+  onWindowScroll() {
+    const scrollTop = window.scrollY;
+    const maxShiftPx = 400;
+
+    const currentShift = Math.min(scrollTop, maxShiftPx);
+    const shiftPercent = (currentShift / maxShiftPx) * 500;
+
+    const logoEl = this.logoContainer.nativeElement;
+
+    console.log('currentShift' + currentShift);
+    console.log('scrollTop' + scrollTop);
+
+    if (scrollTop >= 100) {
+      logoEl.style.left = '-60px';
+      logoEl.style.transform = 'translateX(0%) scale(0.5)';
+    } else {
+      logoEl.style.left = '20%';
+      logoEl.style.transform = `translateX(-${shiftPercent}%) scale(1)`;
     }
-  
-
+  }
 }

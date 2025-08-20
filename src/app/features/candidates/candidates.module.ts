@@ -16,6 +16,8 @@ import { ResumeCreatingComponent } from './resume-creating/resume-creating.compo
 import { NickNameComponent } from './nick-name/nick-name.component';
 import { ChooseTemplateWayComponent } from './choose-template-way/choose-template-way.component';
 import { ExistingResumeComponent } from './existing-resume/existing-resume.component';
+import { ResumeAnimationComponent } from './resume-animation/resume-animation.component';
+import { ResumePreviewComponent } from './resume-preview/resume-preview.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +35,8 @@ import { ExistingResumeComponent } from './existing-resume/existing-resume.compo
     NickNameComponent,
     ChooseTemplateWayComponent,
     ExistingResumeComponent,
+    ResumeAnimationComponent,
+    ResumePreviewComponent
   ],
   imports: [CommonModule, CandidatesRoutingModule, SharedModule],
 })
