@@ -108,7 +108,12 @@ export class CandidatesDetailsComponent {
     private ngxLoader: NgxUiLoaderService,
     private ps: PaymentService,
     private loader: LoaderService
-  ) {}
+  ) {
+
+    localStorage.removeItem('nickName');
+    localStorage.removeItem('templateName');
+
+  }
 
   ngOnInit() {
     if (
