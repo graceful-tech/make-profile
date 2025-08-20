@@ -2,7 +2,7 @@ declare var google: any;
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Lookup } from 'src/app/models/master/lookup.model';
 import { ApiService } from 'src/app/services/api.service';
 import { GlobalService } from 'src/app/services/global.service';
@@ -25,16 +25,28 @@ export class CreateAccountComponent {
   states: Array<Lookup> = [];
   cities: Array<Lookup> = [];
   error!: string;
+  isReference = false;
 
   constructor(private fb: FormBuilder,
     private api: ApiService,
     private gs: GlobalService,
     private deviceDetectorService: DeviceDetectorService,
-    private router: Router) { }
+    private router: Router,
+    private route: ActivatedRoute) { }
 
 
   ngOnInit() {
     this.createRegisterForm();
+    const hash = window.location.hash;
+    const queryString = hash.includes('?') ? hash.split('?')[1] : '';
+    const params = new URLSearchParams(queryString);
+    const referenceCode = params.get('reference');
+
+    if (referenceCode) {
+      console.log(referenceCode)
+      this.createAccountForm.get('reference')?.setValue(referenceCode);
+      this.isReference = true;
+    }
     // this.getCountries();
   }
 
@@ -46,6 +58,7 @@ export class CreateAccountComponent {
       mobileNumber: ['', Validators.required],
       userName: ['', Validators.required],
       password: ['', Validators.required],
+      reference: [{ value: '', disabled: false }]
     })
   }
 
