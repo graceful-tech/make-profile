@@ -34,7 +34,7 @@ import { ReferralComponent } from 'src/app/shared/components/referral/referral.c
   styleUrl: './candidates-details.component.css',
 })
 export class CandidatesDetailsComponent {
-@ViewChild(ReferralComponent) referralComponent!: ReferralComponent;
+  @ViewChild(ReferralComponent) referralComponent!: ReferralComponent;
 
   yourResume: Array<any> = [];
   candidateForm!: FormGroup;
@@ -94,11 +94,13 @@ export class CandidatesDetailsComponent {
   showCandidates: boolean = false;
   checkedScore: any;
   referral: boolean = false;
+  refer: boolean = false;
+  referralService: boolean = false;
 
   constructor(
     private api: ApiService,
     private fb: FormBuilder,
-    private gs: GlobalService,
+    public gs: GlobalService,
     private datePipe: DatePipe,
     private dialog: DialogService,
     private route: ActivatedRoute,
@@ -109,17 +111,12 @@ export class CandidatesDetailsComponent {
     private ps: PaymentService,
     private loader: LoaderService
   ) {
-
+   
     localStorage.removeItem('nickName');
     localStorage.removeItem('templateName');
 
-  }
-
-  ngOnInit() {
-    if (
-      sessionStorage.getItem('userId') == null ||
-      sessionStorage.getItem('userId') == 'undefined'
-    ) {
+     if (sessionStorage.getItem('userId') === null ||sessionStorage.getItem('userId') === 'undefined') {
+     
       this.route.queryParams.subscribe((params) => {
         const token = params['token'];
         const username = params['username'];
@@ -132,6 +129,15 @@ export class CandidatesDetailsComponent {
         sessionStorage.setItem('userId', id);
       });
     }
+
+     this.gs.referral.subscribe((refer)=>{
+        this.referralService = refer
+    })
+
+  }
+
+  ngOnInit() {
+
     this.getUserById();
     this.createCandidateForm();
     this.createRequirementForm();
@@ -146,6 +152,7 @@ export class CandidatesDetailsComponent {
     this.toggleAccountMenu();
     this.createAdditionalDetailsForm();
     this.getStateNames();
+ 
   }
 
   ngAfterViewInit() {}
@@ -463,8 +470,7 @@ export class CandidatesDetailsComponent {
           this.dataLoaded = true;
           this.gs.showMessage('Error', 'Error in Creating Creating');
 
-          console.log(error);
-        },
+         },
       });
       this.dataLoaded = true;
     } else {
@@ -518,8 +524,7 @@ export class CandidatesDetailsComponent {
     );
     if (confirmDelete && this.experienceControls.length > 1) {
       const removedExperience = this.experienceControls.at(index).value;
-      console.log('Removed Experience:', removedExperience);
-      if (removedExperience.id) {
+       if (removedExperience.id) {
         removedExperience.isDeleted = true;
         this.experienceDeletedArray.push(removedExperience);
         this.experienceControls.removeAt(index);
@@ -1307,7 +1312,7 @@ export class CandidatesDetailsComponent {
     };
     this.api.create(route, payload).subscribe({
       next: (response) => {
-        if (response) {
+        if (response?.results.length > 0) {
           this.availableCredits = response?.results as any;
           this.totalCreditsAvailable = this.availableCredits.reduce(
             (sum: any, credit: { creditAvailable: any }) =>
@@ -1317,6 +1322,10 @@ export class CandidatesDetailsComponent {
           if (response?.totalRecords > 0) {
             this.toggleSection('resume');
           }
+
+           this.refer = true;
+
+           localStorage.setItem('referralAmount','paid');
         }
         this.totalRecords = response?.totalRecords;
       },
@@ -1357,8 +1366,7 @@ export class CandidatesDetailsComponent {
           this.getCandidateImage(candidate?.id);
           this.getAdditionaDetails(candidate?.mobileNumber);
 
-          console.log(this.candidates);
-        }
+         }
         // this.ngxLoaderStop();
       },
       error: (err) => {
@@ -1834,12 +1842,8 @@ export class CandidatesDetailsComponent {
     this.getAvailableCreditss();
   }
 
-  referAndEarn(){
-
-    console.log('keerthi is refer');
-
+  referAndEarn() {
+ 
     this.referral = !this.referral;
-
-      
   }
 }

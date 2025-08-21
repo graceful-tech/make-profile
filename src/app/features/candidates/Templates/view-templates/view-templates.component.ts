@@ -48,6 +48,9 @@ export class ViewTemplatesComponent {
   candidatesArray: any;
   candidatesUpdateData: any;
 
+  backgroundStyle: string = 'linear-gradient(to bottom, #fff, #63c8ea)';
+  private gradientIndex = 0;
+
   constructor(
     private api: ApiService,
     private fb: FormBuilder,
@@ -96,6 +99,9 @@ export class ViewTemplatesComponent {
   }
 
   prevResume() {
+
+    this.changeBackground();
+
     if (this.currentIndex > 0) {
       this.currentIndex--;
     } else {
@@ -108,6 +114,9 @@ export class ViewTemplatesComponent {
    }
 
   nextResume() {
+
+    this.changeBackground();
+
     if (this.currentIndex < this.resumePaths.length - 1) {
       this.currentIndex++;
     } else {
@@ -197,4 +206,20 @@ export class ViewTemplatesComponent {
       },
     });
   }
+
+  private gradients: string[] = [
+  'linear-gradient(to bottom, #fff, #63c8ea)',         
+  'linear-gradient(to bottom, #ffecd2, #fcb69f)',        
+  'linear-gradient(to bottom, #a1c4fd, #c2e9fb)',       
+  'linear-gradient(to bottom, #fbc2eb, #a6c1ee)',       
+  'linear-gradient(to bottom, #fddb92, #d1fdff)',       
+  'linear-gradient(to bottom, #84fab0, #8fd3f4)',        
+  'linear-gradient(to bottom, #ff9a9e, #fad0c4)'       
+];
+
+
+changeBackground() {
+  this.backgroundStyle = this.gradients[this.gradientIndex];
+  this.gradientIndex = (this.gradientIndex + 1) % this.gradients.length;
+}
 }

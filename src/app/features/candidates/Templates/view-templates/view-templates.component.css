@@ -104,7 +104,8 @@
 }
 
 .profile-wrapper {
-  background: linear-gradient(to bottom, #fff, #63c8ea);
+  /* background: linear-gradient(to bottom, #fff, #63c8ea); */
+   transition: background 0.8s ease-in-out;
 }
 
 .resume-name {

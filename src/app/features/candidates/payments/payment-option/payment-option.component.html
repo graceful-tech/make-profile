@@ -47,10 +47,20 @@
                 <span class="or-text">OR</span>
             </div>
  
-            <div class="d-flex justify-content-center align-items-center">
-                <span class="fw-bold text-dark">Pay $10 Rupees <span class="hand">👉</span></span>
-                <a class="custom-link" (click)="payRupees()">Pay Now</a>
-            </div>
+            <ng-container *ngIf="showHtml; else another">
+                    <div class="d-flex justify-content-center align-items-center">
+                        <span class="fw-bold text-dark">Pay $10 Rupees <span class="hand">👉</span></span>
+                        <a class="custom-link" (click)="payRupees()">Pay Now</a>
+                    </div>
+           </ng-container>
+            <ng-template #another>
+                     <div class="d-flex justify-content-center align-items-center">
+                        <span class="fw-bold text-dark">Pay $10 Rupees <span class="hand">👉</span></span>
+                        <a class="custom-link" (click)="payReferralRupees()">Pay Now</a>
+                    </div>
+            </ng-template>
         </div>
     </div>
 </div>
+
+ 

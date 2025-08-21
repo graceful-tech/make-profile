@@ -50,7 +50,7 @@
     </div>
 
     <div class="wrapper1">
-      <div class="refer-credit">
+      <div class="refer-credit" *ngIf="referralService || refer ">
        <button class="refer-btn" (click)="referAndEarn()">
             Refer & Earn
           </button>
@@ -71,7 +71,7 @@
             </div>
           </div>
           <span class="flex flex-column align-items-start mr-2">
-            <span class="font-size: 12px;" style="padding-bottom: 1px">
+            <span class="font-size: 12px;" style="padding-bottom: 1px" >
               {{ user.userName }}
             </span>
             <span style="font-size: 12px">Standard User</span>

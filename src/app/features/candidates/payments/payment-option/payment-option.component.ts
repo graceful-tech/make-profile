@@ -15,6 +15,7 @@ import { GlobalService } from 'src/app/services/global.service';
 
 import { PaymentService } from 'src/app/services/payment.service';
 import { ResumeCreatingComponent } from '../../resume-creating/resume-creating.component';
+import { PopupService } from 'src/app/services/popup.service';
 
 @Component({
   selector: 'app-payment-option',
@@ -23,6 +24,8 @@ import { ResumeCreatingComponent } from '../../resume-creating/resume-creating.c
   styleUrl: './payment-option.component.css',
 })
 export class PaymentOptionComponent {
+  receivedMessage: any;
+
   balanceCredits: number = 0;
   candidateId: any;
   credits: any;
@@ -35,6 +38,8 @@ export class PaymentOptionComponent {
   availableCredits: any;
   generating: boolean = false;
   nickName: any;
+  showSuccessPopup: boolean = false;
+  showHtml: boolean = false;
 
   constructor(
     private api: ApiService,
@@ -48,16 +53,22 @@ export class PaymentOptionComponent {
     public ref: DynamicDialogRef,
     private config: DynamicDialogConfig,
     private ps: PaymentService,
-    private ngxLoader: NgxUiLoaderService
+    private ngxLoader: NgxUiLoaderService,
+    private popup: PopupService
   ) {
     this.candidates = this.config.data?.candidates;
     this.candidateId = this.config.data?.candidateId;
     this.templateName = this.config.data?.resumeName;
     this.nickName = this.config.data?.nickName;
 
-    const userId = sessionStorage.getItem('userId');
+    this.userId  = sessionStorage.getItem('userId');
 
-    this.userId = userId;
+   const referral = localStorage.getItem('referralAmount');
+
+   if(referral !== null && referral !== undefined){
+     this.showHtml = true;
+   }
+    
   }
 
   ngOnInit() {
@@ -70,7 +81,7 @@ export class PaymentOptionComponent {
 
     const amountNum = Number(confirmedAmount);
 
-    if (!isNaN(amountNum) && Number.isInteger(amountNum) && amountNum >= 10) {
+   if (!isNaN(amountNum) && Number.isInteger(amountNum) && amountNum >= 10) {
       const amount = amountNum * 100;
       const paymentType = 'Resume';
 
@@ -79,9 +90,6 @@ export class PaymentOptionComponent {
           this.redeem();
         }, 2000);
       });
-
-      // this.ps.payWithRazorPay(amount, this.templateName);
-
       this.ps.payWithRazorNewPay(amount, this.templateName, this.nickName);
     } else {
       alert('Please enter a valid amount ₹10 or more.');
@@ -126,10 +134,9 @@ export class PaymentOptionComponent {
     this.api.retrieve(route, payload).subscribe({
       next: (response) => {
         this.credits = response as any;
-
         if (this.credits) {
           this.ngxLoaderStop();
-          //this.createResume();
+
           this.goToOpenAi();
         } else {
           this.gs.showMessage('error', 'You dont have credits');
@@ -273,5 +280,35 @@ export class PaymentOptionComponent {
         this.gs.showMessage('error', error.error?.message);
       },
     });
+  }
+
+  receiveMessage(status: boolean) {
+    this.showSuccessPopup = false;
+  }
+
+  async payReferralRupees() {
+    const confirmedAmount = prompt('Enter final amount in ₹', '10');
+
+    const amountNum = Number(confirmedAmount);
+
+    if (!isNaN(amountNum) && Number.isInteger(amountNum) && amountNum >= 10) {
+      const amount = amountNum * 100;
+      const paymentType = 'Resume';
+
+      this.ps.initRazorPays(async () => {
+        setTimeout(() => {
+          this.popup.open({
+            candidate: this.candidates,
+            template: this.templateName,
+            nickNames: this.nickName,
+          });
+          this.ref.close();
+        }, 1000);
+      });
+
+      this.ps.payWithRazorNewPay(amount, this.templateName, this.nickName);
+    } else {
+      alert('Please enter a valid amount ₹10 or more.');
+    }
   }
 }

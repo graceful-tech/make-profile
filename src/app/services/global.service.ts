@@ -52,6 +52,9 @@ export class GlobalService {
   private nickName = new BehaviorSubject(null);
   public nickName$ = this.nickName.asObservable();
 
+  public referral = new BehaviorSubject<boolean>(false);
+  public referral$ = this.referral.asObservable();
+
 
 
   todayEvents: Array<any> = [];
@@ -125,6 +128,11 @@ export class GlobalService {
    public setNickName(data: any) {
     this.nickName.next(data);
   }
+
+  public setReferral(data: any) {
+    this.referral.next(data);
+  }
+
 
   showMessage(status: string, message: string) {
     this.dialog.open(MessageComponent, {

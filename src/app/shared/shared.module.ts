@@ -20,6 +20,7 @@ import { MobileLoaderComponent } from "./components/mobile-loader/mobile-loader.
 import { CandidateCommonDetailsComponent } from "./components/candidate-common-details/candidate-common-details.component";
 import { MobileCommonDetailsComponent } from "./components/mobile-common-details/mobile-common-details.component";
 import { ReferralComponent } from "./components/referral/referral.component";
+import { RewardsSuccessMessageComponent } from "./components/rewards-success-message/rewards-success-message.component";
 
    
  
@@ -37,7 +38,8 @@ import { ReferralComponent } from "./components/referral/referral.component";
    MobileLoaderComponent,
    CandidateCommonDetailsComponent,
    MobileCommonDetailsComponent,
-   ReferralComponent
+   ReferralComponent,
+   RewardsSuccessMessageComponent
   ],
   imports: [
     CommonModule,
@@ -72,7 +74,8 @@ import { ReferralComponent } from "./components/referral/referral.component";
     MobileLoaderComponent,
     CandidateCommonDetailsComponent,
     MobileCommonDetailsComponent,
-    ReferralComponent
+    ReferralComponent,
+    RewardsSuccessMessageComponent
   ]
 })
 export class SharedModule { }

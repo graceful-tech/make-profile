@@ -5,6 +5,7 @@ import { CreateCandidatesComponent } from './create-candidates/create-candidates
 import { CandidatesDetailsComponent } from './candidates-details/candidates-details.component';
 import { ViewTemplatesComponent } from './Templates/view-templates/view-templates.component';
 import { ResumeAnimationComponent } from './resume-animation/resume-animation.component';
+import { RewardsSuccessMessageComponent } from 'src/app/shared/components/rewards-success-message/rewards-success-message.component';
 
 const routes: Routes = [
   { path: '', component: CandidatesDetailsComponent },
@@ -15,7 +16,9 @@ const routes: Routes = [
 
   { path: 'template', component: ViewTemplatesComponent },
 
-  {path:'animation',component:ResumeAnimationComponent}
+  { path: 'animation', component: ResumeAnimationComponent },
+
+  { path: 'reward-success', component: RewardsSuccessMessageComponent },
 ];
 
 @NgModule({

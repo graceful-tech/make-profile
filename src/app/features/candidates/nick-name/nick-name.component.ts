@@ -43,6 +43,7 @@ export class NickNameComponent {
     }
 
   ngOnInit() {
+    localStorage.removeItem('nickName');
      this.getNickNames();
     }
 
@@ -51,7 +52,8 @@ export class NickNameComponent {
        this.showError = false;
      
       if(!this.nickNames.includes(this.nickName.trim())){
-       this.createResume();
+         localStorage.setItem('nickName',this.nickName)
+        this.createResume();
       }
       else{
         this.gs.showMessage('error','Nick name already exist');
