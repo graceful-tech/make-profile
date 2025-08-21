@@ -11,10 +11,9 @@ import { DeviceDetectorService } from 'ngx-device-detector';
   selector: 'app-mobile-create-account',
   standalone: false,
   templateUrl: './mobile-create-account.component.html',
-  styleUrl: './mobile-create-account.component.css'
+  styleUrl: './mobile-create-account.component.css',
 })
 export class MobileCreateAccountComponent {
-
   createAccountForm!: FormGroup;
   showError = false;
   loadingFlag: boolean = false;
@@ -22,15 +21,27 @@ export class MobileCreateAccountComponent {
   states: Array<Lookup> = [];
   cities: Array<Lookup> = [];
   error!: string;
-
-  constructor(private fb: FormBuilder,
+  isReference = false;
+  constructor(
+    private fb: FormBuilder,
     private api: ApiService,
     private gs: GlobalService,
     private deviceDetectorService: DeviceDetectorService,
-    private router: Router) { }
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.createRegisterForm();
+    const hash = window.location.hash;
+    const queryString = hash.includes('?') ? hash.split('?')[1] : '';
+    const params = new URLSearchParams(queryString);
+    const referenceCode = params.get('reference');
+
+    if (referenceCode) {
+      console.log(referenceCode);
+      this.createAccountForm.get('reference')?.setValue(referenceCode);
+      this.isReference = true;
+    }
     // this.getCountries();
   }
 
@@ -41,7 +52,8 @@ export class MobileCreateAccountComponent {
       mobileNumber: ['', Validators.required],
       userName: ['', Validators.required],
       password: ['', Validators.required],
-    })
+      reference: [''],
+    });
   }
 
   goBack() {
@@ -52,8 +64,22 @@ export class MobileCreateAccountComponent {
     const restUrl = environment.restUrl;
     const isMobile = this.deviceDetectorService.isMobile();
     const baseUrl = window.location.origin;
-    const redirectUri = isMobile ? `${baseUrl}/#/mob-candidate` : `${baseUrl}/#/candidate`;
+    const redirectUri = isMobile
+      ? `${baseUrl}/#/mob-candidate`
+      : `${baseUrl}/#/candidate`;
+
     document.cookie = `redirect_uri=${encodeURIComponent(redirectUri)}; path=/`;
+
+    const hash = window.location.hash; // "#/mob-login/mob-create?reference=mycoupen"
+    const queryString = hash.split('?')[1]; // "reference=mycoupen"
+    if (queryString) {
+      const params = new URLSearchParams(queryString);
+      const reference = params.get('reference');
+      if (reference) {
+        document.cookie = `reference=${encodeURIComponent(reference)}; path=/`;
+      }
+    }
+
     const url = `${restUrl}/oauth2/authorization/google`;
     window.location.href = url;
   }
@@ -65,21 +91,20 @@ export class MobileCreateAccountComponent {
       const postData = this.createAccountForm.value;
 
       this.api.retrieve(route, postData).subscribe({
-        next: response => {
+        next: (response) => {
           this.loadingFlag = false;
           const customer = response as any;
-          window.alert('Your Account Created SuccessFully')
+          window.alert('Your Account Created SuccessFully');
           this.router.navigate(['/mob-login']);
           console.log(customer);
         },
         error: (error) => {
           this.error = error.error?.message;
           this.loadingFlag = false;
-        }
-      })
+        },
+      });
     } else {
       this.showError = true;
     }
   }
-
 }

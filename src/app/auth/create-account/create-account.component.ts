@@ -1,7 +1,13 @@
 declare var google: any;
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Lookup } from 'src/app/models/master/lookup.model';
 import { ApiService } from 'src/app/services/api.service';
@@ -9,15 +15,13 @@ import { GlobalService } from 'src/app/services/global.service';
 import { environment } from 'src/environments/environment';
 import { DeviceDetectorService } from 'ngx-device-detector';
 
-
 @Component({
   selector: 'app-create-account',
   standalone: false,
   templateUrl: './create-account.component.html',
-  styleUrl: './create-account.component.css'
+  styleUrl: './create-account.component.css',
 })
 export class CreateAccountComponent {
-
   createAccountForm!: FormGroup;
   showError = false;
   loadingFlag: boolean = false;
@@ -27,13 +31,14 @@ export class CreateAccountComponent {
   error!: string;
   isReference = false;
 
-  constructor(private fb: FormBuilder,
+  constructor(
+    private fb: FormBuilder,
     private api: ApiService,
     private gs: GlobalService,
     private deviceDetectorService: DeviceDetectorService,
     private router: Router,
-    private route: ActivatedRoute) { }
-
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit() {
     this.createRegisterForm();
@@ -43,13 +48,12 @@ export class CreateAccountComponent {
     const referenceCode = params.get('reference');
 
     if (referenceCode) {
-      console.log(referenceCode)
+      console.log(referenceCode);
       this.createAccountForm.get('reference')?.setValue(referenceCode);
       this.isReference = true;
     }
     // this.getCountries();
   }
-
 
   createRegisterForm() {
     this.createAccountForm = this.fb.group({
@@ -58,8 +62,8 @@ export class CreateAccountComponent {
       mobileNumber: ['', Validators.required],
       userName: ['', Validators.required],
       password: ['', Validators.required],
-      reference: [{ value: '', disabled: false }]
-    })
+      reference: [''],
+    });
   }
 
   createAccount() {
@@ -69,7 +73,7 @@ export class CreateAccountComponent {
       const postData = this.createAccountForm.value;
 
       this.api.retrieve(route, postData).subscribe({
-        next: response => {
+        next: (response) => {
           this.loadingFlag = false;
           const customer = response as any;
           this.gs.openLogin('Success', 'Your Acoount Created Successfully');
@@ -78,8 +82,8 @@ export class CreateAccountComponent {
         error: (error) => {
           this.error = error.error?.message;
           this.loadingFlag = false;
-        }
-      })
+        },
+      });
     } else {
       this.showError = true;
     }
@@ -89,12 +93,23 @@ export class CreateAccountComponent {
     this.router.navigate(['/login']);
   }
 
-  onGoogleLogin() {
+  onGoogleSignup() {
     const restUrl = environment.restUrl;
     const isMobile = this.deviceDetectorService.isMobile();
     const baseUrl = window.location.origin;
-    const redirectUri = isMobile ? `${baseUrl}/#/mob-candidate` : `${baseUrl}/#/candidate`;
+    const redirectUri = isMobile
+      ? `${baseUrl}/#/mob-candidate`
+      : `${baseUrl}/#/candidate`;
     document.cookie = `redirect_uri=${encodeURIComponent(redirectUri)}; path=/`;
+    const hash = window.location.hash; // "#/mob-login/mob-create?reference=mycoupen"
+    const queryString = hash.split('?')[1]; // "reference=mycoupen"
+    if (queryString) {
+      const params = new URLSearchParams(queryString);
+      const reference = params.get('reference');
+      if (reference) {
+        document.cookie = `reference=${encodeURIComponent(reference)}; path=/`;
+      }
+    }
     const url = `${restUrl}/oauth2/authorization/google`;
     window.location.href = url;
   }
@@ -102,8 +117,4 @@ export class CreateAccountComponent {
   goBack() {
     this.router.navigate(['']);
   }
-
-
-
-
 }

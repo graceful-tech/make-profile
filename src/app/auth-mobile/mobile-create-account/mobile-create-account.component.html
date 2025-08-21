@@ -63,7 +63,12 @@
             <small class="error-message" *ngIf="createAccountForm.controls['password'].invalid && showError">
               Password is required</small>
           </div>
-  
+          <div class="col-12">
+              <label>Reference(Optional)</label>
+              <div class="input-wrapper">
+                <input type="text" [readOnly]="isReference" pInputText formControlName="reference">
+              </div>
+          </div>
           <div class="col-12 ">
             <p-button [label]="loadingFlag ? 'Please Wait..' : 'Create Account'"
                       [disabled]="loadingFlag" (onClick)="createAccount()">
