@@ -14,7 +14,7 @@
 }
 
 .profile-wrapper {
-  background: #e8e6e6;   
+  background: #ffffff;
   padding: 1.2rem 1.5rem;
   border-radius: 5px;
   box-shadow: 0 1px 2px 0 rgb(0 0 0 / 8%);
@@ -23,7 +23,7 @@
 }
 
 .preview-resume {
-  background: #fff;
+  background: #ffffff;
   padding: 1.2rem 1.5rem;
   border-radius: 5px;
   box-shadow: 0 1px 2px 0 rgb(0 0 0 / 8%);
@@ -243,3 +243,17 @@ img {
     text-align: center;
   }
 } */
+
+
+.additional-content{
+ background: linear-gradient(to right,#5e84c6, #c85f78);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;   
+  align-items: center;     
+  justify-content: center;  
+  padding: 10px 10px;
+  color: white;
+  border-radius: 10px;
+
+}

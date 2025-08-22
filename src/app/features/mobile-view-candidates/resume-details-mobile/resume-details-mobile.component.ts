@@ -147,7 +147,7 @@ export class ResumeDetailsMobileComponent {
         Validators.compose([Validators.required, Validators.minLength(10)]),
       ],
       email: ['', Validators.compose([Validators.required, Validators.email])],
-      gender: [''],
+      gender: ['',Validators.required],
       nationality: [''],
       languagesKnown: [''],
       fresher: [''],

@@ -147,7 +147,7 @@ export class MobileVerifyComponentComponent {
       name: ['', Validators.required],
       mobileNumber: ['',Validators.compose([Validators.required, Validators.minLength(10)]),],
       email: ['', Validators.compose([Validators.required, Validators.email])],
-      gender: [''],
+      gender: ['',Validators.required],
       nationality: [''],
       languagesKnown: [[]],
       fresher: [''],
@@ -436,8 +436,8 @@ export class MobileVerifyComponentComponent {
   createExperience(): FormGroup {
     return this.fb.group({
       id:[''],
-      companyName: ['', Validators.required],
-      role: ['', Validators.required],
+      companyName: [''],
+      role: [''],
       experienceYearStartDate: [''],
       experienceYearEndDate: [''],
       projects: this.fb.array([this.createProject()]),

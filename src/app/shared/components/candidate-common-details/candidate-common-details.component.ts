@@ -410,6 +410,7 @@ export class CandidateCommonDetailsComponent {
       else{
         this.loader.stop();
         this.showError = true;
+        this.gs.showMessage('Error','Enter mandatory fields');
       }
     }
   

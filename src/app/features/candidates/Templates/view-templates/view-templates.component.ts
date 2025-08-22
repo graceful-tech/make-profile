@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ApiService } from 'src/app/services/api.service';
 import { GlobalService } from 'src/app/services/global.service';
 import { ChooseTemplateComponent } from '../choose-template/choose-template.component';
@@ -57,8 +57,14 @@ export class ViewTemplatesComponent {
     private route: ActivatedRoute,
     private cdr: ChangeDetectorRef,
     private router: Router,
-    public ref: DynamicDialogRef
-  ) {}
+    public ref: DynamicDialogRef,
+    private config: DynamicDialogConfig
+    
+  ) {
+
+     this.candidates = this.config.data?.candidates;
+    this.candidateImageUrl = this.config.data?.candidateImage;
+  }
 
   ngOnInit() {
     localStorage.removeItem('resumeName');

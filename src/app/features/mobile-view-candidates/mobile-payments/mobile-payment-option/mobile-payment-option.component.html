@@ -67,3 +67,8 @@
     </div>
   </div>
 </div>
+
+<ng-container *ngIf="showRewards">
+   <app-mobile-rewards-success (valueSent)="receiveValue($event)"></app-mobile-rewards-success>
+</ng-container>
+

@@ -468,8 +468,8 @@ export class AddCandidatesComponent {
   createExperience(): FormGroup {
     return this.fb.group({
       id: [''],
-      companyName: ['', Validators.required],
-      role: ['', Validators.required],
+      companyName: [''],
+      role: [''],
       experienceYearStartDate: [''],
       experienceYearEndDate: [''],
       projects: this.fb.array([this.createProject()]),

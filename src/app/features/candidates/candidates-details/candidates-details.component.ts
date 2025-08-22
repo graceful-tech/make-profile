@@ -26,6 +26,7 @@ import { ChooseTemplateWayComponent } from '../choose-template-way/choose-templa
 import { LoaderService } from 'src/app/services/loader.service';
 import { CandidateCommonDetailsComponent } from 'src/app/shared/components/candidate-common-details/candidate-common-details.component';
 import { ReferralComponent } from 'src/app/shared/components/referral/referral.component';
+import { ViewTemplatesComponent } from '../Templates/view-templates/view-templates.component';
 
 @Component({
   selector: 'app-candidates-details',
@@ -1771,7 +1772,7 @@ export class CandidatesDetailsComponent {
   }
 
   chooseTemplate(candidate: any) {
-    const ref = this.dialog.open(ChooseTemplateComponent, {
+    const ref = this.dialog.open(ViewTemplatesComponent, {
       data: {
         candidates: candidate,
         candidateImage: this.candidateImageUrl,

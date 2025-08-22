@@ -1,46 +1,46 @@
-import { CommonModule } from "@angular/common";
-import { MakeProfileDividerComponent } from "./components/make-profile-divider/make-profile-divider.component";
-import { PrimengModule } from "../primeng/primeng.module";
-import { HttpClientModule } from "@angular/common/http";
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { NgxUiLoaderModule } from "ngx-ui-loader";
+import { CommonModule } from '@angular/common';
+import { MakeProfileDividerComponent } from './components/make-profile-divider/make-profile-divider.component';
+import { PrimengModule } from '../primeng/primeng.module';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgxUiLoaderModule } from 'ngx-ui-loader';
 import { ClipboardModule } from 'ngx-clipboard';
-import { NgModule } from "@angular/core";
-import { MessageComponent } from "./message/message.component";
-import { ClickedOutsideDirective } from "./directives/clicked-outside.directive";
-import { LoginPopupComponent } from "./popup/login-popup/login-popup.component";
-import { MatIconModule } from '@angular/material/icon'; 
+import { NgModule } from '@angular/core';
+import { MessageComponent } from './message/message.component';
+import { ClickedOutsideDirective } from './directives/clicked-outside.directive';
+import { LoginPopupComponent } from './popup/login-popup/login-popup.component';
+import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MobileMessageComponent } from "./mobile-message/mobile-message.component";
-import { CustomMessageComponent } from "./custom-message/custom-message.component";
-import { CustomMobileMessageComponent } from "./custom-mobile-message/custom-mobile-message.component";
+import { MobileMessageComponent } from './mobile-message/mobile-message.component';
+import { CustomMessageComponent } from './custom-message/custom-message.component';
+import { CustomMobileMessageComponent } from './custom-mobile-message/custom-mobile-message.component';
 import { MatDialogModule } from '@angular/material/dialog';
-import { LoaderComponent } from "./components/loader/loader.component";
-import { MobileLoaderComponent } from "./components/mobile-loader/mobile-loader.component";
-import { CandidateCommonDetailsComponent } from "./components/candidate-common-details/candidate-common-details.component";
-import { MobileCommonDetailsComponent } from "./components/mobile-common-details/mobile-common-details.component";
-import { ReferralComponent } from "./components/referral/referral.component";
-import { RewardsSuccessMessageComponent } from "./components/rewards-success-message/rewards-success-message.component";
+import { LoaderComponent } from './components/loader/loader.component';
+import { MobileLoaderComponent } from './components/mobile-loader/mobile-loader.component';
+import { CandidateCommonDetailsComponent } from './components/candidate-common-details/candidate-common-details.component';
+import { MobileCommonDetailsComponent } from './components/mobile-common-details/mobile-common-details.component';
+import { ReferralComponent } from './components/referral/referral.component';
+import { RewardsSuccessMessageComponent } from './components/rewards-success-message/rewards-success-message.component';
+import { MobileRewardsSuccessComponent } from './components/mobile-rewards-success/mobile-rewards-success.component';
 
-   
- 
- 
 @NgModule({
   declarations: [
-   MakeProfileDividerComponent,
-   ClickedOutsideDirective,
-   MessageComponent,
-   LoginPopupComponent,
-   MobileMessageComponent,
-   CustomMessageComponent,
-   CustomMobileMessageComponent,
-   LoaderComponent,
-   MobileLoaderComponent,
-   CandidateCommonDetailsComponent,
-   MobileCommonDetailsComponent,
-   ReferralComponent,
-   RewardsSuccessMessageComponent
-  ],
+    MakeProfileDividerComponent,
+    ClickedOutsideDirective,
+    MessageComponent,
+    LoginPopupComponent,
+    MobileMessageComponent,
+    CustomMessageComponent,
+    CustomMobileMessageComponent,
+    LoaderComponent,
+    MobileLoaderComponent,
+    CandidateCommonDetailsComponent,
+    MobileCommonDetailsComponent,
+    ReferralComponent,
+    RewardsSuccessMessageComponent,
+    MobileRewardsSuccessComponent
+    
+   ],
   imports: [
     CommonModule,
     PrimengModule,
@@ -51,7 +51,7 @@ import { RewardsSuccessMessageComponent } from "./components/rewards-success-mes
     MatIconModule,
     MatProgressSpinnerModule,
     MatDialogModule,
-    ],
+  ],
   exports: [
     CommonModule,
     FormsModule,
@@ -75,7 +75,8 @@ import { RewardsSuccessMessageComponent } from "./components/rewards-success-mes
     CandidateCommonDetailsComponent,
     MobileCommonDetailsComponent,
     ReferralComponent,
-    RewardsSuccessMessageComponent
-  ]
+    RewardsSuccessMessageComponent,
+    MobileRewardsSuccessComponent
+  ],
 })
-export class SharedModule { }
+export class SharedModule {}

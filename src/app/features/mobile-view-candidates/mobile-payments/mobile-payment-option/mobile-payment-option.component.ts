@@ -35,6 +35,7 @@ export class MobilePaymentOptionComponent {
   planetImagePath: any;
   userId: any;
   nickName: any;
+  showRewards:boolean = false;
 
   constructor(
     private api: ApiService,
@@ -83,7 +84,7 @@ export class MobilePaymentOptionComponent {
 
       this.ps.initRazorPays(() => {
         setTimeout(() => {
-          this.redeem();
+          this.showRewards = true;
         }, 2000);
       });
 
@@ -320,6 +321,43 @@ export class MobilePaymentOptionComponent {
       error: (error) => {
         this.ngxLoaderStop();
         this.gs.showMobileMessage('error', error.error?.message);
+      },
+    });
+  }
+
+   receiveValue(value:any) {
+    this.ngxLoaderStart();
+    const route = 'credits/redeem';
+
+    if (this.templateName === null || this.templateName === undefined) {
+      this.templateName = localStorage.getItem('templateName');
+    }
+
+    this.nickName = localStorage.getItem('nickName');
+    const userIds = sessionStorage.getItem('userId');
+
+    const payload = {
+      userId: userIds,
+      templateName: this.templateName,
+      nickName: this.nickName,
+    };
+    this.api.retrieve(route, payload).subscribe({
+      next: (response) => {
+        this.credits = response as any;
+        if (this.credits) {
+          this.ngxLoaderStop();
+
+          this.gs.setResumeName(this.templateName);
+          this.gs.setCandidateDetails(this.candidates);
+          this.router.navigate(['/mob-candidate/final-verify']);
+        } else {
+          this.ngxLoaderStop();
+          window.alert('Please pay to create the resume');
+        }
+        this.ngxLoaderStop();
+      },
+      error: (err) => {
+        this.ngxLoaderStop();
       },
     });
   }
