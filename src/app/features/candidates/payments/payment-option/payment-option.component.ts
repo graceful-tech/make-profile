@@ -72,7 +72,7 @@ export class PaymentOptionComponent {
   }
 
   ngOnInit() {
-    this.planetImagePath = './assets/img/' + this.templateName + '.png';
+    this.planetImagePath = './assets/img/' + this.templateName + '.jpg';
     this.getAvailableCredits(this.nickName, this.userId);
   }
 

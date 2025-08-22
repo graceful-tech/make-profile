@@ -43,15 +43,12 @@ export class ChooseTemplateComponent {
 
   // Array of Resume Paths
   resumePaths: { path: string; name: string; type: string }[] = [
-    { path: './assets/img/Mercury.png', name: 'Mercury', type: 'Single Page' },
+    { path: './assets/img/Mercury.jpg', name: 'Mercury', type: 'Single Page' },
     { path: './assets/img/Venus.jpg', name: 'Venus', type: 'Multiple Page' },
-    { path: './assets/img/Earth.png', name: 'Earth', type: 'Single Page' },
-    { path: './assets/img/Mars.png', name: 'Mars', type: 'Single Page' },
-    {
-      path: './assets/img/Jupiter.jpg',
-      name: 'Jupiter',
-      type: 'Multiple Page',
-    },
+    { path: './assets/img/Earth.jpg', name: 'Earth', type: 'Single Page' },
+    { path: './assets/img/Mars.jpg', name: 'Mars', type: 'Single Page' },
+    {path: './assets/img/Jupiter.jpg',name: 'Jupiter',type: 'Multiple Page'},
+    {path: './assets/img/Saturn.jpg',name: 'Saturn',type: 'Multiple Page'},
   ];
 
   currentIndex = 0;

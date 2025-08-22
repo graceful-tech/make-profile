@@ -67,7 +67,7 @@ export class MobilePaymentOptionComponent {
     if (this.templateName === null || this.templateName === undefined) {
       this.templateName = localStorage.getItem('templateName');
     }
-    this.planetImagePath = './assets/img/' + this.templateName + '.png';
+    this.planetImagePath = './assets/img/' + this.templateName + '.jpg';
     this.getCandidates();
     this.getAvailableCredits();
   }

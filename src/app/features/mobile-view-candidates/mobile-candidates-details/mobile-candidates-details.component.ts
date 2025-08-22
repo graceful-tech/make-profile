@@ -31,8 +31,6 @@ import { MobileLoaderService } from 'src/app/services/mobile.loader.service';
   styleUrl: './mobile-candidates-details.component.css',
 })
 export class MobileCandidatesDetailsComponent {
-  @ViewChild(MobileLoaderComponent)
-  mobileLoaderComponent!: MobileLoaderComponent;
 
   yourResume: Array<any> = [];
   candidateForm!: FormGroup;
@@ -227,7 +225,9 @@ export class MobileCandidatesDetailsComponent {
   }
 
   createCandidate() {
-    this.mobileLoaderComponent.startLoader();
+
+    this.loader.start();
+ 
 
     if (this.candidateForm.valid) {
       this.dataLoaded = false;
@@ -412,6 +412,7 @@ export class MobileCandidatesDetailsComponent {
 
       this.api.retrieve(route, payload).subscribe({
         next: (response) => {
+             this.loader.stop();
           this.candidateId = response?.id;
           this.dataLoaded = true;
           this.candidates = response as Candidate;
@@ -433,12 +434,12 @@ export class MobileCandidatesDetailsComponent {
             );
           }
 
-          this.mobileLoaderComponent.stopLoader();
+          this.loader.stop();
 
           window.alert('Created Successfully');
         },
         error: (error) => {
-          this.mobileLoaderComponent.stopLoader();
+          this.loader.stop();
           this.dataLoaded = true;
           window.alert('Error in Creating Resume');
 
@@ -447,7 +448,7 @@ export class MobileCandidatesDetailsComponent {
       });
       this.dataLoaded = true;
     } else {
-      this.mobileLoaderComponent.stopLoader();
+      this.loader.stop();
       this.showError = true;
       window.alert('Enter the mandatory details');
     }

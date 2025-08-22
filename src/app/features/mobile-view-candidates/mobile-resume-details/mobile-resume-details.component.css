@@ -2,11 +2,13 @@
   margin-top: 0rem;
   padding: 0.5rem;
   display: flex;
+   background: #ffffff;
+
   /* border: 2px solid rgb(190, 185, 185);
   border-radius: 6px; */
 }
 .profile-wrapper {
-  background: #e8e6e6;
+ background: #ffffff;
   padding: 1.2rem 1.5rem 1.5rem 1.5rem;
   border-radius: 5px;
   box-shadow: 0 1px 2px 0 rgb(0 0 0/8%);
