@@ -62,25 +62,15 @@
         </ng-container>
 
 
-      <div class="credit">Balance Credits : {{ totalCreditsAvailable }}</div>
-      <div class="account-wrapper" appClickedOutside (clickedOutside)="close()">
-        <span class="user-name flex flex-row">
-          <div class="first-letter">
-            <div class="first-letter-flex">
-              <span> {{ user ? user.userName.charAt(0) : "N" }}</span>
-            </div>
-          </div>
-          <span class="flex flex-column align-items-start mr-2">
-            <span class="font-size: 12px;" style="padding-bottom: 1px" >
-              {{ user.userName }}
-            </span>
-            <span style="font-size: 12px">Standard User</span>
-          </span>
-          <i class="pi pi-angle-down"></i>
-        </span>
+      <div class="credit">
+          <div style="font-size: 14px">  {{
+            user ? user.userName.length > 8 ? user.userName.substring(0, 8) + ".." : user.userName : "Name"
+          }}</div>
+        Balance Credits : {{ totalCreditsAvailable }}</div>
+     <div class="account-wrapper" appClickedOutside (clickedOutside)="close()">
+        <div class="hamburger-box">&#9776;</div>
         <ul class="account-menu scalein fadeout">
-          <!-- (click)="setPanel('ACCOUNT')" -->
-          <li class="menu-item mt-2" routerLink="/viewUser">
+          <li class="menu-item mt-2" routerLink="/view-mob-user">
             <a class="menu-link">
               <i class="pi pi-user menu-icon"></i>
               <span>My Account</span>
@@ -95,7 +85,7 @@
           </li>
         </ul>
       </div>
-      <div><p-button label="Logout" (onClick)="signOut()"></p-button></div>
+      <!-- <div><p-button label="Logout" (onClick)="signOut()"></p-button></div> -->
     </div>
   </div>
 </header>

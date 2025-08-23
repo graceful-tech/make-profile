@@ -456,78 +456,6 @@ img {
   border-top: 1px dashed #eee;
 }
 
-.account-menu {
-  position: absolute;
-  background: #fff;
-  padding: 0;
-  padding-left: 15px;
-  min-width: 220px;
-  left: 20px;
-  box-shadow: 0 1px 5px 0 rgb(0 0 0/8%);
-  border-radius: 5px;
-  margin-top: 7px;
-}
-
-.account-menu {
-  display: none;
-}
-
-.account-wrapper.show-account-menu .account-menu {
-  display: block;
-}
-
-.menu-link {
-  display: flex;
-  align-items: center;
-}
-
-.menu-item:hover {
-  background: #2196f3;
-  color: #fff;
-  cursor: pointer;
-}
-
-.menu-item:hover i {
-  color: #fff;
-}
-
-.today {
-  position: absolute;
-  right: 0;
-}
-
-.today-button {
-  border: none;
-  background: #64748a;
-  color: #fff;
-  padding: 0.3rem 0.5rem;
-  border-top-left-radius: 5px;
-  border-bottom-left-radius: 5px;
-  font-weight: 500;
-  font-family: "Roboto", sans-serif;
-  cursor: pointer;
-}
-
-.p-dropdown {
-  border-color: snow !important;
-}
-
-.credit {
-  display: inline-block;
-  padding: 8px 20px;
-  /* background-color: #2196F3; */
-  /* color: #333; */
-  /* border: 2px solid rgb(236, 232, 232); */
-  border-radius: 8px;
-  /* color: white; */
-  font-size: 14px;
-  font-weight: bold;
-  color: #7e7d7d;
-
-  /* font-family: Arial, sans-serif; */
-  /* box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1); */
-}
-
 .link-button {
   color: #007bff;
   text-decoration: underline;
@@ -938,4 +866,73 @@ footer {
   font-size: 14px;
   font-weight: bold;
   color: #7e7d7d;
+}
+
+.account-menu {
+  position: absolute;
+  background: #fff;
+  padding: 0;
+  min-width: 160px;
+  right: 0px;
+  box-shadow: 0 1px 5px 0 rgb(0 0 0/8%);
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+.account-menu {
+  display: none;
+}
+
+.account-wrapper.show-account-menu .account-menu {
+  display: block;
+}
+
+.menu-link {
+  display: flex;
+  align-items: center;
+}
+
+.menu-item:hover {
+  background: #2196f3;
+  color: #fff;
+  cursor: pointer;
+}
+
+.menu-item:hover i {
+  color: #fff;
+}
+
+.p-dropdown {
+  border-color: snow !important;
+}
+
+/* .credit {
+  display: inline-block;
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #7e7d7d;
+} */
+
+.credit {
+  font-size: 14px;
+  font-weight: bold;
+  color: #7e7d7d;
+  /* margin-top: 8px; */
+}
+
+.hamburger-box {
+  width: 40px;
+  height: 40px;
+  /* margin-top: 8px; */
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  cursor: pointer;
+  background-color: white;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
