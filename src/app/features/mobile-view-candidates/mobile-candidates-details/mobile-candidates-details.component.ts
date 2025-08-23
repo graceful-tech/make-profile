@@ -31,7 +31,6 @@ import { MobileLoaderService } from 'src/app/services/mobile.loader.service';
   styleUrl: './mobile-candidates-details.component.css',
 })
 export class MobileCandidatesDetailsComponent {
-
   yourResume: Array<any> = [];
   candidateForm!: FormGroup;
   genderList: Array<ValueSet> = [];
@@ -89,6 +88,8 @@ export class MobileCandidatesDetailsComponent {
   isEligibile: boolean = false;
   checkedScore: any;
   maxLimitPerPageForResume: number = 5;
+  refer: boolean = false;
+  referral: boolean = false;
 
   constructor(
     private api: ApiService,
@@ -225,9 +226,7 @@ export class MobileCandidatesDetailsComponent {
   }
 
   createCandidate() {
-
     this.loader.start();
- 
 
     if (this.candidateForm.valid) {
       this.dataLoaded = false;
@@ -412,7 +411,7 @@ export class MobileCandidatesDetailsComponent {
 
       this.api.retrieve(route, payload).subscribe({
         next: (response) => {
-             this.loader.stop();
+          this.loader.stop();
           this.candidateId = response?.id;
           this.dataLoaded = true;
           this.candidates = response as Candidate;
@@ -1231,7 +1230,7 @@ export class MobileCandidatesDetailsComponent {
     };
     this.api.create(route, payload).subscribe({
       next: (response) => {
-        if (response) {
+        if (response?.results.length > 0) {
           this.availableCredits = response?.results as any;
           this.totalCreditsAvailable = this.availableCredits.reduce(
             (sum: any, credit: { creditAvailable: any }) =>
@@ -1241,6 +1240,10 @@ export class MobileCandidatesDetailsComponent {
           if (response?.totalRecords > 0) {
             this.toggleSection('resume');
           }
+
+          this.refer = true;
+
+          localStorage.setItem('referralAmount','paid');
         }
         this.totalRecords = response?.totalRecords;
       },
@@ -1669,5 +1672,9 @@ export class MobileCandidatesDetailsComponent {
     this.currentPage = event.page + 1;
     this.maxLimitPerPageForResume = event.rows;
     this.getAvailableCreditss();
+  }
+
+   referAndEarn() {
+    this.referral = !this.referral;
   }
 }

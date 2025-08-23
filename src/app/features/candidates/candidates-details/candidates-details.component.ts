@@ -1326,7 +1326,7 @@ export class CandidatesDetailsComponent {
 
            this.refer = true;
 
-           localStorage.setItem('referralAmount','paid');
+          localStorage.setItem('referralAmount','paid');
         }
         this.totalRecords = response?.totalRecords;
       },

@@ -33,7 +33,7 @@
 }
 
 .ok-btn {
-  background: linear-gradient(135deg, #ff6f61, #ff4081);
+  background: linear-gradient(135deg, #616bff, #4073ff);
   color: #fff;
   font-size: 18px;
   font-weight: bold;
@@ -99,7 +99,7 @@
   border: 2px solid #e0e0ff;
   border-radius: 18px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-  padding: 35px;
+  padding: 50px 0 50px;
   max-width: 600px;
   width: 95%;
   text-align: center;

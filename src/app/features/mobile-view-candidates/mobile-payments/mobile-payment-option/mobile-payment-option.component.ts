@@ -36,6 +36,7 @@ export class MobilePaymentOptionComponent {
   userId: any;
   nickName: any;
   showRewards:boolean = false;
+  showHtml: boolean = false;
 
   constructor(
     private api: ApiService,
@@ -62,6 +63,14 @@ export class MobilePaymentOptionComponent {
     this.gs.candidateDetails$.subscribe((response) => {
       this.candidates = response;
     });
+
+    const referral = localStorage.getItem('referralAmount');
+
+    if(referral !== null && referral !== undefined){
+      this.showHtml = true;
+    }
+ 
+
   }
 
   ngOnInit() {
@@ -84,7 +93,7 @@ export class MobilePaymentOptionComponent {
 
       this.ps.initRazorPays(() => {
         setTimeout(() => {
-          this.showRewards = true;
+          this.redeem();
         }, 2000);
       });
 
@@ -360,5 +369,29 @@ export class MobilePaymentOptionComponent {
         this.ngxLoaderStop();
       },
     });
+  }
+
+  async payRupeesRewards() {
+    const confirmedAmount = prompt('Enter final amount in ₹', '10');
+
+    const amountNum = Number(confirmedAmount);
+
+    if (!isNaN(amountNum) && Number.isInteger(amountNum) && amountNum >= 10) {
+      const amount = amountNum * 100;
+      const paymentType = 'Resume';
+
+      this.ps.initRazorPays(() => {
+        setTimeout(() => {
+         this.showRewards=true
+        }, 1000);
+      });
+
+      const nickName = localStorage.getItem('nickName');
+      const templateName = localStorage.getItem('templateName');
+      // this.ps.payWithRazorPay(amount, this.templateName);
+      this.ps.payWithRazorNewPay(amount, templateName, nickName);
+    } else {
+      alert('Please enter a valid amount ₹10 or more.');
+    }
   }
 }

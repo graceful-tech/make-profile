@@ -37,14 +37,13 @@ export class MobileChosseTemplateComponent {
   isWorkingHere: boolean = false;
   candidatesArray: Array<Candidate> = [];
 
-  // Array of Resume Paths
-  resumePaths: { path: string; name: string; type: string }[] = [
-     { path: './assets/img/Mercury.jpg', name: 'Mercury', type: 'Single Page' },
-      { path: './assets/img/Venus.jpg', name: 'Venus', type: 'Multiple Page' },
-      { path: './assets/img/Earth.jpg', name: 'Earth', type: 'Single Page' },
-      { path: './assets/img/Mars.jpg', name: 'Mars', type: 'Single Page' },
-      {path: './assets/img/Jupiter.jpg',name: 'Jupiter',type: 'Multiple Page'},
-      {path: './assets/img/Saturn.jpg',name: 'Saturn',type: 'Multiple Page'},
+   resumePaths: { path: string; name: string; type: string }[] = [
+    { path: './assets/img/Mercury.jpg', name: 'Mercury', type: 'Single Page' },
+    { path: './assets/img/Venus.jpg', name: 'Venus', type: 'Multiple Page' },
+    { path: './assets/img/Earth.jpg', name: 'Earth', type: 'Single Page' },
+    { path: './assets/img/Mars.jpg', name: 'Mars', type: 'Single Page' },
+    {path: './assets/img/Jupiter.jpg',name: 'Jupiter',type: 'Multiple Page', },
+    { path: './assets/img/Saturn.jpg', name: 'Saturn', type: 'Multiple Page' },
   ];
 
   get currentResumeName(): string {
@@ -60,6 +59,11 @@ export class MobileChosseTemplateComponent {
   candidateId: any;
   candidateImageUrl: any;
   candidatesDetails: any;
+  touchStartX: number = 0;
+  touchEndX: number = 0;
+  backgroundStyle: string = 'linear-gradient(to bottom, #c85f78, #5e84c6))';
+  private gradientIndex = 0;
+     
 
   constructor(
     private api: ApiService,
@@ -72,7 +76,8 @@ export class MobileChosseTemplateComponent {
     private router: Router,
     public ref: DynamicDialogRef,
     private config: DynamicDialogConfig
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.gs.candidateDetails$.subscribe((response) => {
@@ -94,73 +99,10 @@ export class MobileChosseTemplateComponent {
     });
   }
 
-  ngAfterViewInit() {
-    this.resetPosition();
-  }
-
-  zoomIn() {
-    this.scale += 0.4;
-    this.updateTransform();
-  }
-
-  zoomOut() {
-    if (this.scale > 1) {
-      this.scale -= 0.4;
-
-      if (this.scale <= 1.1 && this.scale >= 0.9) {
-        this.resetPosition();
-      } else {
-        this.updateTransform();
-      }
-    }
-  }
-
-  resetPosition() {
-    this.scale = 1;
-    this.translateX = 0;
-    this.translateY = 0;
-    this.updateTransform();
-  }
-
-  updateTransform() {
-    this.resumeImage.nativeElement.style.transform = `translate(${this.translateX}px, ${this.translateY}px) scale(${this.scale})`;
-  }
-
-  onDoubleClick() {
-    this.zoomIn();
-  }
-
-  startDragging(event: MouseEvent | TouchEvent) {
-    this.isDragging = true;
-
-    if (event instanceof MouseEvent) {
-      this.startX = event.clientX - this.translateX;
-      this.startY = event.clientY - this.translateY;
-    } else {
-      this.startX = event.touches[0].clientX - this.translateX;
-      this.startY = event.touches[0].clientY - this.translateY;
-    }
-  }
-
-  stopDragging() {
-    this.isDragging = false;
-  }
-
-  dragResume(event: MouseEvent | TouchEvent) {
-    if (!this.isDragging) return;
-
-    if (event instanceof MouseEvent) {
-      this.translateX = event.clientX - this.startX;
-      this.translateY = event.clientY - this.startY;
-    } else {
-      this.translateX = event.touches[0].clientX - this.startX;
-      this.translateY = event.touches[0].clientY - this.startY;
-    }
-
-    this.updateTransform();
-  }
+  
 
   prevResume() {
+    this.changeBackground();
     if (this.currentIndex > 0) {
       this.currentIndex--;
     } else {
@@ -169,11 +111,11 @@ export class MobileChosseTemplateComponent {
     this.currentResume = this.resumePaths[this.currentIndex].path;
     this.currentResumePageType = this.resumePaths[this.currentIndex].type;
     this.resumeName = this.resumePaths[this.currentIndex].name;
-
-    this.resetPosition();
   }
 
   nextResume() {
+    this.changeBackground();
+
     if (this.currentIndex < this.resumePaths.length - 1) {
       this.currentIndex++;
     } else {
@@ -182,8 +124,6 @@ export class MobileChosseTemplateComponent {
     this.currentResume = this.resumePaths[this.currentIndex].path;
     this.currentResumePageType = this.resumePaths[this.currentIndex].type;
     this.resumeName = this.resumePaths[this.currentIndex].name;
-
-    this.resetPosition();
   }
 
   chooseTemplate(resume: any) {
@@ -246,4 +186,43 @@ export class MobileChosseTemplateComponent {
     }
     this.router.navigate(['mob-candidate']);
   }
+
+  onTouchStart(event: TouchEvent) {
+  this.touchStartX = event.changedTouches[0].screenX;
+}
+
+onTouchEnd(event: TouchEvent) {
+  this.touchEndX = event.changedTouches[0].screenX;
+  this.handleSwipe();
+}
+
+handleSwipe() {
+  const swipeDistance = this.touchEndX - this.touchStartX;
+
+  if (Math.abs(swipeDistance) > 50) {  
+    if (swipeDistance > 0) {
+       
+      this.prevResume();
+    } else {
+       this.nextResume();
+    }
+  }
+}
+
+  private gradients: string[] = [
+  'linear-gradient(to bottom, #fff, #63c8ea)',         
+  'linear-gradient(to bottom, #ffecd2, #fcb69f)',        
+  'linear-gradient(to bottom, #a1c4fd, #c2e9fb)',       
+  'linear-gradient(to bottom, #fbc2eb, #a6c1ee)',       
+  'linear-gradient(to bottom, #fddb92, #d1fdff)',       
+  'linear-gradient(to bottom, #84fab0, #8fd3f4)',        
+  'linear-gradient(to bottom, #ff9a9e, #fad0c4)'       
+];
+
+
+changeBackground() {
+  this.backgroundStyle = this.gradients[this.gradientIndex];
+  this.gradientIndex = (this.gradientIndex + 1) % this.gradients.length;
+}
+
 }

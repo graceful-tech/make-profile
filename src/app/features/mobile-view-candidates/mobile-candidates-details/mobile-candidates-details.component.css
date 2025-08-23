@@ -1080,3 +1080,35 @@ footer {
   border-radius: 10px;
 
 }
+
+.refer-btn {
+  background: linear-gradient(to right, #6884de, #0e3fe0);
+  color: white;
+  border: none;
+  /* padding: 10px 20px; */
+  font-size: 12px;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+  /* margin-bottom: 1px; */
+  line-height:11px;
+  padding:5px 10px;
+  margin-left: 10px;
+}
+
+.refer-btn:hover {
+  background-color: #1e40af;
+}
+
+.refer-credit {
+  /* display: inline-block; */
+  border-radius: 8px;
+  color: #7e7d7d;
+  margin-left: 10px;
+  width: 3%;
+   }
+
+
+
+   

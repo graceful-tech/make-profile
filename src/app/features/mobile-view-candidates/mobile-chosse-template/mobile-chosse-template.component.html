@@ -1,29 +1,32 @@
-
-
- <div class="resume-container">
-
-   <div class="tick-icon">
+<div class="resume-container" [ngStyle]="{ 'background': backgroundStyle }">
+  <div class="tick-icon">
     <span>&nbsp;Choose Template&nbsp;</span>
   </div>
   <div class="backButton">
-    <button class="goBackButton"  (click)="backToCandidates()">&nbsp;Back&nbsp;</button>
-  </div>  
- 
-  <br>
-
-   <div class="page-type">
-    <span class="type">{{resumeName}} - {{currentResumePageType}}</span>
+    <button class="goBackButton" (click)="backToCandidates()">
+      &nbsp;Back&nbsp;
+    </button>
   </div>
 
-   <div class="resumes">
-     <img #resumeImage [src]="currentResume" class="resume-image" />
+  <br />
 
-     <div class="arrow-controls">
-      <button (click)="prevResume()" class="arrow-btn">⬅️</button>
-      <button class="create-resume-btn" (click)="openNickNameField(resumeName)">Select</button>
+  <div class="page-type">
+    <span class="type">{{ resumeName }} - {{ currentResumePageType }}</span>
+  </div>
 
-      <button (click)="nextResume()" class="arrow-btn">➡️</button>
-    </div>
+  <div
+    class="resumes"
+    (touchstart)="onTouchStart($event)"
+    (touchend)="onTouchEnd($event)"
+  >
+    <img #resumeImage [src]="currentResume" class="resume-image" />
+  </div>
 
+  <div class="arrow-controls">
+    <button (click)="prevResume()" class="arrow-btn">⬅️</button>
+    <button class="create-resume-btn" (click)="openNickNameField(resumeName)">
+      Select
+    </button>
+    <button (click)="nextResume()" class="arrow-btn">➡️</button>
   </div>
 </div>

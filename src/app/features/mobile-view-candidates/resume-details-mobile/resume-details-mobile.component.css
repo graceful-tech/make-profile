@@ -314,3 +314,10 @@ img {
   gap: 10px;
   position: sticky;
 }
+
+.proceedButton{
+   background: #11a73c;
+   color: white;
+   padding: 6px;
+   border-radius: 6px;
+}
