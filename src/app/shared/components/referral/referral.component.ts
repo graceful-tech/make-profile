@@ -1,29 +1,52 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { DeviceDetectorService } from 'ngx-device-detector';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-referral',
   standalone: false,
   templateUrl: './referral.component.html',
-  styleUrl: './referral.component.css'
+  styleUrl: './referral.component.css',
 })
-export class ReferralComponent {
+export class ReferralComponent implements OnInit {
+  userName!: string;
+  referralCode: any;
+  referralLink: any;
 
-  copyValue : string ='Copy';
+  constructor(private deviceDetectorService: DeviceDetectorService) {
+    const username = sessionStorage.getItem('userName');
+    if (username !== null && username !== undefined) {
+      this.userName = username;
+    }
+  }
 
+  ngOnInit() {
+    this.generateReferral();
+  }
 
-  referralCode: string = "ABC123";  
-  referralLink: string = "https://yourapp.com/signup?ref=ABC123";
+  generateReferral() {
+    const restUrl = environment.restUrl;
+    const isMobile = this.deviceDetectorService.isMobile();
+    const baseUrl = window.location.origin;
+    const redirectUri = isMobile
+      ? `${baseUrl}/#/mob-login/mob-create`
+      : `${baseUrl}/#/create-account`;
+
+    this.referralCode =redirectUri+'?reference=' + this.userName;
+    this.referralLink =this.referralCode;
+  }
+
+  copyValue: string = 'Copy';
 
   openWhatsApp() {
-    const message = `Hey! Join this app and earn rewards 🎁. Use my referral code ${this.referralCode}. Link: ${this.referralLink}`;
+    const message = `Hey! Join this app and earn rewards 🎁. Use my referral code ${this.userName}. Link: ${this.referralLink}`;
     const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
   }
 
   copyReferralCode() {
     navigator.clipboard.writeText(this.referralCode).then(() => {
-      this.copyValue = 'Copied'
+      this.copyValue = 'Copied';
     });
   }
-
 }

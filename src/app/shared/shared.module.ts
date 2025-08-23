@@ -22,6 +22,7 @@ import { MobileCommonDetailsComponent } from './components/mobile-common-details
 import { ReferralComponent } from './components/referral/referral.component';
 import { RewardsSuccessMessageComponent } from './components/rewards-success-message/rewards-success-message.component';
 import { MobileRewardsSuccessComponent } from './components/mobile-rewards-success/mobile-rewards-success.component';
+import { CashbackRenewComponent } from './components/cashback-renew/cashback-renew.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { MobileRewardsSuccessComponent } from './components/mobile-rewards-succe
     MobileCommonDetailsComponent,
     ReferralComponent,
     RewardsSuccessMessageComponent,
-    MobileRewardsSuccessComponent
+    MobileRewardsSuccessComponent,
+    CashbackRenewComponent
     
    ],
   imports: [
@@ -76,7 +78,8 @@ import { MobileRewardsSuccessComponent } from './components/mobile-rewards-succe
     MobileCommonDetailsComponent,
     ReferralComponent,
     RewardsSuccessMessageComponent,
-    MobileRewardsSuccessComponent
+    MobileRewardsSuccessComponent,
+    CashbackRenewComponent
   ],
 })
 export class SharedModule {}

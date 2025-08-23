@@ -1772,16 +1772,22 @@ export class CandidatesDetailsComponent {
   }
 
   chooseTemplate(candidate: any) {
-    const ref = this.dialog.open(ViewTemplatesComponent, {
-      data: {
-        candidates: candidate,
-        candidateImage: this.candidateImageUrl,
-      },
-      closable: true,
-      width: '40%',
-      height: '90%',
-      styleClass: 'custom-dialog-header',
-    });
+    // const ref = this.dialog.open(ViewTemplatesComponent, {
+    //   data: {
+    //     candidates: candidate,
+    //     candidateImage: this.candidateImageUrl,
+    //   },
+    //   closable: true,
+    //   width: '40%',
+    //   height: '90%',
+    //   styleClass: 'custom-dialog-header',
+    // });
+
+
+    this.gs.setCandidateDetails(this.candidates);
+    this.gs.setCandidateImage(this.candidateImageUrl);
+    this.router.navigate(['candidate/template']);
+  
   }
 
   enterNewDetails() {
@@ -1846,5 +1852,13 @@ export class CandidatesDetailsComponent {
   referAndEarn() {
  
     this.referral = !this.referral;
+  }
+
+  goToRewards(){
+    this.router.navigate(['candidate/rewards']);
+  }
+
+  closeReward(){
+    this.referral = false
   }
 }

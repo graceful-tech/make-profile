@@ -43,8 +43,7 @@ export class MobileChosseTemplateComponent {
     { path: './assets/img/Earth.jpg', name: 'Earth', type: 'Single Page' },
     { path: './assets/img/Mars.jpg', name: 'Mars', type: 'Single Page' },
     {path: './assets/img/Jupiter.jpg',name: 'Jupiter',type: 'Multiple Page', },
-    { path: './assets/img/Saturn.jpg', name: 'Saturn', type: 'Multiple Page' },
-  ];
+   ];
 
   get currentResumeName(): string {
     return this.resumePaths[this.currentIndex].name;

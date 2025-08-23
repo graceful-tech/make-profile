@@ -12,6 +12,7 @@ import { ResumeDetailsMobileComponent } from './resume-details-mobile/resume-det
 import { FinalVerifyComponent } from './final-verify/final-verify.component';
 import { UseExistingTemplateComponent } from './use-existing-template/use-existing-template.component';
 import { MobileCommonDetailsComponent } from 'src/app/shared/components/mobile-common-details/mobile-common-details.component';
+import { CashbackRenewComponent } from 'src/app/shared/components/cashback-renew/cashback-renew.component';
 
 const routes: Routes = [
   { path: '', component: MobileCandidatesDetailsComponent },
@@ -35,6 +36,9 @@ const routes: Routes = [
   { path: 'Use-existing', component: UseExistingTemplateComponent },
 
   { path: 'enter-new-details', component: MobileCommonDetailsComponent },
+   
+  { path: 'rewards', component: CashbackRenewComponent },
+  
 ];
 
 @NgModule({

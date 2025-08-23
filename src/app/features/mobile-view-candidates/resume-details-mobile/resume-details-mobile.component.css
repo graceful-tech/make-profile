@@ -316,8 +316,9 @@ img {
 }
 
 .proceedButton{
-   background: #11a73c;
+   background: #844d93;
    color: white;
    padding: 6px;
    border-radius: 6px;
+   border: none;
 }

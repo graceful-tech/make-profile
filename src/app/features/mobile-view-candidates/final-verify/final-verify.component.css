@@ -100,6 +100,7 @@ img {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
+  justify-content: space-between;
 }
 
 .delete-btn {
@@ -202,7 +203,7 @@ img {
   }
 
   .button-wrapper {
-    justify-content: right;
+  justify-content: space-between;
   }
 
   .bysection-heading {
@@ -298,5 +299,13 @@ img {
     opacity: 1;
   }
 }
+
+ .home-btn{
+  background: #06348f;
+  color: rgb(255, 253, 253);
+  padding: 5px 10px 5px 10px;
+  border-radius: 7px;
+  border: none;
+ }
 
  

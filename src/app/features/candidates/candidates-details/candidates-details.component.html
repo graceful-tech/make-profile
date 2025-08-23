@@ -57,7 +57,7 @@
         
       </div>
 
-        <ng-container *ngIf="referral">
+        <ng-container *ngIf="referral" appClickedOutside (clickedOutside)="closeReward()">
             <app-referral></app-referral>
         </ng-container>
 
@@ -81,6 +81,12 @@
             <a class="menu-link">
               <i class="pi pi-sign-out menu-icon"></i>
               <span>Logout</span>
+            </a>
+          </li>
+               <li class="menu-item mb-2" (click)="goToRewards()">
+            <a class="menu-link">
+              <i class="pi pi-sign-out menu-icon"></i>
+              <span>Reward</span>
             </a>
           </li>
         </ul>

@@ -1677,4 +1677,13 @@ export class MobileCandidatesDetailsComponent {
    referAndEarn() {
     this.referral = !this.referral;
   }
+
+   goToRewards(){
+    this.router.navigate(['mob-candidate/rewards']);
+  }
+
+  closeRewards(){
+    this.referral = false;
+  }
+
 }

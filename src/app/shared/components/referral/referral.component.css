@@ -107,3 +107,50 @@
   line-height: 1.4;
   margin: 5px 0;
 }
+
+
+.reward-tracker {
+  background: rgba(255, 255, 255, 0.12);
+  padding: 10px;
+  border-radius: 15px;
+  margin: 15px 0 20px 0;
+  text-align: left;
+}
+
+.reward-tracker h4 {
+  font-size: 16px;
+  color: #424cbd;
+}
+
+.reward-tracker ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 12px 0;
+  font-size: 14px;
+}
+
+.reward-tracker ul li {
+  margin: 6px 0;
+  padding-left: 5px;
+}
+
+.progress-bar {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  height: 10px;
+  width: 100%;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.progress {
+  background: #ffcc00;
+  height: 100%;
+  transition: width 0.4s ease;
+}
+
+.progress-text {
+  font-size: 13px;
+  text-align: center;
+  opacity: 0.9;
+}

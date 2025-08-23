@@ -791,6 +791,10 @@
     <app-make-profile-divider></app-make-profile-divider>
 
     <div class="button-wrapper">
+      
+ 
+    <button class="home-btn" (click)="goBack()">Home</button>
+
       <p-button
         class="mr-2"
         [label]="dataLoaded ? 'Generate Resume' : 'Generating..'"
@@ -798,6 +802,7 @@
         [disabled]="!dataLoaded"
         (onClick)="createCandidate()"
       ></p-button>
+
     </div>
   </div>
 </div>
