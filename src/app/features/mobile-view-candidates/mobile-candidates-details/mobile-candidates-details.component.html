@@ -43,7 +43,9 @@
     </div>
     <div class="wrapper1">
       <div class="credit">
-        <div style="font-size: 14px">{{ user ? user.userName : "Name" }}</div>
+        <div style="font-size: 14px">  {{
+            user ? user.userName.length > 8 ? user.userName.substring(0, 8) + ".." : user.userName : "Name"
+          }}</div>
         Credits : {{ totalCreditsAvailable }}
       </div>
       <div class="account-wrapper" appClickedOutside (clickedOutside)="close()">
