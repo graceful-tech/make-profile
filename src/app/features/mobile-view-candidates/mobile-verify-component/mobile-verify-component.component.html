@@ -236,7 +236,8 @@
                       <!-- <p-button type="button"  label="Remove Experience" styleClass="p-buttonFailure" (click)="removeExperience(i)"></p-button> -->
                     </div>
                   </div>
-            
+                         <hr class="sub-section-divider" />
+
                   <!-- Project Details -->
                   <div formArrayName="projects">
                     <div class="bysection-heading mt-4">
@@ -290,7 +291,8 @@
                         </div>
         
                       </div>
-        
+                            <hr class="sub-section-divider" />
+
                       <div class="col-12 md:col-6 lg:col-3" *ngIf="j === getProjectCount(i) - 1">
                         <button type="button" class="custom-btn" (click)="addProject(i)">+ Add Project</button>
                         <!-- <p-button type="button" label="+ Add Project" (click)="addProject(i)"></p-button> -->
@@ -350,7 +352,9 @@
                     <div class="col-12 md:col-6 lg:col-3" *ngIf="i>0">
                       <button type="button" class="remove-btn" (click)="removeCollegeProject(i)">Remove Project</button>
                     </div>
-                  </div>
+                  </div> 
+                        <hr class="sub-section-divider" />
+
             
                   <div class="col-12 md:col-6 lg:col-3" *ngIf="i === getCollegeProjectCount(i) -1" >
                     <button type="button" class="custom-btn" (click)="addCollegeProject()">+ Add Project</button>
@@ -446,6 +450,8 @@
                   <!-- <p-button type="button" label="+ Add Qualifications" (click)="addQualication()"></p-button> -->
                 </div>
               </div>
+                      <hr class="sub-section-divider" />
+
             </section>   
             
               <app-make-profile-divider></app-make-profile-divider>
@@ -500,7 +506,8 @@
                       <button type="button" class="custom-btn" (click)="addCertificates()">+ Add Couse</button>
                    </div>
                </div>
-        
+                    <hr class="sub-section-divider" />
+
               </section> 
                <app-make-profile-divider></app-make-profile-divider>
              <section *ngIf="achievements" class="border-line" id="achievements">  
@@ -531,6 +538,8 @@
                      </div>
              
                    </div>
+                          <hr class="sub-section-divider" />
+
                        <div class="col-12 md:col-6 lg:col-3" style="padding-left: 15px;" *ngIf="i>0">
                         <button type="button" class="remove-btn" icon="pi pi-trash" (click)="removeaddAchievements(i)">Remove Achievements</button>
                           <!-- <p-button type="button" label="Remove Achievements" styleClass="p-buttonFailure" (click)="removeaddAchievements(i)"></p-button> -->

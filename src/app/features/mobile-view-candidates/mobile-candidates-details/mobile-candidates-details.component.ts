@@ -90,6 +90,8 @@ export class MobileCandidatesDetailsComponent {
   maxLimitPerPageForResume: number = 5;
   refer: boolean = false;
   referral: boolean = false;
+  overAllCredits: any;
+  totalCredits: any;
 
   constructor(
     private api: ApiService,
@@ -140,6 +142,7 @@ export class MobileCandidatesDetailsComponent {
     this.getCandidates();
     this.createAdditionalDetailsForm();
     this.getStateNames();
+    this.getOverallCredits();
   }
 
   ngAfterViewInit() {}
@@ -867,7 +870,6 @@ export class MobileCandidatesDetailsComponent {
       error: (error) => {
         this.ngxLoaderStop();
         window.confirm('Error in uploading resume please reupload it');
-
         window.location.reload();
       },
     });
@@ -1684,6 +1686,23 @@ export class MobileCandidatesDetailsComponent {
 
   closeRewards(){
     this.referral = false;
+  }
+
+   getOverallCredits() {
+    const id = sessionStorage.getItem('userId');
+
+    const route = 'credits/get-allcredits';
+
+    this.api.get(route).subscribe({
+      next: (response) => {
+        if (response) {
+          this.overAllCredits = response as any;
+
+          this.totalCredits = this.overAllCredits?.creditAvailable;
+      
+        }
+      },
+    });
   }
 
 }

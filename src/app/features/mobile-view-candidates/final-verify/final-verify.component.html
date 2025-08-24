@@ -396,6 +396,8 @@
                 </div>
               </div>
             </div>
+              <hr class="sub-section-divider" />
+
 
             <!-- Project Details -->
             <div formArrayName="projects" *ngIf="getProjectContentCount(i)">
@@ -470,7 +472,7 @@
                   </div>
                 </div>
 
-                <hr class="sub-section-divider" />
+              <hr class="sub-section-divider" />
               </div>
             </div>
           </div>
@@ -537,6 +539,8 @@
                 </div>
               </div>
             </div>
+              <hr class="sub-section-divider" />
+
           </div>
         </div>
       </ng-container>
@@ -641,9 +645,9 @@
                 </div>
               </div>
             </div>
-
-            <hr />
           </div>
+            <hr class="sub-section-divider" />
+
         </div>
       </div>
 
@@ -695,6 +699,9 @@
               </div>
             </div>
           </div>
+          
+          <hr class="sub-section-divider" />
+
         </div>
       </div>
 
@@ -738,6 +745,9 @@
               </div>
             </div>
           </div>
+
+          <hr class="sub-section-divider" />
+
         </div>
       </div>
 
@@ -791,9 +801,7 @@
     <app-make-profile-divider></app-make-profile-divider>
 
     <div class="button-wrapper">
-      
- 
-    <button class="home-btn" (click)="goBack()">Home</button>
+      <button class="home-btn" (click)="goBack()">Home</button>
 
       <p-button
         class="mr-2"
@@ -802,7 +810,6 @@
         [disabled]="!dataLoaded"
         (onClick)="createCandidate()"
       ></p-button>
-
     </div>
   </div>
 </div>

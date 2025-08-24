@@ -421,7 +421,7 @@
                       <label>Project Description</label>
                       <div class="input-wrapper">
                         <textarea
-                          rows="2"
+                          rows="5"
                           type="text"
                           pInputText
                           formControlName="projectDescription"
@@ -745,6 +745,10 @@
     <app-make-profile-divider></app-make-profile-divider>
 
     <div class="button-wrapper" *ngIf="!payments">
+
+      <div>
+        <button type="button" class="home-btn">Back to home</button>
+      </div>
       <div style="text-align: right">
         <p-button
           type="button"

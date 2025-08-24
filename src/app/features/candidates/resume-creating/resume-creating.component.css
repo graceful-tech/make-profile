@@ -84,7 +84,9 @@ img {
 .button-wrapper {
   margin-top: 1rem;
   margin-left: 0.3rem;
-  text-align: right;
+  display: flex;
+  justify-content: space-between;
+  
 }
 
 .delete-btn {
@@ -314,4 +316,11 @@ img {
 .fresher-checkbox label {
   white-space: nowrap;
   margin: 0;
+}
+.home-btn{
+  background: #415ddb;
+  border: none;
+  color: white;
+  border-radius: 8px;
+  padding: 10px;
 }

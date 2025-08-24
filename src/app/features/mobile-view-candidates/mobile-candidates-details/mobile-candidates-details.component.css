@@ -1,4 +1,3 @@
-
 .table-container {
   width: 100%;
   margin-left: 0;
@@ -36,7 +35,7 @@ p-table th {
   padding: 0.5rem;
   display: flex;
   gap: 20px;
- }
+}
 
 .wrapper1 {
   padding: 0.5rem;
@@ -1067,18 +1066,16 @@ footer {
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
-
-.additional-content{
- background: linear-gradient(to right,#5e84c6, #c85f78);
+.additional-content {
+  background: linear-gradient(to right, #5e84c6, #c85f78);
   z-index: 1000;
   display: flex;
-  flex-direction: column;   
-  align-items: center;     
-  justify-content: center;  
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   padding: 10px 10px;
   color: white;
   border-radius: 10px;
-
 }
 
 .refer-btn {
@@ -1092,8 +1089,8 @@ footer {
   cursor: pointer;
   transition: background 0.3s;
   /* margin-bottom: 1px; */
-  line-height:11px;
-  padding:5px 10px;
+  line-height: 11px;
+  padding: 5px 10px;
   margin-left: 10px;
 }
 
@@ -1107,8 +1104,9 @@ footer {
   color: #7e7d7d;
   margin-left: 10px;
   width: 3%;
-   }
+}
 
-
-
-   
+/* .referral{
+  display: flex;
+  align-items: center;
+} */

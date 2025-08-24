@@ -34,8 +34,12 @@
       alt="Header Image"
     />
 
-    <ng-container *ngIf="referral" appClickedOutside (clickedOutside)="closeRewards()">
-      <app-referral></app-referral>
+    <ng-container
+      *ngIf="referral"
+      appClickedOutside
+      (clickedOutside)="closeRewards()"
+    >
+      <app-mobile-referral></app-mobile-referral>
     </ng-container>
 
     <div class="refer-credit" *ngIf="refer">
@@ -43,10 +47,16 @@
     </div>
     <div class="wrapper1">
       <div class="credit">
-        <div style="font-size: 14px">  {{
-            user ? user.userName.length > 8 ? user.userName.substring(0, 8) + ".." : user.userName : "Name"
-          }}</div>
-        Credits : {{ totalCreditsAvailable }}
+        <div style="font-size: 14px">
+          {{
+            user
+              ? user.userName.length > 8
+                ? user.userName.substring(0, 8) + ".."
+                : user.userName
+              : "Name"
+          }}
+        </div>
+        Credits : {{ totalCredits }}
       </div>
       <div class="account-wrapper" appClickedOutside (clickedOutside)="close()">
         <div class="hamburger-box">&#9776;</div>
@@ -64,7 +74,7 @@
               <span>Logout</span>
             </a>
           </li>
-           <li class="menu-item mb-2" (click)="goToRewards()">
+          <li class="menu-item mb-2" (click)="goToRewards()">
             <a class="menu-link">
               <i class="pi pi-sign-out menu-icon"></i>
               <span>Reward</span>
@@ -75,6 +85,7 @@
     </div>
   </div>
 </header>
+
 <div class="wrapper">
   <div class="left-section">
     <div class="profile-wrapper">
@@ -109,7 +120,6 @@
             </div>
              
           </div> -->
-
       <div class="section-heading">
         <span></span>
         <span class="link-button" (click)="viewHistory()">View History</span>

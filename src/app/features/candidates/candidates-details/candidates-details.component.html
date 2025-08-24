@@ -66,7 +66,7 @@
           <div style="font-size: 14px">  {{
             user ? user.userName.length > 8 ? user.userName.substring(0, 8) + ".." : user.userName : "Name"
           }}</div>
-        Balance Credits : {{ totalCreditsAvailable }}</div>
+        Balance Credits : {{ totalCredits }}</div>
      <div class="account-wrapper" appClickedOutside (clickedOutside)="close()">
         <div class="hamburger-box">&#9776;</div>
         <ul class="account-menu scalein fadeout">

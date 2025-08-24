@@ -23,20 +23,22 @@
               <span class="truncate">{{ candidate.name }}</span>
               <span class="truncate">{{ candidate.mobileNumber }}</span>
               <span class="truncate">{{ candidate.email }}</span>
-              <span>{{ candidate.createdDate | date : "dd-MM-yyyy" }}</span>
               <span class="wrap-text">{{ candidate.address }}</span>
               <span class="wrap-text">{{ candidate.skills }}</span>
             </div>
           </td>
 
           <td>
-            <button
+          <div class="applied-job">
+
+            <span> <button
               type="button"
               class="custom-btn"
-              (click)="restoreCandidate(candidate)"
-            >
+              (click)="restoreCandidate(candidate)">
               Use
-            </button>
+            </button></span>
+            <span>{{ candidate.createdDate | date : "dd-M-yy HH:mm" }}</span>
+             </div>
           </td>
         </tr>
       </ng-template>

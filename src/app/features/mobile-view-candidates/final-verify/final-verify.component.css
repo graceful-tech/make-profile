@@ -206,10 +206,10 @@ img {
   justify-content: space-between;
   }
 
-  .bysection-heading {
+  /* .bysection-heading {
     margin-left: 0;
     text-align: center;
-  }
+  } */
 
   ::ng-deep .custom-dropdown .p-dropdown {
     max-width: 100% !important;
@@ -221,6 +221,7 @@ img {
     padding: 10px;
   }
 }
+
 
  
 
@@ -309,3 +310,9 @@ img {
  }
 
  
+ 
+ .sub-section-divider{
+    border-bottom: 2px dashed #e5e7eb;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}

@@ -97,6 +97,8 @@ export class CandidatesDetailsComponent {
   referral: boolean = false;
   refer: boolean = false;
   referralService: boolean = false;
+  overAllCredits: any;
+  totalCredits: any;
 
   constructor(
     private api: ApiService,
@@ -112,12 +114,13 @@ export class CandidatesDetailsComponent {
     private ps: PaymentService,
     private loader: LoaderService
   ) {
-   
     localStorage.removeItem('nickName');
     localStorage.removeItem('templateName');
 
-     if (sessionStorage.getItem('userId') === null ||sessionStorage.getItem('userId') === 'undefined') {
-     
+    if (
+      sessionStorage.getItem('userId') === null ||
+      sessionStorage.getItem('userId') === 'undefined'
+    ) {
       this.route.queryParams.subscribe((params) => {
         const token = params['token'];
         const username = params['username'];
@@ -131,14 +134,12 @@ export class CandidatesDetailsComponent {
       });
     }
 
-     this.gs.referral.subscribe((refer)=>{
-        this.referralService = refer
-    })
-
+    this.gs.referral.subscribe((refer) => {
+      this.referralService = refer;
+    });
   }
 
   ngOnInit() {
-
     this.getUserById();
     this.createCandidateForm();
     this.createRequirementForm();
@@ -153,7 +154,7 @@ export class CandidatesDetailsComponent {
     this.toggleAccountMenu();
     this.createAdditionalDetailsForm();
     this.getStateNames();
- 
+    this.getOverallCredits();
   }
 
   ngAfterViewInit() {}
@@ -470,8 +471,7 @@ export class CandidatesDetailsComponent {
         error: (error) => {
           this.dataLoaded = true;
           this.gs.showMessage('Error', 'Error in Creating Creating');
-
-         },
+        },
       });
       this.dataLoaded = true;
     } else {
@@ -525,7 +525,7 @@ export class CandidatesDetailsComponent {
     );
     if (confirmDelete && this.experienceControls.length > 1) {
       const removedExperience = this.experienceControls.at(index).value;
-       if (removedExperience.id) {
+      if (removedExperience.id) {
         removedExperience.isDeleted = true;
         this.experienceDeletedArray.push(removedExperience);
         this.experienceControls.removeAt(index);
@@ -1324,9 +1324,9 @@ export class CandidatesDetailsComponent {
             this.toggleSection('resume');
           }
 
-           this.refer = true;
+          this.refer = true;
 
-          localStorage.setItem('referralAmount','paid');
+          localStorage.setItem('referralAmount', 'paid');
         }
         this.totalRecords = response?.totalRecords;
       },
@@ -1366,8 +1366,7 @@ export class CandidatesDetailsComponent {
           this.patchCandidateForm(candidateClone);
           this.getCandidateImage(candidate?.id);
           this.getAdditionaDetails(candidate?.mobileNumber);
-
-         }
+        }
         // this.ngxLoaderStop();
       },
       error: (err) => {
@@ -1783,11 +1782,9 @@ export class CandidatesDetailsComponent {
     //   styleClass: 'custom-dialog-header',
     // });
 
-
     this.gs.setCandidateDetails(this.candidates);
     this.gs.setCandidateImage(this.candidateImageUrl);
     this.router.navigate(['candidate/template']);
-  
   }
 
   enterNewDetails() {
@@ -1850,15 +1847,31 @@ export class CandidatesDetailsComponent {
   }
 
   referAndEarn() {
- 
     this.referral = !this.referral;
   }
 
-  goToRewards(){
+  goToRewards() {
     this.router.navigate(['candidate/rewards']);
   }
 
-  closeReward(){
-    this.referral = false
+  closeReward() {
+    this.referral = false;
+  }
+
+  getOverallCredits() {
+    const id = sessionStorage.getItem('userId');
+
+    const route = 'credits/get-allcredits';
+
+    this.api.get(route).subscribe({
+      next: (response) => {
+        if (response) {
+          this.overAllCredits = response as any;
+
+          this.totalCredits = this.overAllCredits?.creditAvailable;
+      
+        }
+      },
+    });
   }
 }

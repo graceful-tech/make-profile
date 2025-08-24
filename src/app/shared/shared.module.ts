@@ -23,7 +23,8 @@ import { ReferralComponent } from './components/referral/referral.component';
 import { RewardsSuccessMessageComponent } from './components/rewards-success-message/rewards-success-message.component';
 import { MobileRewardsSuccessComponent } from './components/mobile-rewards-success/mobile-rewards-success.component';
 import { CashbackRenewComponent } from './components/cashback-renew/cashback-renew.component';
-
+import { MobileReferralComponent } from './components/mobile-referral/mobile-referral.component';
+ 
 @NgModule({
   declarations: [
     MakeProfileDividerComponent,
@@ -40,7 +41,8 @@ import { CashbackRenewComponent } from './components/cashback-renew/cashback-ren
     ReferralComponent,
     RewardsSuccessMessageComponent,
     MobileRewardsSuccessComponent,
-    CashbackRenewComponent
+    CashbackRenewComponent,
+    MobileReferralComponent
     
    ],
   imports: [
@@ -79,7 +81,8 @@ import { CashbackRenewComponent } from './components/cashback-renew/cashback-ren
     ReferralComponent,
     RewardsSuccessMessageComponent,
     MobileRewardsSuccessComponent,
-    CashbackRenewComponent
+    CashbackRenewComponent,
+    MobileReferralComponent
   ],
 })
 export class SharedModule {}
