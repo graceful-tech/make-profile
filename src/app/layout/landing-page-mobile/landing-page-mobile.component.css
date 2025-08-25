@@ -233,3 +233,9 @@ p {
 #logoContainer.scrolled img {
   width: 120px;
 }
+
+.sigupbtn{
+  width: 70%;
+  height: 60%;
+  margin-left: 13%;
+}
