@@ -50,27 +50,37 @@
     </div>
 
     <div class="wrapper1">
-      <div class="refer-credit" *ngIf="referralService || refer ">
-       <button class="refer-btn" (click)="referAndEarn()">
-            Refer & Earn
-          </button>
-        
+      <div class="refer-credit" *ngIf="referralService || refer">
+        <button class="refer-btn" (click)="referAndEarn()">Refer & Earn</button>
       </div>
 
-        <ng-container *ngIf="referral" appClickedOutside (clickedOutside)="closeReward()">
-            <app-referral></app-referral>
-        </ng-container>
-
+      <ng-container
+        *ngIf="referral"
+        appClickedOutside
+        (clickedOutside)="closeReward()"
+      >
+        <app-referral></app-referral>
+      </ng-container>
 
       <div class="credit">
-          <div style="font-size: 14px">  {{
-            user ? user.userName.length > 8 ? user.userName.substring(0, 8) + ".." : user.userName : "Name"
-          }}</div>
-        Balance Credits : {{ totalCredits }}</div>
-     <div class="account-wrapper" appClickedOutside (clickedOutside)="close()">
+        <div style="font-size: 14px">
+          {{
+            user
+              ? user.userName.length > 8
+                ? user.userName.charAt(0).toUpperCase() +
+                  user.userName.substring(1, 8) +
+                  ".."
+                : user.userName.charAt(0).toUpperCase() +
+                  user.userName.substring(1)
+              : "Name"
+          }}
+        </div>
+        Balance Credits : {{ totalCredits ? totalCredits : 0 }}
+      </div>
+      <div class="account-wrapper" appClickedOutside (clickedOutside)="close()">
         <div class="hamburger-box">&#9776;</div>
         <ul class="account-menu scalein fadeout">
-          <li class="menu-item mt-2" routerLink="/view-mob-user">
+          <li class="menu-item mt-2" (click)="goToViewAccount()">
             <a class="menu-link">
               <i class="pi pi-user menu-icon"></i>
               <span>My Account</span>
@@ -83,7 +93,7 @@
               <span>Logout</span>
             </a>
           </li>
-               <li class="menu-item mb-2" (click)="goToRewards()">
+          <li class="menu-item mb-2" (click)="goToRewards()">
             <a class="menu-link">
               <i class="pi pi-sign-out menu-icon"></i>
               <span>Reward</span>
@@ -1467,6 +1477,3 @@
 </div>
 
 <footer>&copy; 2025 Makeprofiles. All rights reserved.</footer>
-
-
-

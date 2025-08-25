@@ -64,5 +64,7 @@ export class EditUserComponent {
     this.router.navigate(['viewUser']);
   }
   
-  
+  goBack() {
+    this.router.navigate(['/candidate/view-account']);
+  }
 }

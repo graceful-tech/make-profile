@@ -230,6 +230,10 @@ export class CandidatesDetailsComponent {
     sessionStorage.clear();
     this.router.navigate(['']);
   }
+  goToViewAccount(){
+    console.log('entered view account')
+    this.router.navigate(['/candidate/view-account'])
+  }
 
   getGenderList() {
     const route = 'value-sets/search-by-code';

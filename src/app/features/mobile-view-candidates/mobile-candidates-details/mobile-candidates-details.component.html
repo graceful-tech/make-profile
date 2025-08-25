@@ -51,12 +51,15 @@
           {{
             user
               ? user.userName.length > 8
-                ? user.userName.substring(0, 8) + ".."
-                : user.userName
+                ? user.userName.charAt(0).toUpperCase() +
+                  user.userName.substring(1, 8) +
+                  ".."
+                : user.userName.charAt(0).toUpperCase() +
+                  user.userName.substring(1)
               : "Name"
           }}
         </div>
-        Credits : {{ totalCredits }}
+        Credits : {{ totalCredits ? totalCredits : 0 }}
       </div>
       <div class="account-wrapper" appClickedOutside (clickedOutside)="close()">
         <div class="hamburger-box">&#9776;</div>

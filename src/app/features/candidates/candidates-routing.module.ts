@@ -7,6 +7,8 @@ import { ViewTemplatesComponent } from './Templates/view-templates/view-template
 import { ResumeAnimationComponent } from './resume-animation/resume-animation.component';
 import { RewardsSuccessMessageComponent } from 'src/app/shared/components/rewards-success-message/rewards-success-message.component';
 import { CashbackRenewComponent } from 'src/app/shared/components/cashback-renew/cashback-renew.component';
+import { ViewAccountComponent } from '../users/view-account/view-account.component';
+import { EditUserComponent } from '../users/edit-user/edit-user.component';
 
 const routes: Routes = [
   { path: '', component: CandidatesDetailsComponent },
@@ -23,7 +25,9 @@ const routes: Routes = [
 
   { path: 'rewards', component: CashbackRenewComponent },
 
-  
+  { path: 'view-account', component: ViewAccountComponent },
+
+  { path: 'view-account/edit-user', component: EditUserComponent },
 ];
 
 @NgModule({

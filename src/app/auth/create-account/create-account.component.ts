@@ -76,7 +76,7 @@ export class CreateAccountComponent {
         next: (response) => {
           this.loadingFlag = false;
           const customer = response as any;
-          this.gs.openLogin('Success', 'Your Acoount Created Successfully');
+          this.gs.openLogin('Success', 'Your Account Created Successfully');
           console.log(customer);
         },
         error: (error) => {
