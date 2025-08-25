@@ -1,7 +1,7 @@
 .table-container {
   width: 100%;
   margin-left: 0;
-  padding: 10px;
+  padding: 10px 0px;
 }
 
 p-table {
@@ -559,6 +559,7 @@ ngx-ui-loader .ngx-ui-loader__fg {
 
 .profile-wrapper {
   margin-top: 50px;
+  padding:1.2rem 0.5rem 1.5rem 0.5rem;
 }
 
 .account-wrapper {
@@ -1099,14 +1100,98 @@ footer {
 }
 
 .refer-credit {
-  /* display: inline-block; */
-  border-radius: 8px;
+   border-radius: 8px;
   color: #7e7d7d;
   margin-left: 10px;
   width: 3%;
 }
 
-/* .referral{
-  display: flex;
-  align-items: center;
-} */
+ 
+ html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  max-width: 100%;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  color: #111;
+  background: #fff;
+  -webkit-text-size-adjust: 100%;  
+}
+
+ 
+
+ .resume-table,
+.jobs-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  overflow-x: auto;
+  display: block;  
+}
+
+.resume-table th,
+.resume-table td,
+.jobs-table th,
+.jobs-table td {
+  padding: 8px;
+  border: 1px solid #ddd;
+  text-align: left;
+  word-wrap: break-word;
+}
+
+.resume-table th,
+.jobs-table th {
+  background: #f4f4f4;
+  font-weight: bold;
+}
+
+ .upload-container {
+  margin: 12px 0;
+}
+
+.upload-container input[type="file"] {
+  width: 100%;
+  max-width: 100%;
+  padding: 8px;
+  font-size: 14px;
+}
+
+ 
+button {
+  background: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+h1, h2, h3 {
+  font-size: 1.2rem;
+  margin: 10px 0;
+}
+
+p {
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+ @media screen and (max-width: 768px) {
+  body {
+    font-size: 13px;
+  }
+
+  .resume-table td, .resume-table th,
+  .jobs-table td, .jobs-table th {
+    padding: 6px;
+    font-size: 12px;
+  }
+ 
+}

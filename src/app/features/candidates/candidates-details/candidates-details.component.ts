@@ -1878,4 +1878,8 @@ export class CandidatesDetailsComponent {
       },
     });
   }
+
+  reorder(){
+    this.router.navigate(['candidate/reorderd'])
+  }
 }

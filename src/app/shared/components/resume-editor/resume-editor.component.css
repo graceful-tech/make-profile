@@ -1,0 +1,35 @@
+.resume-container {
+   margin: 0 auto;
+  background: white;
+  padding: 10mm;
+  box-shadow: 0 0 5px rgba(0,0,0,0.2);
+  font-family: Arial, sans-serif;
+  font-size: 11pt;
+  color: #111;
+} 
+
+/* .section {
+  margin-bottom: 20px;
+}
+
+.section-title {
+  font-size: 14pt;
+  font-weight: bold;
+  margin-bottom: 5px;
+} */
+
+.profile-wrapper{
+    background: none;
+}
+  .wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.profile-wrapper{
+    width: 100vw;
+}
+
+/* .container{
+width:100%
+} */

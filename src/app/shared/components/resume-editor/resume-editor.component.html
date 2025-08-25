@@ -1,0 +1,14 @@
+<div class="wrapper">
+  <div class="profile-wrapper">
+    <div class="resume-container">  
+      <div cdkDropList (cdkDropListDropped)="drop($event)">
+        <div *ngFor="let sec of sections" cdkDrag [innerHTML]="sec.html"></div>
+      </div>
+    </div>
+
+     <button (click)="saveOrder()">Save & Generate PDF</button>
+  </div>
+</div>
+
+
+ 

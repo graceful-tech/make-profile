@@ -50,17 +50,24 @@
     </div>
 
     <div class="wrapper1">
-      <div class="refer-credit" *ngIf="referralService || refer">
-        <button class="refer-btn" (click)="referAndEarn()">Refer & Earn</button>
+      <div class="refer-credit" *ngIf="referralService || refer ">
+       <button class="refer-btn" (click)="referAndEarn()">
+            Refer & Earn
+          </button>
+        
       </div>
 
-      <ng-container
-        *ngIf="referral"
-        appClickedOutside
-        (clickedOutside)="closeReward()"
-      >
-        <app-referral></app-referral>
-      </ng-container>
+       <!-- <div class="refer-credit">
+       <button class="refer-btn" (click)="reorder()">
+            reorder
+          </button>
+        
+      </div> -->
+
+        <ng-container *ngIf="referral" appClickedOutside (clickedOutside)="closeReward()">
+            <app-referral></app-referral>
+        </ng-container>
+
 
       <div class="credit">
         <div style="font-size: 14px">
@@ -87,18 +94,20 @@
             </a>
           </li>
           <div class="divider"></div>
+
+           <li class="menu-item mb-2" (click)="goToRewards()">
+            <a class="menu-link">
+            <i class="pi pi-wallet menu-icon"></i> 
+              <span>Rewards</span>
+            </a>
+          </li>
           <li class="menu-item mb-2" (click)="signOut()">
             <a class="menu-link">
               <i class="pi pi-sign-out menu-icon"></i>
               <span>Logout</span>
             </a>
           </li>
-          <li class="menu-item mb-2" (click)="goToRewards()">
-            <a class="menu-link">
-              <i class="pi pi-sign-out menu-icon"></i>
-              <span>Reward</span>
-            </a>
-          </li>
+              
         </ul>
       </div>
       <!-- <div><p-button label="Logout" (onClick)="signOut()"></p-button></div> -->
@@ -1477,3 +1486,6 @@
 </div>
 
 <footer>&copy; 2025 Makeprofiles. All rights reserved.</footer>
+
+
+

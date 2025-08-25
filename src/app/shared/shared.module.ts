@@ -24,6 +24,8 @@ import { RewardsSuccessMessageComponent } from './components/rewards-success-mes
 import { MobileRewardsSuccessComponent } from './components/mobile-rewards-success/mobile-rewards-success.component';
 import { CashbackRenewComponent } from './components/cashback-renew/cashback-renew.component';
 import { MobileReferralComponent } from './components/mobile-referral/mobile-referral.component';
+import { ResumeEditorComponent } from './components/resume-editor/resume-editor.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
  
 @NgModule({
   declarations: [
@@ -42,7 +44,8 @@ import { MobileReferralComponent } from './components/mobile-referral/mobile-ref
     RewardsSuccessMessageComponent,
     MobileRewardsSuccessComponent,
     CashbackRenewComponent,
-    MobileReferralComponent
+    MobileReferralComponent,
+    ResumeEditorComponent
     
    ],
   imports: [
@@ -55,6 +58,7 @@ import { MobileReferralComponent } from './components/mobile-referral/mobile-ref
     MatIconModule,
     MatProgressSpinnerModule,
     MatDialogModule,
+    DragDropModule
   ],
   exports: [
     CommonModule,
@@ -82,7 +86,9 @@ import { MobileReferralComponent } from './components/mobile-referral/mobile-ref
     RewardsSuccessMessageComponent,
     MobileRewardsSuccessComponent,
     CashbackRenewComponent,
-    MobileReferralComponent
+    MobileReferralComponent,
+    ResumeEditorComponent,
+    DragDropModule
   ],
 })
 export class SharedModule {}

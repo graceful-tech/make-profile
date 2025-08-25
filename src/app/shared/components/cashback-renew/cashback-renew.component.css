@@ -3,11 +3,12 @@
   padding: 10px;
   display: center;
   align-items: flex-start;
-  color: rgb(225, 225, 232);
-  background: rgb(70, 57, 208);
+  color: rgb(247, 247, 251);
+  background: rgb(52, 81, 245);
   justify-content: center;
-
   border-radius: 8px;
+  font-size: 15px;
+
 }
 
 .content {

@@ -34,6 +34,11 @@
       alt="Header Image"
     />
 
+
+    <div class="refer-credit" *ngIf="refer">
+      <button class="refer-btn" (click)="referAndEarn()">Refer & Earn</button>
+    </div>
+    
     <ng-container
       *ngIf="referral"
       appClickedOutside
@@ -41,10 +46,6 @@
     >
       <app-mobile-referral></app-mobile-referral>
     </ng-container>
-
-    <div class="refer-credit" *ngIf="refer">
-      <button class="refer-btn" (click)="referAndEarn()">Refer & Earn</button>
-    </div>
     <div class="wrapper1">
       <div class="credit">
         <div style="font-size: 14px">
@@ -71,18 +72,19 @@
             </a>
           </li>
           <div class="divider"></div>
+          <li class="menu-item mb-2" (click)="goToRewards()">
+            <a class="menu-link">
+            <i class="pi pi-wallet menu-icon"></i> 
+              <span>Rewards</span>
+            </a>
+          </li>
           <li class="menu-item mb-2" (click)="signOut()">
             <a class="menu-link">
               <i class="pi pi-sign-out menu-icon"></i>
               <span>Logout</span>
             </a>
           </li>
-          <li class="menu-item mb-2" (click)="goToRewards()">
-            <a class="menu-link">
-              <i class="pi pi-sign-out menu-icon"></i>
-              <span>Reward</span>
-            </a>
-          </li>
+
         </ul>
       </div>
     </div>
@@ -592,7 +594,7 @@
 
             <div class="section-heading">Personal Details</div>
             <div class="grid">
-              <div class="col-12 md:col-6">
+              <div class="col-12 md:col-8">
                 <div class="field-wrapper">
                   <input
                     type="file"
@@ -1027,7 +1029,7 @@
                             <label>Project Description</label>
                             <div class="input-wrapper">
                               <textarea
-                                rows="2"
+                                rows="5"
                                 type="text"
                                 pInputText
                                 formControlName="projectDescription"
