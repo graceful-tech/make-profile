@@ -35,7 +35,7 @@ export class LandingPageMobileComponent {
   }
 
   toLogin() {
-    this.router.navigate(['/mob-login']);
+    this.router.navigate(['/login']);
   }
 
   @HostListener('window:scroll', [])

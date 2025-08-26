@@ -39,10 +39,6 @@ export class LandingPageComponent {
     this.router.navigate(['/candidates'], { relativeTo: this.route });
   }
 
-  goToLoginPage() {
-    this.router.navigate(['/login']);
-  }
-
   toLogin() {
     this.router.navigate(['/login']);
   }

@@ -33,6 +33,10 @@ export class LoginComponent {
   ) { }
 
   ngOnInit() {
+      if (this.isMobileDevice()) {
+      // redirect to mobile login if mobile
+      this.router.navigate(['/mob-login']);
+    }
     this.createLoginForm();
   }
 
@@ -118,5 +122,10 @@ export class LoginComponent {
     this.error = '';
     this.loginError = '';
     this.showError = false;
+  }
+
+  private isMobileDevice(): boolean {
+    const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
+    return /android|iphone|ipad|ipod/i.test(userAgent);
   }
 }
