@@ -13,6 +13,7 @@ import { GlobalService } from 'src/app/services/global.service';
 })
 export class LandingPageMobileComponent {
   @ViewChild('logoContainer') logoContainer!: ElementRef;
+  @ViewChild('signUPContainer') signUPContainer!: ElementRef;
 
   constructor(
     private fb: FormBuilder,
@@ -42,20 +43,33 @@ export class LandingPageMobileComponent {
     const scrollTop = window.scrollY;
     const maxShiftPx = 400;
 
-    const currentShift = Math.min(scrollTop, maxShiftPx);
-    const shiftPercent = (currentShift / maxShiftPx) * 500;
+    if (this.logoContainer) {
+      const currentShift = Math.min(scrollTop, maxShiftPx);
+      const shiftPercent = (currentShift / maxShiftPx) * 500;
 
-    const logoEl = this.logoContainer.nativeElement;
+      const logoEl = this.logoContainer.nativeElement;
 
-    console.log('currentShift' + currentShift);
-    console.log('scrollTop' + scrollTop);
+      if (scrollTop >= 100) {
+        logoEl.style.left = '-60px';
+        logoEl.style.transform = 'translateX(0%) scale(0.5)';
+      } else {
+        logoEl.style.left = '20%';
+        logoEl.style.transform = `translateX(-${shiftPercent}%) scale(1)`;
+      }
+    }
 
-    if (scrollTop >= 100) {
-      logoEl.style.left = '-60px';
-      logoEl.style.transform = 'translateX(0%) scale(0.5)';
-    } else {
-      logoEl.style.left = '20%';
-      logoEl.style.transform = `translateX(-${shiftPercent}%) scale(1)`;
+    if (this.signUPContainer) {
+      const currentShift = Math.min(scrollTop, maxShiftPx);
+      const shiftPercent = (currentShift / maxShiftPx) * 500;
+      const logoEl = this.logoContainer.nativeElement;
+
+      if (scrollTop >= 100) {
+        logoEl.style.left = '-60px';
+        logoEl.style.transform = 'translateX(0%) scale(0.5)';
+      } else {
+        logoEl.style.left = '20%';
+        logoEl.style.transform = `translateX(-${shiftPercent}%) scale(1)`;
+      }
     }
   }
 }

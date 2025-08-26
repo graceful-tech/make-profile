@@ -234,9 +234,42 @@ p {
   width: 120px;
 }
 
-.sigupbtn{
+/* .sigupbtn{
   width: 70%;
   height: 60%;
   margin-left: 13%;
   cursor: pointer;
+} */
+
+
+.sigupbtn{
+  width: 50%;
+  height: 60%;
+  cursor: pointer;
+  margin: 0 auto;
+}
+
+#signUPContainer {
+  position: fixed;
+    top: 2rem;
+    right: 3%;
+    transform: translateX(20%) scale(1);
+    transition: all 1s ease-in-out;
+
+}
+
+#signUPContainer.scrolled {
+ position: fixed;
+  top: 10px;
+  left: 10px;
+  transform: translateX(20) scale(1.2);
+}
+
+#signUPContainer img {
+  /* width: 200px;  */
+  transition: all 1.5s ease-in-out;
+}
+
+#signUPContainer.scrolled img {
+  width: 120px;  
 }

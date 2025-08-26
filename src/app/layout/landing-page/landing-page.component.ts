@@ -14,6 +14,8 @@ import { GlobalService } from 'src/app/services/global.service';
 })
 export class LandingPageComponent {
   @ViewChild('logoContainer') logoContainer!: ElementRef;
+  @ViewChild('signUPContainer') signUPContainer!: ElementRef;
+
 
   constructor(
     private fb: FormBuilder,
@@ -30,8 +32,8 @@ export class LandingPageComponent {
   }
 
   ngAfterViewInit() {
-    this.onWindowScroll();
-  }
+     this.onWindowScroll();
+   }
 
   candidate() {
     this.router.navigate(['/candidates'], { relativeTo: this.route });
@@ -59,18 +61,16 @@ export class LandingPageComponent {
   //     logoEl.style.transition = 'transform 0.2s ease-out';
   //   }
 
-  @HostListener('window:scroll', [])
-  onWindowScroll() {
-    const scrollTop = window.scrollY;
-    const maxShiftPx = 400;
+@HostListener('window:scroll', [])
+onWindowScroll() {
+  const scrollTop = window.scrollY;
+  const maxShiftPx = 400;
 
+  // LOGO container animation
+  if (this.logoContainer) {
     const currentShift = Math.min(scrollTop, maxShiftPx);
     const shiftPercent = (currentShift / maxShiftPx) * 500;
-
     const logoEl = this.logoContainer.nativeElement;
-
-    console.log('currentShift' + currentShift);
-    console.log('scrollTop' + scrollTop);
 
     if (scrollTop >= 100) {
       logoEl.style.left = '10px';
@@ -80,4 +80,20 @@ export class LandingPageComponent {
       logoEl.style.transform = `translateX(-${shiftPercent}%) scale(1.5)`;
     }
   }
+
+   if (this.signUPContainer) {
+    const currentShift = Math.min(scrollTop, maxShiftPx);
+    const shiftPercent = (currentShift / maxShiftPx) * 500;
+    const logoEl = this.logoContainer.nativeElement;
+
+    if (scrollTop >= 100) {
+      logoEl.style.left = '10px';
+      logoEl.style.transform = 'translateX(0%) scale(0.8)';
+    } else {
+      logoEl.style.left = '40%';
+      logoEl.style.transform = `translateX(-${shiftPercent}%) scale(1.5)`;
+    }
+  }
+}
+
 }

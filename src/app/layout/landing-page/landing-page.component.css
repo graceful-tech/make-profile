@@ -232,6 +232,30 @@ p {
 .sigupbtn{
   width: 20%;
   height: 20%;
-  margin-left: 40%;
   cursor: pointer;
+  margin: 0 auto;
+}
+
+#signUPContainer {
+  position: fixed;
+  top: 5rem;
+  right: 3%;
+  transform: translateX(-10%) scale(1);
+  transition: all 1s ease-in-out;
+}
+
+#signUPContainer.scrolled {
+ position: fixed;
+  top: 10px;
+  left: 10px;
+  transform: translateX(20) scale(1.2);
+}
+
+#signUPContainer img {
+  /* width: 200px;  */
+  transition: all 1.5s ease-in-out;
+}
+
+#signUPContainer.scrolled img {
+  width: 120px;  
 }
