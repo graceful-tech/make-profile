@@ -233,4 +233,5 @@ p {
   width: 20%;
   height: 20%;
   margin-left: 40%;
+  cursor: pointer;
 }
