@@ -1,0 +1,115 @@
+<div class="overlay" *ngIf="isUploading">
+  <div class="spinner-container">
+    <mat-spinner
+      [diameter]="80"
+      strokeWidth="5"
+      class="custom-blue"
+    ></mat-spinner>
+    <p class="loading-text">
+      Analysing Resume<span class="dot dot1">.</span
+      ><span class="dot dot2">.</span><span class="dot dot3">.</span>
+    </p>
+  </div>
+</div>
+
+<div class="overlay" *ngIf="isAnalysing">
+  <div class="spinner-container">
+    <mat-spinner
+      [diameter]="80"
+      strokeWidth="5"
+      class="custom-blue"
+    ></mat-spinner>
+    <p class="loading-text">
+      Analysing Details<span class="dot dot1">.</span
+      ><span class="dot dot2">.</span><span class="dot dot3">.</span>
+    </p>
+  </div>
+</div>
+
+<div class="profile-wrapper">
+  <div class="col-12 md:col-6" style="margin: 0 auto">
+    <div class="inside-label-textarea">
+    
+      <span class="btn-position" >
+         <span class="heading-content">Tell about yourself (Intro)</span>
+        <button class="example-content" style="margin-right: 3px;" (click)="togglePopup()">
+          👁 <span>Show Sample Intro</span>
+        </button>
+        
+      </span>
+
+      <textarea
+        id="analysis"
+        rows="5"
+        #analysisBox
+        placeholder="Write a short Self Introduction about yourself, your skills, and your work experience. AI will analyze this text and automatically suggest improvements for your profile."
+      ></textarea>
+    </div>
+  </div>
+  <div style="display: flex; align-items: center; justify-content: center">
+    <button class="analysis" (click)="analyseWithAi(analysisBox.value)">
+      Fill Details With AI &#10024;
+    </button>
+  </div>
+
+  <span
+    style="
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      margin-top: 10px;
+    "
+    >— or —</span
+  >
+
+  <div id="examplePopup" class="popup-box">
+    <h4>Example Self Introduction</h4>
+    <p>
+      Hi, my name is Keerthi. I am a final-year B.Tech Computer Science student
+      at ABC Engineering College with an overall percentage of 82%. I have a
+      strong interest in web development and AI. You can reach me at
+      <b>+91-9876543210</b>.
+    </p>
+    <button class="close-btn" (click)="togglePopup()">Close</button>
+  </div>
+
+  <div class="full-page-center">
+    <div class="upload-container">
+      <div class="upload-title">Upload Your Existing/Old Resume</div>
+      <input
+        type="file"
+        #attachment
+        style="display: none"
+        (change)="addAttachment($event)"
+        accept=".doc, .docx, .pdf"
+      />
+      <div class="upload-box">
+        <p *ngIf="!resume?.fileName">Upload your old resume here</p>
+        <button class="browse-btn" (click)="attachment.click()">
+          Upload Resume
+        </button>
+        <div *ngIf="resume?.fileName" class="uploaded-file mt-3">
+          <i class="pi pi-paperclip mr-2"></i>
+          <span>{{ resume?.fileName }}</span>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+  <span
+        style="
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          text-align: center;
+        "
+        >— or —</span
+      >
+  <div style="display: flex; align-items: center; justify-content: center">
+     <button class="enter-details" style="margin-top: 10px;" (click)="enterDetails()">
+            Fill Details Yourself
+          </button>
+  </div>
+</div>

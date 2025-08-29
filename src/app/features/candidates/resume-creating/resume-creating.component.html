@@ -26,6 +26,13 @@
   </div>
 </div>
 
+<Header>
+  <div class="header-image">
+    <h5>Details on your resume</h5>
+    <h6>(Scroll down and check your details)</h6>
+  </div>
+</Header>
+
 <div class="wrapper">
   <div class="profile-wrapper">
     <form [formGroup]="candidateForm">
@@ -253,7 +260,7 @@
 
       <app-make-profile-divider></app-make-profile-divider>
       <div class="section-heading mt-3">
-        <div>Professional Details</div>
+        <div>Experience Details</div>
       </div>
 
       <div class="grid">
@@ -526,19 +533,6 @@
 
             <div class="col-12 md:col-6 lg:col-3">
               <div class="field-wrapper">
-                <label>Field Of Study</label>
-                <div class="input-wrapper">
-                  <input
-                    type="text"
-                    pInputText
-                    formControlName="fieldOfStudy"
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div class="col-12 md:col-6 lg:col-3">
-              <div class="field-wrapper">
                 <label>Qualification</label>
                 <div class="input-wrapper">
                   <p-dropdown
@@ -550,6 +544,19 @@
                     [filter]="true"
                   >
                   </p-dropdown>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12 md:col-6 lg:col-3">
+              <div class="field-wrapper">
+                <label>Area of Study</label>
+                <div class="input-wrapper">
+                  <input
+                    type="text"
+                    pInputText
+                    formControlName="fieldOfStudy"
+                  />
                 </div>
               </div>
             </div>
@@ -745,15 +752,14 @@
     <app-make-profile-divider></app-make-profile-divider>
 
     <div class="button-wrapper" *ngIf="!payments">
-
       <div>
-        <button type="button" class="home-btn">Back to home</button>
+        <button type="button" class="home-btn" (click)="backToHome()">Back to home</button>
       </div>
       <div style="text-align: right">
         <p-button
           type="button"
           label="Proceed to create resume"
-          (click)="createCandidate()"
+          (click)="createFinalResume()"
         ></p-button>
       </div>
     </div>

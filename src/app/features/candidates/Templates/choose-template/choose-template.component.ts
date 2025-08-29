@@ -49,6 +49,7 @@ export class ChooseTemplateComponent {
     { path: './assets/img/Mars.jpg', name: 'Mars', type: 'Single Page' },
     {path: './assets/img/Jupiter.jpg',name: 'Jupiter',type: 'Multiple Page'},
     {path: './assets/img/Saturn.jpg',name: 'Saturn',type: 'Multiple Page'},
+    {path: './assets/img/Uranus.jpg',name: 'Uranus',type: 'Multiple Page'},
   ];
 
   currentIndex = 0;
@@ -81,6 +82,10 @@ export class ChooseTemplateComponent {
 
   ngOnInit() {
     localStorage.removeItem('resumeName');
+     
+    if(this.candidates === null || this.candidates === undefined){
+       this.getCandidates();
+    }
   }
 
   ngAfterViewInit() {
@@ -141,22 +146,22 @@ export class ChooseTemplateComponent {
 
    }
 
-  checkSection(resumeName: any) {
-    const route = 'template/checker';
-    const payload = {
-      ...this.candidates,
-      resumeFormatName: resumeName,
-    };
-    localStorage.setItem('templateName', resumeName);
+  // checkSection(resumeName: any) {
+  //   const route = 'template/checker';
+  //   const payload = {
+  //     ...this.candidates,
+  //     resumeFormatName: resumeName,
+  //   };
+  //   localStorage.setItem('templateName', resumeName);
 
-    this.api.retrieve(route, payload).subscribe({
-      next: (response) => {
-        console.log('keerthi');
-        const name = response?.name;
-        this.createResume(name);
-      },
-    });
-  }
+  //   this.api.retrieve(route, payload).subscribe({
+  //     next: (response) => {
+  //       console.log('keerthi');
+  //       const name = response?.name;
+  //       this.createResume(name);
+  //     },
+  //   });
+  // }
 
   openNickName(resumeName: any) {
     this.ref.close();
@@ -175,9 +180,9 @@ export class ChooseTemplateComponent {
     });
   }
 
-  createResume(resumeName: any) {
+  toVerify(resumeName: any) {
     this.ref.close();
-    const candidateId = localStorage.getItem('candidateId');
+
 
     localStorage.setItem('templateName', resumeName);
 
@@ -213,5 +218,29 @@ export class ChooseTemplateComponent {
         this.candidatesArray = response as any;
       },
     });
+  }
+
+
+    getCandidates() {
+    // this.ngxLoaderStart('Resume is getting ready, please wait...');
+
+    const route = 'candidate';
+    this.api.get(route).subscribe({
+      next: (response) => {
+        const candidate = response as Candidate;
+        if (candidate !== null) {
+          this.candidates = response as any;
+          this.candidateId = candidate?.id;
+          localStorage.setItem('candidateId', this.candidateId);
+
+         }
+        // this.ngxLoaderStop();
+      },
+      error: (err) => {
+        // this.ngxLoaderStop();
+        console.error('Error fetching candidate image:', err);
+      },
+    });
+    //  this.ngxLoaderStop();
   }
 }

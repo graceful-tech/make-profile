@@ -32,6 +32,7 @@ export class ViewTemplatesComponent {
     { path: './assets/img/Mars.jpg', name: 'Mars', type: 'Single Page' },
     {path: './assets/img/Jupiter.jpg',name: 'Jupiter',type: 'Multiple Page'},
     {path: './assets/img/Saturn.jpg',name: 'Saturn',type: 'Multiple Page'},
+     {path: './assets/img/Uranus.jpg',name: 'Uranus',type: 'Multiple Page'},
 
   ];
 
@@ -150,8 +151,18 @@ export class ViewTemplatesComponent {
   }
 
   async navigateToMainpage(resumeName: any) {
-    await this.router.navigate(['candidate']);
-    this.openNickName(resumeName);
+    // await this.router.navigate(['candidate']);
+   
+    localStorage.setItem('templateName', resumeName);
+
+    this.gs.setCandidateDetails(this.candidates);
+    this.gs.setCandidateImage(this.candidateImageUrl);
+    this.gs.setResumeName(resumeName);
+
+    this.router.navigate(['candidate/verify-details'])
+
+    // this.toVerifyCandidate(resumeName);
+
   }
 
   openNickName(resumeName: any) {
@@ -170,6 +181,7 @@ export class ViewTemplatesComponent {
       header: 'Enter the nick name for this resume',
     });
   }
+  
 
   createResume(resumeName: any) {
     this.ref.close();
@@ -226,4 +238,29 @@ changeBackground() {
   this.backgroundStyle = this.gradients[this.gradientIndex];
   this.gradientIndex = (this.gradientIndex + 1) % this.gradients.length;
 }
+
+ toVerifyCandidate(templateName:any) {
+      this.ref.close();
+      const candidateId = localStorage.getItem('candidateId');
+
+      const ref = this.dialog.open(VerifyCandidatesComponent, {
+        data: {
+        candidates: this.candidates,
+        candidateImage :this.candidateImageUrl,
+        resumeName:templateName,
+         },
+        closable: true,
+        width: '70%',
+        height: '90%',
+        header: 'Check Your Details',
+      });
+  
+      ref.onClose.subscribe((response) => {
+        if (response) {
+          this.candidates = response;
+          this.candidateId = response.id;
+          const candidate = response as Candidate;
+         }
+      });
+    }
 }

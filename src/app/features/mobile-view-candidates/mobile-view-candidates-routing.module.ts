@@ -6,13 +6,13 @@ import { MobileChosseTemplateComponent } from './mobile-chosse-template/mobile-c
 import { MobileEditCandidatesComponent } from './mobile-edit-candidates/mobile-edit-candidates.component';
 import { MobilePaymentOptionComponent } from './mobile-payments/mobile-payment-option/mobile-payment-option.component';
 import { MobileVerifyComponentComponent } from './mobile-verify-component/mobile-verify-component.component';
-import { ResumeDetailsComponent } from '../candidates/resume-details/resume-details.component';
 import { ViewMobileHistoryCandidatesComponent } from './view-mobile-history-candidates/view-mobile-history-candidates.component';
 import { ResumeDetailsMobileComponent } from './resume-details-mobile/resume-details-mobile.component';
 import { FinalVerifyComponent } from './final-verify/final-verify.component';
 import { UseExistingTemplateComponent } from './use-existing-template/use-existing-template.component';
 import { MobileCommonDetailsComponent } from 'src/app/shared/components/mobile-common-details/mobile-common-details.component';
 import { CashbackRenewComponent } from 'src/app/shared/components/cashback-renew/cashback-renew.component';
+import { MobileAnalyseAiComponent } from 'src/app/shared/components/mobile-analyse-ai/mobile-analyse-ai.component';
 
 const routes: Routes = [
   { path: '', component: MobileCandidatesDetailsComponent },
@@ -38,6 +38,11 @@ const routes: Routes = [
   { path: 'enter-new-details', component: MobileCommonDetailsComponent },
    
   { path: 'rewards', component: CashbackRenewComponent },
+
+   { path: 'analyse-ai', component: MobileAnalyseAiComponent },
+
+
+  
   
 ];
 

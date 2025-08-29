@@ -50,8 +50,9 @@ export class NickNameComponent {
   submit() {
     if (this.nickName && this.nickName.trim() !== '') {
        this.showError = false;
-     
-      if(!this.nickNames.includes(this.nickName.trim())){
+
+       
+      if(this.nickNames=== undefined || !this.nickNames.includes(this.nickName.trim())){
          localStorage.setItem('nickName',this.nickName)
         this.createResume();
       }

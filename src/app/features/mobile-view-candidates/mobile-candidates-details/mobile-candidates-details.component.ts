@@ -905,7 +905,7 @@ export class MobileCandidatesDetailsComponent {
         styleClass: 'custom-dialog-headers',
       });
     } else {
-      window.alert('Enter Your Details');
+      this.router.navigate(['mob-candidate/enter-new-details'])
     }
   }
 
@@ -1642,6 +1642,7 @@ export class MobileCandidatesDetailsComponent {
     );
 
     if (confirmDelete) {
+      this.gs.setCandidateDetails(null);
       this.router.navigate(['mob-candidate/enter-new-details']);
     }
   }

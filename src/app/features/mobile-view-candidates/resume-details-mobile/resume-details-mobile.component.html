@@ -204,7 +204,7 @@
 
       <app-make-profile-divider></app-make-profile-divider>
       <div class="section-heading mt-3">
-        <div>Professional Details</div>
+        <div>Experience Details</div>
       </div>
 
       <div class="grid">
@@ -327,7 +327,7 @@
                    </div> -->
             </div>
 
-                           <hr class="sub-section-divider" />
+            <hr class="sub-section-divider" />
 
             <!-- Project Details -->
             <div formArrayName="projects">
@@ -416,7 +416,7 @@
                     <!-- <p-button type="button" label="Remove Project" styleClass="p-buttonFailure" (click)="removeProject(i, j)"></p-button> -->
                   </div>
                 </div>
-                                <hr class="sub-section-divider" />
+                <hr class="sub-section-divider" />
 
                 <div
                   class="col-12 md:col-6 lg:col-3"
@@ -582,19 +582,6 @@
 
             <div class="col-12 md:col-6 lg:col-3">
               <div class="field-wrapper">
-                <label>Field Of Study</label>
-                <div class="input-wrapper">
-                  <input
-                    type="text"
-                    pInputText
-                    formControlName="fieldOfStudy"
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div class="col-12 md:col-6 lg:col-3">
-              <div class="field-wrapper">
                 <label>Qualification</label>
                 <div class="input-wrapper">
                   <p-dropdown
@@ -606,6 +593,19 @@
                     [filter]="true"
                   >
                   </p-dropdown>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12 md:col-6 lg:col-3">
+              <div class="field-wrapper">
+                <label>Area of Study</label>
+                <div class="input-wrapper">
+                  <input
+                    type="text"
+                    pInputText
+                    formControlName="fieldOfStudy"
+                  />
                 </div>
               </div>
             </div>
@@ -878,7 +878,9 @@
           [disabled]="!dataLoaded"
           (onClick)="createCandidate()"
         ></p-button>
-        <button class="proceedButton"  (click)="saveandcreateresume()">Proceed</button>
+        <button class="proceedButton" (click)="saveandcreateresume()">
+          Proceed
+        </button>
       </div>
     </div>
   </div>

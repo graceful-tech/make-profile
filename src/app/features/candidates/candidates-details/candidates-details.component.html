@@ -50,26 +50,26 @@
     </div>
 
     <div class="wrapper1">
-      <div class="refer-credit" *ngIf="referralService || refer ">
-       <button class="refer-btn" (click)="referAndEarn()">
-            Refer & Earn
-          </button>
-        
+      <div class="refer-credit" *ngIf="referralService || refer">
+        <button class="refer-btn" (click)="referAndEarn()">Refer & Earn</button>
       </div>
 
-       <!-- <div class="refer-credit">
+      <!-- <div class="refer-credit">
        <button class="refer-btn" (click)="reorder()">
             reorder
           </button>
         
       </div> -->
 
-        <ng-container *ngIf="referral" appClickedOutside (clickedOutside)="closeReward()">
-            <app-referral></app-referral>
-        </ng-container>
+      <ng-container
+        *ngIf="referral"
+        appClickedOutside
+        (clickedOutside)="closeReward()"
+      >
+        <app-referral></app-referral>
+      </ng-container>
 
-
-        <div class="credit">
+      <div class="credit">
         <div style="font-size: 14px">
           {{
             user
@@ -95,9 +95,9 @@
           </li>
           <div class="divider"></div>
 
-           <li class="menu-item mb-2" (click)="goToRewards()">
+          <li class="menu-item mb-2" (click)="goToRewards()">
             <a class="menu-link">
-            <i class="pi pi-wallet menu-icon"></i> 
+              <i class="pi pi-wallet menu-icon"></i>
               <span>Rewards</span>
             </a>
           </li>
@@ -107,7 +107,6 @@
               <span>Logout</span>
             </a>
           </li>
-              
         </ul>
       </div>
       <!-- <div><p-button label="Logout" (onClick)="signOut()"></p-button></div> -->
@@ -164,7 +163,7 @@
               *ngIf="candidateId"
               (click)="enterNewDetails()"
             >
-              New Details
+              Add New Details
             </button>
           </div>
         </div>
@@ -173,7 +172,7 @@
 
     <div style="display: flex; justify-content: center">
       <button class="create-button" (click)="createResume()">
-        Create your Resume
+        Click to create resume
       </button>
     </div>
 
@@ -777,7 +776,7 @@
 
           <app-make-profile-divider></app-make-profile-divider>
           <div class="section-heading mt-3">
-            <div>Professional Details</div>
+            <div>Experience Details</div>
           </div>
 
           <div class="grid">
@@ -1053,19 +1052,6 @@
 
                 <div class="col-12 sm:col-6 md:col-4">
                   <div class="field-wrapper">
-                    <label>Field Of Study</label>
-                    <div class="input-wrapper">
-                      <input
-                        type="text"
-                        pInputText
-                        formControlName="fieldOfStudy"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-12 sm:col-6 md:col-4">
-                  <div class="field-wrapper">
                     <label>Qualification</label>
                     <div class="input-wrapper">
                       <p-dropdown
@@ -1077,6 +1063,19 @@
                         [filter]="true"
                       >
                       </p-dropdown>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-12 sm:col-6 md:col-4">
+                  <div class="field-wrapper">
+                    <label>Area of Study</label>
+                    <div class="input-wrapper">
+                      <input
+                        type="text"
+                        pInputText
+                        formControlName="fieldOfStudy"
+                      />
                     </div>
                   </div>
                 </div>
@@ -1467,7 +1466,7 @@
           <div class="button-wrapper">
             <p-button
               class="mr-2"
-              [label]="dataLoaded ? 'Generate' : 'Generating..'"
+              [label]="dataLoaded ? 'Update' : 'Updating..'"
               [icon]="dataLoaded ? '' : 'pi pi-spin pi-spinner'"
               [disabled]="!dataLoaded"
               (onClick)="createCandidate()"
@@ -1486,6 +1485,3 @@
 </div>
 
 <footer>&copy; 2025 Makeprofiles. All rights reserved.</footer>
-
-
-

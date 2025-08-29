@@ -1,5 +1,32 @@
-<div class="wrapper">
+
+<div class="overlay" *ngIf="isUploading">
+  <div class="spinner-container">
+    <mat-spinner
+      [diameter]="80"
+      strokeWidth="5"
+      class="custom-blue"
+    ></mat-spinner>
+    <p class="loading-text">
+      Verifying Your Details<span class="dot dot1">.</span
+      ><span class="dot dot2">.</span><span class="dot dot3">.</span>
+    </p>
+  </div>
+</div>
+
+
+<Header>
+  <div class="header-image">
+    <h5>Check your details</h5>
+  </div>
+</Header>
+
+<div class="wrapper" style="margin-top: 20px;">
   <div class="profile-wrapper">
+ 
+    <span style="margin-top: 20px;">
+      <button class="back-btn" (click)="backBtn()">&larr; Back</button>
+    </span>
+
     <form [formGroup]="candidateForm">
       <app-make-profile-divider></app-make-profile-divider>
       <div class="section-heading">Personal Details</div>
@@ -193,7 +220,7 @@
 
       <app-make-profile-divider></app-make-profile-divider>
       <div class="section-heading mt-3">
-        <div>Professional Details</div>
+        <div>Experience Details</div>
       </div>
 
       <div class="grid">
@@ -253,7 +280,7 @@
                   <label>Year Started</label>
                   <div class="input-wrapper">
                     <p-calendar
-                     appendTo="body"
+                      appendTo="body"
                       formControlName="experienceYearStartDate"
                       placeholder="Select From Date"
                     ></p-calendar>
@@ -303,7 +330,6 @@
                   </div>
                 </div>
               </div>
-
             </div>
 
             <!-- Project Details -->
@@ -384,7 +410,6 @@
                     >
                       Remove Project
                     </button>
-
                   </div>
                 </div>
 
@@ -399,7 +424,7 @@
                   >
                     + Add Project
                   </button>
-                 </div>
+                </div>
 
                 <hr class="sub-section-divider" />
               </div>
@@ -426,8 +451,7 @@
               >
                 + Add Experience
               </button>
-
-             </div>
+            </div>
           </div>
         </div>
       </ng-container>
@@ -543,19 +567,6 @@
 
             <div class="col-12 md:col-6 lg:col-3">
               <div class="field-wrapper">
-                <label>Field Of Study</label>
-                <div class="input-wrapper">
-                  <input
-                    type="text"
-                    pInputText
-                    formControlName="fieldOfStudy"
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div class="col-12 md:col-6 lg:col-3">
-              <div class="field-wrapper">
                 <label>Qualification</label>
                 <div class="input-wrapper">
                   <p-dropdown
@@ -573,10 +584,23 @@
 
             <div class="col-12 md:col-6 lg:col-3">
               <div class="field-wrapper">
+                <label>Area of Study</label>
+                <div class="input-wrapper">
+                  <input
+                    type="text"
+                    pInputText
+                    formControlName="fieldOfStudy"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12 md:col-6 lg:col-3">
+              <div class="field-wrapper">
                 <label>Start Year</label>
                 <div class="input-wrapper">
                   <p-calendar
-                   appendTo="body"
+                    appendTo="body"
                     formControlName="qualificationStartYear"
                     placeholder="Select Year"
                   ></p-calendar>
@@ -589,7 +613,7 @@
                 <label>End year</label>
                 <div class="input-wrapper">
                   <p-calendar
-                   appendTo="body"
+                    appendTo="body"
                     formControlName="qualificationEndYear"
                     placeholder="Select Year"
                   ></p-calendar>
@@ -630,15 +654,13 @@
             >
               Remove Qualification
             </button>
-
-           </div>
+          </div>
         </div>
         <div class="col-12 md:col-6 lg:col-3">
           <button type="button" class="custom-btn" (click)="addQualication()">
             + Add Qualifications
           </button>
-
-         </div>
+        </div>
       </div>
 
       <app-make-profile-divider></app-make-profile-divider>
@@ -670,7 +692,7 @@
                 <label>Course Start Year</label>
                 <div class="input-wrapper">
                   <p-calendar
-                   appendTo="body"
+                    appendTo="body"
                     formControlName="courseStartDate"
                     placeholder="Select From Date"
                   ></p-calendar>
@@ -683,7 +705,7 @@
                 <label>Course End year</label>
                 <div class="input-wrapper">
                   <p-calendar
-                   appendTo="body"
+                    appendTo="body"
                     formControlName="courseEndDate"
                     placeholder="Select From Date"
                   ></p-calendar>
@@ -706,11 +728,10 @@
             >
               Remove Course
             </button>
-
-           </div>
+          </div>
         </div>
         <div class="col-12 md:col-6 lg:col-3">
-           <button type="button" class="custom-btn" (click)="addCertificates()">
+          <button type="button" class="custom-btn" (click)="addCertificates()">
             + Add Couse
           </button>
         </div>
@@ -749,7 +770,7 @@
                 <label>Awarded Year</label>
                 <div class="input-wrapper">
                   <p-calendar
-                   appendTo="body"
+                    appendTo="body"
                     formControlName="achievementsDate"
                     placeholder="Select Year"
                   ></p-calendar>
@@ -773,10 +794,10 @@
             >
               Remove Achievements
             </button>
-           </div>
+          </div>
         </div>
         <div class="col-12 md:col-6 lg:col-3">
-           <button type="button" class="custom-btn" (click)="addAchievements()">
+          <button type="button" class="custom-btn" (click)="addAchievements()">
             + Add Achievements
           </button>
         </div>
@@ -818,21 +839,20 @@
     <app-make-profile-divider></app-make-profile-divider>
 
     <div class="button-bar">
-      <div class="button-wrapper" *ngIf="!payments">
- 
-        <p-button
+      <div class="button-wrapper">
+        <!-- <p-button
           styleClass="p-button-secondary"
           label="Reset"
           (onClick)="reset()"
         >
-        </p-button>
+        </p-button> -->
       </div>
-      <div class="button-wrapper" *ngIf="payments">
-        <p-button
-          class="mr-2"
-          label="Next"
-          (onClick)="createCandidate()"
-        ></p-button>
+      <div class="button-wrapper">
+        <button 
+       
+          class="next-step mr-2"
+          (click)="createCandidate()"
+        >Next Step &rarr;</button>
       </div>
     </div>
   </div>

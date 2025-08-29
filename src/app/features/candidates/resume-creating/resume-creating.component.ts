@@ -85,6 +85,8 @@ export class ResumeCreatingComponent {
   generating: boolean = false;
   certificateEmptyFields: boolean = false;
   achievementsEmptyFields: boolean = false;
+  nickName: any;
+  balanceCredits: any;
 
   constructor(
     private api: ApiService,
@@ -101,6 +103,18 @@ export class ResumeCreatingComponent {
   ) {
     this.candidates = this.config.data?.candidates;
     this.templateName = this.config.data?.templateName;
+
+    this.gs.candidateDetails$.subscribe((response) => {
+      this.candidates = response;
+    });
+
+    this.gs.candidateImage$.subscribe((response) => {
+      this.candidateImageUrl = response;
+    });
+
+    this.gs.resumeName$.subscribe((response) => {
+      this.templateName = response;
+    });
   }
 
   ngOnInit() {
@@ -110,6 +124,7 @@ export class ResumeCreatingComponent {
     this.getLanguages();
     this.getMaritalStatus();
     this.getFieldOfStudy();
+    this.getAvailableCredits();
 
     if (this.candidates !== null) {
       this.candidateId = this.candidates.id;
@@ -202,6 +217,10 @@ export class ResumeCreatingComponent {
   createResume(candiateDto: any) {
     this.generating = true;
 
+    if (this.templateName === null || this.templateName === undefined) {
+      this.templateName = localStorage.getItem('templateName');
+    }
+
     const route = 'resume/create';
 
     const payload = { ...candiateDto, templateName: this.templateName };
@@ -235,7 +254,7 @@ export class ResumeCreatingComponent {
           localStorage.removeItem('resumeName');
           this.generating = false;
 
-          this.ref.close();
+          this.router.navigate(['candidate']);
         }
         this.generating = false;
       },
@@ -302,28 +321,9 @@ export class ResumeCreatingComponent {
         payload.dob = this.datePipe.transform(payload.dob, 'yyyy-MM-dd');
       }
 
-      // if (payload.fresher != null && payload.fresher) {
-      //   payload['fresher'] = true;
-      // } else {
-      //   payload['fresher'] = false;
-      // }
-
       if (payload.fresher) {
         payload.experiences = [];
       }
-
-      // if (payload.fresher) {
-      // if (Object.is(payload.collegeProject[0].collegeProjectName, '')) {
-      //     payload.collegeProject = [];
-      //   } else {
-      //     payload.collegeProject = payload.collegeProject.map((proj: any) => ({
-      //       ...proj,
-      //       collegeProjectSkills: Array.isArray(proj.collegeProjectSkills)
-      //         ? proj.collegeProjectSkills.join(', ')
-      //         : proj.collegeProjectSkills
-      //     }));
-      //   }
-      // }
 
       if (!payload.fresher) {
         if (Object.is(payload.experiences?.[0]?.companyName, '')) {
@@ -1121,5 +1121,55 @@ export class ResumeCreatingComponent {
         this.dataLoaded = true;
       },
     });
+  }
+
+  async payRupees() {
+    const confirmedAmount = prompt('Enter final amount in ₹', '10');
+
+    const amountNum = Number(confirmedAmount);
+
+    if (!isNaN(amountNum) && Number.isInteger(amountNum) && amountNum >= 10) {
+      const amount = amountNum * 100;
+      const paymentType = 'Resume';
+
+      this.ps.initRazorPays(() => {
+        setTimeout(() => {
+          this.createCandidate();
+        }, 2000);
+      });
+      this.ps.payWithRazorPay(amount);
+    } else {
+      alert('Please enter a valid amount ₹10 or more.');
+    }
+  }
+
+  createFinalResume() {
+    if (
+      this.balanceCredits === null ||
+      this.balanceCredits === undefined ||
+      this.balanceCredits <= 0
+    ) {
+      this.payRupees();
+    } else {
+      this.createCandidate();
+    }
+  }
+
+  getAvailableCredits() {
+    const userId = sessionStorage.getItem('userId');
+
+    const route = `credits/get-available-credits?userId=${userId}`;
+
+    this.api.get(route).subscribe({
+      next: (response) => {
+        this.balanceCredits = response as any;
+
+        const balance = response;
+      },
+    });
+  }
+
+  backToHome() {
+    this.router.navigate(['candidate']);
   }
 }

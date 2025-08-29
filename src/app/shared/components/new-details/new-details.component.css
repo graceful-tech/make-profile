@@ -400,14 +400,9 @@ margin-top: 10px;
 }
  
 .home{
-  background: #1c7719;
+  background: #716a6a;
   color: white;
   border: none;
   border-radius: 13px;
   padding: 10px 5px;
-}
-
-.home:hover{
-  background: #00ad0c;
-  color: white;
-}
+}   

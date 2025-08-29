@@ -88,6 +88,12 @@ export class MobileCommonDetailsComponent {
       private loader:MobileLoaderService
     ) 
     {
+
+      this.gs.candidateDetails$.subscribe((response)=>{
+        if(response !== null){
+            this.candidates = response
+        }
+      })
       
     }
   
@@ -101,6 +107,15 @@ export class MobileCommonDetailsComponent {
       this.createAdditionalDetailsForm();
       this.getStateNames();
       
+       if (this.candidates !== null && this.candidates !== undefined) {
+      this.candidateId = this.candidates.id;
+      const candidateClone = JSON.parse(JSON.stringify(this.candidates));
+      this.patchCandidateForm(candidateClone);
+
+      setTimeout(() => {
+        this.getAdditionaDetails(this.candidates.mobileNumber);
+      }, 2000);
+    }
     }
   
     ngAfterViewInit() {}

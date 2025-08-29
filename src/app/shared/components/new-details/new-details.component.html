@@ -1,44 +1,11 @@
-<div class="overlay" *ngIf="isUploading">
-  <div class="spinner-container">
-    <mat-spinner
-      [diameter]="80"
-      strokeWidth="5"
-      class="custom-blue"
-    ></mat-spinner>
-    <p class="loading-text">
-      Please Wait<span class="dot dot1">.</span><span class="dot dot2">.</span
-      ><span class="dot dot3">.</span>
-    </p>
-  </div>
-</div>
-
 <div class="wrapper">
   <div class="profile-wrapper">
+
+<div>
+  <button class="home" (click)="home()">&larr; Back to home</button>
+</div>
+
     <form [formGroup]="candidateForm">
-      <!-- <div class="grid">
-           <div class="col-12">
-                 <div class="field-wrapper">
-                  <div class="label-wrapper">
-                      <label>Summary</label>
-                     </div>
-                   <div class="input-wrapper">
-                    <textarea rows="5" type="text" placeholder="Enter your summary, or let our AI generate it for you." pInputText formControlName="summary"></textarea>
-                   </div>
-                 </div>
-            </div>
-
-             <div class="col-12">
-                 <div class="field-wrapper">
-                  <div class="label-wrapper">
-                      <label>Career Objective</label>
-                     </div>
-                   <div class="input-wrapper">
-                    <textarea rows="5" type="text" placeholder="Enter your carrer objective or let our AI generate it for you." pInputText formControlName="careerObjective"></textarea>
-                   </div>
-                 </div>
-            </div>
-
-         </div> -->
       <app-make-profile-divider></app-make-profile-divider>
       <div class="section-heading">Personal Details</div>
       <div class="grid">
@@ -295,7 +262,6 @@
                   <label>Year Started</label>
                   <div class="input-wrapper">
                     <p-calendar
-                      appendTo="body"
                       formControlName="experienceYearStartDate"
                       placeholder="Select From Date"
                     ></p-calendar>
@@ -592,6 +558,18 @@
               </div>
             </div>
 
+            <div class="col-12 md:col-6 lg:col-3">
+              <div class="field-wrapper">
+                <label>Area of Study</label>
+                <div class="input-wrapper">
+                  <input
+                    type="text"
+                    pInputText
+                    formControlName="fieldOfStudy"
+                  />
+                </div>
+              </div>
+            </div>
 
             <div class="col-12 md:col-6 lg:col-3">
               <div class="field-wrapper">
@@ -612,25 +590,9 @@
 
             <div class="col-12 md:col-6 lg:col-3">
               <div class="field-wrapper">
-                <label>Area of Study</label>
-                <div class="input-wrapper">
-                  <input
-                    type="text"
-                    pInputText
-                    formControlName="fieldOfStudy"
-                  />
-                </div>
-              </div>
-            </div>
-
-            
-
-            <div class="col-12 md:col-6 lg:col-3">
-              <div class="field-wrapper">
                 <label>Start Year</label>
                 <div class="input-wrapper">
                   <p-calendar
-                    appendTo="body"
                     formControlName="qualificationStartYear"
                     placeholder="Select Year"
                   ></p-calendar>
@@ -643,7 +605,6 @@
                 <label>End year</label>
                 <div class="input-wrapper">
                   <p-calendar
-                    appendTo="body"
                     formControlName="qualificationEndYear"
                     placeholder="Select Year"
                   ></p-calendar>
@@ -742,7 +703,6 @@
                 <label>Course Start Year</label>
                 <div class="input-wrapper">
                   <p-calendar
-                    appendTo="body"
                     formControlName="courseStartDate"
                     placeholder="Select From Date"
                   ></p-calendar>
@@ -755,7 +715,6 @@
                 <label>Course End year</label>
                 <div class="input-wrapper">
                   <p-calendar
-                    appendTo="body"
                     formControlName="courseEndDate"
                     placeholder="Select From Date"
                   ></p-calendar>
@@ -839,7 +798,6 @@
                 <label>Awarded Year</label>
                 <div class="input-wrapper">
                   <p-calendar
-                    appendTo="body"
                     formControlName="achievementsDate"
                     placeholder="Select Year"
                   ></p-calendar>
@@ -953,7 +911,7 @@
 
     <app-make-profile-divider></app-make-profile-divider>
 
-    <div style="margin-bottom: 20px;">
+    <div style="margin-bottom:20px;">
       <form [formGroup]="additionalDetailsForm">
         <div style="color: black; font-weight: bold; font-size: 20px">
           <Span
@@ -1083,26 +1041,21 @@
     </div>
 
     <div class="button-bar">
-      <div class="button-wrapper" *ngIf="!payments">
+      <div class="button-wrapper">
         <p-button
           class="mr-2"
-          [label]="dataLoaded ? 'Update' : 'Updating..'"
+          [label]="dataLoaded ? 'Create' : 'Creating..'"
           [icon]="dataLoaded ? '' : 'pi pi-spin pi-spinner'"
           [disabled]="!dataLoaded"
           (onClick)="createCandidate()"
         >
         </p-button>
-
         <p-button
           styleClass="p-button-secondary"
           label="Reset"
           (onClick)="reset()"
         >
         </p-button>
-      </div>
-
-      <div class="button-wrapper" *ngIf="payments">
-        <p-button class="mr-2" label="Next" (onClick)="next()"></p-button>
       </div>
     </div>
   </div>

@@ -1,5 +1,9 @@
 <div class="wrapper">
   <div class="profile-wrapper">
+    <div>
+      <button class="home" (click)="home()">&larr; Back to home</button>
+    </div>
+
     <form [formGroup]="candidateForm">
       <app-make-profile-divider></app-make-profile-divider>
       <div class="section-heading">Personal Details</div>
@@ -197,7 +201,7 @@
 
       <app-make-profile-divider></app-make-profile-divider>
       <div class="section-heading mt-3">
-        <div>Professional Details</div>
+        <div>Experience Details</div>
       </div>
 
       <div class="grid">
@@ -555,19 +559,6 @@
 
             <div class="col-12 md:col-6 lg:col-3">
               <div class="field-wrapper">
-                <label>Field Of Study</label>
-                <div class="input-wrapper">
-                  <input
-                    type="text"
-                    pInputText
-                    formControlName="fieldOfStudy"
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div class="col-12 md:col-6 lg:col-3">
-              <div class="field-wrapper">
                 <label>Qualification</label>
                 <div class="input-wrapper">
                   <p-dropdown
@@ -579,6 +570,19 @@
                     [filter]="true"
                   >
                   </p-dropdown>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12 md:col-6 lg:col-3">
+              <div class="field-wrapper">
+                <label>Area of Study</label>
+                <div class="input-wrapper">
+                  <input
+                    type="text"
+                    pInputText
+                    formControlName="fieldOfStudy"
+                  />
                 </div>
               </div>
             </div>
@@ -906,7 +910,7 @@
 
     <app-make-profile-divider></app-make-profile-divider>
 
-    <div style="margin-bottom:20px;">
+    <div style="margin-bottom: 20px">
       <form [formGroup]="additionalDetailsForm">
         <div style="color: black; font-weight: bold; font-size: 20px">
           <Span

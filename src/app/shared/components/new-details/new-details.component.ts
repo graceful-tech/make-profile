@@ -22,12 +22,13 @@ import { CollegeProject } from 'src/app/models/candidates/college-project';
 import { LoaderService } from 'src/app/services/loader.service';
 
 @Component({
-  selector: 'app-candidate-common-details',
+  selector: 'app-new-details',
   standalone: false,
-  templateUrl: './candidate-common-details.component.html',
-  styleUrl: './candidate-common-details.component.css',
+  templateUrl: './new-details.component.html',
+  styleUrl: './new-details.component.css'
 })
-export class CandidateCommonDetailsComponent {
+export class NewDetailsComponent {
+
   candidateForm!: FormGroup;
   genderList: Array<ValueSet> = [];
   languages: Array<ValueSet> = [];
@@ -99,14 +100,7 @@ export class CandidateCommonDetailsComponent {
     private ps: PaymentService,
     private loader: LoaderService
   ) {
-    this.candidates = this.config.data?.candidates;
-
-    this.gs.candidateDetails$.subscribe((response) => {
-      if (response !== null && response !== undefined) {
-        this.candidates = response;
-      }
-    });
-  }
+   }
 
   ngOnInit() {
     this.createCandidateForm();
@@ -118,19 +112,7 @@ export class CandidateCommonDetailsComponent {
     this.createAdditionalDetailsForm();
     this.getStateNames();
 
-    if (this.candidates !== null && this.candidates !== undefined) {
-      this.candidateId = this.candidates.id;
-      const candidateClone = JSON.parse(JSON.stringify(this.candidates));
-      this.patchCandidateForm(candidateClone);
-
-      setTimeout(() => {
-        this.getAdditionaDetails(this.candidates.mobileNumber);
-      }, 2000);
-    }
-
-    // else {
-    //   this.getCandidates();
-    // }
+   
   }
 
   ngAfterViewInit() {}
@@ -401,9 +383,7 @@ export class CandidateCommonDetailsComponent {
           this.candidateId = response?.id;
           this.dataLoaded = true;
           this.returnCandidate = response;
-
           this.uploadCandidateImage();
-
           this.returnCandidate.candidateLogo = this.candidateImageUrl;
           response.candidateLogo = this.candidateImageUrl;
 
@@ -416,10 +396,9 @@ export class CandidateCommonDetailsComponent {
 
           this.loader.stop();
 
-          this.gs.setCandidateDetails(response);
+          this.close(response);
 
-          this.router.navigate(['candidate']);
-
+          this.gs.showMessage('Success', 'Create Successfully');
         },
         error: (error) => {
           this.loader.stop();
@@ -1203,7 +1182,7 @@ export class CandidateCommonDetailsComponent {
     });
   }
 
-  home() {
+  home(){
     this.router.navigate(['candidate']);
   }
 }

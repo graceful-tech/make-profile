@@ -991,8 +991,9 @@ export class CandidatesDetailsComponent {
         styleClass: 'custom-dialog-headers',
       });
     } else {
-      this.gs.showMessage('error', 'Enter Your Details');
+      this.router.navigate(['candidate/new-details-with-ai'])
     }
+
   }
 
   patchCandidateForm(candidate: Candidate) {
@@ -1796,27 +1797,32 @@ export class CandidatesDetailsComponent {
       'Your existing details will be updated with the entered details.'
     );
 
-    if (confirmDelete) {
-      const ref = this.dialog.open(CandidateCommonDetailsComponent, {
-        data: {},
-        closable: true,
-        width: '70%',
-        height: '90%',
-        header: 'Enter Your New Details',
-      });
+    // if (confirmDelete) {
+    //   const ref = this.dialog.open(CandidateCommonDetailsComponent, {
+    //     data: {},
+    //     closable: true,
+    //     width: '70%',
+    //     height: '90%',
+    //     header: 'Enter Your New Details',
+    //   });
 
-      ref.onClose.subscribe((response) => {
-        if (response) {
-          localStorage.setItem('candidateId', response.id);
-          this.candidates = response;
-          this.candidateId = response.id;
-          const candidate = response as Candidate;
-          const candidateClone = JSON.parse(JSON.stringify(candidate));
-          this.patchCandidateForm(candidateClone);
-          this.candidateImageUrl = response.candidateLogo;
-        }
-        this.getAvailableCredits();
-      });
+    //   ref.onClose.subscribe((response) => {
+    //     if (response) {
+    //       localStorage.setItem('candidateId', response.id);
+    //       this.candidates = response;
+    //       this.candidateId = response.id;
+    //       const candidate = response as Candidate;
+    //       const candidateClone = JSON.parse(JSON.stringify(candidate));
+    //       this.patchCandidateForm(candidateClone);
+    //       this.candidateImageUrl = response.candidateLogo;
+    //     }
+    //     this.getAvailableCredits();
+    //   });
+    // }
+
+    if (confirmDelete) {
+    this.router.navigate(['candidate/new-details-with-ai']);
+
     }
   }
 

@@ -28,6 +28,7 @@ import { PaymentOptionComponent } from '../payments/payment-option/payment-optio
 import { CollegeProject } from 'src/app/models/candidates/college-project';
 import { AddCandidatesComponent } from '../add-candidates/add-candidates.component';
 import { LoaderService } from 'src/app/services/loader.service';
+import { ResumeCreatingComponent } from '../resume-creating/resume-creating.component';
 
 @Component({
   selector: 'app-verify-candidates',
@@ -89,6 +90,8 @@ export class VerifyCandidatesComponent {
   extraSkills: boolean = true;
   qualification: boolean = true;
   nickName: any;
+  templateName:any;
+  isUploading:boolean =false;
 
   constructor(
     private api: ApiService,
@@ -107,12 +110,21 @@ export class VerifyCandidatesComponent {
     this.candidates = this.config.data?.candidates;
     this.payments = this.config.data?.payments;
     this.candidateImageUrl = this.config.data?.candidateImage;
-    this.resumeName = this.config.data?.resumeName;
-    this.fieldsName = this.config.data?.fieldsName;
-    this.nickName = this.config.data?.nickName;
+    this.templateName = this.config.data?.resumeName;
+    // this.fieldsName = this.config.data?.fieldsName;
+    // this.nickName = this.config.data?.nickName;
 
-    console.log(this.resumeName);
-    console.log(this.candidates);
+    this.gs.candidateDetails$.subscribe((response)=>{
+     this.candidates = response
+    })
+
+     this.gs.candidateImage$.subscribe((response)=>{
+     this.candidateImageUrl = response
+    })
+
+     this.gs.resumeName$.subscribe((response)=>{
+     this.templateName = response
+    })
   }
 
   ngOnInit() {
@@ -139,7 +151,10 @@ export class VerifyCandidatesComponent {
     this.candidateForm = this.fb.group({
       id: [''],
       name: ['', Validators.required],
-      mobileNumber: ['',Validators.compose([Validators.required, Validators.minLength(10)]),],
+      mobileNumber: [
+        '',
+        Validators.compose([Validators.required, Validators.minLength(10)]),
+      ],
       email: ['', Validators.compose([Validators.required, Validators.email])],
       gender: ['', Validators.required],
       nationality: [''],
@@ -198,7 +213,7 @@ export class VerifyCandidatesComponent {
   }
 
   createCandidate() {
-    this.loader.start();
+    this.isUploading = true;
 
     if (this.candidateForm.valid) {
       this.dataLoaded = false;
@@ -397,30 +412,27 @@ export class VerifyCandidatesComponent {
           this.uploadCandidateImage();
           this.returnCandidate.candidateLogo = this.candidateImageUrl;
           this.candidates = response;
-
           response.candidateLogo = this.candidateImageUrl;
-          this.close(this.returnCandidate);
-          this.loader.stop();
+        
+          this.isUploading = false;
 
-          this.verifyDetails();
+          this.getResumeContentFromOpenAi(response);
 
           // this.gs.showMessage('Success', 'Create Successfully');
         },
         error: (error) => {
-          this.loader.stop();
+          this.isUploading = false;
 
           this.dataLoaded = true;
           this.gs.showMessage(
             'Error',
             'Error in Saving Details Please Recheck the Details'
           );
-
-          console.log(error);
         },
       });
       this.dataLoaded = true;
     } else {
-      this.loader.stop();
+       this.isUploading = false;
       this.showError = true;
       this.gs.showMessage('Error', 'Enter mandatory details');
     }
@@ -930,9 +942,9 @@ export class VerifyCandidatesComponent {
     const route = 'template/checker';
     const payload = {
       ...this.candidates,
-      templateName: this.resumeName,
+      templateName: this.templateName,
     };
-    localStorage.setItem('templateName', this.resumeName);
+    
 
     this.api.retrieve(route, payload).subscribe({
       next: (response: any) => {
@@ -985,7 +997,7 @@ export class VerifyCandidatesComponent {
       data: {
         candidates: this.candidates,
         candidateId: this.candidates?.id,
-        resumeName: this.resumeName,
+        resumeName: this.templateName,
         nickName: this.nickName,
       },
       closable: true,
@@ -1073,5 +1085,46 @@ export class VerifyCandidatesComponent {
         this.dataLoaded = true;
       },
     });
+  }
+
+  getResumeContentFromOpenAi(candidateDetails:any) {
+      this.close(this.returnCandidate);
+
+     this.isUploading = true;
+
+    const route = 'resume/get-content';
+    const payload = { ...candidateDetails };
+
+    this.api.retrieve(route, payload).subscribe({
+      next: (response: any) => {
+        if (response) {
+          this.isUploading = false;
+          const responseCandidate = response as Candidate;
+          this.openCreateResumeDialog(responseCandidate);
+        }
+      },
+      error: (error) => {
+        this.isUploading = false;
+        this.gs.showMessage('error', error.error?.message);
+      },
+    });
+  }
+   
+
+  openCreateResumeDialog(candidate: any,) {
+  
+    if(this.templateName === null || this.templateName === undefined){
+       this.templateName =  localStorage.getItem('templateName');
+    }
+   
+    this.gs.setCandidateDetails(candidate);
+    this.gs.setResumeName(this.templateName)
+
+    this.router.navigate(['candidate/generate-resume']);
+
+  }
+
+  backBtn(){
+    this.router.navigate(['candidate/template'])
   }
 }

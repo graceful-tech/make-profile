@@ -257,3 +257,11 @@ img {
   border-radius: 10px;
 
 }
+
+.home-btn{
+  border: none;
+  background: #5d71ca;
+  border-radius: 7px;
+  padding: 5px 10px;
+  color: white;
+}

@@ -26,6 +26,9 @@ import { CashbackRenewComponent } from './components/cashback-renew/cashback-ren
 import { MobileReferralComponent } from './components/mobile-referral/mobile-referral.component';
 import { ResumeEditorComponent } from './components/resume-editor/resume-editor.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { AnalyseWithAiComponent } from './components/analyse-with-ai/analyse-with-ai.component';
+import { NewDetailsComponent } from './components/new-details/new-details.component';
+import { MobileAnalyseAiComponent } from './components/mobile-analyse-ai/mobile-analyse-ai.component';
  
 @NgModule({
   declarations: [
@@ -45,7 +48,10 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     MobileRewardsSuccessComponent,
     CashbackRenewComponent,
     MobileReferralComponent,
-    ResumeEditorComponent
+    ResumeEditorComponent,
+    AnalyseWithAiComponent,
+    NewDetailsComponent,
+    MobileAnalyseAiComponent
     
    ],
   imports: [
@@ -88,7 +94,10 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     CashbackRenewComponent,
     MobileReferralComponent,
     ResumeEditorComponent,
-    DragDropModule
+    DragDropModule,
+    AnalyseWithAiComponent,
+    NewDetailsComponent,
+    MobileAnalyseAiComponent
   ],
 })
 export class SharedModule {}
