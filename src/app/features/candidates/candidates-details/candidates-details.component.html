@@ -135,7 +135,7 @@
         <div class="upload-box">
           <p *ngIf="!resume?.fileName">Upload your old resume here</p>
           <button class="browse-btn" (click)="attachment.click()">
-            Browse Files
+            Upload Resume
           </button>
           <div *ngIf="resume?.fileName" class="uploaded-file mt-3">
             <i class="pi pi-paperclip mr-2"></i>
@@ -173,7 +173,7 @@
 
     <div style="display: flex; justify-content: center">
       <button class="create-button" (click)="createResume()">
-        Create Resume
+        Create your Resume
       </button>
     </div>
 

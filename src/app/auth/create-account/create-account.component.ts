@@ -75,9 +75,14 @@ export class CreateAccountComponent {
       this.api.retrieve(route, postData).subscribe({
         next: (response) => {
           this.loadingFlag = false;
-          const customer = response as any;
-          this.gs.openLogin('Success', 'Your Account Created Successfully');
-          console.log(customer);
+          // const customer = response as any;
+          // this.gs.openLogin('Success', 'Your Account Created Successfully');
+          sessionStorage.setItem('authType', 'custom');
+          sessionStorage.setItem('token', response.token);
+          sessionStorage.setItem('userName', response.userName);
+          sessionStorage.setItem('userId', response.id);
+          this.router.navigate(['/candidate']);
+          console.log(response);
         },
         error: (error) => {
           this.error = error.error?.message;

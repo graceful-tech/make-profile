@@ -93,10 +93,13 @@ export class MobileCreateAccountComponent {
       this.api.retrieve(route, postData).subscribe({
         next: (response) => {
           this.loadingFlag = false;
-          const customer = response as any;
-          window.alert('Your Account Created SuccessFully');
-          this.router.navigate(['/mob-login']);
-          console.log(customer);
+          sessionStorage.setItem('authType', 'custom');
+          sessionStorage.setItem('token', response.token);
+          sessionStorage.setItem('userName', response.userName);
+          sessionStorage.setItem('userId', response.id);
+          // window.alert('Your Account Created SuccessFully');
+          this.router.navigate(['/mob-candidate']);
+          console.log(response);
         },
         error: (error) => {
           this.error = error.error?.message;
