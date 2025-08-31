@@ -46,11 +46,15 @@ export class ChooseNewTemplateComponent {
     this.close();
 
     this.gs.setCandidateDetails(this.candidates);
+    this.gs.setCandidateImage(this.candidateImageUrl);
     this.router.navigate(['mob-candidate/choose-Template']);
   }
 
   useExistingResume() {
     this.close();
+    this.gs.setCandidateDetails(this.candidates);
+    this.gs.setCandidateImage(this.candidateImageUrl);
+    
     this.router.navigate(['mob-candidate/Use-existing']);
   }
 

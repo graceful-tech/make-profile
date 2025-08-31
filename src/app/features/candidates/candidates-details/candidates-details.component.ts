@@ -10,12 +10,9 @@ import { Subscription } from 'rxjs';
 import { CreateCandidatesComponent } from '../create-candidates/create-candidates.component';
 import { Candidate } from 'src/app/models/candidates/candidate.model';
 import { Certificates } from 'src/app/models/candidates/certificates';
-import { Experience } from 'src/app/models/candidates/experiences';
 import { Qualification } from 'src/app/models/candidates/qualification';
 import { Achievements } from 'src/app/models/candidates/achievements';
 import { Requirement } from 'src/app/models/candidates/requirement.model';
-import { LocalStorage } from '@ng-idle/core';
-import { ChooseTemplateComponent } from '../Templates/choose-template/choose-template.component';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { CollegeProject } from 'src/app/models/candidates/college-project';
 import { ResumeDetailsComponent } from '../resume-details/resume-details.component';
@@ -24,9 +21,9 @@ import { ViewHistoryCandidatesComponent } from '../view-history-candidates/view-
 import { VerifyCandidatesComponent } from '../verify-candidates/verify-candidates.component';
 import { ChooseTemplateWayComponent } from '../choose-template-way/choose-template-way.component';
 import { LoaderService } from 'src/app/services/loader.service';
-import { CandidateCommonDetailsComponent } from 'src/app/shared/components/candidate-common-details/candidate-common-details.component';
 import { ReferralComponent } from 'src/app/shared/components/referral/referral.component';
-import { ViewTemplatesComponent } from '../Templates/view-templates/view-templates.component';
+import { ToastService } from 'src/app/services/toast.service';
+import { skip } from 'rxjs/operators';
 
 @Component({
   selector: 'app-candidates-details',
@@ -99,6 +96,10 @@ export class CandidatesDetailsComponent {
   referralService: boolean = false;
   overAllCredits: any;
   totalCredits: any;
+  editingRow: number | null = null;
+  editedNickName: string = '';
+  balanceCredits: any;
+  navigate: boolean = false;
 
   constructor(
     private api: ApiService,
@@ -112,7 +113,8 @@ export class CandidatesDetailsComponent {
     public ref: DynamicDialogRef,
     private ngxLoader: NgxUiLoaderService,
     private ps: PaymentService,
-    private loader: LoaderService
+    private loader: LoaderService,
+    private toast: ToastService
   ) {
     localStorage.removeItem('nickName');
     localStorage.removeItem('templateName');
@@ -134,7 +136,7 @@ export class CandidatesDetailsComponent {
       });
     }
 
-    this.gs.referral.subscribe((refer) => {
+    this.gs.referral$.subscribe((refer) => {
       this.referralService = refer;
     });
   }
@@ -148,16 +150,31 @@ export class CandidatesDetailsComponent {
     this.getLanguages();
     this.getMaritalStatus();
     this.getFieldOfStudy();
-
-    this.getCandidates();
     this.getAvailableCredits();
     this.toggleAccountMenu();
     this.createAdditionalDetailsForm();
     this.getStateNames();
-    this.getOverallCredits();
+    this.getSumAvailableCredits();
   }
 
-  ngAfterViewInit() {}
+  async ngAfterViewInit() {
+    await this.getCandidates();
+
+    this.gs.navigate$.subscribe((res) => {
+      if (res !== null && res !== undefined) {
+        this.navigate = res;
+      }
+
+      const candidateId = localStorage.getItem('candidateId');
+
+      if (
+        (candidateId === null || candidateId === undefined) &&
+        this.navigate === false
+      ) {
+        this.router.navigate(['candidate/analyse-ai']);
+      }
+    });
+  }
 
   toggleAccountMenu() {
     const accountMenu = document.querySelector('.account-wrapper');
@@ -230,9 +247,9 @@ export class CandidatesDetailsComponent {
     sessionStorage.clear();
     this.router.navigate(['']);
   }
-  goToViewAccount(){
-    console.log('entered view account')
-    this.router.navigate(['/candidate/view-account'])
+  goToViewAccount() {
+    console.log('entered view account');
+    this.router.navigate(['/candidate/view-account']);
   }
 
   getGenderList() {
@@ -880,8 +897,11 @@ export class CandidatesDetailsComponent {
           this.ngxLoaderStop();
           this.candidates = response;
           this.candidateId = response.id;
-          //  this.resumeDetailComponent(response);
-          this.chooseTemplate(response);
+
+          localStorage.setItem('candidateId', this.candidateId);
+
+          this.gs.setCandidateDetails(response);
+          this.router.navigate(['candidate/new-details-with-ai']);
         } else {
           this.ngxLoaderStop();
           this.gs.showMessage(
@@ -958,28 +978,6 @@ export class CandidatesDetailsComponent {
     });
   }
 
-  // createResume() {
-
-  //    const ref = this.dialog.open(ChooseTemplateComponent, {
-  //     data: {
-  //       candidates: this.candidates,
-  //       candidateImage: this.candidateImageUrl
-  //     },
-  //     closable: true,
-  //     width: '40%',
-  //     height: '90%',
-  //     styleClass: 'custom-dialog-header',
-  //   });
-
-  //   ref.onClose.subscribe(response => {
-  //     if (response) {
-  //       this.candidateImageUrl = response.candidateLogo;
-  //       console.log(this.candidateImageUrl)
-  //     }
-  //      this.getAvailableCredits();
-  //   });
-  // }
-
   createResume() {
     if (this.candidateId !== null && this.candidateId !== undefined) {
       const ref = this.dialog.open(ChooseTemplateWayComponent, {
@@ -991,9 +989,9 @@ export class CandidatesDetailsComponent {
         styleClass: 'custom-dialog-headers',
       });
     } else {
-      this.router.navigate(['candidate/new-details-with-ai'])
+      this.router.navigate(['candidate/analyse-ai']);
+      //this.router.navigate(['candidate/new-details-with-ai']);
     }
-
   }
 
   patchCandidateForm(candidate: Candidate) {
@@ -1299,12 +1297,14 @@ export class CandidatesDetailsComponent {
   getAppliedJobs() {
     const id = localStorage.getItem('candidateId');
 
-    const route = `applied-job?candidateId=${id}`;
-    this.api.get(route).subscribe({
-      next: (response) => {
-        this.appliedJobs = response;
-      },
-    });
+    if (id !== null && id !== undefined) {
+      const route = `applied-job?candidateId=${id}`;
+      this.api.get(route).subscribe({
+        next: (response) => {
+          this.appliedJobs = response;
+        },
+      });
+    }
   }
 
   getAvailableCredits() {
@@ -1312,7 +1312,6 @@ export class CandidatesDetailsComponent {
 
     const route = 'credits';
     const payload = {
-      userId: id,
       page: this.currentPage,
       limit: this.maxLimitPerPageForResume,
     };
@@ -1320,11 +1319,7 @@ export class CandidatesDetailsComponent {
       next: (response) => {
         if (response?.results.length > 0) {
           this.availableCredits = response?.results as any;
-          this.totalCreditsAvailable = this.availableCredits.reduce(
-            (sum: any, credit: { creditAvailable: any }) =>
-              sum + (credit.creditAvailable || 0),
-            0
-          );
+
           if (response?.totalRecords > 0) {
             this.toggleSection('resume');
           }
@@ -1355,32 +1350,30 @@ export class CandidatesDetailsComponent {
     });
   }
 
-  getCandidates() {
-    // this.ngxLoaderStart('Resume is getting ready, please wait...');
+  getCandidates(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const route = 'candidate';
+      this.api.get(route).subscribe({
+        next: (response) => {
+          const candidate = response as Candidate;
+          if (candidate !== null) {
+            this.candidates = response as any;
+            this.candidateId = candidate?.id;
+            localStorage.setItem('candidateId', this.candidateId);
 
-    const route = 'candidate';
-    this.api.get(route).subscribe({
-      next: (response) => {
-        const candidate = response as Candidate;
-        if (candidate !== null) {
-          this.candidates = response as any;
-          this.candidateId = candidate?.id;
-          localStorage.setItem('candidateId', this.candidateId);
-
-          const candidateClone = JSON.parse(JSON.stringify(candidate));
-          this.patchCandidateForm(candidateClone);
-          this.getCandidateImage(candidate?.id);
-          this.getAdditionaDetails(candidate?.mobileNumber);
-        }
-        // this.ngxLoaderStop();
-      },
-      error: (err) => {
-        // this.ngxLoaderStop();
-        console.error('Error fetching candidate image:', err);
-        this.dataLoaded = false;
-      },
+            const candidateClone = JSON.parse(JSON.stringify(candidate));
+            this.patchCandidateForm(candidateClone);
+            this.getCandidateImage(candidate?.id);
+            this.getAdditionaDetails(candidate?.mobileNumber);
+          }
+          resolve();
+        },
+        error: (err) => {
+          this.dataLoaded = false;
+          reject(err);
+        },
+      });
     });
-    //  this.ngxLoaderStop();
   }
 
   getCandidateImage(id: any) {
@@ -1502,28 +1495,16 @@ export class CandidatesDetailsComponent {
     });
   }
 
-  navigateToVerify(templateName: any, creditAvailable: any, nickName: any) {
-    if (creditAvailable > 0) {
-      const ref = this.dialog.open(VerifyCandidatesComponent, {
-        data: {
-          candidates: this.candidates,
-          payments: true,
-          candidateImage: this.candidateImageUrl,
-          resumeName: templateName,
-          nickName: nickName,
-        },
-        closable: true,
-        width: '70%',
-        height: '90%',
-        header: 'Check Your Details',
-      });
+  navigateToVerify(templateName: any) {
+    if (this.balanceCredits > 0) {
+      localStorage.setItem('templateName', templateName);
+
+      this.gs.setCandidateDetails(this.candidates);
+      this.gs.setCandidateImage(this.candidateImageUrl);
+      this.gs.setResumeName(templateName);
+
+      this.router.navigate(['candidate/verify-details']);
     } else {
-      this.gs.customWebMessage(
-        'Oops..!',
-        'You don’t have enough credits to check eligibility.',
-        templateName,
-        nickName
-      );
     }
   }
 
@@ -1776,17 +1757,6 @@ export class CandidatesDetailsComponent {
   }
 
   chooseTemplate(candidate: any) {
-    // const ref = this.dialog.open(ViewTemplatesComponent, {
-    //   data: {
-    //     candidates: candidate,
-    //     candidateImage: this.candidateImageUrl,
-    //   },
-    //   closable: true,
-    //   width: '40%',
-    //   height: '90%',
-    //   styleClass: 'custom-dialog-header',
-    // });
-
     this.gs.setCandidateDetails(this.candidates);
     this.gs.setCandidateImage(this.candidateImageUrl);
     this.router.navigate(['candidate/template']);
@@ -1797,32 +1767,8 @@ export class CandidatesDetailsComponent {
       'Your existing details will be updated with the entered details.'
     );
 
-    // if (confirmDelete) {
-    //   const ref = this.dialog.open(CandidateCommonDetailsComponent, {
-    //     data: {},
-    //     closable: true,
-    //     width: '70%',
-    //     height: '90%',
-    //     header: 'Enter Your New Details',
-    //   });
-
-    //   ref.onClose.subscribe((response) => {
-    //     if (response) {
-    //       localStorage.setItem('candidateId', response.id);
-    //       this.candidates = response;
-    //       this.candidateId = response.id;
-    //       const candidate = response as Candidate;
-    //       const candidateClone = JSON.parse(JSON.stringify(candidate));
-    //       this.patchCandidateForm(candidateClone);
-    //       this.candidateImageUrl = response.candidateLogo;
-    //     }
-    //     this.getAvailableCredits();
-    //   });
-    // }
-
     if (confirmDelete) {
-    this.router.navigate(['candidate/new-details-with-ai']);
-
+      this.router.navigate(['candidate/new-details-with-ai']);
     }
   }
 
@@ -1839,11 +1785,6 @@ export class CandidatesDetailsComponent {
       next: (response) => {
         if (response) {
           this.availableCredits = response?.results as any;
-          this.totalCreditsAvailable = this.availableCredits.reduce(
-            (sum: any, credit: { creditAvailable: any }) =>
-              sum + (credit.creditAvailable || 0),
-            0
-          );
         }
         this.totalRecords = response?.totalRecords;
       },
@@ -1868,24 +1809,64 @@ export class CandidatesDetailsComponent {
     this.referral = false;
   }
 
-  getOverallCredits() {
-    const id = sessionStorage.getItem('userId');
-
-    const route = 'credits/get-allcredits';
-
-    this.api.get(route).subscribe({
-      next: (response) => {
-        if (response) {
-          this.overAllCredits = response as any;
-
-          this.totalCredits = this.overAllCredits?.creditAvailable;
-      
-        }
-      },
-    });
+  reorder() {
+    this.router.navigate(['candidate/reorderd']);
   }
 
-  reorder(){
-    this.router.navigate(['candidate/reorderd'])
+  editNickName(rowIndex: number, credits: any) {
+    this.editingRow = rowIndex;
+    this.editedNickName = credits.nickName;
+  }
+
+  updateNickName(credits: any, templateId: any) {
+
+    let status: boolean = false;
+
+    this.availableCredits.forEach((ele: any) => {
+      if (ele.nickName === this.editedNickName) {
+        status = true;
+      }
+    });
+
+    if (!status) {
+      const route = 'credits/save-nickname';
+
+      const payload = {
+        id: templateId,
+        nickName: this.editedNickName,
+      };
+
+      this.api.retrieve(route, payload).subscribe({
+        next: (response) => {
+          if (response) {
+            credits.nickName = this.editedNickName;
+           this.toast.showToast('success','NickName updated successfully')
+          }
+        },
+        error: (error) => {
+          this.ngxLoaderStop();
+          this.gs.showMessage('error', error.error?.message);
+        },
+      });
+
+      this.editingRow = null;
+    } else {
+      this.gs.showMessage('error', 'Plase enter another nickName');
+    }
+  }
+
+  cancelEdit() {
+    this.editingRow = null;
+  }
+
+  getSumAvailableCredits() {
+    const userId = sessionStorage.getItem('userId');
+
+    const route = 'credits/get-available-credits';
+    this.api.get(route).subscribe({
+      next: (response) => {
+        this.balanceCredits = response as any;
+      },
+    });
   }
 }

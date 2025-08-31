@@ -2,7 +2,7 @@
   <div class="grid">
     <div class="col-12 md:col-6 lg:col-3">
       <div class="mb-2 back-button">
-        <p-button type="button" label="Back" (click)="goBack()"></p-button>
+        <button type="button" class="back-btn" (click)="goBack()"><i class="fa fa-arrow-left"></i> Back</button>
       </div>
     </div>
   </div>
@@ -15,20 +15,19 @@
   </div>
 
   <div class="table-container">
-    <p-table [value]="availableCredits">
+    <p-table class="mobile" [value]="availableCredits">
       <ng-template pTemplate="header">
         <tr>
-          <th style="max-width: 5%">CREDIT AVAILABLE / TEMPLATE NAME</th>
+          <th style="max-width: 5%">TEMPLATE NAME</th>
           <th style="max-width: 5%">NICK NAME</th>
-          <th style="max-width: 5%">PAYMENT</th>
           <th style="max-width: 5%">GENERATE RESUME</th>
+          <th style="max-width: 5%">EDIT</th>
         </tr>
       </ng-template>
-      <ng-template pTemplate="body" let-credits>
+      <ng-template pTemplate="body" let-credits let-rowIndex="rowIndex">
         <tr *ngIf="!dataLoaded">
           <td>
             <p-skeleton styleClass="mb-2" height="1rem"></p-skeleton>
-            <p-skeleton styleClass="mb-2" height="1rem"></p-skeleton>
           </td>
           <td>
             <p-skeleton styleClass="mb-2" height="1rem"></p-skeleton>
@@ -38,31 +37,52 @@
           </td>
           <td>
             <p-skeleton styleClass="mb-2" height="1rem"></p-skeleton>
-            <p-skeleton styleClass="mb-2" height="1rem"></p-skeleton>
-          </td>
-          <td>
-            <p-skeleton height="1rem"></p-skeleton>
           </td>
         </tr>
 
-        <tr *ngIf="dataLoaded">
+        <tr>
           <td>
-            <div class="applied-job">
-              <span>{{ credits.creditAvailable }}</span>
-              <span>{{ credits.templateName }}</span>
-            </div>
+            <span>{{ credits.templateName }}</span>
           </td>
 
-          <td>{{ credits.nickName }}</td>
-          <!-- <td>{{ credits.templateName }}</td> -->
           <td>
-            <button
-              type="button"
-              class="custom-btn"
-              (click)="payment(credits.templateName, credits.nickName)"
-            >
-              Add Create
-            </button>
+            <ng-container *ngIf="editingRow === rowIndex; else showNickName">
+              <input
+                type="text"
+                [(ngModel)]="editedNickName"
+                class="p-inputtext p-component"
+              />
+
+              <span style="display: inline-flex; gap: 8px">
+                <button
+                  style="
+                    padding: 3px 5px;
+                    border: none;
+                    border-radius: 7px;
+                    background: rgb(21, 154, 21);
+                    color: white;
+                  "
+                  (click)="updateNickName(credits, credits.id)"
+                >
+                  Save
+                </button>
+                <button
+                  style="
+                    padding: 3px 5px;
+                    border: none;
+                    border-radius: 7px;
+                    background: rgb(98, 102, 98);
+                    color: white;
+                  "
+                  (click)="cancelEdit()"
+                >
+                  Cancel
+                </button>
+              </span>
+            </ng-container>
+            <ng-template #showNickName>
+              {{ credits.nickName }}
+            </ng-template>
           </td>
           <ng-container
             *ngIf="credits.templateName !== 'Applied Job'; else emptyCell"
@@ -71,13 +91,7 @@
               <button
                 type="button"
                 class="modify-btn"
-                (click)="
-                  navigateToVerify(
-                    credits.templateName,
-                    credits.creditAvailable,
-                    credits.nickName
-                  )
-                "
+                (click)="navigateToVerify(credits.templateName)"
               >
                 Generate Resume
               </button>
@@ -86,6 +100,16 @@
           <ng-template #emptyCell>
             <td></td>
           </ng-template>
+          <td>
+            <button
+              type="button"
+              class="edit-nick"
+              *ngIf="editingRow !== rowIndex"
+              (click)="editNickName(rowIndex, credits)"
+            >
+              Edit NickName
+            </button>
+          </td>
         </tr>
       </ng-template>
       <ng-template pTemplate="emptymessage">

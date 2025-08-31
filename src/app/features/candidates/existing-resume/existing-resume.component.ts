@@ -28,6 +28,9 @@ export class ExistingResumeComponent {
   totalRecords!: number;
   currentPage: number = 1;
   maxLimitPerPageForResume: number = 5;
+  balanceCredits: any;
+  editingRow: number | null = null;
+  editedNickName: string = '';
 
   constructor(
     private api: ApiService,
@@ -49,7 +52,7 @@ export class ExistingResumeComponent {
 
   ngOnInit() {
     this.getAvailableCredits();
-    console.log('keerthi');
+    this.getSumAvailableCredits();
   }
 
   getAvailableCredits() {
@@ -97,30 +100,17 @@ export class ExistingResumeComponent {
     }
   }
 
-  navigateToVerify(templateName: any, creditAvailable: any, nickName: any) {
-    this.ref.close();
+  navigateToVerify(templateName: any) {
+    if (this.balanceCredits > 0) {
+      this.ref.close();
+      localStorage.setItem('templateName', templateName);
 
-    if (creditAvailable > 0) {
-      const ref = this.dialog.open(VerifyCandidatesComponent, {
-        data: {
-          candidates: this.candidates,
-          payments: true,
-          candidateImage: this.candidateImageUrl,
-          resumeName: templateName,
-          nickName: nickName,
-        },
-        closable: true,
-        width: '70%',
-        height: '90%',
-        header: 'Check Your Details',
-      });
+      this.gs.setCandidateDetails(this.candidates);
+      this.gs.setCandidateImage(this.candidateImageUrl);
+      this.gs.setResumeName(templateName);
+
+      this.router.navigate(['candidate/verify-details']);
     } else {
-      this.gs.customWebMessage(
-        'Oops..!',
-        'You don’t have enough credits to check eligibility.',
-        templateName,
-        nickName
-      );
     }
   }
 
@@ -128,5 +118,62 @@ export class ExistingResumeComponent {
     this.currentPage = event.page + 1;
     this.maxLimitPerPageForResume = event.rows;
     this.getAvailableCredits();
+  }
+
+  editNickName(rowIndex: number, credits: any) {
+    this.editingRow = rowIndex;
+    this.editedNickName = credits.nickName;
+  }
+
+  updateNickName(credits: any, templateId: any) {
+    console.log('Updated Nick Name:', credits.nickName, templateId);
+
+    let status: boolean = false;
+
+    this.availableCredits.forEach((ele: any) => {
+      if (ele.nickName === this.editedNickName) {
+        status = true;
+      }
+    });
+
+    if (!status) {
+      const route = 'credits/save-nickname';
+
+      const payload = {
+        id: templateId,
+        nickName: this.editedNickName,
+      };
+
+      this.api.retrieve(route, payload).subscribe({
+        next: (response) => {
+          if (response) {
+            credits.nickName = this.editedNickName;
+            this.gs.showMessage('success', 'Update nickname successfully');
+          }
+        },
+        error: (error) => {
+          this.gs.showMessage('error', error.error?.message);
+        },
+      });
+
+      this.editingRow = null;
+    } else {
+      this.gs.showMessage('error', 'Plase enter another nickName');
+    }
+  }
+
+  cancelEdit() {
+    this.editingRow = null;
+  }
+
+  getSumAvailableCredits() {
+    const userId = sessionStorage.getItem('userId');
+
+    const route = 'credits/get-available-credits';
+    this.api.get(route).subscribe({
+      next: (response) => {
+        this.balanceCredits = response as any;
+      },
+    });
   }
 }

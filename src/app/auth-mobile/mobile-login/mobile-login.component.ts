@@ -82,6 +82,9 @@ export class MobileLoginComponent {
 
     this.api.retrieve(route, postData).subscribe({
       next: (response) => {
+
+        localStorage.clear();
+
         sessionStorage.setItem('authType', 'custom');
         sessionStorage.setItem('token', response.token);
         sessionStorage.setItem('userName', response.userName);

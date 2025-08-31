@@ -45,26 +45,6 @@ export class ChooseTemplateWayComponent {
   ngOnInIt() {}
 
   chooseTemplate() {
-    // this.ref.close();
-
-    //  const ref = this.dialog.open(ChooseTemplateComponent, {
-    //   data: {
-    //     candidates: this.candidates,
-    //     candidateImage: this.candidateImageUrl
-    //   },
-    //   closable: true,
-    //   width: '40%',
-    //   height: '90%',
-    //   styleClass: 'custom-dialog-header',
-    // });
-
-    // ref.onClose.subscribe(response => {
-    //   if (response) {
-    //     this.candidateImageUrl = response.candidateLogo;
-    //     console.log(this.candidateImageUrl)
-    //   }
-
-    // });
 
     this.ref.close();
 

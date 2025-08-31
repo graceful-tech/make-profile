@@ -39,7 +39,6 @@
   transition: background 0.3s;
   font-weight: bold;
   background: #035578;
-
 }
 
 .analysis:hover {
@@ -288,7 +287,7 @@
   justify-content: center;
   align-items: center; */
 
-  background: linear-gradient(to bottom,  #c2e4ef  0%, white 50%,skyblue 100%);
+  background: linear-gradient(to bottom, #c2e4ef 0%, white 50%, skyblue 100%);
   padding: 20px;
   border-radius: 12px;
   /* background-size: 400% 400%; */
@@ -313,7 +312,213 @@
   margin: 0 auto;
 }
 
-.heading-content{
+.home-btn {
+  border: none;
+  border-radius: 10px;
   font-weight: bold;
-   font-size: 20px;
+  font-size: 20px;
+  background-color: #6a6b64;
+  border-radius: 20px;
+  padding: 8px 10px;
+  color: white;
+}
+
+.btn-position {
+  display: flex;
+}
+
+.heading-content {
+  margin-right: 8px;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.left-side {
+  justify-content: flex-start;
+}
+
+.right-side {
+  justify-content: flex-end;
+}
+.tooltip-bubble {
+  position: relative;
+  background: linear-gradient(45deg, #0184ff, #9d159f, #f33708, #1b984f);
+  background-size: 300% 300%;
+  animation: gradientShift 3s infinite;
+  color: #f6ebeb;
+  font-size: 15px;
+  font-weight: 500;
+  padding: 8px 15px;
+  border-radius: 6px;
+  white-space: nowrap;
+  overflow: hidden; /* keeps stars inside from spilling out */
+}
+
+/* Arrow */
+.tooltip-bubble::before {
+  content: "";
+  position: absolute;
+  left: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-width: 6px;
+  border-style: solid;
+  border-color: transparent #6b0d96 transparent transparent;
+  animation: arrowGradient 3s infinite;
+}
+
+ /* .tooltip-bubble::after {
+  content: "⭐";
+  position: absolute;
+  font-size: 14px;
+  opacity: 0.8;
+  animation: sparkleAnim 3s infinite linear;
+} */
+
+/* Multiple stars OUTSIDE (add in HTML as spans) */
+.tooltip-bubble .star {
+  position: absolute;
+  font-size: 15px;
+  color: #e6250b;
+  opacity: 0.9;
+  animation: twinkle 0.5s infinite alternate;
+}
+
+
+/* Top-left */
+.tooltip-bubble .star:nth-child(1) {
+  top: -13px;
+  left: -10px;
+  animation-delay: 0.2s;
+}
+
+/* Top-center */
+.tooltip-bubble .star:nth-child(2) {
+  top: -18px;
+  left: 25%;
+  transform: translateX(-50%);
+  animation-delay: 0.4s;
+}
+
+/* Top-right */
+.tooltip-bubble .star:nth-child(3) {
+  top: -18px;
+  right: -5px;
+  transform: translateY(100%);
+  animation-delay: 0.6s;
+}
+
+/* Right-center */
+.tooltip-bubble .star:nth-child(4) {
+  top: 10%;
+  right: -15px;
+  animation-delay: 0.8s;
+}
+
+/* Bottom-right */
+.tooltip-bubble .star:nth-child(5) {
+  bottom: -14px;
+  right: -9px;
+  animation-delay: 1s;
+}
+
+/* Bottom-center */
+.tooltip-bubble .star:nth-child(6) {
+  bottom: -18px;
+  left: 60%;
+  transform: translateX(-50%);
+  animation-delay: 1.2s;
+}
+
+/* Bottom-left */
+.tooltip-bubble .star:nth-child(7) {
+  bottom: -18px;
+  right: 65px;
+  animation-delay: 1.4s;
+}
+
+/* Left-center */
+.tooltip-bubble .star:nth-child(8) {
+  top: 70%;
+  left: -10px;
+  transform: translateY(-50%);
+  animation-delay: 1.6s;
+}
+
+.tooltip-bubble .star:nth-child(9) {
+  top: -18px;
+  left: 60px;
+  transform: translateY(100%);
+  animation-delay: 0.6s;
+}
+
+
+
+/* Gradient animation */
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Sparkle inside */
+/* @keyframes sparkleAnim {
+  0%   { top: 10%; left: 15%; opacity: 0.5; transform: scale(0.8) rotate(0deg); }
+  25%  { top: 30%; left: 70%; opacity: 1; transform: scale(1.2) rotate(30deg); }
+  50%  { top: 60%; left: 40%; opacity: 0.7; transform: scale(0.9) rotate(60deg); }
+  75%  { top: 30%; left: 80%; opacity: 1; transform: scale(1.1) rotate(90deg); }
+  100% { top: 10%; left: 15%; opacity: 0.5; transform: scale(0.8) rotate(120deg); }
+} */
+
+/* Twinkling outside */
+@keyframes twinkle {
+  from { opacity: 0.2; transform: scale(0.8) rotate(0deg); }
+  to   { opacity: 1; transform: scale(1.2) rotate(180deg); }
+}
+
+.hint-btn{
+  color: #3504f7;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+
+
+.hint-popup-box {
+  display: none;
+  position: absolute;
+  top: 10rem;
+  right: 60px;
+  background: #fff;
+  border: 1px solid #514747;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  padding: 15px;
+  z-index: 1000;
+}
+
+.hint-popup-box h4 {
+  margin-top: 0;
+  color: #3b82f6;
+}
+
+.hint-popup-box ul {
+  font-size: 14px;
+  color: #333;
+  line-height: 2;
+}
+
+.close-btn {
+  margin-top: 10px;
+  background: #ef4444;
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.close-btn:hover {
+  background: #dc2626;
 }

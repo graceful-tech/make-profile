@@ -1195,3 +1195,20 @@ p {
   }
  
 }
+
+.action-buttons {
+  display: flex;   
+  gap: 10px;     
+  flex-direction: column;
+}
+
+.edit-nick{
+    background-color: #366fe0;
+    color: white;
+    border: none;
+    padding: 4px 5px;
+    font-size: 11px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-style: italic;
+}

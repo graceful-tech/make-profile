@@ -5,7 +5,7 @@
     <div class="grid">
       <div class="col-12 md:col-6 lg:col-3">
         <div class="mb-2 back-button">
-          <button class="home-btn" (click)="goBack()">Go Home</button>
+          <button class="home-btn" (click)="goBack()"> <i class="fa fa-home"></i> Go Home</button>
         </div>
       </div>
     </div>
@@ -1039,16 +1039,18 @@
 </div>
 
 <div class="button-bar">
-  <div class="button-wrapper" *ngIf="!payments">
+  <div class="button-wrapper">
+    <p-button styleClass="p-button-secondary" label="Reset" (onClick)="reset()">
+    </p-button>
+
     <p-button
       class="mr-2"
-      [label]="dataLoaded ? 'Update' : 'Updating..'"
+      [label]="dataLoaded ? 'Create' : 'Creating...'"
       [icon]="dataLoaded ? '' : 'pi pi-spin pi-spinner'"
       [disabled]="!dataLoaded"
       (onClick)="createCandidate()"
     ></p-button>
 
-    <p-button styleClass="p-button-secondary" label="Reset" (onClick)="reset()">
-    </p-button>
+    
   </div>
 </div>

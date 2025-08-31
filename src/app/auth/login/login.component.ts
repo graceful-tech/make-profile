@@ -83,6 +83,10 @@ export class LoginComponent {
 
     this.api.retrieve(route, postData).subscribe({
       next: (response) => {
+
+        localStorage.clear();
+        this.gs.navigate.next(false);
+
         sessionStorage.setItem('authType', 'custom');
         sessionStorage.setItem('token', response.token);
         sessionStorage.setItem('userName', response.userName);

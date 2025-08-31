@@ -99,8 +99,7 @@ export class CandidateCommonDetailsComponent {
     private ps: PaymentService,
     private loader: LoaderService
   ) {
-    this.candidates = this.config.data?.candidates;
-
+    
     this.gs.candidateDetails$.subscribe((response) => {
       if (response !== null && response !== undefined) {
         this.candidates = response;
@@ -127,10 +126,6 @@ export class CandidateCommonDetailsComponent {
         this.getAdditionaDetails(this.candidates.mobileNumber);
       }, 2000);
     }
-
-    // else {
-    //   this.getCandidates();
-    // }
   }
 
   ngAfterViewInit() {}
@@ -418,7 +413,11 @@ export class CandidateCommonDetailsComponent {
 
           this.gs.setCandidateDetails(response);
 
-          this.router.navigate(['candidate']);
+           if(this.candidateImageUrl !== null && this.candidateImageUrl !== undefined){
+            this.gs.setCandidateImage(this.candidateImageUrl);
+          }
+
+           this.router.navigate(['candidate/template']);
 
         },
         error: (error) => {

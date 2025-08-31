@@ -1,7 +1,9 @@
 <div class="wrapper">
   <div class="profile-wrapper">
     <div>
-      <button class="home" (click)="home()">&larr; Back to home</button>
+      <button class="home" (click)="home()">
+        <i class="fa fa-home"></i> Back to home
+      </button>
     </div>
 
     <form [formGroup]="candidateForm">
@@ -661,7 +663,7 @@
       <div class="section-heading mt-3">
         <div>Course & Certificates</div>
 
-        <div
+        <!-- <div
           style="
             color: #313133;
             font-weight: bold;
@@ -675,7 +677,7 @@
             formControlName="certificatesMandatory"
             label="Is Mandatory"
           ></p-checkbox>
-        </div>
+        </div> -->
       </div>
 
       <div formArrayName="certificates" class="border-line" id="course">
@@ -752,7 +754,7 @@
       <div class="section-heading mt-3">
         <Span>Achievements & Awards</Span>
 
-        <div
+        <!-- <div
           style="
             color: #313133;
             font-weight: bold;
@@ -766,7 +768,7 @@
             formControlName="achievementsMandatory"
             label="Is Mandatory"
           ></p-checkbox>
-        </div>
+        </div> -->
       </div>
 
       <div formArrayName="achievements" class="border-line" id="achievements">
@@ -843,7 +845,7 @@
             "
           >
             <Span>Soft Skills</Span>
-            <div
+            <!-- <div
               style="
                 color: #040404;
                 font-weight: bold;
@@ -857,7 +859,7 @@
                 formControlName="softSkillsMandatory"
                 label="Is Mandatory"
               ></p-checkbox>
-            </div>
+            </div> -->
           </div>
           <div class="input-wrapper">
             <p-chips
@@ -880,7 +882,7 @@
             "
           >
             <Span>Core Competencies</Span>
-            <div
+            <!-- <div
               style="
                 color: #313133;
                 font-weight: bold;
@@ -894,7 +896,7 @@
                 formControlName="coreCompentenciesMandatory"
                 label="Is Mandatory"
               ></p-checkbox>
-            </div>
+            </div> -->
           </div>
           <div class="input-wrapper">
             <p-chips

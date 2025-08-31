@@ -23,6 +23,7 @@ import { ChooseTemplateWayComponent } from '../../candidates/choose-template-way
 import { ChooseNewTemplateComponent } from '../choose-new-template/choose-new-template.component';
 import { MobileLoaderComponent } from 'src/app/shared/components/mobile-loader/mobile-loader.component';
 import { MobileLoaderService } from 'src/app/services/mobile.loader.service';
+import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
   selector: 'app-mobile-candidates-details',
@@ -92,6 +93,10 @@ export class MobileCandidatesDetailsComponent {
   referral: boolean = false;
   overAllCredits: any;
   totalCredits: any;
+  editingRow: number | null = null;
+  editedNickName: string = '';
+  balanceCredits: any;
+  navigate: boolean = false;
 
   constructor(
     private api: ApiService,
@@ -105,7 +110,8 @@ export class MobileCandidatesDetailsComponent {
     public ref: DynamicDialogRef,
     private ngxLoader: NgxUiLoaderService,
     private ps: PaymentService,
-    private loader: MobileLoaderService
+    private loader: MobileLoaderService,
+    private toast: ToastService
   ) {
     localStorage.removeItem('nickName');
     localStorage.removeItem('templateName');
@@ -139,13 +145,30 @@ export class MobileCandidatesDetailsComponent {
     //this.getAppliedJobs();
     this.getAvailableCredits();
     this.toggleAccountMenu();
-    this.getCandidates();
     this.createAdditionalDetailsForm();
     this.getStateNames();
-    this.getOverallCredits();
+    // this.getOverallCredits();
+    this.getSumAvailableCredits();
   }
 
-  ngAfterViewInit() {}
+  async ngAfterViewInit() {
+    await this.getCandidates();
+
+    this.gs.navigate$.subscribe((res) => {
+      if (res !== null && res !== undefined) {
+        this.navigate = res;
+      }
+
+      const candidateId = localStorage.getItem('candidateId');
+
+      if (
+        (candidateId === null || candidateId === undefined) &&
+        this.navigate === false
+      ) {
+        this.router.navigate(['mob-candidate/analyse-ai']);
+      }
+    });
+  }
 
   createCandidateForm() {
     this.candidateForm = this.fb.group({
@@ -850,16 +873,14 @@ export class MobileCandidatesDetailsComponent {
 
     this.api.upload(route, formData).subscribe({
       next: (response) => {
-        if (response) {
+        if (response !== null) {
           this.candidates = response;
           this.candidateId = response.id;
 
-          // const candidate = response as Candidate;
-          // const candidateClone = JSON.parse(JSON.stringify(candidate));
-          // this.patchCandidateForm(candidateClone);
-          // this.getCandidateImage(this.candidateId)
+          localStorage.setItem('candidateId', this.candidateId);
           this.gs.setCandidateDetails(this.candidates);
-          this.router.navigate(['mob-candidate/resume-details']);
+
+          this.router.navigate(['mob-candidate/enter-new-details']);
 
           this.ngxLoaderStop();
         } else {
@@ -905,7 +926,7 @@ export class MobileCandidatesDetailsComponent {
         styleClass: 'custom-dialog-headers',
       });
     } else {
-      this.router.navigate(['mob-candidate/enter-new-details'])
+      this.router.navigate(['mob-candidate/analyse-ai']);
     }
   }
 
@@ -1191,35 +1212,65 @@ export class MobileCandidatesDetailsComponent {
   getAppliedJobs() {
     const id = localStorage.getItem('candidateId');
 
-    const route = `applied-job?candidateId=${id}`;
-    this.api.get(route).subscribe({
-      next: (response) => {
-        this.appliedJobs = response;
-      },
+    if (id !== null && id !== undefined) {
+      const route = `applied-job?candidateId=${id}`;
+      this.api.get(route).subscribe({
+        next: (response) => {
+          this.appliedJobs = response;
+        },
+      });
+    }
+  }
+
+  getCandidates(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const route = 'candidate';
+      this.api.get(route).subscribe({
+        next: (response) => {
+          const candidate = response as Candidate;
+          if (candidate !== null) {
+            this.candidates = response as any;
+            this.candidateId = candidate?.id;
+            localStorage.setItem('candidateId', this.candidateId);
+
+            this.gs.setCandidateDetails(this.candidates);
+
+            const candidateClone = JSON.parse(JSON.stringify(candidate));
+            this.patchCandidateForm(candidateClone);
+            this.getCandidateImage(candidate?.id);
+            this.getAdditionaDetails(candidate?.mobileNumber);
+          }
+          resolve();
+        },
+        error: (err) => {
+          this.dataLoaded = false;
+          reject(err);
+        },
+      });
     });
   }
 
-  getCandidates() {
-    const route = 'candidate';
-    this.api.get(route).subscribe({
-      next: (response) => {
-        const candidate = response as Candidate;
-        if (candidate !== null) {
-          this.candidateId = candidate?.id;
-          localStorage.setItem('candidateId', this.candidateId);
-          this.candidates = candidate;
-          const candidateClone = JSON.parse(JSON.stringify(candidate));
-          this.patchCandidateForm(candidateClone);
-          this.getCandidateImage(candidate?.id);
+  // getCandidates() {
+  //   const route = 'candidate';
+  //   this.api.get(route).subscribe({
+  //     next: (response) => {
+  //       const candidate = response as Candidate;
+  //       if (candidate !== null) {
+  //         this.candidateId = candidate?.id;
+  //         localStorage.setItem('candidateId', this.candidateId);
+  //         this.candidates = candidate;
+  //         const candidateClone = JSON.parse(JSON.stringify(candidate));
+  //         this.patchCandidateForm(candidateClone);
+  //         this.getCandidateImage(candidate?.id);
 
-          //set global
-          this.gs.setCandidateDetails(candidate);
+  //         //set global
+  //         this.gs.setCandidateDetails(candidate);
 
-          this.getAdditionaDetails(candidate?.mobileNumber);
-        }
-      },
-    });
-  }
+  //         this.getAdditionaDetails(candidate?.mobileNumber);
+  //       }
+  //     },
+  //   });
+  // }
 
   getAvailableCredits() {
     const id = sessionStorage.getItem('userId');
@@ -1234,18 +1285,12 @@ export class MobileCandidatesDetailsComponent {
       next: (response) => {
         if (response?.results.length > 0) {
           this.availableCredits = response?.results as any;
-          this.totalCreditsAvailable = this.availableCredits.reduce(
-            (sum: any, credit: { creditAvailable: any }) =>
-              sum + (credit.creditAvailable || 0),
-            0
-          );
           if (response?.totalRecords > 0) {
             this.toggleSection('resume');
           }
-
           this.refer = true;
 
-          localStorage.setItem('referralAmount','paid');
+          localStorage.setItem('referralAmount', 'paid');
         }
         this.totalRecords = response?.totalRecords;
       },
@@ -1375,30 +1420,27 @@ export class MobileCandidatesDetailsComponent {
     this.router.navigate(['mob-candidate/view-history']);
   }
 
-  navigateToVerify(templateName: any, availableCredits: any, nickName: any) {
-    if (availableCredits > 0) {
+  navigateToVerify(templateName: any) {
+    if (this.balanceCredits > 0) {
       localStorage.setItem('templateName', templateName);
       this.gs.setResumeName(templateName);
 
-      localStorage.setItem('nickName', nickName);
-      this.gs.setNickName(nickName);
-
       if (
-        this.candidateImageUrl != null &&
+        this.candidateImageUrl !== null &&
         this.candidateImageUrl !== undefined
       ) {
         this.gs.setCandidateImage(this.candidateImageUrl);
       }
+      this.gs.setCandidateDetails(this.candidates);
+
       this.router.navigate(['mob-candidate/edit-candidate']);
     } else {
-      this.gs.customMobileMessageWithNickName(
-        'Oops..!',
-        'You don’t have enough credits to check eligibility.',
-        templateName,
-        nickName
-      );
-
-      // this.gs.showMobileMessage('error','Pay to use this template');
+      // this.gs.customMobileMessageWithNickName(
+      //   'Oops..!',
+      //   'You don’t have enough credits to check eligibility.',
+      //   templateName,
+      //   nickName
+      // );
     }
   }
 
@@ -1660,11 +1702,6 @@ export class MobileCandidatesDetailsComponent {
       next: (response) => {
         if (response) {
           this.availableCredits = response?.results as any;
-          this.totalCreditsAvailable = this.availableCredits.reduce(
-            (sum: any, credit: { creditAvailable: any }) =>
-              sum + (credit.creditAvailable || 0),
-            0
-          );
         }
         this.totalRecords = response?.totalRecords;
       },
@@ -1677,19 +1714,19 @@ export class MobileCandidatesDetailsComponent {
     this.getAvailableCreditss();
   }
 
-   referAndEarn() {
+  referAndEarn() {
     this.referral = !this.referral;
   }
 
-   goToRewards(){
+  goToRewards() {
     this.router.navigate(['mob-candidate/rewards']);
   }
 
-  closeRewards(){
+  closeRewards() {
     this.referral = false;
   }
 
-   getOverallCredits() {
+  getOverallCredits() {
     const id = sessionStorage.getItem('userId');
 
     const route = 'credits/get-allcredits';
@@ -1700,10 +1737,67 @@ export class MobileCandidatesDetailsComponent {
           this.overAllCredits = response as any;
 
           this.totalCredits = this.overAllCredits?.creditAvailable;
-      
         }
       },
     });
   }
 
+  editNickName(rowIndex: number, credits: any) {
+    this.editingRow = rowIndex;
+    this.editedNickName = credits.nickName;
+  }
+
+  updateNickName(credits: any, templateId: any) {
+    console.log('Updated Nick Name:', credits.nickName, templateId);
+
+    let status: boolean = false;
+
+    this.availableCredits.forEach((ele: any) => {
+      if (ele.nickName === this.editedNickName) {
+        status = true;
+      }
+    });
+
+    if (!status) {
+      const route = 'credits/save-nickname';
+
+      const payload = {
+        id: templateId,
+        nickName: this.editedNickName,
+      };
+
+      this.api.retrieve(route, payload).subscribe({
+        next: (response) => {
+          if (response) {
+            credits.nickName = this.editedNickName;
+            
+            this.toast.showToast('success','NickName updated successfully')
+          }
+        },
+        error: (error) => {
+          this.ngxLoaderStop();
+          this.gs.showMessage('error', error.error?.message);
+        },
+      });
+
+      this.editingRow = null;
+    } else {
+      this.gs.showMessage('Error', 'Plase enter another nickName');
+    }
+  }
+
+  cancelEdit() {
+    this.editingRow = null;
+  }
+
+  getSumAvailableCredits() {
+    const userId = sessionStorage.getItem('userId');
+
+    const route = 'credits/get-available-credits';
+    this.api.get(route).subscribe({
+      next: (response) => {
+        this.balanceCredits = response as any;
+      },
+    });
+  }
 }

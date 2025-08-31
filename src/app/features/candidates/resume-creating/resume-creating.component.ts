@@ -1163,7 +1163,6 @@ export class ResumeCreatingComponent {
     this.api.get(route).subscribe({
       next: (response) => {
         this.balanceCredits = response as any;
-
         const balance = response;
       },
     });

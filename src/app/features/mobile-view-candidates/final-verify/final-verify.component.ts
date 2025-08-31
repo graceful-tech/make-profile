@@ -82,6 +82,7 @@ export class FinalVerifyComponent {
   achievementsEmptyFields: boolean = false;
   isLoading: boolean = false;
   isVerifying: boolean = false;
+  balanceCredits: any;
 
   constructor(
     private api: ApiService,
@@ -97,12 +98,17 @@ export class FinalVerifyComponent {
     private ps: PaymentService,
     private loader: MobileLoaderService
   ) {
-    this.gs.resumeName$.subscribe((response) => {
-      this.templateName = response;
+   
+    this.gs.candidateDetails$.subscribe((response) => {
+      if (response !== null) {
+        this.candidates = response;
+      }
     });
 
-    this.gs.candidateDetails$.subscribe((response) => {
-      this.candidatesUpdateData = response;
+    this.gs.resumeName$.subscribe((response) => {
+      if (response !== null) {
+        this.templateName = response;
+      }
     });
   }
 
@@ -113,22 +119,32 @@ export class FinalVerifyComponent {
     this.getLanguages();
     this.getMaritalStatus();
     this.getFieldOfStudy();
+    this.getAvailableCredits();
 
     if (this.templateName === null || this.templateName === undefined) {
       this.templateName = localStorage.getItem('templateName');
     }
 
-    if (
-      this.candidatesUpdateData !== null &&
-      this.candidatesUpdateData !== undefined
-    ) {
-      this.candidateId = this.candidatesUpdateData?.id;
-      this.candidates = this.candidatesUpdateData;
+    if (this.candidates !== null && this.candidates !== undefined) {
+    
+      this.candidateId = this.candidates?.id;
+
+       this.gs.candidateImage$.subscribe((response) => {
+        if (response !== null) {
+          this.candidateImageUrl = response;
+        }
+      });
 
       this.goToOpenAi();
     } else {
       this.getCandidates();
     }
+
+     this.gs.candidateImage$.subscribe((response) => {
+        if (response !== null) {
+          this.candidateImageUrl = response;
+        }
+      }); 
   }
 
   ngAfterViewInit() {}
@@ -229,19 +245,6 @@ export class FinalVerifyComponent {
       if (payload.fresher) {
         payload.experiences = [];
       }
-
-      // if (payload.fresher) {
-      // if (Object.is(payload.collegeProject[0].collegeProjectName, '')) {
-      //     payload.collegeProject = [];
-      //   } else {
-      //     payload.collegeProject = payload.collegeProject.map((proj: any) => ({
-      //       ...proj,
-      //       collegeProjectSkills: Array.isArray(proj.collegeProjectSkills)
-      //         ? proj.collegeProjectSkills.join(', ')
-      //         : proj.collegeProjectSkills
-      //     }));
-      //   }
-      // }
 
       if (!payload.fresher) {
         if (Object.is(payload.experiences?.[0]?.companyName, '')) {
@@ -977,7 +980,7 @@ export class FinalVerifyComponent {
 
           const candidateClone = JSON.parse(JSON.stringify(candidate));
           this.patchCandidateForm(candidateClone);
-          // this.getCandidateImage(candidate?.id);
+           this.getCandidateImage(candidate?.id);
 
           this.getResumeContent('Summary');
         }
@@ -996,10 +999,9 @@ export class FinalVerifyComponent {
         if (response.size > 0) {
           this.candidateImageUrl = URL.createObjectURL(response);
           this.dataLoaded = true;
-
           //set global image
           if (
-            this.candidateImageUrl !== null &&
+          this.candidateImageUrl !== null &&
             this.candidateImageUrl !== undefined
           ) {
             this.gs.setCandidateImage(this.candidateImageUrl);
@@ -1171,5 +1173,52 @@ export class FinalVerifyComponent {
         this.gs.showMobileMessage('Error', 'Please try after some time');
       },
     });
+  }
+
+  getAvailableCredits() {
+    const userId = sessionStorage.getItem('userId');
+
+    const route = `credits/get-available-credits?userId=${userId}`;
+
+    this.api.get(route).subscribe({
+      next: (response) => {
+        this.balanceCredits = response as any;
+
+        const balance = response;
+      },
+    });
+  }
+
+
+   createFinalResume() {
+    if (
+      this.balanceCredits === null ||
+      this.balanceCredits === undefined ||
+      this.balanceCredits <= 0
+    ) {
+      this.payRupees();
+    } else {
+      this.createCandidate();
+    }
+  }
+
+  async payRupees() {
+    const confirmedAmount = prompt('Enter final amount in ₹', '10');
+
+    const amountNum = Number(confirmedAmount);
+
+    if (!isNaN(amountNum) && Number.isInteger(amountNum) && amountNum >= 10) {
+      const amount = amountNum * 100;
+      const paymentType = 'Resume';
+
+      this.ps.initRazorPays(() => {
+        setTimeout(() => {
+          this.createCandidate();
+        }, 2000);
+      });
+      this.ps.payWithRazorPay(amount);
+    } else {
+      alert('Please enter a valid amount ₹10 or more.');
+    }
   }
 }

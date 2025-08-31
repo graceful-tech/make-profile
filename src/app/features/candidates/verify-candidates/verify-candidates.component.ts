@@ -90,8 +90,8 @@ export class VerifyCandidatesComponent {
   extraSkills: boolean = true;
   qualification: boolean = true;
   nickName: any;
-  templateName:any;
-  isUploading:boolean =false;
+  templateName: any;
+  isUploading: boolean = false;
 
   constructor(
     private api: ApiService,
@@ -114,17 +114,23 @@ export class VerifyCandidatesComponent {
     // this.fieldsName = this.config.data?.fieldsName;
     // this.nickName = this.config.data?.nickName;
 
-    this.gs.candidateDetails$.subscribe((response)=>{
-     this.candidates = response
-    })
+    this.gs.candidateDetails$.subscribe((response) => {
+      if(response !== null){
+      this.candidates = response;
+      }
+    });
 
-     this.gs.candidateImage$.subscribe((response)=>{
-     this.candidateImageUrl = response
-    })
+    this.gs.candidateImage$.subscribe((response) => {
+      if(response !== null){
+      this.candidateImageUrl = response;
+      }
+    });
 
-     this.gs.resumeName$.subscribe((response)=>{
-     this.templateName = response
-    })
+    this.gs.resumeName$.subscribe((response) => {
+      if(response !== null){
+      this.templateName = response;
+      }
+    });
   }
 
   ngOnInit() {
@@ -145,7 +151,11 @@ export class VerifyCandidatesComponent {
     }
   }
 
-  ngAfterViewInit() {}
+  ngAfterViewInit() {
+     if (this.candidateImageUrl === null && this.candidateImageUrl === undefined) {
+    this.getCandidateImage(this.candidateId);
+    }
+  }
 
   createCandidateForm() {
     this.candidateForm = this.fb.group({
@@ -413,7 +423,7 @@ export class VerifyCandidatesComponent {
           this.returnCandidate.candidateLogo = this.candidateImageUrl;
           this.candidates = response;
           response.candidateLogo = this.candidateImageUrl;
-        
+
           this.isUploading = false;
 
           this.getResumeContentFromOpenAi(response);
@@ -432,7 +442,7 @@ export class VerifyCandidatesComponent {
       });
       this.dataLoaded = true;
     } else {
-       this.isUploading = false;
+      this.isUploading = false;
       this.showError = true;
       this.gs.showMessage('Error', 'Enter mandatory details');
     }
@@ -944,7 +954,6 @@ export class VerifyCandidatesComponent {
       ...this.candidates,
       templateName: this.templateName,
     };
-    
 
     this.api.retrieve(route, payload).subscribe({
       next: (response: any) => {
@@ -1087,10 +1096,10 @@ export class VerifyCandidatesComponent {
     });
   }
 
-  getResumeContentFromOpenAi(candidateDetails:any) {
-      this.close(this.returnCandidate);
+  getResumeContentFromOpenAi(candidateDetails: any) {
+    this.close(this.returnCandidate);
 
-     this.isUploading = true;
+    this.isUploading = true;
 
     const route = 'resume/get-content';
     const payload = { ...candidateDetails };
@@ -1109,22 +1118,19 @@ export class VerifyCandidatesComponent {
       },
     });
   }
-   
 
-  openCreateResumeDialog(candidate: any,) {
-  
-    if(this.templateName === null || this.templateName === undefined){
-       this.templateName =  localStorage.getItem('templateName');
+  openCreateResumeDialog(candidate: any) {
+    if (this.templateName === null || this.templateName === undefined) {
+      this.templateName = localStorage.getItem('templateName');
     }
-   
+
     this.gs.setCandidateDetails(candidate);
-    this.gs.setResumeName(this.templateName)
+    this.gs.setResumeName(this.templateName);
 
     this.router.navigate(['candidate/generate-resume']);
-
   }
 
-  backBtn(){
-    this.router.navigate(['candidate/template'])
+  backBtn() {
+    this.router.navigate(['candidate/template']);
   }
 }

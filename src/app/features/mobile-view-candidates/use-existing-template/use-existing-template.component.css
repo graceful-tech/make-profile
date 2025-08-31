@@ -28,6 +28,7 @@
   cursor: pointer;
   /* margin-right: 15px; */
   font-style: italic;
+  font-weight: bold;
 }
 
 .applied-job {
@@ -38,4 +39,47 @@
 .applied-job span {
   margin-top: 3px;
   margin-bottom: 3px;
+}
+
+.edit-nick{
+  border: none;
+  background: #366fe0;
+  color: white;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 11px;
+  font-style: italic;
+  padding: 6px 5px;
+}
+
+.table-container {
+  width: 100%;
+  margin-left: 0;
+  padding: 10px;
+}
+
+p-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+p-table th,
+p-table td {
+  padding: 8px;
+  text-align: center;
+  border: 1px solid #ccc;
+}
+
+p-table th {
+  background-color: #f4f4f4;
+  font-weight: bold;
+}
+
+ 
+.back-btn{
+  border: none;
+  border-radius: 10px;
+  padding: 8px 10px;
+  background: #034b4d;
+  color: white;
 }

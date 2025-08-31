@@ -144,29 +144,21 @@ export class MobileChosseTemplateComponent {
 
   openNickNameField(templateName: any) {
     localStorage.setItem('templateName', templateName);
-    const ref = this.dialog.open(NickNameMobileComponent, {
-      data: {
-        resume: templateName,
-      },
-      closable: true,
-      header: 'Enter the Nick Name',
-      styleClass: 'for-mobile-payment',
-    });
-
-    // ref.onClose.subscribe(response => {
-    //   if (response) {
-
-    //     this.candidates = response;
-    //     this.candidateId = response.id;
-    //     const candidate = response as Candidate
-    //     const candidateClone = JSON.parse(JSON.stringify(candidate));
-    //     this.patchCandidateForm(candidateClone);
-    //     this.candidateImageUrl = response.candidateLogo;
-
-    //     this.resume = null;
-
-    //   }
+    // const ref = this.dialog.open(NickNameMobileComponent, {
+    //   data: {
+    //     resume: templateName,
+    //   },
+    //   closable: true,
+    //   header: 'Enter the Nick Name',
+    //   styleClass: 'for-mobile-payment',
     // });
+
+    if(this.candidates !== null && this.candidates === undefined){
+    this.gs.setCandidateDetails(this.candidates);
+    }
+    this.gs.setResumeName(templateName);
+    
+    this.router.navigate(['mob-candidate/edit-candidate']);
   }
 
   getCandidateById(id: any) {

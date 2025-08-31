@@ -6,7 +6,7 @@
   border-radius: 6px; */
 }
 .profile-wrapper {
-  background: #e8e6e6;
+  background: #f4f0f0;
   padding: 1.2rem 1.5rem 1.5rem 1.5rem;
   border-radius: 5px;
   box-shadow: 0 1px 2px 0 rgb(0 0 0/8%);
@@ -322,7 +322,12 @@ img {
   border: none;
   color: white;
   border-radius: 8px;
-  padding: 10px;
+  padding: 10px 15px;
+  font-weight: bold;
+}
+
+.home-btn:hover{
+  background: #222f66;
 }
 
 .header-image {
@@ -338,4 +343,14 @@ img {
   justify-content: center;  
   padding: 10px 0;
   color: white;
+}
+
+.create-resumebtn{
+  border: none;
+  border-radius: 8px;
+  color: white;
+  background: #307b15;
+  padding: 8px 15px;
+  font-size: 15px;
+  font-weight: bold;
 }

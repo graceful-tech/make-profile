@@ -29,6 +29,8 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { AnalyseWithAiComponent } from './components/analyse-with-ai/analyse-with-ai.component';
 import { NewDetailsComponent } from './components/new-details/new-details.component';
 import { MobileAnalyseAiComponent } from './components/mobile-analyse-ai/mobile-analyse-ai.component';
+import { ToastMessageComponent } from './components/toast-message/toast-message.component';
+
  
 @NgModule({
   declarations: [
@@ -51,7 +53,8 @@ import { MobileAnalyseAiComponent } from './components/mobile-analyse-ai/mobile-
     ResumeEditorComponent,
     AnalyseWithAiComponent,
     NewDetailsComponent,
-    MobileAnalyseAiComponent
+    MobileAnalyseAiComponent,
+   
     
    ],
   imports: [
@@ -64,7 +67,8 @@ import { MobileAnalyseAiComponent } from './components/mobile-analyse-ai/mobile-
     MatIconModule,
     MatProgressSpinnerModule,
     MatDialogModule,
-    DragDropModule
+    DragDropModule,
+    
   ],
   exports: [
     CommonModule,
@@ -97,7 +101,7 @@ import { MobileAnalyseAiComponent } from './components/mobile-analyse-ai/mobile-
     DragDropModule,
     AnalyseWithAiComponent,
     NewDetailsComponent,
-    MobileAnalyseAiComponent
+    MobileAnalyseAiComponent,
   ],
 })
 export class SharedModule {}

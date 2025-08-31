@@ -404,10 +404,16 @@ margin-top: 10px;
   color: white;
   border: none;
   border-radius: 13px;
-  padding: 10px 5px;
+  padding: 10px 15px;
+  font-weight: bold;
+  font-size: 15px;
 }
 
 .home:hover{
   background: #00ad0c;
   color: white;
+}
+
+.dark-border {
+  border: 0.5px solid #aca3a3;
 }

@@ -15,15 +15,16 @@ import { LoaderService } from 'src/app/services/loader.service';
   selector: 'app-mobile-analyse-ai',
   standalone: false,
   templateUrl: './mobile-analyse-ai.component.html',
-  styleUrl: './mobile-analyse-ai.component.css'
+  styleUrl: './mobile-analyse-ai.component.css',
 })
 export class MobileAnalyseAiComponent {
-candidateId: any;
+  candidateId: any;
   multipartFile: any;
   resume: any;
   candidates: any;
   isUploading: boolean = false;
   isAnalysing: boolean = false;
+  analysisText: string = '';
 
   constructor(
     private api: ApiService,
@@ -42,6 +43,13 @@ candidateId: any;
 
   togglePopup() {
     const popup = document.getElementById('examplePopup');
+    if (popup !== null) {
+      popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
+    }
+  }
+
+   hintPopup() {
+    const popup = document.getElementById('hintPopup');
     if (popup !== null) {
       popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
     }
@@ -88,7 +96,7 @@ candidateId: any;
 
     this.api.upload(route, formData).subscribe({
       next: (response) => {
-        if (response!== null) {
+        if (response !== null) {
           this.ngxLoaderStop();
           this.candidates = response;
           this.candidateId = response.id;
@@ -119,33 +127,44 @@ candidateId: any;
     this.router.navigate(['mob-candidate/enter-new-details']);
   }
 
+  analyseWithAi(content: any) {
+   if (content.replace(/\s/g, '').length > 400 && content.replace(/\s/g, '').length <= 3000) {
+      this.isAnalysing = true;
 
-  analyseWithAi(content:any) {
-    this.isAnalysing = true;
+      const route = 'open-ai/get-details';
 
-    const route = 'open-ai/get-details';
+      const username = sessionStorage.getItem('userName');
 
-    const username = sessionStorage.getItem('userName');
+      const formData = new FormData();
+      formData.append('content', content);
 
-    const formData = new FormData();
-    formData.append('content', content);
- 
-    this.api.upload(route, formData).subscribe({
-      next: (response) => {
-         this.isAnalysing = true;
-        if(response!== null){
-           this.gs.setCandidateDetails(response);
-           this.router.navigate(['mob-candidate/enter-new-details']);
-        }
-      },
-      error: (error) => {
-        this.isAnalysing = true;
-        this.gs.showMessage('error',error.error?.message);
-        window.location.reload();
-      },
-    });
+      this.api.upload(route, formData).subscribe({
+        next: (response) => {
+          this.isAnalysing = true;
+          if (response !== null) {
+            this.gs.setCandidateDetails(response);
+            this.router.navigate(['mob-candidate/enter-new-details']);
+          }
+        },
+        error: (error) => {
+          this.isAnalysing = true;
+          this.gs.showMobileMessage('error', error.error?.message);
+          window.location.reload();
+        },
+      });
+    } else {
+       
+      this.gs.showMobileMessage('Note!..', 'Please enter more details | below count should between 400 to 3000 ');
+    }
   }
 
- 
+  getCharacterCount(text: string): number {
+  if (!text) return 0;
+  return text.replace(/\s/g, '').length;  
+}
 
+  goToHome(){
+    this.gs.setNavigate(true);
+    this.router.navigate(['mob-candidate']);
+  }
 }

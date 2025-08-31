@@ -307,6 +307,7 @@ img {
   padding: 5px 10px 5px 10px;
   border-radius: 7px;
   border: none;
+  font-weight: bold;
  }
 
  
@@ -315,4 +316,13 @@ img {
     border-bottom: 2px dashed #e5e7eb;
     margin-top: 1rem;
     margin-bottom: 1rem;
+}
+
+.generate-resumebtn{
+  border:none;
+  border-radius: 8px;
+  padding: 8px 13px;
+  background: rgb(7, 103, 7);
+  color: white;
+  font-weight: bold;
 }

@@ -1,8 +1,7 @@
 import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NgxUiLoaderService } from 'ngx-ui-loader';
-import {
+ import {
   DialogService,
   DynamicDialogConfig,
   DynamicDialogRef,
@@ -19,8 +18,6 @@ import { Achievements } from 'src/app/models/candidates/achievements';
 import { PaymentService } from 'src/app/services/payment.service';
 import { CollegeProject } from 'src/app/models/candidates/college-project';
 import { DatePipe } from '@angular/common';
-import { PaymentOptionComponent } from '../../candidates/payments/payment-option/payment-option.component';
-import { MobileLoaderComponent } from 'src/app/shared/components/mobile-loader/mobile-loader.component';
 import { MobileLoaderService } from 'src/app/services/mobile.loader.service';
 
 @Component({
@@ -71,6 +68,7 @@ export class MobileEditCandidatesComponent {
   candidatesUpdateData: any;
   resumeName: any;
   nickName: any;
+  isUploading:boolean=false;
 
   constructor(
     private api: ApiService,
@@ -85,7 +83,27 @@ export class MobileEditCandidatesComponent {
     private config: DynamicDialogConfig,
     private ps: PaymentService,
     private loader: MobileLoaderService
-  ) {}
+  ) {
+    
+    this.gs.candidateDetails$.subscribe((response) => {
+      if (response !== null) {
+        this.candidates = response;
+      }
+    });
+
+    this.gs.resumeName$.subscribe((response) => {
+      if (response !== null) {
+        this.templateName = response;
+      }
+    });
+
+    this.gs.candidateImage$.subscribe((response) => {
+      if (response !== null) {
+        this.candidateImageUrl = response;
+      }
+    });
+
+  }
 
   ngOnInit() {
     this.createCandidateForm();
@@ -95,42 +113,23 @@ export class MobileEditCandidatesComponent {
     this.getMaritalStatus();
     this.getFieldOfStudy();
 
-    this.gs.resumeName$.subscribe((response) => {
-      if (response !== null) {
-        this.resumeName = response;
-      }
-    });
-    this.gs.nickName$.subscribe((response) => {
-      if (response !== null) {
-        this.nickName = response;
-      }
-    });
+    if (this.candidates !== null && this.candidates !== undefined) {
+      this.candidateId = this.candidates?.id;
 
-    // if(this.candidatesUpdateData !== null && this.candidatesUpdateData !== undefined){
-    //    this.candidateId = this.candidatesUpdateData?.id;
-    //   this.candidates = this.candidatesUpdateData;
+      const candidateClone = JSON.parse(JSON.stringify(this.candidates));
+      this.patchCandidateForm(candidateClone);
 
-    //   const candidateClone = JSON.parse(JSON.stringify(this.candidatesUpdateData));
-    //   this.patchCandidateForm(candidateClone);
+    } else {
+      this.getCandidates();
+    }
 
-    //   this.gs.candidateImage$.subscribe(response =>{
-    //     if(response !== null){
-    //     this.candidateImageUrl = response
-    //     }
-    //   })
-    // }
-    //   else{
-    this.getCandidates();
-    // }
-
-    this.gs.candidateImage$.subscribe((response) => {
-      if (response !== null) {
-        this.candidateImageUrl = response;
-      }
-    });
   }
 
-  ngAfterViewInit() {}
+  ngAfterViewInit() {
+    if (this.candidateImageUrl === null && this.candidateImageUrl === undefined) {
+    this.getCandidateImage(this.candidateId);
+    }
+  }
 
   createCandidateForm() {
     this.candidateForm = this.fb.group({
@@ -204,7 +203,7 @@ export class MobileEditCandidatesComponent {
   }
 
   generatingResume() {
-    this.loader.start();
+    this.isUploading =true;
     if (this.candidateForm.valid) {
       this.dataLoaded = false;
 
@@ -232,18 +231,6 @@ export class MobileEditCandidatesComponent {
         payload.experiences = [];
       }
 
-      // if (payload.fresher) {
-      //   if (Object.is(payload.collegeProject[0].collegeProjectName, '')) {
-      //     payload.collegeProject = [];
-      //   } else {
-      //     payload.collegeProject = payload.collegeProject.map((proj: any) => ({
-      //       ...proj,
-      //       collegeProjectSkills: Array.isArray(proj.collegeProjectSkills)
-      //         ? proj.collegeProjectSkills.join(', ')
-      //         : proj.collegeProjectSkills
-      //     }));
-      //   }
-      // }
 
       if (!payload.fresher) {
         if (Object.is(payload.experiences?.[0]?.companyName, '')) {
@@ -421,21 +408,24 @@ export class MobileEditCandidatesComponent {
           }
           response.candidateLogo = this.candidateImageUrl;
 
-          this.gs.setCandidateDetails(this.candidates);
+ 
+          this.isUploading =false;
 
-          this.loader.stop();
-
-          if (this.resumeName !== null && this.resumeName !== undefined) {
-            this.gs.setResumeName(this.resumeName);
-            this.router.navigate(['mob-candidate/verify-components']);
+          if (this.templateName !== null && this.templateName !== undefined) {
+            this.gs.setResumeName(this.templateName);
+            this.gs.setCandidateDetails(this.candidates);
+            this.gs.setCandidateImage(this.candidateImageUrl);
+            this.router.navigate(['/mob-candidate/final-verify']);
           } else {
             const resumeName = localStorage.getItem('templateName');
-            this.gs.setResumeName(this.resumeName);
-            this.router.navigate(['mob-candidate/verify-components']);
+            this.gs.setResumeName(this.templateName);
+            this.gs.setCandidateDetails(this.candidates);
+            this.gs.setCandidateImage(this.candidateImageUrl);
+            this.router.navigate(['/mob-candidate/final-verify']);
           }
         },
         error: (error) => {
-          this.loader.stop();
+          this.isUploading =false;
           this.dataLoaded = true;
           window.alert('Error in Updating please try again');
           console.log(error);
@@ -443,7 +433,7 @@ export class MobileEditCandidatesComponent {
       });
       this.dataLoaded = true;
     } else {
-      this.loader.stop();
+       this.isUploading =false;
       this.showError = true;
       window.alert('Enter the mandatory details');
     }
@@ -462,7 +452,7 @@ export class MobileEditCandidatesComponent {
   createExperience(): FormGroup {
     return this.fb.group({
       id: [''],
-      companyName: ['' ],
+      companyName: [''],
       role: [''],
       experienceYearStartDate: [''],
       experienceYearEndDate: [''],
@@ -929,8 +919,8 @@ export class MobileEditCandidatesComponent {
 
   next() {
     this.gs.setCandidateDetails(this.candidates);
-    if (this.resumeName !== null && this.resumeName !== undefined) {
-      this.gs.setResumeName(this.resumeName);
+    if (this.templateName !== null && this.templateName !== undefined) {
+      this.gs.setResumeName(this.templateName);
     }
     this.router.navigate(['mob-candidate/verify-components']);
   }
@@ -975,8 +965,11 @@ export class MobileEditCandidatesComponent {
     if (this.candidateImageUrl !== null) {
       this.gs.setCandidateImage(this.candidateImageUrl);
     }
-    this.gs.setResumeName(this.resumeName);
+    this.gs.setResumeName(this.templateName);
     this.router.navigate(['mob-candidate/choose-Template']);
+  }
+  templateName(templateName: any) {
+    throw new Error('Method not implemented.');
   }
 
   getCandidates() {
@@ -987,6 +980,7 @@ export class MobileEditCandidatesComponent {
         if (candidate !== null) {
           this.candidateId = candidate?.id;
           this.candidates = candidate;
+
           const candidateClone = JSON.parse(JSON.stringify(candidate));
           this.patchCandidateForm(candidateClone);
           this.getCandidateImage(candidate?.id);

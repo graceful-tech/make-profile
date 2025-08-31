@@ -1,3 +1,20 @@
+<div class="overlay" *ngIf="isUploading">
+  <div class="spinner-container">
+    <mat-spinner
+      [diameter]="80"
+      strokeWidth="5"
+      class="custom-blue"
+    ></mat-spinner>
+    <p class="loading-text">
+      Verifying Details<span class="dot dot1">.</span
+      ><span class="dot dot2">.</span><span class="dot dot3">.</span>
+    </p>
+  </div>
+</div>
+
+
+
+
 <Header>
   <div class="header-image">
     <h5>Verify your details</h5>
@@ -780,13 +797,17 @@
     <app-make-profile-divider></app-make-profile-divider>
 
     <div class="button-bar">
+    <div class="button-wrapper">
+
+      <button type="button" class="back-btn" (click)="goBack()"><i class="fa fa-arrow-left"></i> Back</button> 
+      </div>
       <div class="button-wrapper">
-        <p-button type="button" label="Back" (click)="goBack()"></p-button>
-        <p-button
+        
+        <button
           type="button"
-          label="Next"
-          (onClick)="generatingResume()"
-        ></p-button>
+           class="next-btn"
+          (click)="generatingResume()"
+        >Next <i class="fa fa-arrow-right"></i></button>
       </div>
     </div>
   </div>

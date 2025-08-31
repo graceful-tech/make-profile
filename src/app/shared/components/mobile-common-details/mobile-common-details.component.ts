@@ -107,7 +107,7 @@ export class MobileCommonDetailsComponent {
       this.createAdditionalDetailsForm();
       this.getStateNames();
       
-       if (this.candidates !== null && this.candidates !== undefined) {
+    if (this.candidates !== null && this.candidates !== undefined) {
       this.candidateId = this.candidates.id;
       const candidateClone = JSON.parse(JSON.stringify(this.candidates));
       this.patchCandidateForm(candidateClone);
@@ -403,15 +403,18 @@ export class MobileCommonDetailsComponent {
          // response.candidateLogo = this.candidateImageUrl; 
   
           this.gs.setCandidateDetails(this.candidates);
-  
+          
+          if(this.candidateImageUrl !== null && this.candidateImageUrl !== undefined){
+            this.gs.setCandidateImage(this.candidateImageUrl);
+          }
+         
           if(!response?.fresher){
           this.saveCandidateAddtionalDetails(this.candidateId,response?.mobileNumber);
           }
   
          this.loader.stop();
           
-          window.alert('Created Successfully');
-          this.router.navigate(['mob-candidate']);
+        this.router.navigate(['mob-candidate/choose-Template']);
   
         },
         error: (error) => {

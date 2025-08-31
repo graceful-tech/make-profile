@@ -17,6 +17,8 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ViewAccountComponent } from './features/users/view-account/view-account.component';
 import { EditUserComponent } from './features/users/edit-user/edit-user.component';
 import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
+import { ToastrModule } from 'ngx-toastr';
+import { ToastMessageComponent } from './shared/components/toast-message/toast-message.component';
 
 
 
@@ -27,10 +29,8 @@ import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.
     CreateAccountComponent,
     ViewAccountComponent,
     EditUserComponent,
-    ForgotPasswordComponent
-   
-    
-
+    ForgotPasswordComponent,
+    ToastMessageComponent
   ],
   imports: [
     BrowserModule,
@@ -40,7 +40,11 @@ import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.
     ReactiveFormsModule,
     LayoutModule,
     NgIdleModule.forRoot(),
-    FormsModule
+    FormsModule,
+    ToastrModule.forRoot({
+      positionClass: 'toast-top-right',
+      timeOut: 4000
+    })
   ],
   providers: [
     DialogService,

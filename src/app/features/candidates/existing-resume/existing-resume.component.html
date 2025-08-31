@@ -4,34 +4,85 @@
     <p-table class="mobile" [value]="availableCredits">
       <ng-template pTemplate="header">
         <tr>
-          <!-- <th style="width: 10%;">CREDIT USED</th> -->
-          <th style="width: 10%;">PAYMENT DATE</th>
-          <th style="width: 10%;">CREDIT AVAILABLE</th>
-          <th style="width: 10%;">TEMPLATE NAME</th>
-          <th style="width: 10%;">NICK NAME</th>
-          <th style="width: 10%;">PAY AMOUNT</th>
-          <th style="width: 10%;">RECREATE RESUME</th>
+           <th style="width: 10%">CREATED DATE</th>
+            <th style="width: 10%">TEMPLATE NAME</th>
+            <th style="width: 10%">NICK NAME</th>
+            <th style="width: 10%">RECREATE RESUME</th>
+            <th style="width: 10%">RENAME NICINAME</th>
         </tr>
       </ng-template>
-      <ng-template pTemplate="body" let-credits>
+      <ng-template pTemplate="body" let-credits let-rowIndex="rowIndex">
         <tr>
-          <!-- <td>{{ credits.creditUsed ?? 0 }}</td> -->
-          <td>{{ credits.paymentDate }}</td>
-          <td>{{ credits.creditAvailable }}</td>
-          <td>{{ credits.templateName }}</td>
-          <td>{{ credits.nickName }}</td>
-          <td>
-            <button type="button" class="custom-btn" (click)="payment(credits.templateName,credits.nickName)">Add Credit</button>
-          </td>
-          <ng-container *ngIf="credits.templateName !== 'Applied Job'; else emptyCell">
+            <td>{{ credits.createdDate | date : "dd-MM-yyyy HH:mm" }}</td>
+            <td>{{ credits.templateName }}</td>
+
             <td>
-              <button type="button" class="modify-btn" (click)="navigateToVerify(credits.templateName,credits.creditAvailable,credits.nickName)">Generate Resume</button>
+              <ng-container *ngIf="editingRow === rowIndex; else showNickName">
+                <input
+                  type="text"
+                  [(ngModel)]="editedNickName"
+                  class="p-inputtext p-component"
+                />
+
+                <span style="display: inline-flex; gap: 8px">
+                  <button
+                    style="
+                      padding: 3px 5px;
+                      border: none;
+                      border-radius: 7px;
+                      background: rgb(21, 154, 21);
+                      color: white;
+                    "
+                    (click)="updateNickName(credits, credits.id)"
+                  >
+                    Save
+                  </button>
+                  <button
+                    style="
+                      padding: 3px 5px;
+                      border: none;
+                      border-radius: 7px;
+                      background: rgb(98, 102, 98);
+                      color: white;
+                    "
+                    (click)="cancelEdit()"
+                  >
+                    Cancel
+                  </button>
+                </span>
+              </ng-container>
+              <ng-template #showNickName>
+                {{ credits.nickName }}
+              </ng-template>
             </td>
-          </ng-container>
-          <ng-template #emptyCell>
-            <td></td>
-          </ng-template>
-        </tr>
+
+            <ng-container
+              *ngIf="credits.templateName !== 'Applied Job'; else emptyCell"
+            >
+              <td>
+                <button
+                  type="button"
+                  class="modify-btn"
+                  (click)="navigateToVerify(credits.templateName)">
+                 Edit/Generate Resume
+                </button>
+              </td>
+            </ng-container>
+            <ng-template #emptyCell>
+              <td></td>
+            </ng-template>
+
+            <td>
+              <button
+                type="button"
+                class="custom-btn"
+                *ngIf="editingRow !== rowIndex"
+                (click)="editNickName(rowIndex, credits)"
+              >
+                Rename Nickname
+              </button>
+            </td>
+          </tr>
       </ng-template>
       <ng-template pTemplate="emptymessage">
         <tr>

@@ -64,7 +64,7 @@ export class ViewTemplatesComponent {
     
   ) {
 
-     this.candidates = this.config.data?.candidates;
+    this.candidates = this.config.data?.candidates;
     this.candidateImageUrl = this.config.data?.candidateImage;
   }
 
@@ -72,16 +72,16 @@ export class ViewTemplatesComponent {
     localStorage.removeItem('resumeName');
 
     this.gs.candidateDetails$.subscribe((response) => {
-      this.candidatesUpdateData = response;
+      if(response!==null){
+        this.candidates = response;
+      }
     });
 
-    if (
-      this.candidatesUpdateData !== null &&
-      this.candidatesUpdateData !== undefined
-    ) {
-      this.candidates = this.candidatesUpdateData;
-    } else {
-    }
+    this.gs.candidateImage$.subscribe((response) => {
+      if(response!==null){
+        this.candidateImageUrl = response;
+      }
+    });
   }
 
   chooseTemplate() {
@@ -133,25 +133,8 @@ export class ViewTemplatesComponent {
 
    }
 
-  checkSection(resumeName: any) {
-    const route = 'template/checker';
-    const payload = {
-      ...this.candidates,
-      resumeFormatName: resumeName,
-    };
-    localStorage.setItem('templateName', resumeName);
 
-    this.api.retrieve(route, payload).subscribe({
-      next: (response) => {
-        console.log('keerthi');
-        const name = response?.name;
-        this.createResume(name);
-      },
-    });
-  }
-
-  async navigateToMainpage(resumeName: any) {
-    // await this.router.navigate(['candidate']);
+   navigateToMainpage(resumeName: any) {
    
     localStorage.setItem('templateName', resumeName);
 
@@ -159,9 +142,8 @@ export class ViewTemplatesComponent {
     this.gs.setCandidateImage(this.candidateImageUrl);
     this.gs.setResumeName(resumeName);
 
-    this.router.navigate(['candidate/verify-details'])
+    this.router.navigate(['candidate/verify-details']);
 
-    // this.toVerifyCandidate(resumeName);
 
   }
 

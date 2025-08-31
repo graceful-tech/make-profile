@@ -24,7 +24,7 @@
   <div class="profile-wrapper">
  
     <span style="margin-top: 20px;">
-      <button class="back-btn" (click)="backBtn()">&larr; Back</button>
+      <button class="back-btn" (click)="backBtn()"> <i class="fa fa-arrow-left"></i> Back</button>
     </span>
 
     <form [formGroup]="candidateForm">
@@ -839,20 +839,16 @@
     <app-make-profile-divider></app-make-profile-divider>
 
     <div class="button-bar">
-      <div class="button-wrapper">
-        <!-- <p-button
-          styleClass="p-button-secondary"
-          label="Reset"
-          (onClick)="reset()"
-        >
-        </p-button> -->
-      </div>
+       
+        <span>
+      <button class="back-btn" (click)="backBtn()"> <i class="fa fa-arrow-left"></i> Back</button>
+      </span>
+       
       <div class="button-wrapper">
         <button 
-       
           class="next-step mr-2"
           (click)="createCandidate()"
-        >Next Step &rarr;</button>
+        >Next Step  <i class="fa fa-arrow-right"></i></button>
       </div>
     </div>
   </div>

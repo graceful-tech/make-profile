@@ -35,10 +35,8 @@ export class PaymentService {
   }
 
  
-  payWithRazorPay(amount: number,templateName:any){
+  payWithRazorPay(amount: number){
 
-    this.templateName = templateName;
-    
     const userIds = sessionStorage.getItem('userId');
     this.userId=userIds;
     
@@ -122,45 +120,7 @@ export class PaymentService {
     });
   }
 
-  // initRazorPay() {
-    
-
-  //   this.razorPayOptions = {
-  //     key: 'rzp_test_RIGcQeTSoyI0qg',
-  //     currency: 'INR',
-  //     name: 'Make Profile',
-  //     description: '',
-  //     order_id: '',
-  //     modal: {
-  //       escape: false,
-  //       ondismiss: (response: any) => { },
-  //     },
-  //     prefill: {
-  //       name: '',
-  //       email: '',
-  //       contact: '',
-  //     },
-  //     theme: {
-  //       color: '#3399cc',
-  //     },
-  //     handler: (response: any) => {
-  //       this.zone.run(() => {
-  //         const payload = {
-  //           userId:this.userId,
-  //           orderId: response?.razorpay_order_id,
-  //           paymentId: response?.razorpay_payment_id,
-  //           paymentOrderId: this.paymentOrderId,
-  //          //  paymentType: this.paymentType,
-  //           amount: this.amount,
-  //           paymentStatus: 'Completed',
-  //         }
-  //         this.savePayment(payload);
-
-  //         this.paymentSuccess.emit();
-  //       });
-  //     }
-  //   };
-  // }
+  
 
   initRazorPays(onPaymentSuccess: () => void) {
     this.razorPayOptions = {
@@ -206,21 +166,7 @@ export class PaymentService {
   savePayment(payload: any) {
     const route = 'payment/save';
 
-    if(!this.templateName){
-    this.templateName =  localStorage.getItem('templateName');
-    }
-
-    if(!this.nickName){
-    this.nickName = localStorage.getItem('nickName');
-    }
-
-     const updatedPayload = {
-     ...payload,
-     templateName: this.templateName,
-     nickName: this.nickName
-    };
-
-     this.api.create(route, updatedPayload).subscribe({
+     this.api.create(route, payload).subscribe({
       next: response => {
          this.gs.setPaymentStatus(payload?.paymentStatus);
       },

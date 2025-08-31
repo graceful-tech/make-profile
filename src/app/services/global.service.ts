@@ -55,6 +55,9 @@ export class GlobalService {
   public referral = new BehaviorSubject<boolean>(false);
   public referral$ = this.referral.asObservable();
 
+  public navigate = new BehaviorSubject<boolean>(false);
+  public navigate$ = this.navigate.asObservable();
+
 
 
   todayEvents: Array<any> = [];
@@ -131,6 +134,10 @@ export class GlobalService {
 
   public setReferral(data: any) {
     this.referral.next(data);
+  }
+
+  public setNavigate(data: any) {
+    this.navigate.next(data);
   }
 
 

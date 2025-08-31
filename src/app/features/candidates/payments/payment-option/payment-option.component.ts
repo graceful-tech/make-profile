@@ -96,27 +96,27 @@ export class PaymentOptionComponent {
     }
   }
 
-  saveNickName() {
-    const route = 'credits/save-nickname';
-    const formData = new FormData();
+  // saveNickName() {
+  //   const route = 'credits/save-nickname';
+  //   const formData = new FormData();
 
-    const userIds = sessionStorage.getItem('userId');
-    this.userId = userIds;
+  //   const userIds = sessionStorage.getItem('userId');
+  //   this.userId = userIds;
 
-    formData.append('nickName', this.nickName);
-    formData.append('userId', this.userId);
-    formData.append('templateName', this.templateName);
+  //   formData.append('nickName', this.nickName);
+  //   formData.append('userId', this.userId);
+  //   formData.append('templateName', this.templateName);
 
-    this.api.upload(route, formData).subscribe({
-      next: (response) => {
-        this.redeem();
-      },
-      error: (error) => {
-        this.ngxLoaderStop();
-        this.gs.showMessage('error', error.error?.message);
-      },
-    });
-  }
+  //   this.api.upload(route, formData).subscribe({
+  //     next: (response) => {
+  //       this.redeem();
+  //     },
+  //     error: (error) => {
+  //       this.ngxLoaderStop();
+  //       this.gs.showMessage('error', error.error?.message);
+  //     },
+  //   });
+  // }
 
   redeem() {
     this.ngxLoaderStart();

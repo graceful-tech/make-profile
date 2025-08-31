@@ -59,7 +59,7 @@
               : "Name"
           }}
         </div>
-        Credits : {{ totalCredits ? totalCredits : 0 }}
+        Credits : {{ balanceCredits ? balanceCredits : 0 }}
       </div>
       <div class="account-wrapper" appClickedOutside (clickedOutside)="close()">
         <div class="hamburger-box">&#9776;</div>
@@ -92,37 +92,6 @@
 <div class="wrapper">
   <div class="left-section">
     <div class="profile-wrapper">
-      <!-- <div class="section-heading">
-            <span>Upload Resume</span>
-            <span class="link-button" (click)="viewHistory()">View History</span>
-          </div>
-          <div class="page-container">
-            <div class="top-section">
-              <input type="file" #attachment style="display: none;" (change)="addAttachment($event)" accept=".doc, .docx, .pdf" />
-              <div class="file-wrapper d-flex align-items-center justify-content-center">
-                <i class="icon pi pi-cloud-upload" (click)="attachment.click()"></i>
-                <div class="ml-2">
-                  <span *ngIf="resume?.fileName">
-                    <i class="pi pi-paperclip mr-2"></i>
-                    <span>{{ resume?.fileName }}</span>
-                  </span>
-                  <span *ngIf="!resume?.fileName" style="color: #171717;">
-                    Upload Your Resume
-                  </span>
-                </div>
-              </div>
-            </div>
-          
-            <div class="middle-text">
-              <span>OR</span>
-            </div>
-          
-            <div class="bottom-section" *ngIf="!resume?.fileName">
-              <p-button *ngIf="!candidateId" (onClick)="enterDetails()" label="Enter Details"></p-button>
-              <p-button *ngIf="candidateId" (onClick)="UpdateCandidate()" label="Update Details"></p-button>
-            </div>
-             
-          </div> -->
       <div class="section-heading">
         <span></span>
         <span class="link-button" (click)="viewHistory()">View History</span>
@@ -197,46 +166,81 @@
           <p-table [value]="availableCredits">
             <ng-template pTemplate="header">
               <tr>
-                <!-- <th style="max-width: 5%;">CREDIT USED</th> -->
-
-                <th style="max-width: 5%">CREDIT AVAILABLE / TEMPLATE NAME</th>
+                <th style="max-width: 5%">TEMPLATE NAME</th>
                 <th style="max-width: 5%">NICK NAME</th>
-                <!-- <th>PAYMENT DATE</th> -->
-                <!-- <th>TEMPLATE NAME</th> -->
-                <!-- <th  style="max-width: 5%;">PAYMENT</th> -->
                 <th style="max-width: 5%">GENERATE RESUME</th>
               </tr>
             </ng-template>
-            <ng-template pTemplate="body" let-credits>
+            <ng-template pTemplate="body" let-credits let-rowIndex="rowIndex">
               <tr>
                 <!-- <td>{{ credits.creditUsed ?? 'N/A' }}</td> -->
 
                 <td>
                   <div class="applied-job">
-                    <span>{{ credits.creditAvailable }}</span>
                     <span>{{ credits.templateName }}</span>
                   </div>
                 </td>
 
-                <td>{{ credits.nickName }}</td>
-                <!-- <td>{{ credits.templateName }}</td> -->
-                <!-- <td> <button type="button" class="custom-btn" (click)="payment(credits.templateName,credits.nickName)">Add Create</button> </td> -->
+                <td>
+                  <ng-container
+                    *ngIf="editingRow === rowIndex; else showNickName"
+                  >
+                    <input
+                      type="text"
+                      [(ngModel)]="editedNickName"
+                      class="p-inputtext p-component"
+                    />
+
+                    <span style="display: inline-flex; gap: 8px">
+                      <button
+                        style="
+                          padding: 3px 5px;
+                          border: none;
+                          border-radius: 7px;
+                          background: rgb(21, 154, 21);
+                          color: white;
+                        "
+                        (click)="updateNickName(credits, credits.id)"
+                      >
+                        Save
+                      </button>
+                      <button
+                        style="
+                          padding: 3px 5px;
+                          border: none;
+                          border-radius: 7px;
+                          background: rgb(98, 102, 98);
+                          color: white;
+                        "
+                        (click)="cancelEdit()"
+                      >
+                        Cancel
+                      </button>
+                    </span>
+                  </ng-container>
+                  <ng-template #showNickName>
+                    {{ credits.nickName }}
+                  </ng-template>
+                </td>
                 <ng-container
                   *ngIf="credits.templateName !== 'Applied Job'; else emptyCell"
                 >
-                  <td>
+                  <td class="action-buttons">
                     <button
                       type="button"
                       class="modify-btn"
-                      (click)="
-                        navigateToVerify(
-                          credits.templateName,
-                          credits.creditAvailable,
-                          credits.nickName
-                        )
-                      "
+                      (click)="navigateToVerify(credits.templateName)"
                     >
                       Generate Resume
+                    </button>
+
+                    <button
+                      type="button"
+                      class="edit-nick"
+                      *ngIf="editingRow !== rowIndex"
+                      (click)="editNickName(rowIndex, credits)"
+                    >
+                      Edit NickName
                     </button>
                   </td>
                 </ng-container>

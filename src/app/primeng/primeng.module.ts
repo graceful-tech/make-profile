@@ -37,6 +37,8 @@ import { ToastModule } from 'primeng/toast';
 import { SidebarModule } from 'primeng/sidebar';
 import { SkeletonModule } from 'primeng/skeleton';
 import { AccordionModule } from 'primeng/accordion';
+// import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+// import { DialogModule } from 'primeng/dialog';
 
 @NgModule({
   declarations: [],
@@ -83,7 +85,9 @@ import { AccordionModule } from 'primeng/accordion';
     ToastModule,
     SidebarModule,
     SkeletonModule,
-    AccordionModule
+    AccordionModule,
+    // DialogModule,
+    // BrowserAnimationsModule
   ]
 })
 export class PrimengModule { }

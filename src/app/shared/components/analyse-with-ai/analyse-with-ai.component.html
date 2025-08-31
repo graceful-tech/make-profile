@@ -27,28 +27,51 @@
 </div>
 
 <div class="profile-wrapper">
+  <button class="home-btn" (click)="goToHome()">
+    <i class="fa fa-home"></i> Go to home
+  </button>
   <div class="col-12 md:col-6" style="margin: 0 auto">
     <div class="inside-label-textarea">
-    
-      <span class="btn-position" >
-         <span class="heading-content">Tell about yourself (Intro)</span>
-        <button class="example-content" style="margin-right: 3px;" (click)="togglePopup()">
-          👁 <span>Show Sample Intro</span>
-        </button>
-        
+      <span class="btn-position">
+        <span class="left-side">
+          <span class="heading-content">Tell about yourself (Intro)</span>
+          <span class="tooltip-bubble"
+            >Suggested
+            <span class="star">★</span>
+            <span class="star">★</span>
+            <span class="star">★</span>
+            <span class="star">★</span>
+            <span class="star">★</span>
+            <span class="star">★</span>
+            <span class="star">★</span>
+            <span class="star">★</span>
+            <span class="star">★</span>
+          </span>
+        </span>
+
+        <span class="right-side">
+          <button class="example-content" (click)="togglePopup()">
+            👁 <span>Show Sample Intro</span>
+          </button>
+        </span>
       </span>
 
       <textarea
         id="analysis"
         rows="5"
         #analysisBox
-        placeholder="Write a short Self Introduction about yourself, your skills, and your work experience. AI will analyze this text and automatically suggest improvements for your profile."
+        placeholder="Enter your details"
+        [(ngModel)]="analysisText"
       ></textarea>
+      <span style="display: flex; justify-content: space-between">
+        <p>Count: {{ getCharacterCount(analysisText) }}</p>
+        <span class="hint-btn" (click)="hintPopup()">Hints/Tips</span>
+      </span>
     </div>
   </div>
   <div style="display: flex; align-items: center; justify-content: center">
     <button class="analysis" (click)="analyseWithAi(analysisBox.value)">
-      Fill Details With AI &#10024;
+      Fill Resume Details With AI &#10024;
     </button>
   </div>
 
@@ -74,6 +97,27 @@
     <button class="close-btn" (click)="togglePopup()">Close</button>
   </div>
 
+  <div id="hintPopup" class="hint-popup-box">
+    <h4>Hint/Tips</h4>
+      <ul>
+    <li>You can add your <b>Name & Address</b></li>
+    <li><b>Education details</b> (College / School)</li>
+    <li><b>Work / Internship experience</b></li>
+    <li><b>Project details</b></li>
+    <li><b>Personal details</b> (DOB, Gender, Father’s Name, Nationality, Marital Status, etc.)</li>
+    <li><b>Contact details</b> (Mobile, Email, LinkedIn)</li>
+    <li><b>Additional Courses / Certificate details</b></li>
+    <li><b>Hobbies</b></li>
+    <li><b>Skills / Alternate skills</b></li>
+    <li><b>Known Technologies</b></li>
+    <li><b>Type of Job searching</b></li>
+    <li><b>Current / Preferred location</b></li>
+    <li><b>Last designation</b></li>
+    <li>Always add <b>duration</b> for Education / Work details</li>
+  </ul>
+    <button class="close-btn" (click)="hintPopup()">Close</button>
+  </div>
+
   <div class="full-page-center">
     <div class="upload-container">
       <div class="upload-title">Upload Your Existing/Old Resume</div>
@@ -94,22 +138,25 @@
           <span>{{ resume?.fileName }}</span>
         </div>
       </div>
-      
     </div>
   </div>
 
   <span
-        style="
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          text-align: center;
-        "
-        >— or —</span
-      >
+    style="
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    "
+    >— or —</span
+  >
   <div style="display: flex; align-items: center; justify-content: center">
-     <button class="enter-details" style="margin-top: 10px;" (click)="enterDetails()">
-            Fill Details Yourself
-          </button>
+    <button
+      class="enter-details"
+      style="margin-top: 10px"
+      (click)="enterDetails()"
+    >
+      Fill Details Yourself
+    </button>
   </div>
 </div>
