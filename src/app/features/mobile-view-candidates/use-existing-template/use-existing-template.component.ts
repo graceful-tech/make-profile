@@ -95,7 +95,7 @@ export class UseExistingTemplateComponent {
   }
 
   navigateToVerify(templateName: any) {
-    if (this.balanceCredits > 0) {
+    
       localStorage.setItem('templateName', templateName);
       this.gs.setResumeName(templateName);
 
@@ -108,9 +108,7 @@ export class UseExistingTemplateComponent {
       this.gs.setCandidateDetails(this.candidates);
 
       this.router.navigate(['mob-candidate/edit-candidate']);
-    } else {
-      this.gs.showMobileMessage('Error','You dont have credits');
-    }
+    
   }
 
   goBack() {

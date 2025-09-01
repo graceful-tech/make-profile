@@ -5,7 +5,9 @@
     <div class="grid">
       <div class="col-12 md:col-6 lg:col-3">
         <div class="mb-2 back-button">
-          <button class="home-btn" (click)="goBack()"> <i class="fa fa-home"></i> Go Home</button>
+          <button class="home-btn" (click)="goBack()">
+            <i class="fa fa-home"></i> Go Home
+          </button>
         </div>
       </div>
     </div>
@@ -356,7 +358,7 @@
                 </div>
               </div>
 
-              <div class="col-12 md:col-6 lg:col-3" *ngIf="i > 0">
+              <div class="col-12 md:col-6 lg:col-3" *ngIf="i >= 0">
                 <button
                   type="button"
                   class="remove-btn"
@@ -364,8 +366,6 @@
                 >
                   Remove Experience
                 </button>
-
-                <!-- <p-button type="button"  label="Remove Experience" styleClass="p-buttonFailure" (click)="removeExperience(i)"></p-button> -->
               </div>
             </div>
 
@@ -441,7 +441,8 @@
                     </div>
                   </div>
 
-                  <div class="col-12 md:col-6 lg:col-3" *ngIf="j > 0">
+                  <div class="col-12 md:col-6 lg:col-3" *ngIf="j >= 0">
+                    
                     <button
                       type="button"
                       class="remove-btn"
@@ -449,12 +450,10 @@
                     >
                       Remove Project
                     </button>
-
-                    <!-- <p-button type="button" label="Remove Project" styleClass="p-buttonFailure" (click)="removeProject(i, j)"></p-button> -->
                   </div>
                 </div>
 
-                <div
+                <!-- <div
                   class="col-12 md:col-6 lg:col-3"
                   *ngIf="j === getProjectCount(i) - 1"
                 >
@@ -465,14 +464,26 @@
                   >
                     + Add Project
                   </button>
-                  <!-- <p-button type="button" label="+ Add Project" (click)="addProject(i)"></p-button> -->
-                </div>
+                </div> -->
 
                 <hr class="sub-section-divider" />
               </div>
             </div>
+              <div
+                  class="col-12 md:col-6 lg:col-3"
+                   
+                >
+                  <button
+                    type="button"
+                    class="custom-btn"
+                    (click)="addProject(i)"
+                  >
+                    + Add Project
+                  </button>
+                </div>
 
-            <div
+
+            <!-- <div
               class="col-12 md:col-6 lg:col-3"
               *ngIf="i === getExperienceCount(i) - 1"
             >
@@ -483,9 +494,12 @@
               >
                 + Add Experience
               </button>
-
-              <!-- <p-button type="button" label="+ Add Experience" (click)="addExperience()"></p-button> -->
-            </div>
+            </div> -->
+          </div>
+          <div class="col-12 md:col-6 lg:col-3 mt-2">
+            <button type="button" class="custom-btn" (click)="addExperience()">
+              + Add Experience
+            </button>
           </div>
         </div>
       </ng-container>
@@ -550,7 +564,7 @@
                 </div>
               </div>
 
-              <div class="col-12 md:col-6 lg:col-3" *ngIf="i > 0">
+              <div class="col-12 md:col-6 lg:col-3" *ngIf="i >= 0">
                 <button
                   type="button"
                   class="remove-btn"
@@ -561,9 +575,11 @@
               </div>
             </div>
 
-            <div
+            
+          </div>
+          <div
               class="col-12 md:col-6 lg:col-3"
-              *ngIf="i === getCollegeProjectCount(i) - 1"
+               
             >
               <button
                 type="button"
@@ -573,7 +589,6 @@
                 + Add Project
               </button>
             </div>
-          </div>
         </div>
       </ng-container>
 
@@ -591,6 +606,7 @@
           [formGroupName]="i"
           class="experience-container"
         >
+          <hr />
           <div class="grid">
             <div class="col-12 md:col-6 lg:col-3">
               <div class="field-wrapper">
@@ -681,7 +697,7 @@
           <div
             class="col-12 md:col-6 lg:col-3"
             style="padding-left: 15px"
-            *ngIf="i > 0"
+            *ngIf="i >= 0"
           >
             <button
               type="button"
@@ -754,7 +770,7 @@
           <div
             class="col-12 md:col-6 lg:col-3"
             style="padding-left: 15px"
-            *ngIf="i > 0"
+            *ngIf="i >= 0"
           >
             <button
               type="button"
@@ -818,7 +834,7 @@
           <div
             class="col-12 md:col-6 lg:col-3"
             style="padding-left: 15px"
-            *ngIf="i > 0"
+            *ngIf="i >= 0"
           >
             <button
               type="button"
@@ -1050,7 +1066,5 @@
       [disabled]="!dataLoaded"
       (onClick)="createCandidate()"
     ></p-button>
-
-    
   </div>
 </div>

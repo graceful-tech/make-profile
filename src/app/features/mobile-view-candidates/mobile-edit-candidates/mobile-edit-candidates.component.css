@@ -355,15 +355,19 @@ img {
 .back-btn{
   border: none;
   border-radius: 7px;
-  padding: 5px 10px;
+  padding: 7px 12px;
   background: #178be9;
   color: white;
+  font-size: 15px;
+  font-weight: bold;
 }
 
 .next-btn{
   border: none;
   border-radius: 7px;
-  padding: 5px 10px;
+  padding: 7px 12px;
   background: #0e7111;
   color: white;
+  font-size: 15px;
+  font-weight: bold;
 }

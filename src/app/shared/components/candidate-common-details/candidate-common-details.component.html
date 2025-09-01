@@ -315,13 +315,8 @@
                 </div>
               </div>
 
-              <!-- <div class="col-12 md:col-6 lg:col-3" *ngIf="i>0">
-                    <button type="button" class="remove-btn" (click)="removeExperience(i)">Remove Experience</button>
-      
-                   </div> -->
             </div>
 
-            <!-- Project Details -->
             <div formArrayName="projects">
               <div class="bysection-heading mt-4">
                 <div>Project Details</div>
@@ -389,7 +384,7 @@
 
                   <div
                     class="col-12 md:col-6 lg:col-3"
-                    *ngIf="j > 0"
+                    *ngIf="j >= 0"
                     style="padding-top: 20px"
                   >
                     <button
@@ -400,13 +395,16 @@
                       Remove Project
                     </button>
 
-                    <!-- <p-button type="button" label="Remove Project" styleClass="p-buttonFailure" (click)="removeProject(i, j)"></p-button> -->
-                  </div>
+                   </div>
                 </div>
 
-                <div
+                
+
+                <hr class="sub-section-divider" />
+              </div>
+              <div
                   class="col-12 md:col-6 lg:col-3"
-                  *ngIf="j === getProjectCount(i) - 1"
+
                 >
                   <button
                     type="button"
@@ -415,14 +413,10 @@
                   >
                     + Add Project
                   </button>
-                  <!-- <p-button type="button" label="+ Add Project" (click)="addProject(i)"></p-button> -->
-                </div>
-
-                <hr class="sub-section-divider" />
-              </div>
+                 </div>
             </div>
 
-            <div class="col-12 md:col-6 lg:col-3" *ngIf="i > 0">
+            <div class="col-12 md:col-6 lg:col-3" *ngIf="i >= 0">
               <button
                 type="button"
                 class="remove-btn"
@@ -432,9 +426,11 @@
               </button>
             </div>
 
-            <div
+           
+          </div>
+           <div
               class="col-12 md:col-6 lg:col-3"
-              *ngIf="i === getExperienceCount(i) - 1"
+               
             >
               <button
                 type="button"
@@ -443,10 +439,7 @@
               >
                 + Add Experience
               </button>
-
-              <!-- <p-button type="button" label="+ Add Experience" (click)="addExperience()"></p-button> -->
-            </div>
-          </div>
+                        </div>
         </div>
       </ng-container>
 
@@ -502,7 +495,7 @@
                 </div>
               </div>
 
-              <div class="col-12 md:col-6 lg:col-3" *ngIf="i > 0">
+              <div class="col-12 md:col-6 lg:col-3" *ngIf="i >= 0">
                 <button
                   type="button"
                   class="remove-btn"
@@ -515,9 +508,11 @@
 
             <hr class="sub-section-divider" />
 
-            <div
+           
+          </div>
+           <div
               class="col-12 md:col-6 lg:col-3"
-              *ngIf="i === getCollegeProjectCount(i) - 1"
+               
             >
               <button
                 type="button"
@@ -527,7 +522,6 @@
                 + Add Project
               </button>
             </div>
-          </div>
         </div>
       </ng-container>
 
@@ -637,7 +631,7 @@
           <div
             class="col-12 md:col-6 lg:col-3"
             style="padding-left: 15px"
-            *ngIf="i > 0"
+            *ngIf="i >= 0"
           >
             <button
               type="button"
@@ -729,7 +723,7 @@
           <div
             class="col-12 md:col-6 lg:col-3"
             style="padding-left: 15px"
-            *ngIf="i > 0"
+            *ngIf="i >= 0"
           >
             <button
               type="button"
@@ -739,11 +733,9 @@
               Remove Course
             </button>
 
-            <!-- <p-button type="button" label="Remove Course" styleClass="p-buttonFailure" (click)="removeCertificates(i)"></p-button> -->
           </div>
         </div>
         <div class="col-12 md:col-6 lg:col-3">
-          <!-- <p-button type="button" label="+ Add Couse" (click)="addCertificates()"></p-button> -->
           <button type="button" class="custom-btn" (click)="addCertificates()">
             + Add Couse
           </button>
@@ -754,21 +746,7 @@
       <div class="section-heading mt-3">
         <Span>Achievements & Awards</Span>
 
-        <!-- <div
-          style="
-            color: #313133;
-            font-weight: bold;
-            background-color: rgb(235, 235, 235);
-            border-radius: 50px;
-            padding: 5px 5px;
-          "
-        >
-          <p-checkbox
-            [binary]="true"
-            formControlName="achievementsMandatory"
-            label="Is Mandatory"
-          ></p-checkbox>
-        </div> -->
+      
       </div>
 
       <div formArrayName="achievements" class="border-line" id="achievements">
@@ -812,7 +790,7 @@
           <div
             class="col-12 md:col-6 lg:col-3"
             style="padding-left: 15px"
-            *ngIf="i > 0"
+            *ngIf="i >= 0"
           >
             <button
               type="button"
@@ -822,11 +800,9 @@
             >
               Remove Achievements
             </button>
-            <!-- <p-button type="button" label="Remove Achievements" styleClass="p-buttonFailure" (click)="removeaddAchievements(i)"></p-button> -->
           </div>
         </div>
         <div class="col-12 md:col-6 lg:col-3">
-          <!-- <p-button type="button" styleClass="p-resumeButton" label="+ Add Achievements" (click)="addAchievements()"></p-button> -->
           <button type="button" class="custom-btn" (click)="addAchievements()">
             + Add Achievements
           </button>
@@ -845,21 +821,7 @@
             "
           >
             <Span>Soft Skills</Span>
-            <!-- <div
-              style="
-                color: #040404;
-                font-weight: bold;
-                background-color: rgb(235, 235, 235);
-                border-radius: 50px;
-                padding: 5px 5px;
-              "
-            >
-              <p-checkbox
-                [binary]="true"
-                formControlName="softSkillsMandatory"
-                label="Is Mandatory"
-              ></p-checkbox>
-            </div> -->
+           
           </div>
           <div class="input-wrapper">
             <p-chips
@@ -882,21 +844,6 @@
             "
           >
             <Span>Core Competencies</Span>
-            <!-- <div
-              style="
-                color: #313133;
-                font-weight: bold;
-                background-color: rgb(235, 235, 235);
-                border-radius: 50px;
-                padding: 5px 5px;
-              "
-            >
-              <p-checkbox
-                [binary]="true"
-                formControlName="coreCompentenciesMandatory"
-                label="Is Mandatory"
-              ></p-checkbox>
-            </div> -->
           </div>
           <div class="input-wrapper">
             <p-chips
@@ -1043,20 +990,10 @@
 
     <div class="button-bar">
       <div class="button-wrapper">
-        <p-button
-          class="mr-2"
-          [label]="dataLoaded ? 'Create' : 'Creating..'"
-          [icon]="dataLoaded ? '' : 'pi pi-spin pi-spinner'"
-          [disabled]="!dataLoaded"
-          (onClick)="createCandidate()"
-        >
-        </p-button>
-        <p-button
-          styleClass="p-button-secondary"
-          label="Reset"
-          (onClick)="reset()"
-        >
-        </p-button>
+        <button class="reset-btn" (click)="reset()">Reset</button>
+        <button class="create-btn mr-2" (click)="createCandidate()">
+          Create
+        </button>
       </div>
     </div>
   </div>

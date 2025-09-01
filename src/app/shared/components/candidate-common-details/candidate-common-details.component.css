@@ -90,6 +90,8 @@ img {
   border-radius: 8px;
   cursor: pointer;
   margin-right: 15px;
+  font-weight: bold;
+ 
   
 }
 
@@ -106,6 +108,7 @@ img {
   border-radius: 8px;
   cursor: pointer;
   margin-right: 15px;
+  font-weight: bold;
 }
 
 .remove-btn:hover {
@@ -416,4 +419,24 @@ margin-top: 10px;
 
 .dark-border {
   border: 0.5px solid #aca3a3;
+}
+
+.create-btn{
+  border: none;
+  border-radius: 8px;
+  background: #1c7719;
+  color: white;
+  padding: 8px 15px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.reset-btn{
+  border: none;
+  border-radius: 8px;
+  background: #4c534c;
+  color: white;
+  padding: 8px 15px;
+  font-size: 16px;
+  font-weight: bold;
 }

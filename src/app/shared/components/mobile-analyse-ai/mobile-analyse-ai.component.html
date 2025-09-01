@@ -32,9 +32,6 @@
  <button class="home-btn" (click)="goToHome()">
     <i class="fa fa-home"></i> Go to home
   </button>
-
-  <span class="hint-btn" (click)="hintPopup()">Hints/Tips</span>
-
   </span>
   
 
@@ -42,7 +39,7 @@
     <div class="inside-label-textarea">
       <span class="btn-position">
         <span class="left-side">
-          <span class="heading-content">About yourself (Intro) &nbsp;</span>
+          <span class="heading-content">About yourself &nbsp;</span>
           <span class="tooltip-bubble"
             >Suggested
             <span class="star">★</span>
@@ -56,6 +53,7 @@
             <span class="star">★</span>
           </span>
         </span>
+        <span class="hint-btn" (click)="hintPopup()">Hints</span>
       </span>
 
       <div style="margin-top: 15px;">
@@ -81,16 +79,10 @@
     </button>
   </div>
 
-  <span
-    style="
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      margin-top: 3px;
-    "
-    >— or —</span
-  >
+  <div class="divider">
+  <span>or</span>
+</div>
+
 
   <div id="examplePopup" class="popup-box">
     <h4>Example Self Introduction</h4>
@@ -147,15 +139,10 @@
     </div>
   </div>
 
-  <span
-    style="
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-    "
-    >— or —</span
-  >
+<div class="divider">
+  <span>or</span>
+</div>
+
 
   <div style="display: flex; align-items: center; justify-content: center">
     <button

@@ -58,6 +58,7 @@ img {
   border-radius: 8px;
   cursor: pointer;
   margin-right: 15px;
+   font-weight: bold;
 }
 
 .custom-btn:hover {
@@ -264,4 +265,6 @@ img {
   border-radius: 7px;
   padding: 5px 10px;
   color: white;
+  font-weight: bold;
+  font-size: 15px;
 }

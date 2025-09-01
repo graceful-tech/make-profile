@@ -39,7 +39,8 @@ export class MobileAnalyseAiComponent {
     private ngxLoader: NgxUiLoaderService,
     private ps: PaymentService,
     private loader: LoaderService
-  ) {}
+  ) {
+  }
 
   togglePopup() {
     const popup = document.getElementById('examplePopup');
@@ -124,6 +125,7 @@ export class MobileAnalyseAiComponent {
   }
 
   enterDetails() {
+    this.gs.setCandidateDetails(null);
     this.router.navigate(['mob-candidate/enter-new-details']);
   }
 

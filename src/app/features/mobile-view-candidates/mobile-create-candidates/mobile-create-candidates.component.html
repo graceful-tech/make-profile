@@ -1011,17 +1011,19 @@
       </form>
     </div>
     <div class="grid" style="margin-bottom: 50px">
-      <div class="col-12 md:col-6 lg:col-3">
-        <div class="">
-          <p-button type="button" label="Back" (click)="goBack()"></p-button>
-        </div>
-      </div>
     </div>
   </div>
 </div>
 
 <div class="button-bar">
-  <div class="button-wrapper" *ngIf="!payments">
+
+  <div class="button-wrapper">
+  <button class="mobile-back" (click)="goBack()">
+      Back
+    </button>
+  </div>
+   
+  <div class="button-wrapper">
     <p-button
       class="mr-2"
       [label]="dataLoaded ? 'Update' : 'Updating..'"
@@ -1030,7 +1032,9 @@
       (onClick)="createCandidate()"
     ></p-button>
 
-    <p-button styleClass="p-button-secondary" label="Reset" (onClick)="reset()">
-    </p-button>
+     <button class="mobile-reset" (click)="reset()">
+      Reset
+    </button>
+   
   </div>
 </div>

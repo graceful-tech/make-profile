@@ -149,13 +149,13 @@ export class MobileEditCandidatesComponent {
       dob: [''],
       address: [''],
       maritalStatus: [''],
-      experiences: this.fb.array([this.createExperience()]),
-      qualification: this.fb.array([this.createQualification()]),
-      certificates: this.fb.array([this.createCertificates()]),
-      achievements: this.fb.array([this.createAchievements()]),
+      experiences: this.fb.array([]),
+      qualification: this.fb.array([]),
+      certificates: this.fb.array([]),
+      achievements: this.fb.array([]),
       softSkills: [''],
       coreCompentencies: [''],
-      collegeProject: this.fb.array([this.createCollegeProject()]),
+      collegeProject: this.fb.array([]),
       summary: [''],
       careerObjective: [''],
       coreCompentenciesMandatory: [''],
@@ -217,11 +217,13 @@ export class MobileEditCandidatesComponent {
         );
       }
 
-      if (payload.dob != null) {
+      if (payload.dob == null && payload.dob !== '') {
         payload.dob = this.datePipe.transform(payload.dob, 'yyyy-MM-dd');
       }
 
-      if (payload.fresher != null && payload.fresher) {
+      if (payload.fresher === null && payload.experiences.length === 0) {
+        payload['fresher'] = true;
+      } else if (payload.fresher) {
         payload['fresher'] = true;
       } else {
         payload['fresher'] = false;
@@ -231,9 +233,11 @@ export class MobileEditCandidatesComponent {
         payload.experiences = [];
       }
 
-
       if (!payload.fresher) {
-        if (Object.is(payload.experiences?.[0]?.companyName, '')) {
+        if (
+          payload.experiences.length === 0 ||
+          Object.is(payload.experiences?.[0]?.companyName, '')
+        ) {
           payload.experiences = [];
         } else {
           payload.experiences = payload.experiences.map((exp: any) => {
@@ -255,7 +259,7 @@ export class MobileEditCandidatesComponent {
               (proj: any) => proj.projectName === ''
             );
 
-            if (hasEmptyProjectName) {
+            if (exp.projects.length === 0 || hasEmptyProjectName) {
               projects = [];
             } else {
               projects = projects.map((proj: any) => ({
@@ -277,7 +281,10 @@ export class MobileEditCandidatesComponent {
         }
       }
 
-      if (Object.is(payload.qualification[0].institutionName, '')) {
+      if (
+        payload.qualification.length === 0 ||
+        Object.is(payload.qualification[0].institutionName, '')
+      ) {
         payload.qualification = [];
       } else {
         payload.qualification.forEach((q: any) => {
@@ -292,7 +299,10 @@ export class MobileEditCandidatesComponent {
         });
       }
 
-      if (Object.is(payload.achievements[0].achievementsName, '')) {
+      if (
+        payload.achievements.length === 0 ||
+        Object.is(payload.achievements[0].achievementsName, '')
+      ) {
         payload.achievements = [];
       } else {
         payload.achievements.forEach((cert: any) => {
@@ -303,7 +313,10 @@ export class MobileEditCandidatesComponent {
         });
       }
 
-      if (Object.is(payload.certificates[0].courseName, '')) {
+      if (
+        payload.certificates.length === 0 ||
+        Object.is(payload.certificates[0].courseName, '')
+      ) {
         payload.certificates = [];
       } else {
         payload.certificates.forEach((cert: any) => {
@@ -318,7 +331,10 @@ export class MobileEditCandidatesComponent {
         });
       }
 
-      if (Object.is(payload.languagesKnown, '')) {
+      if (
+        payload.languagesKnown.length === 0 ||
+        Object.is(payload.languagesKnown, '')
+      ) {
         payload.languagesKnown = '';
       } else {
         const stringList: string[] = payload.languagesKnown;
@@ -351,26 +367,33 @@ export class MobileEditCandidatesComponent {
       }
 
       if (payload.fresher) {
-        const hasValidProject = payload.collegeProject.some(
-          (project: { collegeProjectName: string }) =>
-            project.collegeProjectName &&
-            project.collegeProjectName.trim() !== ''
-        );
-
-        if (!hasValidProject) {
+        if (
+          payload.collegeProject.length === 0 ||
+          Object.is(payload.collegeProject[0].collegeProjectName, '')
+        ) {
           payload.collegeProject = [];
         } else {
-          payload.collegeProject = payload.collegeProject.map(
-            (project: any) => ({
-              ...project,
-              collegeProjectSkills: Array.isArray(project.collegeProjectSkills)
-                ? project.collegeProjectSkills.join(', ')
-                : '',
-            })
+          const hasValidProject = payload.collegeProject.some(
+            (project: { collegeProjectName: string }) =>
+              project.collegeProjectName &&
+              project.collegeProjectName.trim() !== ''
           );
+
+          if (!hasValidProject) {
+            payload.collegeProject = [];
+          } else {
+            payload.collegeProject = payload.collegeProject.map(
+              (project: any) => ({
+                ...project,
+                collegeProjectSkills: Array.isArray(
+                  project.collegeProjectSkills
+                )
+                  ? project.collegeProjectSkills.join(', ')
+                  : '',
+              })
+            );
+          }
         }
-      } else {
-        payload.collegeProject = [];
       }
 
       payload.coreCompentenciesMandatory =
@@ -456,7 +479,7 @@ export class MobileEditCandidatesComponent {
       role: [''],
       experienceYearStartDate: [''],
       experienceYearEndDate: [''],
-      projects: this.fb.array([this.createProject()]),
+      projects: this.fb.array([]),
       currentlyWorking: [''],
       responsibilities: [''],
     });
@@ -480,7 +503,7 @@ export class MobileEditCandidatesComponent {
     const confirmDelete = window.confirm(
       'Are you sure you want to remove this Experience?'
     );
-    if (confirmDelete && this.experienceControls.length > 1) {
+    if (confirmDelete && this.experienceControls.length >= 1) {
       const removedExperience = this.experienceControls.at(index).value;
       console.log('Removed Experience:', removedExperience);
       if (removedExperience.id) {
@@ -518,7 +541,7 @@ export class MobileEditCandidatesComponent {
 
     const projectArray = this.getProjects(experienceIndex);
 
-    if (confirmDelete && projectArray.length > 1) {
+    if (confirmDelete && projectArray.length >= 1) {
       const removedProject = projectArray.at(projectIndex).value;
 
       if (removedProject.id) {
@@ -557,7 +580,7 @@ export class MobileEditCandidatesComponent {
     const confirmDelete = window.confirm(
       'Are you sure you want to remove this qualification?'
     );
-    if (confirmDelete && this.qualificationControls.length > 1) {
+    if (confirmDelete && this.qualificationControls.length >= 1) {
       const removedQualification = this.qualificationControls.at(index).value;
       if (removedQualification.id) {
         this.qualificationControls.removeAt(index);
@@ -588,7 +611,7 @@ export class MobileEditCandidatesComponent {
     const confirmDelete = window.confirm(
       'Are you sure you want to remove this certificates?'
     );
-    if (confirmDelete && this.certificateControls.length > 1) {
+    if (confirmDelete && this.certificateControls.length >= 1) {
       const removedCertificate = this.certificateControls.at(index).value;
       if (removedCertificate.id) {
         this.certificateControls.removeAt(index);
@@ -621,7 +644,7 @@ export class MobileEditCandidatesComponent {
     const confirmDelete = window.confirm(
       'Are you sure you want to remove this achievements?'
     );
-    if (confirmDelete && this.achievementsControls.length > 1) {
+    if (confirmDelete && this.achievementsControls.length >= 1) {
       const removedAchievement = this.achievementsControls.at(index).value;
       if (removedAchievement.id) {
         this.achievementsControls.removeAt(index);
@@ -941,7 +964,7 @@ export class MobileEditCandidatesComponent {
     const confirmDelete = window.confirm(
       'Are you sure you want to remove this project?'
     );
-    if (confirmDelete && this.collegeProjectControls.length > 1) {
+    if (confirmDelete && this.collegeProjectControls.length >= 1) {
       const removeCollegeProject = this.collegeProjectControls.at(index).value;
       if (removeCollegeProject.id) {
         this.collegeProjectControls.removeAt(index);

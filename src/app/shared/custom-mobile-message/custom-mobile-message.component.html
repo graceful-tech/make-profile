@@ -1,10 +1,20 @@
 <div class="popup-overlay">
+  <div class="popup-box">
     <div class="popup-body">
-      <p>{{message}}</p>
+      <!-- <h2 class="popup-title">🚀 Get Your Resume</h2> -->
+       <button class="close-btn" (click)="close()">&times;</button>
+      <p><strong>Just pay</strong></p>
+     <span style="font-size: 23px;">₹</span> &nbsp;<input
+        type="number"
+        [(ngModel)]="amountInput"
+        placeholder="Enter amount (₹)"
+        min="10"
+        class="popup-input"
+      /> &nbsp; INR
     </div>
     <div class="popup-actions">
-      <button class="primary-btn" (click)="addCredits()">Add Credits</button>
-      <button class="secondary-btn" (click)="close()">Ok</button>
+      <button class="primary-btn" (click)="addCredits()">Pay</button>
+      <!-- <button class="secondary-btn" (click)="close()">Maybe Later</button> -->
     </div>
+  </div>
 </div>
-

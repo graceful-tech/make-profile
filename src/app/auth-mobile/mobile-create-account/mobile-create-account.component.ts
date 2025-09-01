@@ -92,6 +92,10 @@ export class MobileCreateAccountComponent {
 
       this.api.retrieve(route, postData).subscribe({
         next: (response) => {
+
+          localStorage.clear();
+          this.gs.navigate.next(false);
+
           this.loadingFlag = false;
           sessionStorage.setItem('authType', 'custom');
           sessionStorage.setItem('token', response.token);

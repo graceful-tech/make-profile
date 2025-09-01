@@ -101,7 +101,6 @@ export class ExistingResumeComponent {
   }
 
   navigateToVerify(templateName: any) {
-    if (this.balanceCredits > 0) {
       this.ref.close();
       localStorage.setItem('templateName', templateName);
 
@@ -110,8 +109,7 @@ export class ExistingResumeComponent {
       this.gs.setResumeName(templateName);
 
       this.router.navigate(['candidate/verify-details']);
-    } else {
-    }
+    
   }
 
   onPageChangeTemplate(event: any) {

@@ -20,6 +20,7 @@ import { Achievements } from 'src/app/models/candidates/achievements';
 import { PaymentService } from 'src/app/services/payment.service';
 import { PaymentOptionComponent } from '../payments/payment-option/payment-option.component';
 import { CollegeProject } from 'src/app/models/candidates/college-project';
+import { LoaderService } from 'src/app/services/loader.service';
 
 @Component({
   selector: 'app-resume-creating',
@@ -87,6 +88,7 @@ export class ResumeCreatingComponent {
   achievementsEmptyFields: boolean = false;
   nickName: any;
   balanceCredits: any;
+  showPopup:boolean=false;
 
   constructor(
     private api: ApiService,
@@ -99,7 +101,8 @@ export class ResumeCreatingComponent {
     private router: Router,
     public ref: DynamicDialogRef,
     private config: DynamicDialogConfig,
-    private ps: PaymentService
+    private ps: PaymentService,
+    private loader:LoaderService
   ) {
     this.candidates = this.config.data?.candidates;
     this.templateName = this.config.data?.templateName;
@@ -171,7 +174,7 @@ export class ResumeCreatingComponent {
     });
   }
 
-  getResumeContent(content: any) {
+  getResumeContents(content: any) {
     this.ngxLoaderStart();
 
     const route = `content/openai?content=${content}`;
@@ -1104,6 +1107,8 @@ export class ResumeCreatingComponent {
           // if (this.candidateId !== null && this.candidateId !== undefined) {
           //   this.candidateForm.controls['mobileNumber'].disable();
           // }
+
+          this.getResumeContent('Summary');
         }
       },
     });
@@ -1149,10 +1154,15 @@ export class ResumeCreatingComponent {
       this.balanceCredits === undefined ||
       this.balanceCredits <= 0
     ) {
-      this.payRupees();
+      this.showPopup = true;
     } else {
       this.createCandidate();
     }
+  }
+
+  createResumeAfterPAy(event:any){
+    this.showPopup = false;
+     this.createCandidate();
   }
 
   getAvailableCredits() {
@@ -1170,5 +1180,52 @@ export class ResumeCreatingComponent {
 
   backToHome() {
     this.router.navigate(['candidate']);
+  }
+
+  closePopup(event:any){
+      this.showPopup = false;
+  }
+
+  getResumeContent(content: any) {
+    this.loader.start();
+    const route = `content/openai?content=${content}`;
+    this.api.get(route).subscribe({
+      next: (response) => {
+        if (response) {
+          const responseContent = response as any;
+          this.candidateForm
+            .get('summary')
+            ?.setValue(responseContent?.resumeContent);
+          this.loader.stop();
+          this.getResumeContentObjective('Career Objective');
+        }
+      },
+      error: (error) => {
+        this.loader.stop();
+        this.dataLoaded = true;
+        this.gs.showMobileMessage('Error', 'Please try after some time');
+      },
+    });
+  }
+
+  getResumeContentObjective(content: any) {
+    this.loader.start();
+    const route = `content/openai?content=${content}`;
+    this.api.get(route).subscribe({
+      next: (response) => {
+        if (response) {
+          const responseContent = response as any;
+          this.candidateForm
+            .get('careerObjective')
+            ?.setValue(responseContent?.resumeContent);
+          this.loader.stop();
+        }
+      },
+      error: (error) => {
+        this.loader.stop();
+        this.dataLoaded = true;
+        this.gs.showMobileMessage('Error', 'Please try after some time');
+      },
+    });
   }
 }

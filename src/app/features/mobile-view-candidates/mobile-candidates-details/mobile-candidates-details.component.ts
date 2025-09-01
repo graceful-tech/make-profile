@@ -906,15 +906,7 @@ export class MobileCandidatesDetailsComponent {
     this.router.navigate(['mob-candidate/create-candidate']);
   }
 
-  // createResume() {
-  //    this.gs.setCandidateDetails(this.candidates)
-  //    if(this.candidates !== null && this.candidates !== undefined){
-  //   this.router.navigate(['mob-candidate/choose-Template']);
-  //    }
-  //    else{
-  //     window.alert("Please enter the details")
-  //    }
-  // }
+ 
 
   createResume() {
     if (this.candidates !== null && this.candidates !== undefined) {
@@ -1421,7 +1413,7 @@ export class MobileCandidatesDetailsComponent {
   }
 
   navigateToVerify(templateName: any) {
-    if (this.balanceCredits > 0) {
+    
       localStorage.setItem('templateName', templateName);
       this.gs.setResumeName(templateName);
 
@@ -1434,14 +1426,7 @@ export class MobileCandidatesDetailsComponent {
       this.gs.setCandidateDetails(this.candidates);
 
       this.router.navigate(['mob-candidate/edit-candidate']);
-    } else {
-      // this.gs.customMobileMessageWithNickName(
-      //   'Oops..!',
-      //   'You don’t have enough credits to check eligibility.',
-      //   templateName,
-      //   nickName
-      // );
-    }
+    
   }
 
   payForApplyingJOb() {
@@ -1800,8 +1785,8 @@ export class MobileCandidatesDetailsComponent {
       },
     });
   }
-
-  goToCreditHistory(){
+  
+   goToCreditHistory(){
     this.router.navigate(['mob-candidate/mob-credit-history']);
   }
 }

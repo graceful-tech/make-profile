@@ -248,7 +248,6 @@ export class CandidatesDetailsComponent {
     this.router.navigate(['']);
   }
   goToViewAccount() {
-    console.log('entered view account');
     this.router.navigate(['/candidate/view-account']);
   }
 
@@ -1496,7 +1495,6 @@ export class CandidatesDetailsComponent {
   }
 
   navigateToVerify(templateName: any) {
-    if (this.balanceCredits > 0) {
       localStorage.setItem('templateName', templateName);
 
       this.gs.setCandidateDetails(this.candidates);
@@ -1504,8 +1502,6 @@ export class CandidatesDetailsComponent {
       this.gs.setResumeName(templateName);
 
       this.router.navigate(['candidate/verify-details']);
-    } else {
-    }
   }
 
   payForApplyingJOb() {
@@ -1768,6 +1764,10 @@ export class CandidatesDetailsComponent {
     );
 
     if (confirmDelete) {
+      
+      this.gs.setCandidateDetails(null);
+      this.gs.setResumeDetails(null);
+      this.gs.setCandidateImage(null);
       this.router.navigate(['candidate/new-details-with-ai']);
     }
   }
@@ -1869,8 +1869,8 @@ export class CandidatesDetailsComponent {
       },
     });
   }
-
-  goToCreditHistory(){
+  
+   goToCreditHistory(){
     this.router.navigate(['candidate/credit-history']);
   }
 }

@@ -25,11 +25,8 @@
   <div class="profile-wrapper">
     <div class="headers">
       <button
-        class="go-dashboard-btn btn btn-outline-primary d-flex align-items-center gap-2"
-        (click)="goToCandidatepage()"
-      >
-        <img class="profile" src="assets/img/new-home.jpg" alt="Home" />
-        Home
+        class="home-btn"
+        (click)="goToCandidatepage()"> <i class="fa fa-home"></i> Go Home
       </button>
     </div>
 
@@ -340,6 +337,7 @@
                       formControlName="responsibilities"
                       [addOnBlur]="true"
                       [addOnTab]="true"
+                      inputId="responsibilityInput"
                     ></p-chips>
                     <p-button
                       type="button"
@@ -352,12 +350,16 @@
                 </div>
               </div>
 
-              <!-- <div class="col-12 md:col-6 lg:col-3" *ngIf="i>0">
-                      <button type="button" class="remove-btn" (click)="removeExperience(i)">Remove Experience</button>
-                    </div> -->
+              <div class="col-12 md:col-6 lg:col-3" *ngIf="i >= 0">
+                <button
+                  type="button"
+                  class="remove-btn"
+                  (click)="removeExperience(i)"
+                >
+                  Remove Experience
+                </button>
+              </div>
             </div>
-                  <hr class="sub-section-divider" />
-
 
             <!-- Project Details -->
             <div formArrayName="projects">
@@ -406,6 +408,7 @@
                           formControlName="projectSkills"
                           [addOnBlur]="true"
                           [addOnTab]="true"
+                          inputId="projectInput"
                         ></p-chips>
                         <p-button
                           type="button"
@@ -421,7 +424,7 @@
                       <label>Project Description</label>
                       <div class="input-wrapper">
                         <textarea
-                          rows="5"
+                          rows="2"
                           type="text"
                           pInputText
                           formControlName="projectDescription"
@@ -430,23 +433,65 @@
                     </div>
                   </div>
 
-                  <!-- <div class="col-12 md:col-6 lg:col-3" *ngIf="j>0">
-                          <button type="button" class="remove-btn" (click)="removeProject(i, j)">Remove Project</button>
-        
-                         </div> -->
+                  <div class="col-12 md:col-6 lg:col-3" *ngIf="j >= 0">
+                    
+                    <button
+                      type="button"
+                      class="remove-btn"
+                      (click)="removeProject(i, j)"
+                    >
+                      Remove Project
+                    </button>
+                  </div>
                 </div>
 
-                <!-- <div class="col-12 md:col-6 lg:col-3" *ngIf="j === getProjectCount(i) - 1">
-                        <button type="button" class="custom-btn" (click)="addProject(i)">+ Add Project</button>
-                      </div> -->
+                <!-- <div
+                  class="col-12 md:col-6 lg:col-3"
+                  *ngIf="j === getProjectCount(i) - 1"
+                >
+                  <button
+                    type="button"
+                    class="custom-btn"
+                    (click)="addProject(i)"
+                  >
+                    + Add Project
+                  </button>
+                </div> -->
 
                 <hr class="sub-section-divider" />
               </div>
             </div>
+              <div
+                  class="col-12 md:col-6 lg:col-3"
+                   
+                >
+                  <button
+                    type="button"
+                    class="custom-btn"
+                    (click)="addProject(i)"
+                  >
+                    + Add Project
+                  </button>
+                </div>
 
-            <!-- <div class="col-12 md:col-6 lg:col-3" *ngIf="i === getExperienceCount(i) -1" >
-                    <button type="button" class="custom-btn" (click)="addExperience()">+ Add Experience</button>
-                  </div> -->
+
+            <!-- <div
+              class="col-12 md:col-6 lg:col-3"
+              *ngIf="i === getExperienceCount(i) - 1"
+            >
+              <button
+                type="button"
+                class="custom-btn"
+                (click)="addExperience()"
+              >
+                + Add Experience
+              </button>
+            </div> -->
+          </div>
+          <div class="col-12 md:col-6 lg:col-3 mt-2">
+            <button type="button" class="custom-btn" (click)="addExperience()">
+              + Add Experience
+            </button>
           </div>
         </div>
       </ng-container>
@@ -484,6 +529,7 @@
                       formControlName="collegeProjectSkills"
                       [addOnBlur]="true"
                       [addOnTab]="true"
+                      inputId="collegeProjectInput"
                     ></p-chips>
                     <p-button
                       type="button"
@@ -510,16 +556,31 @@
                 </div>
               </div>
 
-              <!-- <div class="col-12 md:col-6 lg:col-3" *ngIf="i>0">
-                      <button type="button" class="remove-btn" (click)="removeCollegeProject(i)">Remove Project</button>
-                    </div> -->
+              <div class="col-12 md:col-6 lg:col-3" *ngIf="i >= 0">
+                <button
+                  type="button"
+                  class="remove-btn"
+                  (click)="removeCollegeProject(i)"
+                >
+                  Remove Project
+                </button>
+              </div>
             </div>
-                            <hr class="sub-section-divider" />
 
-            <!-- <div class="col-12 md:col-6 lg:col-3" *ngIf="i === getCollegeProjectCount(i) -1" >
-                    <button type="button" class="custom-btn" (click)="addCollegeProject()">+ Add Project</button>
-                  </div> -->
+            
           </div>
+          <div
+              class="col-12 md:col-6 lg:col-3"
+               
+            >
+              <button
+                type="button"
+                class="custom-btn"
+                (click)="addCollegeProject()"
+              >
+                + Add Project
+              </button>
+            </div>
         </div>
       </ng-container>
 
@@ -537,6 +598,7 @@
           [formGroupName]="i"
           class="experience-container"
         >
+          <hr />
           <div class="grid">
             <div class="col-12 md:col-6 lg:col-3">
               <div class="field-wrapper">
@@ -551,7 +613,7 @@
               </div>
             </div>
 
-                <div class="col-12 md:col-6 lg:col-3">
+            <div class="col-12 md:col-6 lg:col-3">
               <div class="field-wrapper">
                 <label>Qualification</label>
                 <div class="input-wrapper">
@@ -581,8 +643,6 @@
                 </div>
               </div>
             </div>
-
-        
 
             <div class="col-12 md:col-6 lg:col-3">
               <div class="field-wrapper">
@@ -626,16 +686,29 @@
               </div>
             </div>
           </div>
-              <hr class="sub-section-divider" />
+          <div
+            class="col-12 md:col-6 lg:col-3"
+            style="padding-left: 15px"
+            *ngIf="i >= 0"
+          >
+            <button
+              type="button"
+              class="remove-btn"
+              (click)="removeQualification(i)"
+            >
+              Remove Qualification
+            </button>
 
-          <!-- <div class="col-12 md:col-6 lg:col-3" style="padding-left: 15px;" *ngIf="i>0">
-                    <button type="button" class="remove-btn" (click)="removeQualification(i)">Remove Qualification</button>
-                    </div> -->
+            <!-- <p-button type="button" label="Remove Qualification" styleClass="p-buttonFailure" (click)="removeQualification(i)"></p-button> -->
+          </div>
         </div>
+        <div class="col-12 md:col-6 lg:col-3">
+          <button type="button" class="custom-btn" (click)="addQualication()">
+            + Add Qualifications
+          </button>
 
-        <!-- <div class="col-12 md:col-6 lg:col-3">
-                  <button type="button" class="custom-btn" (click)="addQualication()">+ Add Qualifications</button>
-                 </div> -->
+          <!-- <p-button type="button" label="+ Add Qualifications" (click)="addQualication()"></p-button> -->
+        </div>
       </div>
 
       <app-make-profile-divider></app-make-profile-divider>
@@ -686,16 +759,28 @@
               </div>
             </div>
           </div>
-            <hr class="sub-section-divider" />
+          <div
+            class="col-12 md:col-6 lg:col-3"
+            style="padding-left: 15px"
+            *ngIf="i >= 0"
+          >
+            <button
+              type="button"
+              class="remove-btn"
+              (click)="removeCertificates(i)"
+            >
+              Remove Course
+            </button>
 
-          <!-- <div class="col-12 md:col-6 lg:col-3" style="padding-left: 15px;" *ngIf="i>0">
-                    <button type="button" class="remove-btn" (click)="removeCertificates(i)">Remove Course</button>
-                  </div> -->
+            <!-- <p-button type="button" label="Remove Course" styleClass="p-buttonFailure" (click)="removeCertificates(i)"></p-button> -->
+          </div>
         </div>
-
-        <!-- <div class="col-12 md:col-6 lg:col-3">
-                       <button type="button" class="custom-btn" (click)="addCertificates()">+ Add Couse</button>
-                   </div> -->
+        <div class="col-12 md:col-6 lg:col-3">
+          <!-- <p-button type="button" label="+ Add Couse" (click)="addCertificates()"></p-button> -->
+          <button type="button" class="custom-btn" (click)="addCertificates()">
+            + Add Couse
+          </button>
+        </div>
       </div>
 
       <app-make-profile-divider></app-make-profile-divider>
@@ -738,15 +823,28 @@
               </div>
             </div>
           </div>
-                <hr class="sub-section-divider" />
-
-          <!-- <div class="col-12 md:col-6 lg:col-3" style="padding-left: 15px;" *ngIf="i>0">
-                        <button type="button" class="remove-btn" icon="pi pi-trash" (click)="removeaddAchievements(i)">Remove Achievements</button>
-                        </div> -->
+          <div
+            class="col-12 md:col-6 lg:col-3"
+            style="padding-left: 15px"
+            *ngIf="i >= 0"
+          >
+            <button
+              type="button"
+              class="remove-btn"
+              icon="pi pi-trash"
+              (click)="removeaddAchievements(i)"
+            >
+              Remove Achievements
+            </button>
+            <!-- <p-button type="button" label="Remove Achievements" styleClass="p-buttonFailure" (click)="removeaddAchievements(i)"></p-button> -->
+          </div>
         </div>
-        <!-- <div class="col-12 md:col-6 lg:col-3">
-                        <button type="button" class="custom-btn"  (click)="addAchievements()">+ Add Achievements</button>
-                    </div> -->
+        <div class="col-12 md:col-6 lg:col-3">
+          <!-- <p-button type="button" styleClass="p-resumeButton" label="+ Add Achievements" (click)="addAchievements()"></p-button> -->
+          <button type="button" class="custom-btn" (click)="addAchievements()">
+            + Add Achievements
+          </button>
+        </div>
       </div>
 
       <app-make-profile-divider></app-make-profile-divider>

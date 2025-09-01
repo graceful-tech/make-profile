@@ -765,3 +765,8 @@
     </div>
   </div>
 </div>
+
+  <ng-container *ngIf="showPopup">
+    <app-custom-message (valueSent)="createResumeAfterPAy($event)" (closePopup)="closePopup($event)"></app-custom-message>
+  </ng-container>
+

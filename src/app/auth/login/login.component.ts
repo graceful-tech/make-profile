@@ -102,6 +102,9 @@ export class LoginComponent {
 
 
   onGoogleLogin() {
+   localStorage.clear();
+   this.gs.navigate.next(false);
+
     const restUrl = environment.restUrl;
     const isMobile = this.deviceDetectorService.isMobile();
     const baseUrl = window.location.origin;

@@ -1117,3 +1117,32 @@ table::-webkit-scrollbar-thumb {
   z-index: 9999;
 }
 
+.mobile-back {
+    border: none;
+    border-radius: 7px;
+    padding: 8px 12px;
+    background: rgb(65, 86, 148);
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.mobile-reset {
+    border: none;
+    border-radius: 7px;
+    padding: 8px 12px;
+    background: rgb(113, 115, 122);
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.home-btn{
+     border: none;
+    border-radius: 7px;
+    padding: 8px 12px;
+    background: rgb(70, 115, 165);
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+}

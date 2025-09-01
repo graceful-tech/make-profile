@@ -151,11 +151,10 @@ export class GlobalService {
     });
   }
 
-   customMessage(status: string, message: String ,templateName:String) {
+   customMessage() {
     this.dialog.open(CustomMessageComponent, {
       data: {
-        message: message,
-        templateName:templateName
+
       },
       closable: false,
       header: status+'☺️',

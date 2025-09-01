@@ -83,6 +83,7 @@ export class FinalVerifyComponent {
   isLoading: boolean = false;
   isVerifying: boolean = false;
   balanceCredits: any;
+  showPopup: boolean = false;
 
   constructor(
     private api: ApiService,
@@ -98,7 +99,6 @@ export class FinalVerifyComponent {
     private ps: PaymentService,
     private loader: MobileLoaderService
   ) {
-   
     this.gs.candidateDetails$.subscribe((response) => {
       if (response !== null) {
         this.candidates = response;
@@ -126,10 +126,9 @@ export class FinalVerifyComponent {
     }
 
     if (this.candidates !== null && this.candidates !== undefined) {
-    
       this.candidateId = this.candidates?.id;
 
-       this.gs.candidateImage$.subscribe((response) => {
+      this.gs.candidateImage$.subscribe((response) => {
         if (response !== null) {
           this.candidateImageUrl = response;
         }
@@ -140,11 +139,11 @@ export class FinalVerifyComponent {
       this.getCandidates();
     }
 
-     this.gs.candidateImage$.subscribe((response) => {
-        if (response !== null) {
-          this.candidateImageUrl = response;
-        }
-      }); 
+    this.gs.candidateImage$.subscribe((response) => {
+      if (response !== null) {
+        this.candidateImageUrl = response;
+      }
+    });
   }
 
   ngAfterViewInit() {}
@@ -980,7 +979,7 @@ export class FinalVerifyComponent {
 
           const candidateClone = JSON.parse(JSON.stringify(candidate));
           this.patchCandidateForm(candidateClone);
-           this.getCandidateImage(candidate?.id);
+          this.getCandidateImage(candidate?.id);
 
           this.getResumeContent('Summary');
         }
@@ -1001,7 +1000,7 @@ export class FinalVerifyComponent {
           this.dataLoaded = true;
           //set global image
           if (
-          this.candidateImageUrl !== null &&
+            this.candidateImageUrl !== null &&
             this.candidateImageUrl !== undefined
           ) {
             this.gs.setCandidateImage(this.candidateImageUrl);
@@ -1189,17 +1188,21 @@ export class FinalVerifyComponent {
     });
   }
 
-
-   createFinalResume() {
+  createFinalResume() {
     if (
       this.balanceCredits === null ||
       this.balanceCredits === undefined ||
       this.balanceCredits <= 0
     ) {
-      this.payRupees();
+      this.showPopup = true;
     } else {
       this.createCandidate();
     }
+  }
+
+  createResumeAfterPAy(event: any) {
+    this.showPopup = false;
+    this.createCandidate();
   }
 
   async payRupees() {
@@ -1220,5 +1223,9 @@ export class FinalVerifyComponent {
     } else {
       alert('Please enter a valid amount ₹10 or more.');
     }
+  }
+
+  closePopup(event: any) {
+    this.showPopup = false;
   }
 }

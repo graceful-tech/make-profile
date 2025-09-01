@@ -75,6 +75,9 @@ export class CreateAccountComponent {
       this.api.retrieve(route, postData).subscribe({
         next: (response) => {
           this.loadingFlag = false;
+
+          localStorage.clear();
+          this.gs.navigate.next(false);
           // const customer = response as any;
           // this.gs.openLogin('Success', 'Your Account Created Successfully');
           sessionStorage.setItem('authType', 'custom');
