@@ -1,21 +1,61 @@
 .header-image {
     height: 60px;
-    /* Adjust as needed */
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 0 10px;
     background-color: #fff;
     flex-shrink: 0;
-    /* border-bottom: 1px solid #ccc; */
+    margin-bottom: 8px;
 }
 
-/* Adjust the header image size */
 .header-images {
-    height: 40px;
+    height: 50px;
 }
 
-/* Back button styling (if needed) */
+
 .right-align {
     margin-left: auto;
+}
+
+p-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+p-table th,
+p-table td {
+  padding: 8px;
+  text-align: center;
+  border: 1px solid #ccc;
+}
+
+p-table th {
+  background-color: #f4f4f4;
+  font-weight: bold;
+}
+
+.table-container {
+  width: 90%;
+  margin: 0 auto;
+  padding-top: 25px;
+}
+
+.heading1 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 auto 6px auto;  
+  padding-top: 50px;
+  width: 90%;   
+}
+
+.title {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.available-credits {
+  font-size: 15px;
+  color: #333;
 }

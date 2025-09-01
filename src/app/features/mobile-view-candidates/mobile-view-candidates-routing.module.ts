@@ -42,7 +42,7 @@ const routes: Routes = [
 
   { path: 'analyse-ai', component: MobileAnalyseAiComponent },
 
-  { path: 'credit-history', component: MobileCreditHistoryComponent },
+  { path: 'mob-credit-history', component: MobileCreditHistoryComponent },
 ];
 
 @NgModule({

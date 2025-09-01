@@ -17,7 +17,7 @@ export class CreditHistoryComponent {
   maxLimitPerPageForResume: number = 5;
   availableCredits: any;
   totalCreditsAvailable: number = 0;
-
+  balanceCredits: any;
   constructor(
     private router: Router,
     private api: ApiService,
@@ -26,7 +26,8 @@ export class CreditHistoryComponent {
   ) {}
 
   ngOnInit() {
-    this.getAvailableCreditss();
+    this.getCreditHistory();
+    this.getSumAvailableCredits();
   }
   goBack() {
     this.router.navigate(['candidate']);
@@ -35,13 +36,13 @@ export class CreditHistoryComponent {
   onPageChangeTemplate(event: any) {
     this.currentPage = event.page + 1;
     this.maxLimitPerPageForResume = event.rows;
-    this.getAvailableCreditss();
+    this.getCreditHistory();
   }
 
-  getAvailableCreditss() {
+  getCreditHistory() {
     const id = sessionStorage.getItem('userId');
 
-    const route = 'credits';
+    const route = 'credits/credit-history';
     const payload = {
       userId: id,
       page: this.currentPage,
@@ -50,7 +51,8 @@ export class CreditHistoryComponent {
     this.api.create(route, payload).subscribe({
       next: (response) => {
         if (response) {
-          this.availableCredits = response?.results as any;
+          this.availableCredits = response;
+          console.log(this.availableCredits);
           this.totalCreditsAvailable = this.availableCredits.reduce(
             (sum: any, credit: { creditAvailable: any }) =>
               sum + (credit.creditAvailable || 0),
@@ -58,6 +60,17 @@ export class CreditHistoryComponent {
           );
         }
         this.totalRecords = response?.totalRecords;
+      },
+    });
+  }
+
+  getSumAvailableCredits() {
+    const userId = sessionStorage.getItem('userId');
+
+    const route = 'credits/get-available-credits';
+    this.api.get(route).subscribe({
+      next: (response) => {
+        this.balanceCredits = response as any;
       },
     });
   }

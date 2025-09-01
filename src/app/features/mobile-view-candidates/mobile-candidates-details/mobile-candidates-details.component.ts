@@ -1802,6 +1802,6 @@ export class MobileCandidatesDetailsComponent {
   }
 
   goToCreditHistory(){
-    this.router.navigate(['mob-candidate/credit-history']);
+    this.router.navigate(['mob-candidate/mob-credit-history']);
   }
 }
