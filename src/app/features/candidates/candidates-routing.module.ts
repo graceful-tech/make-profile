@@ -14,6 +14,7 @@ import { AnalyseWithAiComponent } from 'src/app/shared/components/analyse-with-a
 import { NewDetailsComponent } from 'src/app/shared/components/new-details/new-details.component';
 import { VerifyCandidatesComponent } from './verify-candidates/verify-candidates.component';
 import { ResumeCreatingComponent } from './resume-creating/resume-creating.component';
+import { CreditHistoryComponent } from './credit-history/credit-history.component';
 
 const routes: Routes = [
   { path: '', component: CandidatesDetailsComponent },
@@ -43,6 +44,8 @@ const routes: Routes = [
   { path: 'verify-details', component: VerifyCandidatesComponent },
 
   { path: 'generate-resume', component: ResumeCreatingComponent },
+
+   { path: 'credit-history', component: CreditHistoryComponent },
 ];
 
 @NgModule({

@@ -13,6 +13,7 @@ import { UseExistingTemplateComponent } from './use-existing-template/use-existi
 import { MobileCommonDetailsComponent } from 'src/app/shared/components/mobile-common-details/mobile-common-details.component';
 import { CashbackRenewComponent } from 'src/app/shared/components/cashback-renew/cashback-renew.component';
 import { MobileAnalyseAiComponent } from 'src/app/shared/components/mobile-analyse-ai/mobile-analyse-ai.component';
+import { MobileCreditHistoryComponent } from './mobile-credit-history/mobile-credit-history.component';
 
 const routes: Routes = [
   { path: '', component: MobileCandidatesDetailsComponent },
@@ -36,14 +37,12 @@ const routes: Routes = [
   { path: 'Use-existing', component: UseExistingTemplateComponent },
 
   { path: 'enter-new-details', component: MobileCommonDetailsComponent },
-   
+
   { path: 'rewards', component: CashbackRenewComponent },
 
-   { path: 'analyse-ai', component: MobileAnalyseAiComponent },
+  { path: 'analyse-ai', component: MobileAnalyseAiComponent },
 
-
-  
-  
+  { path: 'credit-history', component: MobileCreditHistoryComponent },
 ];
 
 @NgModule({

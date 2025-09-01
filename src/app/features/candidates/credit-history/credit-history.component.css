@@ -1,0 +1,46 @@
+.header-image {
+  position: relative;
+  top: 0;
+  left: 0;
+  /* width: 100%; */
+  z-index: 1000;
+  display: flex;  
+  align-items: center;  
+  justify-content: space-between; 
+  padding: 10px 10px;
+  
+}
+
+.header-images {
+  width: 100px;
+  height: auto;
+}
+
+.top-right-login {
+  position: absolute;
+  top: 10px;
+  right: 5px;
+}
+
+.table-container {
+  width: 70%;
+  margin-left:250px;
+  padding-top: 100px;
+}
+
+p-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+p-table th,
+p-table td {
+  padding: 8px;
+  text-align: center;
+  border: 1px solid #ccc;
+}
+
+p-table th {
+  background-color: #f4f4f4;
+  font-weight: bold;
+}

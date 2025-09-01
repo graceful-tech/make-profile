@@ -1,0 +1,21 @@
+.header-image {
+    height: 60px;
+    /* Adjust as needed */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px;
+    background-color: #fff;
+    flex-shrink: 0;
+    /* border-bottom: 1px solid #ccc; */
+}
+
+/* Adjust the header image size */
+.header-images {
+    height: 40px;
+}
+
+/* Back button styling (if needed) */
+.right-align {
+    margin-left: auto;
+}

@@ -17,6 +17,7 @@ import { FinalVerifyComponent } from './final-verify/final-verify.component';
 import { NickNameMobileComponent } from './nick-name-mobile/nick-name-mobile.component';
 import { ChooseNewTemplateComponent } from './choose-new-template/choose-new-template.component';
 import { UseExistingTemplateComponent } from './use-existing-template/use-existing-template.component';
+import { MobileCreditHistoryComponent } from './mobile-credit-history/mobile-credit-history.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { UseExistingTemplateComponent } from './use-existing-template/use-existi
     NickNameMobileComponent,
     ChooseNewTemplateComponent,
     UseExistingTemplateComponent,
+    MobileCreditHistoryComponent
   ],
   imports: [CommonModule, MobileViewCandidatesRoutingModule, SharedModule],
 })

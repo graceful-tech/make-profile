@@ -1800,4 +1800,8 @@ export class MobileCandidatesDetailsComponent {
       },
     });
   }
+
+  goToCreditHistory(){
+    this.router.navigate(['mob-candidate/credit-history']);
+  }
 }

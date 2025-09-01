@@ -1869,4 +1869,8 @@ export class CandidatesDetailsComponent {
       },
     });
   }
+
+  goToCreditHistory(){
+    this.router.navigate(['candidate/credit-history']);
+  }
 }
