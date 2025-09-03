@@ -4,7 +4,13 @@ import {
   ElementRef,
   ViewChild,
 } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormArray,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import {
@@ -26,6 +32,7 @@ import { CollegeProject } from 'src/app/models/candidates/college-project';
 import { DatePipe } from '@angular/common';
 import { PaymentOptionComponent } from '../../candidates/payments/payment-option/payment-option.component';
 import { MobileLoaderService } from 'src/app/services/mobile.loader.service';
+import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
   selector: 'app-final-verify',
@@ -38,6 +45,7 @@ export class FinalVerifyComponent {
 
   candidateForm!: FormGroup;
   genderList: Array<ValueSet> = [];
+  nationalityList: Array<ValueSet> = [];
   languages: Array<ValueSet> = [];
   noticePeriodList: Array<ValueSet> = [];
   candidateId: any;
@@ -95,9 +103,8 @@ export class FinalVerifyComponent {
     private cdr: ChangeDetectorRef,
     private router: Router,
     public ref: DynamicDialogRef,
-    private config: DynamicDialogConfig,
-    private ps: PaymentService,
-    private loader: MobileLoaderService
+    private loader: MobileLoaderService,
+    private toast: ToastService
   ) {
     this.gs.candidateDetails$.subscribe((response) => {
       if (response !== null) {
@@ -119,7 +126,8 @@ export class FinalVerifyComponent {
     this.getLanguages();
     this.getMaritalStatus();
     this.getFieldOfStudy();
-    this.getAvailableCredits();
+    this.getNationalityList();
+    // this.getAvailableCredits();
 
     if (this.templateName === null || this.templateName === undefined) {
       this.templateName = localStorage.getItem('templateName');
@@ -149,33 +157,54 @@ export class FinalVerifyComponent {
   ngAfterViewInit() {}
 
   createCandidateForm() {
-    this.candidateForm = this.fb.group({
-      id: [''],
-      name: ['', Validators.required],
-      mobileNumber: [
-        '',
-        Validators.compose([Validators.required, Validators.minLength(10)]),
-      ],
-      email: ['', Validators.compose([Validators.required, Validators.email])],
-      gender: ['', Validators.required],
-      nationality: [''],
-      languagesKnown: [[]],
-      fresher: [''],
-      skills: ['', Validators.required],
-      linkedIn: [''],
-      dob: [''],
-      address: [''],
-      maritalStatus: [''],
-      experiences: this.fb.array([this.createExperience()]),
-      qualification: this.fb.array([this.createQualification()]),
-      certificates: this.fb.array([this.createCertificates()]),
-      achievements: this.fb.array([this.createAchievements()]),
-      softSkills: [''],
-      coreCompentencies: [''],
-      collegeProject: this.fb.array([this.createCollegeProject()]),
-      summary: [''],
-      careerObjective: [''],
-    });
+    this.candidateForm = this.fb.group(
+      {
+        id: [''],
+        name: ['', Validators.required],
+        mobileNumber: [
+          '',
+          Validators.compose([Validators.required, Validators.minLength(10)]),
+        ],
+        email: [
+          '',
+          Validators.compose([Validators.required, Validators.email]),
+        ],
+        gender: ['', Validators.required],
+        nationality: [''],
+        languagesKnown: [[]],
+        fresher: [''],
+        skills: ['', Validators.required],
+        linkedIn: [''],
+        dob: [''],
+        address: [''],
+        maritalStatus: [''],
+        experiences: this.fb.array([]),
+        qualification: this.fb.array([]),
+        certificates: this.fb.array([]),
+        achievements: this.fb.array([]),
+        softSkills: [''],
+        coreCompentencies: [''],
+        collegeProject: this.fb.array([]),
+        summary: [''],
+        careerObjective: [''],
+        hobbies:[''],
+        fatherName:['']
+      },
+      { validators: [this.fresherOrExperienceValidator()] }
+    );
+  }
+
+  fresherOrExperienceValidator() {
+    return (formGroup: AbstractControl): { [key: string]: any } | null => {
+      const fresher = formGroup.get('fresher')?.value;
+      const experiences = formGroup.get('experiences') as FormArray;
+
+      if (!fresher && experiences.length === 0) {
+        return { fresherOrExperienceRequired: true };
+      }
+
+      return null;
+    };
   }
 
   getGenderList() {
@@ -231,11 +260,13 @@ export class FinalVerifyComponent {
         );
       }
 
-      if (payload.dob != null) {
+      if (payload.dob == null && payload.dob !== '') {
         payload.dob = this.datePipe.transform(payload.dob, 'yyyy-MM-dd');
       }
 
-      if (payload.fresher != null && payload.fresher) {
+      if (payload.fresher === null && payload.experiences.length === 0) {
+        payload['fresher'] = true;
+      } else if (payload.fresher) {
         payload['fresher'] = true;
       } else {
         payload['fresher'] = false;
@@ -246,7 +277,10 @@ export class FinalVerifyComponent {
       }
 
       if (!payload.fresher) {
-        if (Object.is(payload.experiences?.[0]?.companyName, '')) {
+        if (
+          payload.experiences.length === 0 ||
+          Object.is(payload.experiences?.[0]?.companyName, '')
+        ) {
           payload.experiences = [];
         } else {
           payload.experiences = payload.experiences.map((exp: any) => {
@@ -268,7 +302,7 @@ export class FinalVerifyComponent {
               (proj: any) => proj.projectName === ''
             );
 
-            if (hasEmptyProjectName) {
+            if (exp.projects.length === 0 || hasEmptyProjectName) {
               projects = [];
             } else {
               projects = projects.map((proj: any) => ({
@@ -290,7 +324,10 @@ export class FinalVerifyComponent {
         }
       }
 
-      if (Object.is(payload.qualification[0].institutionName, '')) {
+      if (
+        payload.qualification.length === 0 ||
+        Object.is(payload.qualification[0].institutionName, '')
+      ) {
         payload.qualification = [];
       } else {
         payload.qualification.forEach((q: any) => {
@@ -305,7 +342,10 @@ export class FinalVerifyComponent {
         });
       }
 
-      if (Object.is(payload.achievements[0].achievementsName, '')) {
+      if (
+        payload.achievements.length === 0 ||
+        Object.is(payload.achievements[0].achievementsName, '')
+      ) {
         payload.achievements = [];
       } else {
         payload.achievements.forEach((cert: any) => {
@@ -316,7 +356,10 @@ export class FinalVerifyComponent {
         });
       }
 
-      if (Object.is(payload.certificates[0].courseName, '')) {
+      if (
+        payload.certificates.length === 0 ||
+        Object.is(payload.certificates[0].courseName, '')
+      ) {
         payload.certificates = [];
       } else {
         payload.certificates.forEach((cert: any) => {
@@ -331,7 +374,20 @@ export class FinalVerifyComponent {
         });
       }
 
-      if (Object.is(payload.languagesKnown, '')) {
+      
+ if (Object.is(payload.hobbies, '')) {
+        payload.hobbies = '';
+      } else {
+        const hobbiesList: string[] = payload.hobbies;
+        const commaSeparatedString: string = hobbiesList.join(', ');
+        payload.hobbies = commaSeparatedString;
+      }
+
+
+      if (
+        payload.languagesKnown.length === 0 ||
+        Object.is(payload.languagesKnown, '')
+      ) {
         payload.languagesKnown = '';
       } else {
         const stringList: string[] = payload.languagesKnown;
@@ -364,28 +420,34 @@ export class FinalVerifyComponent {
       }
 
       if (payload.fresher) {
-        const hasValidProject = payload.collegeProject.some(
-          (project: { collegeProjectName: string }) =>
-            project.collegeProjectName &&
-            project.collegeProjectName.trim() !== ''
-        );
-
-        if (!hasValidProject) {
+        if (
+          payload.collegeProject.length === 0 ||
+          Object.is(payload.collegeProject[0].collegeProjectName, '')
+        ) {
           payload.collegeProject = [];
         } else {
-          payload.collegeProject = payload.collegeProject.map(
-            (project: any) => ({
-              ...project,
-              collegeProjectSkills: Array.isArray(project.collegeProjectSkills)
-                ? project.collegeProjectSkills.join(', ')
-                : '',
-            })
+          const hasValidProject = payload.collegeProject.some(
+            (project: { collegeProjectName: string }) =>
+              project.collegeProjectName &&
+              project.collegeProjectName.trim() !== ''
           );
-        }
-      } else {
-        payload.collegeProject = [];
-      }
 
+          if (!hasValidProject) {
+            payload.collegeProject = [];
+          } else {
+            payload.collegeProject = payload.collegeProject.map(
+              (project: any) => ({
+                ...project,
+                collegeProjectSkills: Array.isArray(
+                  project.collegeProjectSkills
+                )
+                  ? project.collegeProjectSkills.join(', ')
+                  : '',
+              })
+            );
+          }
+        }
+      }
       payload.coreCompentenciesMandatory =
         this.candidates?.coreCompentenciesMandatory !== null
           ? this.candidates?.coreCompentenciesMandatory
@@ -428,7 +490,8 @@ export class FinalVerifyComponent {
     } else {
       this.ngxLoaderStop();
       this.showError = true;
-      window.alert('Enter the mandatory details');
+      this.toast.showToast('error', 'Enter All Mandatory Fields');
+      this.candidateForm.markAllAsTouched();
     }
   }
 
@@ -449,7 +512,7 @@ export class FinalVerifyComponent {
       role: [''],
       experienceYearStartDate: [''],
       experienceYearEndDate: [''],
-      projects: this.fb.array([this.createProject()]),
+      projects: this.fb.array([]),
       currentlyWorking: [''],
       responsibilities: [''],
     });
@@ -473,7 +536,7 @@ export class FinalVerifyComponent {
     const confirmDelete = window.confirm(
       'Are you sure you want to remove this Experience?'
     );
-    if (confirmDelete && this.experienceControls.length > 1) {
+    if (confirmDelete && this.experienceControls.length >= 1) {
       const removedExperience = this.experienceControls.at(index).value;
       if (removedExperience.id) {
         this.experienceControls.removeAt(index);
@@ -510,7 +573,7 @@ export class FinalVerifyComponent {
 
     const projectArray = this.getProjects(experienceIndex);
 
-    if (confirmDelete && projectArray.length > 1) {
+    if (confirmDelete && projectArray.length >= 1) {
       const removedProject = projectArray.at(projectIndex).value;
 
       if (removedProject.id) {
@@ -548,7 +611,7 @@ export class FinalVerifyComponent {
     const confirmDelete = window.confirm(
       'Are you sure you want to remove this qualification?'
     );
-    if (confirmDelete && this.qualificationControls.length > 1) {
+    if (confirmDelete && this.qualificationControls.length >= 1) {
       const removedQualification = this.qualificationControls.at(index).value;
       if (removedQualification.id) {
         this.qualificationControls.removeAt(index);
@@ -579,7 +642,7 @@ export class FinalVerifyComponent {
     const confirmDelete = window.confirm(
       'Are you sure you want to remove this certificates?'
     );
-    if (confirmDelete && this.certificateControls.length > 1) {
+    if (confirmDelete && this.certificateControls.length >= 1) {
       const removedCertificate = this.certificateControls.at(index).value;
       if (removedCertificate.id) {
         this.certificateControls.removeAt(index);
@@ -612,7 +675,7 @@ export class FinalVerifyComponent {
     const confirmDelete = window.confirm(
       'Are you sure you want to remove this achievements?'
     );
-    if (confirmDelete && this.achievementsControls.length > 1) {
+    if (confirmDelete && this.achievementsControls.length >= 1) {
       const removedAchievement = this.achievementsControls.at(index).value;
       if (removedAchievement.id) {
         this.achievementsControls.removeAt(index);
@@ -721,6 +784,13 @@ export class FinalVerifyComponent {
           .map((skill: string) => skill.trim())
       : [];
 
+       candidate.hobbies = candidate?.hobbies
+      ? candidate.hobbies
+          .split(',')
+          .map((skill: string) => skill.trim())
+      : [];
+
+
     if (candidate.certificates?.length > 0) {
       const certificateFormArray = this.candidateForm.get(
         'certificates'
@@ -801,6 +871,8 @@ export class FinalVerifyComponent {
         : [],
       summary: candidate?.summary,
       careerObjective: candidate?.careerObjective,
+       hobbies: candidate?.hobbies ? candidate?.hobbies : [],
+      fatherName:candidate?.fatherName,
     });
   }
 
@@ -936,7 +1008,7 @@ export class FinalVerifyComponent {
     const confirmDelete = window.confirm(
       'Are you sure you want to remove this project?'
     );
-    if (confirmDelete && this.collegeProjectControls.length > 1) {
+    if (confirmDelete && this.collegeProjectControls.length >= 1) {
       const removeCollegeProject = this.collegeProjectControls.at(index).value;
       if (removeCollegeProject.id) {
         this.collegeProjectControls.removeAt(index);
@@ -1174,21 +1246,25 @@ export class FinalVerifyComponent {
     });
   }
 
-  getAvailableCredits() {
-    const userId = sessionStorage.getItem('userId');
+  getAvailableCredits(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const userId = sessionStorage.getItem('userId');
+      const route = `credits/get-available-credits?userId=${userId}`;
 
-    const route = `credits/get-available-credits?userId=${userId}`;
-
-    this.api.get(route).subscribe({
-      next: (response) => {
-        this.balanceCredits = response as any;
-
-        const balance = response;
-      },
+      this.api.get(route).subscribe({
+        next: (response) => {
+          this.balanceCredits = response as any;
+          resolve();
+        },
+        error: (err) => {
+          reject(err);
+        },
+      });
     });
   }
 
-  createFinalResume() {
+  async createFinalResume() {
+    await this.getAvailableCredits();
     if (
       this.balanceCredits === null ||
       this.balanceCredits === undefined ||
@@ -1205,27 +1281,17 @@ export class FinalVerifyComponent {
     this.createCandidate();
   }
 
-  async payRupees() {
-    const confirmedAmount = prompt('Enter final amount in ₹', '10');
-
-    const amountNum = Number(confirmedAmount);
-
-    if (!isNaN(amountNum) && Number.isInteger(amountNum) && amountNum >= 10) {
-      const amount = amountNum * 100;
-      const paymentType = 'Resume';
-
-      this.ps.initRazorPays(() => {
-        setTimeout(() => {
-          this.createCandidate();
-        }, 2000);
-      });
-      this.ps.payWithRazorPay(amount);
-    } else {
-      alert('Please enter a valid amount ₹10 or more.');
-    }
-  }
-
   closePopup(event: any) {
     this.showPopup = false;
+  }
+
+  getNationalityList() {
+    const route = 'value-sets/search-by-code';
+     const postData = { valueSetCode: 'NATIONALITY' };
+    this.api.retrieve(route, postData).subscribe({
+      next: (response) => {
+        this.nationalityList = response;
+      },
+    });
   }
 }

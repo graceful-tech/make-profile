@@ -33,6 +33,8 @@ export interface Candidate {
     achievementsMandatory:any;
     summary:any;
     careerObjective:any;
+    fatherName:any;
+    hobbies:any;
 
 
 }

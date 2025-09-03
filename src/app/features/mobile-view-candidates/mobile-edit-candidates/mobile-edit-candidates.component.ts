@@ -30,6 +30,7 @@ export class MobileEditCandidatesComponent {
   candidateForm!: FormGroup;
   genderList: Array<ValueSet> = [];
   languages: Array<ValueSet> = [];
+  nationalityList: Array<ValueSet> = [];
   noticePeriodList: Array<ValueSet> = [];
   candidateId: any;
   showError: boolean = false;
@@ -112,6 +113,7 @@ export class MobileEditCandidatesComponent {
     this.getLanguages();
     this.getMaritalStatus();
     this.getFieldOfStudy();
+    this.getNationalityList();
 
     if (this.candidates !== null && this.candidates !== undefined) {
       this.candidateId = this.candidates?.id;
@@ -162,6 +164,8 @@ export class MobileEditCandidatesComponent {
       softSkillsMandatory: [''],
       achievementsMandatory: [''],
       certificatesMandatory: [''],
+      fatherName:[''],
+      hobbies:['']
     });
   }
 
@@ -330,6 +334,15 @@ export class MobileEditCandidatesComponent {
           );
         });
       }
+
+       if (Object.is(payload.hobbies, '')) {
+        payload.hobbies = '';
+      } else {
+        const hobbiesList: string[] = payload.hobbies;
+        const commaSeparatedString: string = hobbiesList.join(', ');
+        payload.hobbies = commaSeparatedString;
+      }
+
 
       if (
         payload.languagesKnown.length === 0 ||
@@ -749,6 +762,13 @@ export class MobileEditCandidatesComponent {
           .map((skill: string) => skill.trim())
       : [];
 
+       candidate.hobbies = candidate?.hobbies
+      ? candidate.hobbies
+          .split(',')
+          .map((skill: string) => skill.trim())
+      : [];
+
+
     if (candidate.certificates?.length > 0) {
       const certificateFormArray = this.candidateForm.get(
         'certificates'
@@ -829,6 +849,8 @@ export class MobileEditCandidatesComponent {
       certificatesMandatory: candidate?.certificatesMandatory,
       achievementsMandatory: candidate?.achievementsMandatory,
       careerObjective: candidate?.careerObjective,
+       hobbies: candidate?.hobbies ? candidate?.hobbies : [],
+      fatherName:candidate?.fatherName,
     });
   }
 
@@ -1054,5 +1076,15 @@ export class MobileEditCandidatesComponent {
       this.gs.setCandidateImage(this.candidateImageUrl);
     }
     this.router.navigate(['mob-candidate']);
+  }
+
+   getNationalityList() {
+    const route = 'value-sets/search-by-code';
+     const postData = { valueSetCode: 'NATIONALITY' };
+    this.api.retrieve(route, postData).subscribe({
+      next: (response) => {
+        this.nationalityList = response;
+      },
+    });
   }
 }

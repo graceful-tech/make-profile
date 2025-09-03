@@ -35,6 +35,7 @@ export class MobileCandidatesDetailsComponent {
   yourResume: Array<any> = [];
   candidateForm!: FormGroup;
   genderList: Array<ValueSet> = [];
+  nationalityList: Array<ValueSet> = [];
   languages: Array<ValueSet> = [];
   showError: boolean = false;
   currentRequest!: Subscription;
@@ -149,6 +150,7 @@ export class MobileCandidatesDetailsComponent {
     this.getStateNames();
     // this.getOverallCredits();
     this.getSumAvailableCredits();
+    this.getNationalityList();
   }
 
   async ngAfterViewInit() {
@@ -189,19 +191,21 @@ export class MobileCandidatesDetailsComponent {
       dob: [''],
       address: [''],
       maritalStatus: [''],
-      experiences: this.fb.array([this.createExperience()]),
-      qualification: this.fb.array([this.createQualification()]),
-      certificates: this.fb.array([this.createCertificates()]),
-      achievements: this.fb.array([this.createAchievements()]),
+      experiences: this.fb.array([]),
+      qualification: this.fb.array([]),
+      certificates: this.fb.array([]),
+      achievements: this.fb.array([]),
       softSkills: [''],
       coreCompentencies: [''],
-      collegeProject: this.fb.array([this.createCollegeProject()]),
+      collegeProject: this.fb.array([]),
       coreCompentenciesMandatory: [''],
       softSkillsMandatory: [''],
       achievementsMandatory: [''],
       certificatesMandatory: [''],
       summary: [''],
       careerObjective: [''],
+      hobbies:[''],
+      fatherName:['']
     });
   }
 
@@ -255,7 +259,7 @@ export class MobileCandidatesDetailsComponent {
     this.loader.start();
 
     if (this.candidateForm.valid) {
-      this.dataLoaded = false;
+       this.dataLoaded = false;
 
       const route = 'candidate/create';
       const payload = this.candidateForm.getRawValue();
@@ -267,11 +271,13 @@ export class MobileCandidatesDetailsComponent {
         );
       }
 
-      if (payload.dob != null) {
+      if (payload.dob == null && payload.dob !== '') {
         payload.dob = this.datePipe.transform(payload.dob, 'yyyy-MM-dd');
       }
 
-      if (payload.fresher != null && payload.fresher) {
+      if (payload.fresher === null && payload.experiences.length === 0) {
+        payload['fresher'] = true;
+      } else if (payload.fresher) {
         payload['fresher'] = true;
       } else {
         payload['fresher'] = false;
@@ -281,21 +287,11 @@ export class MobileCandidatesDetailsComponent {
         payload.experiences = [];
       }
 
-      // if (payload.fresher) {
-      //   if (Object.is(payload.collegeProject[0].collegeProjectName, '')) {
-      //     payload.collegeProject = [];
-      //   } else {
-      //     payload.collegeProject = payload.collegeProject.map((proj: any) => ({
-      //       ...proj,
-      //       collegeProjectSkills: Array.isArray(proj.collegeProjectSkills)
-      //         ? proj.collegeProjectSkills.join(', ')
-      //         : proj.collegeProjectSkills
-      //     }));
-      //   }
-      // }
-
       if (!payload.fresher) {
-        if (Object.is(payload.experiences?.[0]?.companyName, '')) {
+        if (
+          payload.experiences.length === 0 ||
+          Object.is(payload.experiences?.[0]?.companyName, '')
+        ) {
           payload.experiences = [];
         } else {
           payload.experiences = payload.experiences.map((exp: any) => {
@@ -317,7 +313,7 @@ export class MobileCandidatesDetailsComponent {
               (proj: any) => proj.projectName === ''
             );
 
-            if (hasEmptyProjectName) {
+            if (exp.projects.length === 0 || hasEmptyProjectName) {
               projects = [];
             } else {
               projects = projects.map((proj: any) => ({
@@ -339,7 +335,10 @@ export class MobileCandidatesDetailsComponent {
         }
       }
 
-      if (Object.is(payload.qualification[0].institutionName, '')) {
+      if (
+        payload.qualification.length === 0 ||
+        Object.is(payload.qualification[0].institutionName, '')
+      ) {
         payload.qualification = [];
       } else {
         payload.qualification.forEach((q: any) => {
@@ -354,7 +353,10 @@ export class MobileCandidatesDetailsComponent {
         });
       }
 
-      if (Object.is(payload.achievements[0].achievementsName, '')) {
+      if (
+        payload.achievements.length === 0 ||
+        Object.is(payload.achievements[0].achievementsName, '')
+      ) {
         payload.achievements = [];
       } else {
         payload.achievements.forEach((cert: any) => {
@@ -365,7 +367,10 @@ export class MobileCandidatesDetailsComponent {
         });
       }
 
-      if (Object.is(payload.certificates[0].courseName, '')) {
+      if (
+        payload.certificates.length === 0 ||
+        Object.is(payload.certificates[0].courseName, '')
+      ) {
         payload.certificates = [];
       } else {
         payload.certificates.forEach((cert: any) => {
@@ -380,7 +385,19 @@ export class MobileCandidatesDetailsComponent {
         });
       }
 
-      if (Object.is(payload.languagesKnown, '')) {
+       if (Object.is(payload.hobbies, '')) {
+        payload.hobbies = '';
+      } else {
+        const hobbiesList: string[] = payload.hobbies;
+        const commaSeparatedString: string = hobbiesList.join(', ');
+        payload.hobbies = commaSeparatedString;
+      }
+
+
+      if (
+        payload.languagesKnown.length === 0 ||
+        Object.is(payload.languagesKnown, '')
+      ) {
         payload.languagesKnown = '';
       } else {
         const stringList: string[] = payload.languagesKnown;
@@ -413,27 +430,55 @@ export class MobileCandidatesDetailsComponent {
       }
 
       if (payload.fresher) {
-        const hasValidProject = payload.collegeProject.some(
-          (project: { collegeProjectName: string }) =>
-            project.collegeProjectName &&
-            project.collegeProjectName.trim() !== ''
-        );
-
-        if (!hasValidProject) {
+        if (
+          payload.collegeProject.length === 0 ||
+          Object.is(payload.collegeProject[0].collegeProjectName, '')
+        ) {
           payload.collegeProject = [];
         } else {
-          payload.collegeProject = payload.collegeProject.map(
-            (project: any) => ({
-              ...project,
-              collegeProjectSkills: Array.isArray(project.collegeProjectSkills)
-                ? project.collegeProjectSkills.join(', ')
-                : '',
-            })
+          const hasValidProject = payload.collegeProject.some(
+            (project: { collegeProjectName: string }) =>
+              project.collegeProjectName &&
+              project.collegeProjectName.trim() !== ''
           );
+
+          if (!hasValidProject) {
+            payload.collegeProject = [];
+          } else {
+            payload.collegeProject = payload.collegeProject.map(
+              (project: any) => ({
+                ...project,
+                collegeProjectSkills: Array.isArray(
+                  project.collegeProjectSkills
+                )
+                  ? project.collegeProjectSkills.join(', ')
+                  : '',
+              })
+            );
+          }
         }
-      } else {
-        payload.collegeProject = [];
       }
+
+
+       payload.coreCompentenciesMandatory =
+        this.candidates?.coreCompentenciesMandatory !== null
+          ? this.candidates?.coreCompentenciesMandatory
+          : false;
+
+      payload.softSkillsMandatory =
+        this.candidates?.softSkillsMandatory !== null
+          ? this.candidates?.softSkillsMandatory
+          : false;
+
+      payload.certificatesMandatory =
+        this.candidates?.certificatesMandatory !== null
+          ? this.candidates?.certificatesMandatory
+          : false;
+
+      payload.achievementsMandatory =
+        this.candidates?.achievementsMandatory !== null
+          ? this.candidates?.achievementsMandatory
+          : false;
 
       this.api.retrieve(route, payload).subscribe({
         next: (response) => {
@@ -475,7 +520,8 @@ export class MobileCandidatesDetailsComponent {
     } else {
       this.loader.stop();
       this.showError = true;
-      window.alert('Enter the mandatory details');
+       this.toast.showToast('error','Enter All Mandatory Fields');
+      this.candidateForm.markAllAsTouched();
     }
   }
 
@@ -496,7 +542,7 @@ export class MobileCandidatesDetailsComponent {
       role: [''],
       experienceYearStartDate: [''],
       experienceYearEndDate: [''],
-      projects: this.fb.array([this.createProject()]),
+      projects: this.fb.array([]),
       currentlyWorking: [''],
       responsibilities: [''],
     });
@@ -520,7 +566,7 @@ export class MobileCandidatesDetailsComponent {
     const confirmDelete = window.confirm(
       'Are you sure you want to remove this Experience?'
     );
-    if (confirmDelete && this.experienceControls.length > 1) {
+    if (confirmDelete && this.experienceControls.length >= 1) {
       const removedExperience = this.experienceControls.at(index).value;
       console.log('Removed Experience:', removedExperience);
       if (removedExperience.id) {
@@ -588,7 +634,7 @@ export class MobileCandidatesDetailsComponent {
     const confirmDelete = window.confirm(
       'Are you sure you want to remove this qualification?'
     );
-    if (confirmDelete && this.qualificationControls.length > 1) {
+    if (confirmDelete && this.qualificationControls.length >= 1) {
       const removedQualification = this.qualificationControls.at(index).value;
       if (removedQualification.id) {
         removedQualification.isDeleted = true;
@@ -621,7 +667,7 @@ export class MobileCandidatesDetailsComponent {
     const confirmDelete = window.confirm(
       'Are you sure you want to remove this certificates?'
     );
-    if (confirmDelete && this.certificateControls.length > 1) {
+    if (confirmDelete && this.certificateControls.length >= 1) {
       const removedCertificate = this.certificateControls.at(index).value;
       if (removedCertificate.id) {
         removedCertificate.isDeleted = true;
@@ -655,7 +701,7 @@ export class MobileCandidatesDetailsComponent {
     const confirmDelete = window.confirm(
       'Are you sure you want to remove this achievements?'
     );
-    if (confirmDelete && this.achievementsControls.length > 1) {
+    if (confirmDelete && this.achievementsControls.length >= 1) {
       const removedAchievement = this.achievementsControls.at(index).value;
       if (removedAchievement.id) {
         removedAchievement.isDeleted = true;
@@ -897,7 +943,7 @@ export class MobileCandidatesDetailsComponent {
   }
 
   enterDetails() {
-    this.gs.setCandidateDetails(this.candidates);
+    this.gs.setCandidateDetails(null);
     this.router.navigate(['mob-candidate/create-candidate']);
   }
 
@@ -937,6 +983,13 @@ export class MobileCandidatesDetailsComponent {
           .split(',')
           .map((skill: string) => skill.trim())
       : [];
+
+       candidate.hobbies = candidate?.hobbies
+      ? candidate.hobbies
+          .split(',')
+          .map((skill: string) => skill.trim())
+      : [];
+
 
     if (candidate.certificates?.length > 0) {
       const certificateFormArray = this.candidateForm.get(
@@ -1016,6 +1069,8 @@ export class MobileCandidatesDetailsComponent {
       certificatesMandatory: candidate?.certificatesMandatory,
       achievementsMandatory: candidate?.achievementsMandatory,
       careerObjective: candidate?.careerObjective,
+       hobbies: candidate?.hobbies ? candidate?.hobbies : [],
+      fatherName:candidate?.fatherName,
     });
   }
 
@@ -1169,7 +1224,7 @@ export class MobileCandidatesDetailsComponent {
     const confirmDelete = window.confirm(
       'Are you sure you want to remove this project?'
     );
-    if (confirmDelete && this.collegeProjectControls.length > 1) {
+    if (confirmDelete && this.collegeProjectControls.length >= 1) {
       const removeCollegeProject = this.collegeProjectControls.at(index).value;
       if (removeCollegeProject.id) {
         removeCollegeProject.isDeleted = true;
@@ -1788,5 +1843,15 @@ export class MobileCandidatesDetailsComponent {
   
    goToCreditHistory(){
     this.router.navigate(['mob-candidate/mob-credit-history']);
+  }
+
+    getNationalityList() {
+    const route = 'value-sets/search-by-code';
+     const postData = { valueSetCode: 'NATIONALITY' };
+    this.api.retrieve(route, postData).subscribe({
+      next: (response) => {
+        this.nationalityList = response;
+      },
+    });
   }
 }

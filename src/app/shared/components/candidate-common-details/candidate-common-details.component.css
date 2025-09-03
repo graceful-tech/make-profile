@@ -382,7 +382,7 @@ margin-top: 10px;
   background: #fff;
   box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   z-index: 1000;
 }
 
@@ -439,4 +439,19 @@ margin-top: 10px;
   padding: 8px 15px;
   font-size: 16px;
   font-weight: bold;
+}
+
+.home-bottom {
+  background: #244fa5;
+  color: white;
+  border: none; 
+  border-radius: 11px;
+  padding: 10px 15px;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.home-bottom:hover{
+  background: #063162;
+  color: white;
 }

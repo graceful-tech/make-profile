@@ -80,6 +80,8 @@ img {
   border-radius: 8px;
   cursor: pointer;
   margin-right: 15px;
+  font-weight: bold;
+  font-style: italic;
 }
 
 .remove-btn:hover {
@@ -278,6 +280,7 @@ img {
   cursor: pointer;
   /* margin-right: 15px; */
   font-style: italic;
+  font-weight: bold;
 }
 
 .modify-btn {

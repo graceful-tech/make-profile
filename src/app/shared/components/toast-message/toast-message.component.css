@@ -38,3 +38,11 @@
   from { width: 100%; }
   to   { width: 0%; }
 }
+
+
+@media (max-width: 700px) {
+  .toast {
+    right: 50%;
+    transform: translateX(50%);
+  }
+}

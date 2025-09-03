@@ -142,7 +142,9 @@
             </div>
           </div>
         </div>
-
+      </div>
+      <div class="section-heading">Additional Personal Details</div>
+      <div class="grid">
         <div class="col-12 md:col-6 lg:col-3">
           <div class="field-wrapper">
             <label>Languages Known</label>
@@ -197,6 +199,46 @@
           </div>
         </div>
 
+        <div class="col-12 md:col-6 lg:col-3">
+          <div class="field-wrapper">
+            <label>Father Name</label>
+            <div class="input-wrapper">
+              <input type="text" pInputText formControlName="fatherName" />
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 md:col-6 lg:col-3">
+          <div class="field-wrapper">
+            <label>Nationality</label>
+            <div class="input-wrapper">
+              <p-dropdown
+                [options]="nationalityList"
+                optionLabel="displayValue"
+                optionValue="dataValue"
+                placeholder="Select Nationality"
+                formControlName="nationality"
+                [filter]="true"
+              >
+              </p-dropdown>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 md:col-6">
+          <div class="field-wrapper">
+            <label>Hobbies</label>
+            <div class="input-wrapper">
+              <p-chips
+                separator=","
+                formControlName="hobbies"
+                [addOnBlur]="true"
+                [addOnTab]="true"
+              ></p-chips>
+            </div>
+          </div>
+        </div>
+
         <div class="col-12 md:col-6">
           <div class="field-wrapper">
             <label>Address</label>
@@ -211,27 +253,8 @@
           </div>
         </div>
 
-        <!-- <div class="col-12 md:col-6">
-                  <div class="field-wrapper">
-                      <input type="file" #attachment1 (change)="addCandidateImage($event)" style="display: none" />
-                      <div class="image-container">
-                          <ng-container *ngIf="candidateImageUrl; else other_content">
-                              <img class="image" [src]="candidateImageUrl" />
-                              <span class="edit-icon" (click)="attachment1.click()">
-                                  <i class="fas fa-pencil-alt" Style="font-size: 18px;"></i>
-                              </span> 
-                          </ng-container>
-                          <ng-template #other_content>
-                              <img class="image" src="assets/img/dummy-profile-pic.jpg" />
-                              <span class="edit-icon" (click)="attachment1.click()">
-                                  <i class="fas fa-pencil-alt" Style="font-size: 18px;"></i>
-                              </span>
-                          </ng-template>
-                      </div>
-                  </div>
-              </div>
-          
-       -->
+       
+    
       </div>
 
       <app-make-profile-divider></app-make-profile-divider>
@@ -259,7 +282,7 @@
       </div>
 
       <app-make-profile-divider></app-make-profile-divider>
-      <div class="section-heading mt-3">
+       <div class="section-heading mt-3">
         <div>Experience Details</div>
       </div>
 
@@ -351,7 +374,9 @@
                       "
                       formControlName="currentlyWorking"
                     ></p-checkbox>
-                    <label style="padding-left: 5px">Currently Working</label>
+                    <label style="padding-left: 5px; white-space: nowrap"
+                      >Currently Working</label
+                    >
                   </div>
                 </div>
               </div>
@@ -371,8 +396,7 @@
               </div>
             </div>
 
-            <!-- Project Details -->
-            <div formArrayName="projects" *ngIf="getProjectContentCount(i)">
+            <div formArrayName="projects">
               <div class="bysection-heading mt-4">
                 <div>Project Details</div>
               </div>
@@ -428,7 +452,7 @@
                       <label>Project Description</label>
                       <div class="input-wrapper">
                         <textarea
-                          rows="5"
+                          rows="2"
                           type="text"
                           pInputText
                           formControlName="projectDescription"
@@ -436,14 +460,59 @@
                       </div>
                     </div>
                   </div>
+
+                  <div
+                    class="col-12 md:col-6 lg:col-3"
+                    *ngIf="j >= 0"
+                    style="padding-top: 20px"
+                  >
+                    <button
+                      type="button"
+                      class="remove-btn"
+                      (click)="removeProject(i, j)"
+                    >
+                      Remove Project
+                    </button>
+                  </div>
                 </div>
 
                 <hr class="sub-section-divider" />
               </div>
+              <div class="col-12 md:col-6 lg:col-3">
+                <button
+                  type="button"
+                  class="custom-btn"
+                  (click)="addProject(i)"
+                >
+                  + Add Project
+                </button>
+              </div>
             </div>
+
+            <div class="col-12 md:col-6 lg:col-3" *ngIf="i >= 0">
+              <button
+                type="button"
+                class="remove-btn"
+                (click)="removeExperience(i)"
+              >
+                Remove Experience
+              </button>
+            </div>
+          </div>
+          <div class="col-12 md:col-6 lg:col-3">
+            <button type="button" class="custom-btn" (click)="addExperience()">
+              + Add Experience
+            </button>
           </div>
         </div>
       </ng-container>
+
+      <div
+        *ngIf="candidateForm.errors?.['fresherOrExperienceRequired'] && candidateForm.touched"
+        style="color: red; margin-top: 5px"
+      >
+        Please select Fresher OR add at least one Experience.
+      </div>
 
       <ng-container *ngIf="candidateForm.get('fresher')?.value">
         <div formArrayName="collegeProject" class="border-line">
@@ -496,9 +565,28 @@
                   </div>
                 </div>
               </div>
+
+              <div class="col-12 md:col-6 lg:col-3" *ngIf="i >= 0">
+                <button
+                  type="button"
+                  class="remove-btn"
+                  (click)="removeCollegeProject(i)"
+                >
+                  Remove Project
+                </button>
+              </div>
             </div>
 
             <hr class="sub-section-divider" />
+          </div>
+          <div class="col-12 md:col-6 lg:col-3">
+            <button
+              type="button"
+              class="custom-btn"
+              (click)="addCollegeProject()"
+            >
+              + Add Project
+            </button>
           </div>
         </div>
       </ng-container>
@@ -605,20 +693,54 @@
           </div>
 
           <hr class="sub-section-divider" />
+
+          <div
+            class="col-12 md:col-6 lg:col-3"
+            style="padding-left: 15px"
+            *ngIf="i >= 0"
+          >
+            <button
+              type="button"
+              class="remove-btn"
+              (click)="removeQualification(i)"
+            >
+              Remove Qualification
+            </button>
+
+            <!-- <p-button type="button" label="Remove Qualification" styleClass="p-buttonFailure" (click)="removeQualification(i)"></p-button> -->
+          </div>
+        </div>
+        <div class="col-12 md:col-6 lg:col-3">
+          <button type="button" class="custom-btn" (click)="addQualication()">
+            + Add Qualifications
+          </button>
+
+          <!-- <p-button type="button" label="+ Add Qualifications" (click)="addQualication()"></p-button> -->
         </div>
       </div>
 
       <app-make-profile-divider></app-make-profile-divider>
-      <div class="section-heading mt-3" *ngIf="!certificateEmptyFields">
+      <div class="section-heading mt-3">
         <div>Course & Certificates</div>
+
+        <!-- <div
+          style="
+            color: #313133;
+            font-weight: bold;
+            background-color: rgb(235, 235, 235);
+            border-radius: 50px;
+            padding: 5px 5px;
+          "
+        >
+          <p-checkbox
+            [binary]="true"
+            formControlName="certificatesMandatory"
+            label="Is Mandatory"
+          ></p-checkbox>
+        </div> -->
       </div>
 
-      <div
-        formArrayName="certificates"
-        class="border-line"
-        id="course"
-        *ngIf="!certificateEmptyFields"
-      >
+      <div formArrayName="certificates" class="border-line" id="course">
         <div
           *ngFor="
             let certificate of certificateControls.controls;
@@ -663,20 +785,34 @@
           </div>
 
           <hr class="sub-section-divider" />
+
+          <div
+            class="col-12 md:col-6 lg:col-3"
+            style="padding-left: 15px"
+            *ngIf="i >= 0"
+          >
+            <button
+              type="button"
+              class="remove-btn"
+              (click)="removeCertificates(i)"
+            >
+              Remove Course
+            </button>
+          </div>
+        </div>
+        <div class="col-12 md:col-6 lg:col-3">
+          <button type="button" class="custom-btn" (click)="addCertificates()">
+            + Add Couse
+          </button>
         </div>
       </div>
 
       <app-make-profile-divider></app-make-profile-divider>
-      <div class="section-heading mt-3" *ngIf="!achievementsEmptyFields">
-        <div>Achievements & Awards</div>
+      <div class="section-heading mt-3">
+        <Span>Achievements & Awards</Span>
       </div>
 
-      <div
-        formArrayName="achievements"
-        class="border-line"
-        id="achievements"
-        *ngIf="!achievementsEmptyFields"
-      >
+      <div formArrayName="achievements" class="border-line" id="achievements">
         <div
           *ngFor="
             let certificate of achievementsControls.controls;
@@ -713,6 +849,26 @@
           </div>
 
           <hr class="sub-section-divider" />
+
+          <div
+            class="col-12 md:col-6 lg:col-3"
+            style="padding-left: 15px"
+            *ngIf="i >= 0"
+          >
+            <button
+              type="button"
+              class="remove-btn"
+              icon="pi pi-trash"
+              (click)="removeaddAchievements(i)"
+            >
+              Remove Achievements
+            </button>
+          </div>
+        </div>
+        <div class="col-12 md:col-6 lg:col-3">
+          <button type="button" class="custom-btn" (click)="addAchievements()">
+            + Add Achievements
+          </button>
         </div>
       </div>
 
@@ -752,21 +908,24 @@
     <app-make-profile-divider></app-make-profile-divider>
 
     <div class="button-wrapper">
-       
-        <button type="button" class="home-btn" (click)="backToHome()"><i class="fa fa-home"></i> Back to home</button>
-       
-     
-        <button
-          type="button"
-           class="create-resumebtn"
-          (click)="createFinalResume()"
-        >Proceed to create resume</button>
-       
+      <button type="button" class="home-btn" (click)="backToHome()">
+        <i class="fa fa-home"></i> Back to home
+      </button>
+
+      <button
+        type="button"
+        class="create-resumebtn"
+        (click)="createFinalResume()"
+      >
+        Proceed to create resume
+      </button>
     </div>
   </div>
 </div>
 
-  <ng-container *ngIf="showPopup">
-    <app-custom-message (valueSent)="createResumeAfterPAy($event)" (closePopup)="closePopup($event)"></app-custom-message>
-  </ng-container>
-
+<ng-container *ngIf="showPopup">
+  <app-custom-message
+    (valueSent)="createResumeAfterPAy($event)"
+    (closePopup)="closePopup($event)"
+  ></app-custom-message>
+</ng-container>

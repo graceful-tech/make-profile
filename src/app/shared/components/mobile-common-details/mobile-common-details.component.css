@@ -74,6 +74,7 @@ img {
   border-radius: 8px;
   cursor: pointer;
   margin-right: 15px;
+  font-weight: bold;
 }
 
 .remove-btn:hover {

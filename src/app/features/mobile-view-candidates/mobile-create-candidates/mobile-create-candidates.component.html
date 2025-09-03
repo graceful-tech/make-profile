@@ -110,7 +110,9 @@
             Gender is required</small
           >
         </div>
-
+      </div>
+      <div class="section-heading">Additional Personal Details</div>
+      <div class="grid">
         <div class="col-12 md:col-6 lg:col-3">
           <div class="field-wrapper">
             <label [ngClass]="{ required: isRequired('languagesKnown') }"
@@ -162,6 +164,53 @@
                 placeholder="Select Marital"
                 formControlName="maritalStatus"
               ></p-dropdown>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 md:col-6 lg:col-3">
+          <div class="field-wrapper">
+            <label>Father Name</label>
+            <div class="input-wrapper">
+              <input type="text" pInputText formControlName="fatherName" />
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 md:col-6 lg:col-3">
+          <div class="field-wrapper">
+            <label>Nationality</label>
+            <div class="input-wrapper">
+              <p-dropdown
+                [options]="nationalityList"
+                optionLabel="displayValue"
+                optionValue="dataValue"
+                placeholder="Select Nationality"
+                formControlName="nationality"
+                 [filter]="true"
+              >
+              </p-dropdown>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <div class="field-wrapper">
+            <label>Hobbies</label>
+            <div class="input-wrapper">
+              <p-chips
+                separator=","
+                formControlName="hobbies"
+                [addOnBlur]="true"
+                [addOnTab]="true"
+                inputId="chipInput"
+              ></p-chips>
+
+              <p-button
+                type="button"
+                (onClick)="addSkill('hoppies', 'chipInput')"
+                >Add</p-button
+              >
             </div>
           </div>
         </div>
@@ -332,7 +381,7 @@
                 </div>
               </div>
 
-              <div class="col-12 md:col-6 lg:col-3" *ngIf="i > 0">
+              <div class="col-12 md:col-6 lg:col-3" *ngIf="i >= 0">
                 <button
                   type="button"
                   class="remove-btn"
@@ -340,13 +389,8 @@
                 >
                   Remove Experience
                 </button>
-
-                <!-- <p-button type="button"  label="Remove Experience" styleClass="p-buttonFailure" (click)="removeExperience(i)"></p-button> -->
               </div>
             </div>
-
-            <hr class="sub-section-divider" />
-
 
             <!-- Project Details -->
             <div formArrayName="projects">
@@ -411,7 +455,7 @@
                       <label>Project Description</label>
                       <div class="input-wrapper">
                         <textarea
-                          rows="5"
+                          rows="2"
                           type="text"
                           pInputText
                           formControlName="projectDescription"
@@ -420,7 +464,7 @@
                     </div>
                   </div>
 
-                  <div class="col-12 md:col-6 lg:col-3" *ngIf="j > 0">
+                  <div class="col-12 md:col-6 lg:col-3" *ngIf="j >= 0">
                     <button
                       type="button"
                       class="remove-btn"
@@ -428,46 +472,32 @@
                     >
                       Remove Project
                     </button>
-
-                    <!-- <p-button type="button" label="Remove Project" styleClass="p-buttonFailure" (click)="removeProject(i, j)"></p-button> -->
                   </div>
-                </div>
-
-                <div
-                  class="col-12 md:col-6 lg:col-3"
-                  *ngIf="j === getProjectCount(i) - 1"
-                >
-                  <button
-                    type="button"
-                    class="custom-btn"
-                    (click)="addProject(i)"
-                  >
-                    + Add Project
-                  </button>
-                  <!-- <p-button type="button" label="+ Add Project" (click)="addProject(i)"></p-button> -->
                 </div>
 
                 <hr class="sub-section-divider" />
               </div>
             </div>
-
-            <div
-              class="col-12 md:col-6 lg:col-3"
-              *ngIf="i === getExperienceCount(i) - 1"
-            >
-              <button
-                type="button"
-                class="custom-btn"
-                (click)="addExperience()"
-              >
-                + Add Experience
+            <div class="col-12 md:col-6 lg:col-3">
+              <button type="button" class="custom-btn" (click)="addProject(i)">
+                + Add Project
               </button>
-
-              <!-- <p-button type="button" label="+ Add Experience" (click)="addExperience()"></p-button> -->
             </div>
+          </div>
+          <div class="col-12 md:col-6 lg:col-3 mt-2">
+            <button type="button" class="custom-btn" (click)="addExperience()">
+              + Add Experience
+            </button>
           </div>
         </div>
       </ng-container>
+
+      <div
+        *ngIf="candidateForm.errors?.['fresherOrExperienceRequired'] && candidateForm.touched"
+        style="color: red; margin-top: 5px"
+      >
+        Please select Fresher OR add at least one Experience.
+      </div>
 
       <ng-container *ngIf="candidateForm.get('fresher')?.value">
         <div formArrayName="collegeProject">
@@ -529,7 +559,7 @@
                 </div>
               </div>
 
-              <div class="col-12 md:col-6 lg:col-3" *ngIf="i > 0">
+              <div class="col-12 md:col-6 lg:col-3" *ngIf="i >= 0">
                 <button
                   type="button"
                   class="remove-btn"
@@ -539,19 +569,15 @@
                 </button>
               </div>
             </div>
-
-            <div
-              class="col-12 md:col-6 lg:col-3"
-              *ngIf="i === getCollegeProjectCount(i) - 1"
+          </div>
+          <div class="col-12 md:col-6 lg:col-3">
+            <button
+              type="button"
+              class="custom-btn"
+              (click)="addCollegeProject()"
             >
-              <button
-                type="button"
-                class="custom-btn"
-                (click)="addCollegeProject()"
-              >
-                + Add Project
-              </button>
-            </div>
+              + Add Project
+            </button>
           </div>
         </div>
       </ng-container>
@@ -570,6 +596,7 @@
           [formGroupName]="i"
           class="experience-container"
         >
+          <hr />
           <div class="grid">
             <div class="col-12 md:col-6 lg:col-3">
               <div class="field-wrapper">
@@ -584,7 +611,7 @@
               </div>
             </div>
 
-              <div class="col-12 md:col-6 lg:col-3">
+            <div class="col-12 md:col-6 lg:col-3">
               <div class="field-wrapper">
                 <label>Qualification</label>
                 <div class="input-wrapper">
@@ -614,8 +641,6 @@
                 </div>
               </div>
             </div>
-
-          
 
             <div class="col-12 md:col-6 lg:col-3">
               <div class="field-wrapper">
@@ -659,14 +684,10 @@
               </div>
             </div>
           </div>
-        
-            <hr class="sub-section-divider" />
-
-          
           <div
             class="col-12 md:col-6 lg:col-3"
             style="padding-left: 15px"
-            *ngIf="i > 0"
+            *ngIf="i >= 0"
           >
             <button
               type="button"
@@ -736,13 +757,10 @@
               </div>
             </div>
           </div>
-
-            <hr class="sub-section-divider" />
-
           <div
             class="col-12 md:col-6 lg:col-3"
             style="padding-left: 15px"
-            *ngIf="i > 0"
+            *ngIf="i >= 0"
           >
             <button
               type="button"
@@ -803,13 +821,10 @@
               </div>
             </div>
           </div>
-
-           <hr class="sub-section-divider" />
-
           <div
             class="col-12 md:col-6 lg:col-3"
             style="padding-left: 15px"
-            *ngIf="i > 0"
+            *ngIf="i >= 0"
           >
             <button
               type="button"
@@ -819,9 +834,11 @@
             >
               Remove Achievements
             </button>
+            <!-- <p-button type="button" label="Remove Achievements" styleClass="p-buttonFailure" (click)="removeaddAchievements(i)"></p-button> -->
           </div>
         </div>
         <div class="col-12 md:col-6 lg:col-3">
+          <!-- <p-button type="button" styleClass="p-resumeButton" label="+ Add Achievements" (click)="addAchievements()"></p-button> -->
           <button type="button" class="custom-btn" (click)="addAchievements()">
             + Add Achievements
           </button>
@@ -1010,31 +1027,20 @@
         </div>
       </form>
     </div>
-    <div class="grid" style="margin-bottom: 50px">
-    </div>
+    <div class="grid" style="margin-bottom: 50px"></div>
   </div>
 </div>
 
 <div class="button-bar">
-
   <div class="button-wrapper">
-  <button class="mobile-back" (click)="goBack()">
-      Back
-    </button>
+    <button class="mobile-back" (click)="goBack()">Back</button>
   </div>
-   
-  <div class="button-wrapper">
-    <p-button
-      class="mr-2"
-      [label]="dataLoaded ? 'Update' : 'Updating..'"
-      [icon]="dataLoaded ? '' : 'pi pi-spin pi-spinner'"
-      [disabled]="!dataLoaded"
-      (onClick)="createCandidate()"
-    ></p-button>
 
-     <button class="mobile-reset" (click)="reset()">
+  <div class="button-wrapper">
+    <button class="create-btn mr-2" (click)="createCandidate()">Update</button>
+
+    <!-- <button class="mobile-reset" (click)="reset()">
       Reset
-    </button>
-   
+    </button> -->
   </div>
 </div>

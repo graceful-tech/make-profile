@@ -82,7 +82,9 @@
             Gender is required</small
           >
         </div>
-
+      </div>
+      <div class="section-heading">Additional Personal Details</div>
+      <div class="grid">
         <div class="col-12 md:col-6 lg:col-3">
           <div class="field-wrapper">
             <label>Languages Known</label>
@@ -133,6 +135,46 @@
                 placeholder="Select Marital"
                 formControlName="maritalStatus"
               ></p-dropdown>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 md:col-6 lg:col-3">
+          <div class="field-wrapper">
+            <label>Father Name</label>
+            <div class="input-wrapper">
+              <input type="text" pInputText formControlName="name" />
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 md:col-6 lg:col-3">
+          <div class="field-wrapper">
+            <label>Nationality</label>
+            <div class="input-wrapper">
+              <p-dropdown
+                [options]="nationalityList"
+                optionLabel="displayValue"
+                optionValue="dataValue"
+                placeholder="Select Nationality"
+                formControlName="nationality"
+                 [filter]="true"
+              >
+              </p-dropdown>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 md:col-6">
+          <div class="field-wrapper">
+            <label>Hobbies</label>
+            <div class="input-wrapper">
+              <p-chips
+                separator=","
+                formControlName="skills"
+                [addOnBlur]="true"
+                [addOnTab]="true"
+              ></p-chips>
             </div>
           </div>
         </div>
@@ -314,7 +356,6 @@
                   </div>
                 </div>
               </div>
-
             </div>
 
             <div formArrayName="projects">
@@ -394,26 +435,20 @@
                     >
                       Remove Project
                     </button>
-
-                   </div>
+                  </div>
                 </div>
-
-                
 
                 <hr class="sub-section-divider" />
               </div>
-              <div
-                  class="col-12 md:col-6 lg:col-3"
-
+              <div class="col-12 md:col-6 lg:col-3">
+                <button
+                  type="button"
+                  class="custom-btn"
+                  (click)="addProject(i)"
                 >
-                  <button
-                    type="button"
-                    class="custom-btn"
-                    (click)="addProject(i)"
-                  >
-                    + Add Project
-                  </button>
-                 </div>
+                  + Add Project
+                </button>
+              </div>
             </div>
 
             <div class="col-12 md:col-6 lg:col-3" *ngIf="i >= 0">
@@ -425,23 +460,21 @@
                 Remove Experience
               </button>
             </div>
-
-           
           </div>
-           <div
-              class="col-12 md:col-6 lg:col-3"
-               
-            >
-              <button
-                type="button"
-                class="custom-btn"
-                (click)="addExperience()"
-              >
-                + Add Experience
-              </button>
-                        </div>
+          <div class="col-12 md:col-6 lg:col-3">
+            <button type="button" class="custom-btn" (click)="addExperience()">
+              + Add Experience
+            </button>
+          </div>
         </div>
       </ng-container>
+
+      <div
+        *ngIf="candidateForm.errors?.['fresherOrExperienceRequired'] && candidateForm.touched"
+        style="color: red; margin-top: 5px"
+      >
+        Please select Fresher OR add at least one Experience.
+      </div>
 
       <ng-container *ngIf="candidateForm.get('fresher')?.value">
         <div formArrayName="collegeProject" class="border-line">
@@ -507,21 +540,16 @@
             </div>
 
             <hr class="sub-section-divider" />
-
-           
           </div>
-           <div
-              class="col-12 md:col-6 lg:col-3"
-               
+          <div class="col-12 md:col-6 lg:col-3">
+            <button
+              type="button"
+              class="custom-btn"
+              (click)="addCollegeProject()"
             >
-              <button
-                type="button"
-                class="custom-btn"
-                (click)="addCollegeProject()"
-              >
-                + Add Project
-              </button>
-            </div>
+              + Add Project
+            </button>
+          </div>
         </div>
       </ng-container>
 
@@ -732,7 +760,6 @@
             >
               Remove Course
             </button>
-
           </div>
         </div>
         <div class="col-12 md:col-6 lg:col-3">
@@ -745,8 +772,6 @@
       <app-make-profile-divider></app-make-profile-divider>
       <div class="section-heading mt-3">
         <Span>Achievements & Awards</Span>
-
-      
       </div>
 
       <div formArrayName="achievements" class="border-line" id="achievements">
@@ -821,7 +846,6 @@
             "
           >
             <Span>Soft Skills</Span>
-           
           </div>
           <div class="input-wrapper">
             <p-chips
@@ -989,6 +1013,13 @@
     </div>
 
     <div class="button-bar">
+
+      <div class="button-wrapper">
+      <button class="home-bottom" (click)="home()">
+        <i class="fa fa-home"></i> Back to home
+      </button>
+    </div>
+
       <div class="button-wrapper">
         <button class="reset-btn" (click)="reset()">Reset</button>
         <button class="create-btn mr-2" (click)="createCandidate()">

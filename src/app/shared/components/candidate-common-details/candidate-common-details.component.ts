@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { ChangeDetectorRef, Component } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import {
@@ -20,6 +20,7 @@ import { Achievements } from 'src/app/models/candidates/achievements';
 import { PaymentService } from 'src/app/services/payment.service';
 import { CollegeProject } from 'src/app/models/candidates/college-project';
 import { LoaderService } from 'src/app/services/loader.service';
+import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
   selector: 'app-candidate-common-details',
@@ -31,6 +32,7 @@ export class CandidateCommonDetailsComponent {
   candidateForm!: FormGroup;
   genderList: Array<ValueSet> = [];
   languages: Array<ValueSet> = [];
+  nationalityList: Array<ValueSet> = [];
   noticePeriodList: Array<ValueSet> = [];
   candidateId: any;
   showError: boolean = false;
@@ -90,14 +92,10 @@ export class CandidateCommonDetailsComponent {
     private fb: FormBuilder,
     private gs: GlobalService,
     private datePipe: DatePipe,
-    private dialog: DialogService,
-    private route: ActivatedRoute,
-    private cdr: ChangeDetectorRef,
     private router: Router,
     public ref: DynamicDialogRef,
-    private config: DynamicDialogConfig,
-    private ps: PaymentService,
-    private loader: LoaderService
+    private loader: LoaderService,
+    private toast:ToastService
   ) {
     
     this.gs.candidateDetails$.subscribe((response) => {
@@ -116,6 +114,7 @@ export class CandidateCommonDetailsComponent {
     this.getFieldOfStudy();
     this.createAdditionalDetailsForm();
     this.getStateNames();
+    this.getNationalityList();
 
     if (this.candidates !== null && this.candidates !== undefined) {
       this.candidateId = this.candidates.id;
@@ -161,7 +160,22 @@ export class CandidateCommonDetailsComponent {
       achievementsMandatory: [''],
       summary: [''],
       careerObjective: [''],
-    });
+      fatherName:[''],
+      hobbies:['']
+    },{ validators: [this.fresherOrExperienceValidator()] });
+  }
+
+  fresherOrExperienceValidator() {
+    return (formGroup: AbstractControl): { [key: string]: any } | null => {
+      const fresher = formGroup.get('fresher')?.value;
+      const experiences = formGroup.get('experiences') as FormArray;
+  
+       if (!fresher && experiences.length === 0) {
+        return { fresherOrExperienceRequired: true };
+      }
+  
+      return null;
+    };
   }
 
   getGenderList() {
@@ -330,6 +344,15 @@ export class CandidateCommonDetailsComponent {
         });
       }
 
+       if (Object.is(payload.hobbies, '')) {
+        payload.hobbies = '';
+      } else {
+        const hobbiesList: string[] = payload.hobbies;
+        const commaSeparatedString: string = hobbiesList.join(', ');
+        payload.hobbies = commaSeparatedString;
+      }
+
+
       if (
         payload.languagesKnown.length === 0 ||
         Object.is(payload.languagesKnown, '')
@@ -456,7 +479,8 @@ export class CandidateCommonDetailsComponent {
     } else {
       this.loader.stop();
       this.showError = true;
-      this.gs.showMessage('Error', 'Enter mandatory fields');
+      this.toast.showToast('error','Enter All Mandatory Fields');
+      this.candidateForm.markAllAsTouched();
     }
   }
 
@@ -762,6 +786,14 @@ export class CandidateCommonDetailsComponent {
           .map((skill: string) => skill.trim())
       : [];
 
+       candidate.hobbies = candidate?.hobbies
+      ? candidate.hobbies
+          .split(',')
+          .map((skill: string) => skill.trim())
+      : [];
+
+
+
     if (candidate.certificates?.length > 0) {
       const certificateFormArray = this.candidateForm.get(
         'certificates'
@@ -842,6 +874,8 @@ export class CandidateCommonDetailsComponent {
       achievementsMandatory: candidate?.achievementsMandatory,
       summary: candidate?.summary,
       careerObjective: candidate?.careerObjective,
+       hobbies: candidate?.hobbies ? candidate?.hobbies : [],
+      fatherName:candidate?.fatherName,
     });
   }
 
@@ -1228,5 +1262,15 @@ export class CandidateCommonDetailsComponent {
 
   home() {
     this.router.navigate(['candidate']);
+  }
+
+  getNationalityList() {
+    const route = 'value-sets/search-by-code';
+     const postData = { valueSetCode: 'NATIONALITY' };
+    this.api.retrieve(route, postData).subscribe({
+      next: (response) => {
+        this.nationalityList = response;
+      },
+    });
   }
 }

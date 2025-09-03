@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { ChangeDetectorRef, Component } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import {
@@ -20,6 +20,7 @@ import { Achievements } from 'src/app/models/candidates/achievements';
 import { PaymentService } from 'src/app/services/payment.service';
 import { PaymentOptionComponent } from '../payments/payment-option/payment-option.component';
 import { CollegeProject } from 'src/app/models/candidates/college-project';
+import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
   standalone: false,
@@ -84,6 +85,7 @@ export class CreateCandidatesComponent {
   citiesName: any;
   stateNames: any;
   additionalDetailsForm!: FormGroup;
+  nationalityList: Array<ValueSet> = [];
 
   constructor(
     private api: ApiService,
@@ -96,7 +98,8 @@ export class CreateCandidatesComponent {
     private router: Router,
     public ref: DynamicDialogRef,
     private config: DynamicDialogConfig,
-    private ps: PaymentService
+    private ps: PaymentService,
+    private toast:ToastService
   ) {
     this.candidates = this.config.data?.candidates;
     this.payments = this.config.data?.payments;
@@ -115,6 +118,7 @@ export class CreateCandidatesComponent {
     //this.getCandidates();
     this.createAdditionalDetailsForm();
     this.getStateNames();
+    this.getNationalityList()
 
     if (this.candidates !== null && this.candidates !== undefined) {
       this.candidateId = this.candidates.id;
@@ -149,21 +153,37 @@ export class CreateCandidatesComponent {
       dob: [''],
       address: [''],
       maritalStatus: [''],
-      experiences: this.fb.array([this.createExperience()]),
-      qualification: this.fb.array([this.createQualification()]),
-      certificates: this.fb.array([this.createCertificates()]),
-      achievements: this.fb.array([this.createAchievements()]),
+      experiences: this.fb.array([]),
+      qualification: this.fb.array([]),
+      certificates: this.fb.array([]),
+      achievements: this.fb.array([]),
       softSkills: [''],
       coreCompentencies: [''],
-      collegeProject: this.fb.array([this.createCollegeProject()]),
+      collegeProject: this.fb.array([]),
       coreCompentenciesMandatory: [''],
       softSkillsMandatory: [''],
       certificatesMandatory: [''],
       achievementsMandatory: [''],
       summary: [''],
       careerObjective: [''],
-    });
+      hobbies:[''],
+      fatherName:['']
+    },{ validators: [this.fresherOrExperienceValidator()] }
+    );
   }
+
+  fresherOrExperienceValidator() {
+      return (formGroup: AbstractControl): { [key: string]: any } | null => {
+        const fresher = formGroup.get('fresher')?.value;
+        const experiences = formGroup.get('experiences') as FormArray;
+  
+        if (!fresher && experiences.length === 0) {
+          return { fresherOrExperienceRequired: true };
+        }
+  
+        return null;
+      };
+    }
 
   getGenderList() {
     const route = 'value-sets/search-by-code';
@@ -204,7 +224,7 @@ export class CreateCandidatesComponent {
 
   createCandidate() {
     if (this.candidateForm.valid) {
-      this.dataLoaded = false;
+        this.dataLoaded = false;
 
       const route = 'candidate/create';
       const payload = this.candidateForm.getRawValue();
@@ -216,11 +236,13 @@ export class CreateCandidatesComponent {
         );
       }
 
-      if (payload.dob != null) {
+      if (payload.dob == null && payload.dob !== '') {
         payload.dob = this.datePipe.transform(payload.dob, 'yyyy-MM-dd');
       }
 
-      if (payload.fresher != null && payload.fresher) {
+      if (payload.fresher === null && payload.experiences.length === 0) {
+        payload['fresher'] = true;
+      } else if (payload.fresher) {
         payload['fresher'] = true;
       } else {
         payload['fresher'] = false;
@@ -230,21 +252,11 @@ export class CreateCandidatesComponent {
         payload.experiences = [];
       }
 
-      // if (payload.fresher) {
-      // if (Object.is(payload.collegeProject[0].collegeProjectName, '')) {
-      //     payload.collegeProject = [];
-      //   } else {
-      //     payload.collegeProject = payload.collegeProject.map((proj: any) => ({
-      //       ...proj,
-      //       collegeProjectSkills: Array.isArray(proj.collegeProjectSkills)
-      //         ? proj.collegeProjectSkills.join(', ')
-      //         : proj.collegeProjectSkills
-      //     }));
-      //   }
-      // }
-
       if (!payload.fresher) {
-        if (Object.is(payload.experiences?.[0]?.companyName, '')) {
+        if (
+          payload.experiences.length === 0 ||
+          Object.is(payload.experiences?.[0]?.companyName, '')
+        ) {
           payload.experiences = [];
         } else {
           payload.experiences = payload.experiences.map((exp: any) => {
@@ -266,7 +278,7 @@ export class CreateCandidatesComponent {
               (proj: any) => proj.projectName === ''
             );
 
-            if (hasEmptyProjectName) {
+            if (exp.projects.length === 0 || hasEmptyProjectName) {
               projects = [];
             } else {
               projects = projects.map((proj: any) => ({
@@ -288,7 +300,10 @@ export class CreateCandidatesComponent {
         }
       }
 
-      if (Object.is(payload.qualification[0].institutionName, '')) {
+      if (
+        payload.qualification.length === 0 ||
+        Object.is(payload.qualification[0].institutionName, '')
+      ) {
         payload.qualification = [];
       } else {
         payload.qualification.forEach((q: any) => {
@@ -303,7 +318,10 @@ export class CreateCandidatesComponent {
         });
       }
 
-      if (Object.is(payload.achievements[0].achievementsName, '')) {
+      if (
+        payload.achievements.length === 0 ||
+        Object.is(payload.achievements[0].achievementsName, '')
+      ) {
         payload.achievements = [];
       } else {
         payload.achievements.forEach((cert: any) => {
@@ -314,7 +332,10 @@ export class CreateCandidatesComponent {
         });
       }
 
-      if (Object.is(payload.certificates[0].courseName, '')) {
+      if (
+        payload.certificates.length === 0 ||
+        Object.is(payload.certificates[0].courseName, '')
+      ) {
         payload.certificates = [];
       } else {
         payload.certificates.forEach((cert: any) => {
@@ -329,7 +350,19 @@ export class CreateCandidatesComponent {
         });
       }
 
-      if (Object.is(payload.languagesKnown, '')) {
+       if (Object.is(payload.hobbies, '')) {
+        payload.hobbies = '';
+      } else {
+        const hobbiesList: string[] = payload.hobbies;
+        const commaSeparatedString: string = hobbiesList.join(', ');
+        payload.hobbies = commaSeparatedString;
+      }
+
+
+      if (
+        payload.languagesKnown.length === 0 ||
+        Object.is(payload.languagesKnown, '')
+      ) {
         payload.languagesKnown = '';
       } else {
         const stringList: string[] = payload.languagesKnown;
@@ -362,26 +395,33 @@ export class CreateCandidatesComponent {
       }
 
       if (payload.fresher) {
-        const hasValidProject = payload.collegeProject.some(
-          (project: { collegeProjectName: string }) =>
-            project.collegeProjectName &&
-            project.collegeProjectName.trim() !== ''
-        );
-
-        if (!hasValidProject) {
+        if (
+          payload.collegeProject.length === 0 ||
+          Object.is(payload.collegeProject[0].collegeProjectName, '')
+        ) {
           payload.collegeProject = [];
         } else {
-          payload.collegeProject = payload.collegeProject.map(
-            (project: any) => ({
-              ...project,
-              collegeProjectSkills: Array.isArray(project.collegeProjectSkills)
-                ? project.collegeProjectSkills.join(', ')
-                : '',
-            })
+          const hasValidProject = payload.collegeProject.some(
+            (project: { collegeProjectName: string }) =>
+              project.collegeProjectName &&
+              project.collegeProjectName.trim() !== ''
           );
+
+          if (!hasValidProject) {
+            payload.collegeProject = [];
+          } else {
+            payload.collegeProject = payload.collegeProject.map(
+              (project: any) => ({
+                ...project,
+                collegeProjectSkills: Array.isArray(
+                  project.collegeProjectSkills
+                )
+                  ? project.collegeProjectSkills.join(', ')
+                  : '',
+              })
+            );
+          }
         }
-      } else {
-        payload.collegeProject = [];
       }
 
       payload.coreCompentenciesMandatory =
@@ -400,7 +440,7 @@ export class CreateCandidatesComponent {
           : false;
 
       payload.achievementsMandatory =
-        this.candidates?.achievementsMandatory !== null
+        this.candidates?.achievementsMandatory !== null 
           ? this.candidates?.achievementsMandatory
           : false;
 
@@ -434,6 +474,8 @@ export class CreateCandidatesComponent {
       this.dataLoaded = true;
     } else {
       this.showError = true;
+      this.candidateForm.markAllAsTouched();
+      this.toast.showToast('error', 'Enter All Mandatory Fields');
     }
   }
 
@@ -454,7 +496,7 @@ export class CreateCandidatesComponent {
       role: [''],
       experienceYearStartDate: [''],
       experienceYearEndDate: [''],
-      projects: this.fb.array([this.createProject()]),
+      projects: this.fb.array([]),
       currentlyWorking: [''],
       responsibilities: [''],
       isDeleted: false,
@@ -480,7 +522,7 @@ export class CreateCandidatesComponent {
     const confirmDelete = window.confirm(
       'Are you sure you want to remove this Experience?'
     );
-    if (confirmDelete && this.experienceControls.length > 1) {
+    if (confirmDelete && this.experienceControls.length >= 1) {
       const removedExperience = this.experienceControls.at(index).value;
       console.log('Removed Experience:', removedExperience);
       if (removedExperience.id) {
@@ -520,7 +562,7 @@ export class CreateCandidatesComponent {
 
     const projectArray = this.getProjects(experienceIndex);
 
-    if (confirmDelete && projectArray.length > 1) {
+    if (confirmDelete && projectArray.length >= 1) {
       const removedProject = projectArray.at(projectIndex).value;
 
       if (removedProject.id) {
@@ -560,7 +602,7 @@ export class CreateCandidatesComponent {
     const confirmDelete = window.confirm(
       'Are you sure you want to remove this qualification?'
     );
-    if (confirmDelete && this.qualificationControls.length > 1) {
+    if (confirmDelete && this.qualificationControls.length >= 1) {
       const removedQualification = this.qualificationControls.at(index).value;
       if (removedQualification.id) {
         removedQualification.isDeleted = true;
@@ -593,7 +635,7 @@ export class CreateCandidatesComponent {
     const confirmDelete = window.confirm(
       'Are you sure you want to remove this certificates?'
     );
-    if (confirmDelete && this.certificateControls.length > 1) {
+    if (confirmDelete && this.certificateControls.length >= 1) {
       const removedCertificate = this.certificateControls.at(index).value;
       if (removedCertificate.id) {
         removedCertificate.isDeleted = true;
@@ -629,7 +671,7 @@ export class CreateCandidatesComponent {
     const confirmDelete = window.confirm(
       'Are you sure you want to remove this achievements?'
     );
-    if (confirmDelete && this.achievementsControls.length > 1) {
+    if (confirmDelete && this.achievementsControls.length >= 1) {
       const removedAchievement = this.achievementsControls.at(index).value;
       if (removedAchievement.id) {
         removedAchievement.isDeleted = true;
@@ -739,6 +781,13 @@ export class CreateCandidatesComponent {
           .map((skill: string) => skill.trim())
       : [];
 
+       candidate.hobbies = candidate?.hobbies
+      ? candidate.hobbies
+          .split(',')
+          .map((skill: string) => skill.trim())
+      : [];
+
+
     if (candidate.certificates?.length > 0) {
       const certificateFormArray = this.candidateForm.get(
         'certificates'
@@ -819,6 +868,8 @@ export class CreateCandidatesComponent {
       achievementsMandatory: candidate?.achievementsMandatory,
       summary: candidate?.summary,
       careerObjective: candidate?.careerObjective,
+      hobbies: candidate?.hobbies ? candidate?.hobbies : [],
+      fatherName:candidate?.fatherName,
     });
   }
 
@@ -971,7 +1022,7 @@ export class CreateCandidatesComponent {
     const confirmDelete = window.confirm(
       'Are you sure you want to remove this project?'
     );
-    if (confirmDelete && this.collegeProjectControls.length > 1) {
+    if (confirmDelete && this.collegeProjectControls.length >= 1) {
       const removeCollegeProject = this.collegeProjectControls.at(index).value;
       if (removeCollegeProject.id) {
         removeCollegeProject.isDeleted = true;
@@ -1214,6 +1265,16 @@ export class CreateCandidatesComponent {
         this.citiesName = response;
 
         this.patchAdditionalDetails(additonalDetails);
+      },
+    });
+  }
+
+    getNationalityList() {
+    const route = 'value-sets/search-by-code';
+     const postData = { valueSetCode: 'NATIONALITY' };
+    this.api.retrieve(route, postData).subscribe({
+      next: (response) => {
+        this.nationalityList = response;
       },
     });
   }

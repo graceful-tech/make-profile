@@ -61,6 +61,8 @@ img {
   border-radius: 8px;
   cursor: pointer;
   margin-right: 15px;
+  font-weight: bold;
+  font-style: italic;
 }
 
 .custom-btn:hover {
@@ -76,6 +78,8 @@ img {
   border-radius: 8px;
   cursor: pointer;
   margin-right: 15px;
+  font-weight: bold;
+  font-style: italic;
 }
 
 .remove-btn:hover {
@@ -247,4 +251,14 @@ img {
     border-bottom: 2px dashed #e5e7eb;
     margin-top: 1rem;
     margin-bottom: 1rem;
+}
+
+.create-btn{
+  border: none;
+  border-radius: 8px;
+  background: #178be9;
+  color: white;
+  padding: 8px 14px;
+  font-weight: bold;
+  font-size: 15px;
 }

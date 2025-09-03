@@ -1,17 +1,7 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  ViewChild,
-} from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {ChangeDetectorRef,Component,ElementRef,ViewChild,} from '@angular/core';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NgxUiLoaderService } from 'ngx-ui-loader';
-import {
-  DialogService,
-  DynamicDialogConfig,
-  DynamicDialogRef,
-} from 'primeng/dynamicdialog';
+import {DialogService,DynamicDialogConfig,DynamicDialogRef,} from 'primeng/dynamicdialog';
 import { ApiService } from '../../../services/api.service';
 import { GlobalService } from '../../../services/global.service';
 import { ValueSet } from '../../../models/admin/value-set.model';
@@ -25,6 +15,7 @@ import { PaymentService } from 'src/app/services/payment.service';
 import { CollegeProject } from 'src/app/models/candidates/college-project';
 import { DatePipe } from '@angular/common';
 import { MobileLoaderService } from 'src/app/services/mobile.loader.service';
+import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
   selector: 'app-mobile-common-details',
@@ -39,6 +30,7 @@ export class MobileCommonDetailsComponent {
   genderList: Array<ValueSet> = [];
   languages: Array<ValueSet> = [];
   noticePeriodList: Array<ValueSet> = [];
+  nationalityList: Array<ValueSet> = [];
   candidateId: any;
   showError: boolean = false;
   mobileNumbers: Array<String> = [];
@@ -91,7 +83,8 @@ export class MobileCommonDetailsComponent {
     public ref: DynamicDialogRef,
     private config: DynamicDialogConfig,
     private ps: PaymentService,
-    private loader: MobileLoaderService
+    private loader: MobileLoaderService,
+    private toast:ToastService
   ) {
     this.gs.candidateDetails$.subscribe((response) => {
       if (response !== null) {
@@ -109,6 +102,7 @@ export class MobileCommonDetailsComponent {
     this.getFieldOfStudy();
     this.createAdditionalDetailsForm();
     this.getStateNames();
+    this.getNationalityList();
 
     if (this.candidates !== null && this.candidates !== undefined) {
       this.candidateId = this.candidates.id;
@@ -154,9 +148,24 @@ export class MobileCommonDetailsComponent {
       softSkillsMandatory: [''],
       achievementsMandatory: [''],
       certificatesMandatory: [''],
-    });
+      hobbies:[''],
+      fatherName:['']
+    },{ validators: [this.fresherOrExperienceValidator()] });
   }
 
+   fresherOrExperienceValidator() {
+      return (formGroup: AbstractControl): { [key: string]: any } | null => {
+        const fresher = formGroup.get('fresher')?.value;
+        const experiences = formGroup.get('experiences') as FormArray;
+    
+         if (!fresher && experiences.length === 0) {
+          return { fresherOrExperienceRequired: true };
+        }
+    
+        return null;
+      };
+    }
+    
   getGenderList() {
     const route = 'value-sets/search-by-code';
     const postData = { valueSetCode: 'GENDER' };
@@ -323,6 +332,15 @@ export class MobileCommonDetailsComponent {
         });
       }
 
+       if (Object.is(payload.hobbies, '')) {
+        payload.hobbies = '';
+      } else {
+        const hobbiesList: string[] = payload.hobbies;
+        const commaSeparatedString: string = hobbiesList.join(', ');
+        payload.hobbies = commaSeparatedString;
+      }
+
+
       if (
         payload.languagesKnown.length === 0 ||
         Object.is(payload.languagesKnown, '')
@@ -449,14 +467,15 @@ export class MobileCommonDetailsComponent {
 
           this.dataLoaded = true;
           window.alert('Error in creating please try again');
-          console.log(error);
+          
         },
       });
       this.dataLoaded = true;
     } else {
       this.loader.stop();
       this.showError = true;
-      window.alert('Enter the mandatory details');
+      this.toast.showToast('error','Enter All Mandatory Fields');
+      this.candidateForm.markAllAsTouched();
     }
   }
 
@@ -749,6 +768,14 @@ export class MobileCommonDetailsComponent {
           .map((skill: string) => skill.trim())
       : [];
 
+       candidate.hobbies = candidate?.hobbies
+      ? candidate.hobbies
+          .split(',')
+          .map((skill: string) => skill.trim())
+      : [];
+
+
+
     if (candidate.certificates?.length > 0) {
       const certificateFormArray = this.candidateForm.get(
         'certificates'
@@ -829,6 +856,8 @@ export class MobileCommonDetailsComponent {
       certificatesMandatory: candidate?.certificatesMandatory,
       achievementsMandatory: candidate?.achievementsMandatory,
       careerObjective: candidate?.careerObjective,
+       hobbies: candidate?.hobbies ? candidate?.hobbies : [],
+      fatherName:candidate?.fatherName,
     });
   }
 
@@ -1229,5 +1258,15 @@ private isValidDate(value: any): Date | null {
   return null;
 }
 
+
+  getNationalityList() {
+    const route = 'value-sets/search-by-code';
+     const postData = { valueSetCode: 'NATIONALITY' };
+    this.api.retrieve(route, postData).subscribe({
+      next: (response) => {
+        this.nationalityList = response;
+      },
+    });
+  }
 
 }

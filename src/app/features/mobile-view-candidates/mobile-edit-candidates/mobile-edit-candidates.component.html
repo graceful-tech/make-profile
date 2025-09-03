@@ -115,11 +115,12 @@
             <label class="required">Gender</label>
             <div class="input-wrapper">
               <p-dropdown
-                [options]="genderList"
+                [options]="nationalityList"
                 optionLabel="displayValue"
                 optionValue="dataValue"
-                placeholder="Select Gender"
+                placeholder="Select Nationality"
                 formControlName="gender"
+                 [filter]="true"
               >
               </p-dropdown>
             </div>
@@ -131,6 +132,9 @@
             Gender is required</small
           >
         </div>
+</div>
+        <div class="section-heading">Additional Personal Details</div>
+      <div class="grid">
 
         <div class="col-12 md:col-6 lg:col-3">
           <div class="field-wrapper">
@@ -183,6 +187,52 @@
                 placeholder="Select Marital"
                 formControlName="maritalStatus"
               ></p-dropdown>
+            </div>
+          </div>
+        </div>
+
+         <div class="col-12 md:col-6 lg:col-3">
+          <div class="field-wrapper">
+            <label>Father Name</label>
+            <div class="input-wrapper">
+              <input type="text" pInputText formControlName="fatherName" />
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 md:col-6 lg:col-3">
+          <div class="field-wrapper">
+            <label>Nationality</label>
+            <div class="input-wrapper">
+              <p-dropdown
+                [options]="genderList"
+                optionLabel="displayValue"
+                optionValue="dataValue"
+                placeholder="Select Gender"
+                formControlName="nationality"
+              >
+              </p-dropdown>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <div class="field-wrapper">
+            <label>Hobbies</label>
+            <div class="input-wrapper">
+              <p-chips
+                separator=","
+                formControlName="hobbies"
+                [addOnBlur]="true"
+                [addOnTab]="true"
+                inputId="chipInput"
+              ></p-chips>
+
+              <p-button
+                type="button"
+                (onClick)="addSkill('hoppies', 'chipInput')"
+                >Add</p-button
+              >
             </div>
           </div>
         </div>
