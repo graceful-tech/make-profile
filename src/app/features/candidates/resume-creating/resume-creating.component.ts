@@ -97,6 +97,10 @@ export class ResumeCreatingComponent {
   nickName: any;
   balanceCredits: any;
   showPopup: boolean = false;
+  summaryObjectiveContent: any;
+  showErrorPopup:boolean=false;
+  errorMessage: any;
+  errorStatus: any;
 
   constructor(
     private api: ApiService,
@@ -185,8 +189,8 @@ export class ResumeCreatingComponent {
         achievementsMandatory: [''],
         summary: [''],
         careerObjective: [''],
-        fatherName:[''],
-        hobbies:['']
+        fatherName: [''],
+        hobbies: [''],
       },
       { validators: [this.fresherOrExperienceValidator()] }
     );
@@ -294,7 +298,10 @@ export class ResumeCreatingComponent {
       },
       error: (error) => {
         this.generating = false;
-        this.gs.showMessage('error', error.error?.message);
+        this.showErrorPopup= true;
+          this.errorMessage = error.error?.message;
+          this.errorStatus = error.error?.status;
+      
       },
     });
   }
@@ -465,14 +472,13 @@ export class ResumeCreatingComponent {
         });
       }
 
-       if (Object.is(payload.hobbies, '')) {
+      if (Object.is(payload.hobbies, '')) {
         payload.hobbies = '';
       } else {
         const hobbiesList: string[] = payload.hobbies;
         const commaSeparatedString: string = hobbiesList.join(', ');
         payload.hobbies = commaSeparatedString;
       }
-
 
       if (
         payload.languagesKnown.length === 0 ||
@@ -578,6 +584,7 @@ export class ResumeCreatingComponent {
         error: (error) => {
           this.generating = false;
           this.dataLoaded = true;
+          
           this.gs.showMessage('Error', 'Error in Creating Resume');
 
           console.log(error);
@@ -1180,13 +1187,8 @@ export class ResumeCreatingComponent {
           const candidateClone = JSON.parse(JSON.stringify(candidate));
 
           this.patchCandidateForm(candidateClone);
-          // this.getCandidateImage(candidate?.id);
-
-          // if (this.candidateId !== null && this.candidateId !== undefined) {
-          //   this.candidateForm.controls['mobileNumber'].disable();
-          // }
-
-           this.getResumeContent('Summary');
+         
+           this.getSummaryAndObjectiveContent();
         }
       },
     });
@@ -1321,5 +1323,64 @@ export class ResumeCreatingComponent {
         this.nationalityList = response;
       },
     });
+  }
+
+  openSoftSkillsExample() {
+    const popup = document.getElementById('examplePopup');
+    if (popup !== null) {
+      popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
+    }
+  }
+
+  openSoftCoreCompentienciesExample() {
+    const popup = document.getElementById('exampleCorePopup');
+    if (popup !== null) {
+      popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
+    }
+  }
+
+  copyTextToChips(text: string, controlName: string) {
+    const control = this.candidateForm.get(controlName);
+    if (control) {
+      let currentValue = control.value || [];
+      // Prevent duplicates
+      if (!currentValue.includes(text)) {
+        currentValue.push(text);
+        control.setValue(currentValue);
+      }
+    }
+  }
+
+  getSummaryAndObjectiveContent() {
+    this.loader.start();
+    const route = 'content/get-content';
+
+    this.api.get(route).subscribe({
+      next: (response) => {
+        this.loader.stop();
+        if(response){
+        this.summaryObjectiveContent = response;
+
+        this.candidateForm
+          .get('summary')
+          ?.setValue(this.summaryObjectiveContent?.summary);
+
+        this.candidateForm
+          .get('careerObjective')
+          ?.setValue(this.summaryObjectiveContent?.careerObjective);
+
+        }
+
+        this.loader.stop();
+      },
+      error: (error) => {
+        this.loader.stop();
+        this.dataLoaded = true;
+      },
+    });
+  }
+
+  closePopupTap(event:any){
+      this.showErrorPopup = false;
   }
 }

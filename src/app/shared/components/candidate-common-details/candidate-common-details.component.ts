@@ -1273,4 +1273,31 @@ export class CandidateCommonDetailsComponent {
       },
     });
   }
+
+  
+  openSoftSkillsExample(){
+ const popup = document.getElementById('examplePopup');
+    if (popup !== null) {
+      popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
+    }
+  }
+
+   openSoftCoreCompentienciesExample(){
+     const popup = document.getElementById('exampleCorePopup');
+    if (popup !== null) {
+      popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
+    }
+  }
+
+  copyTextToChips(text: string, controlName: string) {
+  const control = this.candidateForm.get(controlName);
+  if (control) {
+    let currentValue = control.value || [];
+    // Prevent duplicates
+    if (!currentValue.includes(text)) {
+      currentValue.push(text);
+      control.setValue(currentValue);
+    }
+  }
+}
 }

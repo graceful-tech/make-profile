@@ -537,11 +537,11 @@ export class CandidatesDetailsComponent {
             );
           }
 
-          this.gs.showMessage('Success', 'Create Successfully');
+         this.toast.showToast('success','Created Successfully')
         },
         error: (error) => {
           this.dataLoaded = true;
-          this.gs.showMessage('Error', 'Error in Creating Creating');
+           this.toast.showToast('error','Error in Creating ')
         },
       });
       this.dataLoaded = true;

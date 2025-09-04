@@ -30,6 +30,8 @@ import { AnalyseWithAiComponent } from './components/analyse-with-ai/analyse-wit
 import { NewDetailsComponent } from './components/new-details/new-details.component';
 import { MobileAnalyseAiComponent } from './components/mobile-analyse-ai/mobile-analyse-ai.component';
 import { ToastMessageComponent } from './components/toast-message/toast-message.component';
+import { ErrorMessageComponent } from './components/error-message/error-message.component';
+import { ErrorMobilePopupComponent } from './components/error-mobile-popup/error-mobile-popup.component';
 
  
 @NgModule({
@@ -54,6 +56,8 @@ import { ToastMessageComponent } from './components/toast-message/toast-message.
     AnalyseWithAiComponent,
     NewDetailsComponent,
     MobileAnalyseAiComponent,
+    ErrorMessageComponent,
+    ErrorMobilePopupComponent
    
     
    ],
@@ -102,6 +106,8 @@ import { ToastMessageComponent } from './components/toast-message/toast-message.
     AnalyseWithAiComponent,
     NewDetailsComponent,
     MobileAnalyseAiComponent,
+    ErrorMessageComponent,
+    ErrorMobilePopupComponent
   ],
 })
 export class SharedModule {}
