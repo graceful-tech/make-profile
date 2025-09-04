@@ -1725,7 +1725,7 @@ export class MobileCandidatesDetailsComponent {
 
     if (confirmDelete) {
       this.gs.setCandidateDetails(null);
-      this.router.navigate(['mob-candidate/enter-new-details']);
+      this.router.navigate(['mob-candidate/analyse-ai']);
     }
   }
 

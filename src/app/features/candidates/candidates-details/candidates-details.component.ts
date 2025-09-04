@@ -1865,7 +1865,7 @@ export class CandidatesDetailsComponent {
       this.gs.setCandidateDetails(null);
       this.gs.setResumeDetails(null);
       this.gs.setCandidateImage(null);
-      this.router.navigate(['candidate/new-details-with-ai']);
+      this.router.navigate(['candidate/analyse-ai']);
     }
   }
 

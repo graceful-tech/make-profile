@@ -18,6 +18,7 @@ export class MobileCreditHistoryComponent {
   availableCredits: any;
   totalCreditsAvailable: number = 0;
   balanceCredits: number = 0;
+  dataLoaded:boolean=true;
 
   constructor(
     private router: Router,
@@ -42,6 +43,7 @@ export class MobileCreditHistoryComponent {
   }
 
   getCreditHistory() {
+    this.dataLoaded = false;
     const id = sessionStorage.getItem('userId');
 
     const route = 'credits/credit-history';
@@ -52,11 +54,15 @@ export class MobileCreditHistoryComponent {
     };
     this.api.create(route, payload).subscribe({
       next: (response) => {
+        this.dataLoaded = true;
         if (response) {
           this.availableCredits = response;
           console.log(this.availableCredits);
         }
         this.totalRecords = response?.totalRecords;
+      },
+       error: (error) => {
+        this.dataLoaded = true;
       },
     });
   }

@@ -293,31 +293,22 @@
         <div
           style="display: flex; justify-content: flex-end; padding-top: 10px"
         >
-          <!-- <span class="applied-job-button" (click)="payForApplyingJOb()">
-                  Pay for Applying job
-                </span> -->
         </div>
         <p-table [value]="appliedJobs">
           <ng-template pTemplate="header">
             <tr>
               <th style="width: 5%">JOB ID</th>
               <th style="width: 10%">SKILLS</th>
-              <!-- <th style="width: 10%;">LOCATION</th> -->
               <th style="width: 10%">SOURCE</th>
               <th style="width: 10%">STATUS</th>
-              <!-- <th style="width: 10%;">ACTION</th> -->
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-jobs>
             <tr>
               <td>{{ jobs.jobId }}</td>
               <td>{{ jobs.skills }}</td>
-              <!-- <td>{{ jobs.location }}</td> -->
               <td>{{ jobs.source }}</td>
               <td>{{ jobs.status }}</td>
-              <!-- <td>
-                          <i class="pi pi-pencil" style="cursor: pointer;" (click)="onEdit(resume.id)" title="Edit"></i>
-                        </td> -->
             </tr>
           </ng-template>
           <ng-template pTemplate="emptymessage">

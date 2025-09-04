@@ -1,89 +1,66 @@
-<div class="page-wrapper">
-  <div class="header-image">
-    <img
-      class="header-images"
-      src="assets/img/make-profile.png"
-      alt="Header Image"
-    />
-    <p-button (onClick)="goBack()" label="Back" class="right-align"></p-button>
-  </div>
-
-  <div class="heading1">
-    <div class="title">Credit History</div>
-    <div class="available-credits">
-      Available Credits: {{ balanceCredits ? balanceCredits : 0 }}
+<div class="profile-wrapper">
+  <div class="page-wrapper">
+    <div class="header-image">
+      <img
+        class="header-images"
+        src="assets/img/make-profile.png"
+        alt="Header Image"
+      />
+      <button (click)="goBack()" label="Back" class="home-btn">
+        <i class="fa fa-arrow-left"></i> Go Back
+      </button>
     </div>
-  </div>
 
-  <div class="table-container mt-2">
-    <p-table class="mobile" [value]="availableCredits">
-      <ng-template pTemplate="header">
-        <tr>
-          <!-- <th style="width: 10%;">CREDIT USED</th> -->
-          <th style="width: 10%">Used Date</th>
-          <th style="width: 10%">Used Credit</th>
-          <th style="width: 10%">Used Type</th>
-          <!-- <th style="width: 10%">NICK NAME</th>
-            <th style="width: 10%">PAY AMOUNT</th>
-            <th style="width: 10%">RECREATE RESUME</th> -->
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-credits>
-        <tr>
-          <!-- <td>{{ credits.creditUsed ?? 0 }}</td> -->
-          <td>{{ credits.createdDate | date:'dd-MM-yyyy | hh:mm a' }}</td>
-          <td>{{ credits.usedCredit }}</td>
-          <td>{{ credits.usedType }}</td>
-          <!-- <td>{{ credits.nickName }}</td> -->
-          <!-- <td>
-              <button
-                type="button"
-                class="custom-btn"
-              >
-              (click)="payment(credits.templateName, credits.nickName)" 
-                Add Credit
-              </button>
-            </td> -->
-          <!-- <ng-container
-              *ngIf="credits.templateName !== 'Applied Job'; else emptyCell"
-            >
-              <td>
-                <button
-                  type="button"
-                  class="modify-btn"
-                
-                >
-                   (click)="
-                    navigateToVerify(
-                      credits.templateName,
-                      credits.creditAvailable,
-                      credits.nickName
-                    )
-                  " 
-                  Generate Resume
-                </button>
-              </td>
-            </ng-container> -->
-          <!-- <ng-template #emptyCell>
-              <td></td>
-            </ng-template> -->
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="emptymessage">
-        <tr>
-          <td colspan="6">No records found.</td>
-        </tr>
-      </ng-template>
-    </p-table>
+    <div class="heading1">
+      <div class="title">Credit History</div>
+      <div class="available-credits">
+        Available Credits: {{ balanceCredits ? balanceCredits : 0 }}
+      </div>
+    </div>
 
-    <div class="pagination-wrapper">
-      <p-paginator
-        (onPageChange)="onPageChangeTemplate($event)"
-        [totalRecords]="totalRecords"
-        [rowsPerPageOptions]="[5]"
-        [rows]="maxLimitPerPageForResume"
-      >
-      </p-paginator>
+    <div class="table-container mt-2">
+      <p-table class="mobile" [value]="availableCredits">
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="width: 15%">USED DATE</th>
+            <th style="width: 5%">USED CREDITS</th>
+            <th style="width: 10%">USED TYPE</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-credits>
+          <tr *ngIf="!dataLoaded">
+            <td>
+              <p-skeleton styleClass="mb-2" height="1rem"></p-skeleton>
+            </td>
+            <td>
+              <p-skeleton styleClass="mb-2" height="1rem"></p-skeleton>
+            </td>
+            <td>
+              <p-skeleton styleClass="mb-2" height="1rem"></p-skeleton>
+            </td>
+          </tr>
+          <tr *ngIf="dataLoaded">
+            <td>{{ credits.createdDate | date : "dd-MM-yyyy | hh:mm a" }}</td>
+            <td>{{ credits.usedCredit }}</td>
+            <td>{{ credits.usedType }}</td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="6">No records found.</td>
+          </tr>
+        </ng-template>
+      </p-table>
+<!-- 
+      <div class="pagination-wrapper">
+        <p-paginator
+          (onPageChange)="onPageChangeTemplate($event)"
+          [totalRecords]="totalRecords"
+          [rowsPerPageOptions]="[5]"
+          [rows]="maxLimitPerPageForResume"
+        >
+        </p-paginator>
+      </div> -->
     </div>
   </div>
 </div>

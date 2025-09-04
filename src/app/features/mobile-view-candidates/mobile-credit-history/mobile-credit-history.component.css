@@ -51,11 +51,12 @@ p-table th {
 }
 
 .title {
-  font-size: 22px;
+  font-size: 20px;
   font-weight: bold;
 }
 
 .available-credits {
   font-size: 15px;
-  color: #333;
+  color: #141313;
+  font-weight: bold;
 }
