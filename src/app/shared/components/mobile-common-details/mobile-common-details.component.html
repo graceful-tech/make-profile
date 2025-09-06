@@ -211,7 +211,7 @@
                 optionValue="dataValue"
                 placeholder="Select Nationality"
                 formControlName="nationality"
-                 [filter]="true"
+                [filter]="true"
               >
               </p-dropdown>
             </div>
@@ -872,9 +872,14 @@
       <app-make-profile-divider></app-make-profile-divider>
 
       <div class="grid">
-        <div class="col-12 md:col-6">
+           <div class="col-12 md:col-6">
           <div class="field-wrapper">
-            <label>Soft Skills</label>
+            <span style="display: flex; justify-content: space-between">
+              <span>Soft Skills</span>
+              <span class="softSkiilsExample" (click)="openSoftSkillsExample()"
+                >Example Soft Skills</span
+              >
+            </span>
             <div class="input-wrapper">
               <p-chips
                 separator=","
@@ -892,9 +897,17 @@
           </div>
         </div>
 
-        <div class="col-12 md:col-6">
+         <div class="col-12 md:col-6">
           <div class="field-wrapper">
-            <label>Core Competencies</label>
+            <span style="display: flex;justify-content: space-between;">
+              <label>Core Competencies</label>
+
+              <span
+                class="softSkiilsExample"
+                (click)="openSoftCoreCompentienciesExample()"
+                >Example  Compentencies</span
+              >
+            </span>
             <div class="input-wrapper">
               <p-chips
                 separator=","
@@ -1081,4 +1094,231 @@
       (onClick)="createCandidate()"
     ></p-button>
   </div>
+</div>
+
+<!-- Soft Skills Popup -->
+<div id="examplePopup" class="popup-box">
+  <h4>Example Soft Skills</h4>
+  <ul>
+    <li>
+      Communication Skills
+      <button
+        class="copy-btn"
+        (click)="copyTextToChips('Communication Skills', 'softSkills')"
+      >
+        Add
+      </button>
+    </li>
+    <li>
+      Problem-Solving
+      <button
+        class="copy-btn"
+        (click)="copyTextToChips('Problem-Solving', 'softSkills')"
+      >
+        Add
+      </button>
+    </li>
+    <li>
+      Teamwork & Collaboration
+      <button
+        class="copy-btn"
+        (click)="copyTextToChips('Teamwork & Collaboration', 'softSkills')"
+      >
+        Add
+      </button>
+    </li>
+    <li>
+      Adaptability & Flexibility
+      <button
+        class="copy-btn"
+        (click)="copyTextToChips('Adaptability & Flexibility', 'softSkills')"
+      >
+        Add
+      </button>
+    </li>
+    <li>
+      Critical Thinking
+      <button
+        class="copy-btn"
+        (click)="copyTextToChips('Critical Thinking', 'softSkills')"
+      >
+        Add
+      </button>
+    </li>
+    <li>
+      Time Management
+      <button
+        class="copy-btn"
+        (click)="copyTextToChips('Time Management', 'softSkills')"
+      >
+        Add
+      </button>
+    </li>
+    <li>
+      Leadership & Initiative
+      <button
+        class="copy-btn"
+        (click)="copyTextToChips('Leadership & Initiative', 'softSkills')"
+      >
+        Add
+      </button>
+    </li>
+    <li>
+      Emotional Intelligence
+      <button
+        class="copy-btn"
+        (click)="copyTextToChips('Emotional Intelligence', 'softSkills')"
+      >
+        Add
+      </button>
+    </li>
+    <li>
+      Work Ethic & Reliability
+      <button
+        class="copy-btn"
+        (click)="copyTextToChips('Work Ethic & Reliability', 'softSkills')"
+      >
+        Add
+      </button>
+    </li>
+    <li>
+      Negotiation & Persuasion
+      <button
+        class="copy-btn"
+        (click)="copyTextToChips('Negotiation & Persuasion', 'softSkills')"
+      >
+        Add
+      </button>
+    </li>
+  </ul>
+  <button class="close-btn" (click)="openSoftSkillsExample()">Close</button>
+</div>
+
+<!-- Core Competencies Popup -->
+<div id="exampleCorePopup" class="core-popup-box">
+  <h4>Example Core Competencies</h4>
+  <ul>
+    <li>
+      Project Management
+      <button
+        class="copy-btn"
+        (click)="copyTextToChips('Project Management', 'coreCompentencies')"
+      >
+        Add
+      </button>
+    </li>
+    <li>
+      Customer Service Orientation
+      <button
+        class="copy-btn"
+        (click)="
+          copyTextToChips('Customer Service Orientation', 'coreCompentencies')
+        "
+      >
+        Add
+      </button>
+    </li>
+    <li>
+      Strategic Planning
+      <button
+        class="copy-btn"
+        (click)="copyTextToChips('Strategic Planning', 'coreCompentencies')"
+      >
+        Add
+      </button>
+    </li>
+    <li>
+      Process Improvement
+      <button
+        class="copy-btn"
+        (click)="copyTextToChips('Process Improvement', 'coreCompentencies')"
+      >
+        Add
+      </button>
+    </li>
+    <li>
+      Analytical Skills
+      <button
+        class="copy-btn"
+        (click)="copyTextToChips('Analytical Skills', 'coreCompentencies')"
+      >
+        Add
+      </button>
+    </li>
+    <li>
+      Training & Development
+      <button
+        class="copy-btn"
+        (click)="copyTextToChips('Training & Development', 'coreCompentencies')"
+      >
+        Add
+      </button>
+    </li>
+    <li>
+      Sales & Marketing Skills
+      <button
+        class="copy-btn"
+        (click)="
+          copyTextToChips('Sales & Marketing Skills', 'coreCompentencies')
+        "
+      >
+        Add
+      </button>
+    </li>
+    <li>
+      Negotiation & Conflict Management
+      <button
+        class="copy-btn"
+        (click)="
+          copyTextToChips(
+            'Negotiation & Conflict Management',
+            'coreCompentencies'
+          )
+        "
+      >
+        Add
+      </button>
+    </li>
+    <li>
+      Financial Acumen
+      <button
+        class="copy-btn"
+        (click)="copyTextToChips('Financial Acumen', 'coreCompentencies')"
+      >
+        Add
+      </button>
+    </li>
+    <li>
+      Change Management
+      <button
+        class="copy-btn"
+        (click)="copyTextToChips('Change Management', 'coreCompentencies')"
+      >
+        Add
+      </button>
+    </li>
+    <li>
+      Research & Innovation
+      <button
+        class="copy-btn"
+        (click)="copyTextToChips('Research & Innovation', 'coreCompentencies')"
+      >
+        Add
+      </button>
+    </li>
+    <li>
+      Compliance & Risk Management
+      <button
+        class="copy-btn"
+        (click)="
+          copyTextToChips('Compliance & Risk Management', 'coreCompentencies')
+        "
+      >
+        Add
+      </button>
+    </li>
+  </ul>
+  <button class="close-btn" (click)="openSoftCoreCompentienciesExample()">
+    Close
+  </button>
 </div>

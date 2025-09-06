@@ -16,6 +16,7 @@ import { CollegeProject } from 'src/app/models/candidates/college-project';
 import { DatePipe } from '@angular/common';
 import { MobileLoaderService } from 'src/app/services/mobile.loader.service';
 import { ToastService } from 'src/app/services/toast.service';
+import { Project } from 'src/app/models/candidates/project';
 
 @Component({
   selector: 'app-mobile-common-details',
@@ -776,7 +777,10 @@ export class MobileCommonDetailsComponent {
 
 
 
-    if (candidate.certificates?.length > 0) {
+    
+    if ( candidate.certificates?.some(c => c && (c.courseName?.trim()))) 
+  
+  {
       const certificateFormArray = this.candidateForm.get(
         'certificates'
       ) as FormArray;
@@ -787,23 +791,10 @@ export class MobileCommonDetailsComponent {
       });
     }
 
-    if (candidate.qualification?.length > 0) {
-      const qualificationFormArray = this.candidateForm.get(
-        'qualification'
-      ) as FormArray;
-      qualificationFormArray.clear();
-
-      candidate.qualification?.forEach((qualification) => {
-        qualificationFormArray.push(
-          this.createQualificationFormGroup(qualification)
-        );
-      });
-    }
-
-    if (candidate.experiences?.length > 0) {
+    if (candidate.experiences?.some(e => e && (e.companyName.trim()))) {
       this.patchExperiences(candidate.experiences);
     } else {
-      if (candidate.collegeProject?.length > 0) {
+      if (candidate?.collegeProject.some(c => c && (c.collegeProjectName.trim()))) {
         const collegeProjectFromArray = this.candidateForm.get(
           'collegeProject'
         ) as FormArray;
@@ -817,7 +808,20 @@ export class MobileCommonDetailsComponent {
       }
     }
 
-    if (candidate.achievements?.length > 0) {
+    if ( candidate.qualification?.some(q => q && (q.institutionName?.trim() || q.fieldOfStudy?.trim()))) {
+      const qualificationFormArray = this.candidateForm.get(
+        'qualification'
+      ) as FormArray;
+      qualificationFormArray.clear();
+
+      candidate.qualification?.forEach((qualification) => {
+        qualificationFormArray.push(
+          this.createQualificationFormGroup(qualification)
+        );
+      });
+    }
+
+    if (candidate.achievements?.some(a => a && (a.achievementsName.trim()))) {
       const achievementFormArray = this.candidateForm.get(
         'achievements'
       ) as FormArray;
@@ -907,7 +911,7 @@ export class MobileCommonDetailsComponent {
           responsibilities: responsibilities,
         });
 
-        if (experience.projects?.length > 0) {
+          if (experience?.projects.some((p: Project) =>  p?.projectName?.trim())) {
           const projectFormArray = experienceForm.get('projects') as FormArray;
           projectFormArray.clear();
           experience.projects?.forEach((project: any) => {
@@ -1259,14 +1263,40 @@ private isValidDate(value: any): Date | null {
 }
 
 
-  getNationalityList() {
+ getNationalityList() {
     const route = 'value-sets/search-by-code';
-     const postData = { valueSetCode: 'NATIONALITY' };
+    const postData = { valueSetCode: 'NATIONALITY' };
     this.api.retrieve(route, postData).subscribe({
       next: (response) => {
         this.nationalityList = response;
       },
     });
+  }
+
+  openSoftSkillsExample() {
+    const popup = document.getElementById('examplePopup');
+    if (popup !== null) {
+      popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
+    }
+  }
+
+  openSoftCoreCompentienciesExample() {
+    const popup = document.getElementById('exampleCorePopup');
+    if (popup !== null) {
+      popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
+    }
+  }
+
+  copyTextToChips(text: string, controlName: string) {
+    const control = this.candidateForm.get(controlName);
+    if (control) {
+      let currentValue = control.value || [];
+      // Prevent duplicates
+      if (!currentValue.includes(text)) {
+        currentValue.push(text);
+        control.setValue(currentValue);
+      }
+    }
   }
 
 }

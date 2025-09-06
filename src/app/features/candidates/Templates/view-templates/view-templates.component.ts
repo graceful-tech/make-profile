@@ -33,6 +33,7 @@ export class ViewTemplatesComponent {
     {path: './assets/img/Jupiter.jpg',name: 'Jupiter',type: 'Multiple Page'},
     {path: './assets/img/Saturn.jpg',name: 'Saturn',type: 'Multiple Page'},
      {path: './assets/img/Uranus.jpg',name: 'Uranus',type: 'Multiple Page'},
+      {path: './assets/img/Neptune.jpg',name: 'Neptune',type: 'Multiple Page'},
 
   ];
 

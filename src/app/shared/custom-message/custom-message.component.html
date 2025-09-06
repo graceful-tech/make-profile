@@ -2,15 +2,24 @@
   <div class="popup-box">
     <div class="popup-body">
       <!-- <h2 class="popup-title">🚀 Get Your Resume</h2> -->
-       <button class="close-btn" (click)="close()">&times;</button>
-      <p><strong>Just pay</strong></p>
-     <span style="font-size: 23px;">₹</span> &nbsp;<input
+      <button class="close-btn" (click)="close()">&times;</button>
+      <p><strong>Just Pay</strong></p>
+
+      <div class="credit-line">
+        <span>You will get 4 credits for each <strong>10 Rupees</strong></span>
+        <span class="title">Credits Usage:</span>
+        <span>Resume generation: <strong>1 credit</strong></span>
+        <span>AI use: <strong>1 credit</strong></span>
+      </div>
+
+      <span style="font-size: 23px">₹</span> &nbsp;<input
         type="number"
         [(ngModel)]="amountInput"
         placeholder="Enter amount (₹)"
         min="10"
         class="popup-input"
-      /> &nbsp; INR
+      />
+      &nbsp; INR
     </div>
     <div class="popup-actions">
       <button class="primary-btn" (click)="addCredits()">Pay</button>

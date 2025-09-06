@@ -33,6 +33,7 @@ import { DatePipe } from '@angular/common';
 import { PaymentOptionComponent } from '../../candidates/payments/payment-option/payment-option.component';
 import { MobileLoaderService } from 'src/app/services/mobile.loader.service';
 import { ToastService } from 'src/app/services/toast.service';
+import { Project } from 'src/app/models/candidates/project';
 
 @Component({
   selector: 'app-final-verify',
@@ -790,7 +791,9 @@ export class FinalVerifyComponent {
       ? candidate.hobbies.split(',').map((skill: string) => skill.trim())
       : [];
 
-    if (candidate.certificates?.length > 0) {
+   
+   
+      if (candidate.certificates?.some((c) => c && c.courseName?.trim())) {
       const certificateFormArray = this.candidateForm.get(
         'certificates'
       ) as FormArray;
@@ -799,27 +802,14 @@ export class FinalVerifyComponent {
       candidate.certificates?.forEach((certificate) => {
         certificateFormArray.push(this.createCertificateFormGroup(certificate));
       });
-    } else {
-      this.certificateEmptyFields = true;
     }
 
-    if (candidate.qualification?.length > 0) {
-      const qualificationFormArray = this.candidateForm.get(
-        'qualification'
-      ) as FormArray;
-      qualificationFormArray.clear();
-
-      candidate.qualification?.forEach((qualification) => {
-        qualificationFormArray.push(
-          this.createQualificationFormGroup(qualification)
-        );
-      });
-    }
-
-    if (candidate.experiences?.length > 0) {
+    if (candidate.experiences?.some((e) => e && e.companyName.trim())) {
       this.patchExperiences(candidate.experiences);
     } else {
-      if (candidate.collegeProject?.length > 0) {
+      if (
+        candidate?.collegeProject.some((c) => c && c.collegeProjectName.trim())
+      ) {
         const collegeProjectFromArray = this.candidateForm.get(
           'collegeProject'
         ) as FormArray;
@@ -833,7 +823,24 @@ export class FinalVerifyComponent {
       }
     }
 
-    if (candidate.achievements?.length > 0) {
+    if (
+      candidate.qualification?.some(
+        (q) => q && (q.institutionName?.trim() || q.fieldOfStudy?.trim())
+      )
+    ) {
+      const qualificationFormArray = this.candidateForm.get(
+        'qualification'
+      ) as FormArray;
+      qualificationFormArray.clear();
+
+      candidate.qualification?.forEach((qualification) => {
+        qualificationFormArray.push(
+          this.createQualificationFormGroup(qualification)
+        );
+      });
+    }
+
+    if (candidate.achievements?.some((a) => a && a.achievementsName.trim())) {
       const achievementFormArray = this.candidateForm.get(
         'achievements'
       ) as FormArray;
@@ -844,10 +851,7 @@ export class FinalVerifyComponent {
           this.createAchievementsFormGroup(achievement)
         );
       });
-    } else {
-      this.achievementsEmptyFields = true;
     }
-
     const candidateDob = candidate.dob ? new Date(candidate.dob) : null;
 
     this.candidateForm.patchValue({
@@ -910,7 +914,7 @@ export class FinalVerifyComponent {
           responsibilities: experience.responsibilities,
         });
 
-        if (experience.projects?.length > 0) {
+         if (experience?.projects.some((p: Project) =>  p?.projectName?.trim())) {
           const projectFormArray = experienceForm.get('projects') as FormArray;
           projectFormArray.clear();
           experience.projects?.forEach((project: any) => {
@@ -1141,7 +1145,7 @@ export class FinalVerifyComponent {
           document.body.removeChild(a);
           window.URL.revokeObjectURL(url);
 
-          window.alert('Your resume is created successfully');
+         this.toast.showToast('success','Resume Downloaded Successfully')
           localStorage.removeItem('resumeName');
           this.ngxLoaderStop();
 

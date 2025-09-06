@@ -28,6 +28,7 @@ import { PaymentOptionComponent } from '../payments/payment-option/payment-optio
 import { CollegeProject } from 'src/app/models/candidates/college-project';
 import { LoaderService } from 'src/app/services/loader.service';
 import { ToastService } from 'src/app/services/toast.service';
+import { Project } from 'src/app/models/candidates/project';
 
 @Component({
   selector: 'app-resume-creating',
@@ -98,7 +99,7 @@ export class ResumeCreatingComponent {
   balanceCredits: any;
   showPopup: boolean = false;
   summaryObjectiveContent: any;
-  showErrorPopup:boolean=false;
+  showErrorPopup: boolean = false;
   errorMessage: any;
   errorStatus: any;
 
@@ -288,7 +289,7 @@ export class ResumeCreatingComponent {
           document.body.removeChild(a);
           window.URL.revokeObjectURL(url);
 
-          this.gs.showMessage('Success', 'Your resume is created successfully');
+         this.toast.showToast('success', 'Your resume has been downloaded successfully');
           localStorage.removeItem('resumeName');
           this.generating = false;
 
@@ -298,10 +299,9 @@ export class ResumeCreatingComponent {
       },
       error: (error) => {
         this.generating = false;
-        this.showErrorPopup= true;
-          this.errorMessage = error.error?.message;
-          this.errorStatus = error.error?.status;
-      
+        this.showErrorPopup = true;
+        this.errorMessage = error.error?.message;
+        this.errorStatus = error.error?.status;
       },
     });
   }
@@ -584,7 +584,7 @@ export class ResumeCreatingComponent {
         error: (error) => {
           this.generating = false;
           this.dataLoaded = true;
-          
+
           this.gs.showMessage('Error', 'Error in Creating Resume');
 
           console.log(error);
@@ -913,7 +913,7 @@ export class ResumeCreatingComponent {
       ? candidate.hobbies.split(',').map((skill: string) => skill.trim())
       : [];
 
-    if (candidate.certificates?.length > 0) {
+    if (candidate.certificates?.some((c) => c && c.courseName?.trim())) {
       const certificateFormArray = this.candidateForm.get(
         'certificates'
       ) as FormArray;
@@ -922,26 +922,20 @@ export class ResumeCreatingComponent {
       candidate.certificates?.forEach((certificate) => {
         certificateFormArray.push(this.createCertificateFormGroup(certificate));
       });
-    } else {
-      this.certificateEmptyFields = true;
     }
 
-    if (candidate.experiences?.length > 0) {
+    if (candidate.experiences?.some((e) => e && e.companyName.trim())) {
       this.patchExperiences(candidate.experiences);
     } else {
-      if (candidate.collegeProject?.length > 0) {
+      if (
+        candidate?.collegeProject.some((c) => c && c.collegeProjectName.trim())
+      ) {
         const collegeProjectFromArray = this.candidateForm.get(
           'collegeProject'
         ) as FormArray;
         collegeProjectFromArray.clear();
 
         candidate.collegeProject?.forEach((collegeProject) => {
-          collegeProject.collegeProjectSkills =
-            collegeProject?.collegeProjectSkills
-              ? collegeProject.collegeProjectSkills
-                  .split(',')
-                  .map((skill: string) => skill.trim())
-              : [];
           collegeProjectFromArray.push(
             this.createCollegeProjectFormGroup(collegeProject)
           );
@@ -949,7 +943,11 @@ export class ResumeCreatingComponent {
       }
     }
 
-    if (candidate.qualification?.length > 0) {
+    if (
+      candidate.qualification?.some(
+        (q) => q && (q.institutionName?.trim() || q.fieldOfStudy?.trim())
+      )
+    ) {
       const qualificationFormArray = this.candidateForm.get(
         'qualification'
       ) as FormArray;
@@ -962,7 +960,7 @@ export class ResumeCreatingComponent {
       });
     }
 
-    if (candidate.achievements?.length > 0) {
+    if (candidate.achievements?.some((a) => a && a.achievementsName.trim())) {
       const achievementFormArray = this.candidateForm.get(
         'achievements'
       ) as FormArray;
@@ -973,8 +971,6 @@ export class ResumeCreatingComponent {
           this.createAchievementsFormGroup(achievement)
         );
       });
-    } else {
-      this.achievementsEmptyFields = true;
     }
 
     const candidateDob = candidate.dob ? new Date(candidate.dob) : null;
@@ -1051,7 +1047,7 @@ export class ResumeCreatingComponent {
           isDeleted: false,
         });
 
-        if (experience.projects?.length > 0) {
+        if (experience?.projects.some((p: Project) => p?.projectName?.trim())) {
           const projectFormArray = experienceForm.get('projects') as FormArray;
           projectFormArray.clear();
           experience.projects?.forEach((project: any) => {
@@ -1187,8 +1183,8 @@ export class ResumeCreatingComponent {
           const candidateClone = JSON.parse(JSON.stringify(candidate));
 
           this.patchCandidateForm(candidateClone);
-         
-           this.getSummaryAndObjectiveContent();
+
+          this.getSummaryAndObjectiveContent();
         }
       },
     });
@@ -1358,17 +1354,16 @@ export class ResumeCreatingComponent {
     this.api.get(route).subscribe({
       next: (response) => {
         this.loader.stop();
-        if(response){
-        this.summaryObjectiveContent = response;
+        if (response) {
+          this.summaryObjectiveContent = response;
 
-        this.candidateForm
-          .get('summary')
-          ?.setValue(this.summaryObjectiveContent?.summary);
+          this.candidateForm
+            .get('summary')
+            ?.setValue(this.summaryObjectiveContent?.summary);
 
-        this.candidateForm
-          .get('careerObjective')
-          ?.setValue(this.summaryObjectiveContent?.careerObjective);
-
+          this.candidateForm
+            .get('careerObjective')
+            ?.setValue(this.summaryObjectiveContent?.careerObjective);
         }
 
         this.loader.stop();
@@ -1380,7 +1375,7 @@ export class ResumeCreatingComponent {
     });
   }
 
-  closePopupTap(event:any){
-      this.showErrorPopup = false;
+  closePopupTap(event: any) {
+    this.showErrorPopup = false;
   }
 }

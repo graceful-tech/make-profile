@@ -47,21 +47,19 @@
 }
 
 .example-content {
-  font-size: 14px;
-  background: #6b0d96;
-  padding: 6px 8px;
-  border: 1px solid #999;
-  border-radius: 4px;
-  color: rgb(255, 249, 249);
+  font-size: 18px;
   cursor: pointer;
   pointer-events: auto;
   transition: border-color 0.2s ease-in-out, color 0.2s ease-in-out;
   font-weight: bold;
+  color: #453ecf;
+  font-style: italic;
+  text-decoration: underline;
+
 }
 
 .example-content:hover {
-  background: #3f045a;
-  color: white;
+  color: rgb(22, 0, 121);
 }
 
 .popup-box {
@@ -482,8 +480,12 @@
   cursor: pointer;
   font-size: 18px;
   font-weight: bold;
+  font-style: italic;
 }
 
+.hint-btn:hover{
+  color: darkblue;
+}
 
 
 .hint-popup-box {
@@ -518,7 +520,24 @@
   padding: 6px 12px;
   border-radius: 4px;
   cursor: pointer;
+  font-weight: bold;
 }
 .close-btn:hover {
   background: #dc2626;
+}
+
+.Copy-btn{
+  margin-top: 10px;
+  background: #4480ef;
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.copy-btn:hover {
+  background: #281289;
 }

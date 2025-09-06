@@ -26,7 +26,7 @@
 
 .popup-actions {
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   gap: 12px;
   flex-wrap: wrap;
 }
@@ -220,3 +220,19 @@
   margin-bottom: 12px;      /* Add space between each section */
 }
 
+.close{
+  position: absolute;
+  background: #f73a3a;
+  border: none;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+  margin-bottom: 5px;
+}
+
+.close:hover {
+  background: #ff0404;
+}

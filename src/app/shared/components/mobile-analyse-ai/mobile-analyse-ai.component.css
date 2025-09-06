@@ -51,23 +51,19 @@
 }
 
 .example-content {
-  font-size: 15px;
-background:#e3cba8;
-  padding: 4px 6px;
-  border: 1px solid #999;
-  border-radius: 4px;
-  color: #040404;
-  cursor: pointer;
-  pointer-events: auto;
-  transition: border-color 0.2s ease-in-out, color 0.2s ease-in-out;
+  font-size: 18px;
   font-weight: bold;
+  font-style: italic;
+  pointer-events: auto;
+  cursor: pointer;
+  color: rgb(51, 51, 236);
+  text-decoration: underline;
  
 }
 
  
  .example-content:hover{
- background: #6b0d96;
- color: white;
+  color:darkblue;
 }
 
 .popup-box {
@@ -493,6 +489,7 @@ background:#e3cba8;
   cursor: pointer;
   font-size: 18px;
   font-weight: bold;
+  font-style: italic;
 }
 
 .hint-popup-box {
@@ -528,6 +525,7 @@ background:#e3cba8;
   padding: 6px 12px;
   border-radius: 4px;
   cursor: pointer;
+  font-weight: bold;
 }
 .close-btn:hover {
   background: #dc2626;
@@ -554,4 +552,49 @@ background:#e3cba8;
 
 .divider:not(:empty)::after {
   margin-left: .75em;
+}
+
+
+.Copy-btn{
+  margin-top: 10px;
+  background: #4480ef;
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 15px
+}
+
+.copy-btn:hover {
+  background: #281289;
+}
+
+@media screen and (max-width: 390px) {
+  .popup-box {
+  display: none;
+  position: absolute;
+  top: 6rem;
+  left:0;
+  width: 80%;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  padding: 15px;
+  z-index: 1000;
+  border: solid 1px black;
+}
+
+.popup-box h4 {
+  margin-top: 0;
+  color: #3b82f6;
+}
+
+.popup-box p {
+  font-size: 10px;
+  color: #333;
+}
+
 }

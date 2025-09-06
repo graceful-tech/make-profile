@@ -1,5 +1,3 @@
- 
-
 .popup-header {
   position: absolute;
   top: 16px;
@@ -21,7 +19,7 @@
   font-size: 16px;
   color: #1f1e1e;
   line-height: 1.5;
-  white-space: pre-line;  
+  white-space: pre-line;
 }
 
 .popup-actions {
@@ -39,8 +37,7 @@
   font-weight: 500;
   border: none;
   cursor: pointer;
-  min-width: 110px;  
-
+  min-width: 110px;
 }
 
 .primary-btn {
@@ -48,8 +45,8 @@
   color: white;
 }
 
-.primary-btn:hover{
-     background-color: #024081;
+.primary-btn:hover {
+  background-color: #024081;
 }
 
 .secondary-btn {
@@ -57,11 +54,10 @@
   color: #0e0e0e;
 }
 
-.secondary-btn:hover{
+.secondary-btn:hover {
   background-color: #fc5b5b;
-   
 }
- 
+
 .popup-input {
   width: 30%;
   padding: 10px;
@@ -85,8 +81,7 @@
   margin-bottom: 15px;
 }
 
-
-  /* Dark overlay */
+/* Dark overlay */
 .popup-overlay {
   position: fixed;
   top: 0;
@@ -98,10 +93,10 @@
   align-items: center;
   justify-content: center;
 
-  background: rgba(0, 0, 0, 0.5); 
+  background: rgba(0, 0, 0, 0.5);
   z-index: 1000;
 
-  animation: fadeIn 0.3s ease-in-out; 
+  animation: fadeIn 0.3s ease-in-out;
 }
 
 .popup-overlay.fade-out {
@@ -129,33 +124,50 @@
 
 /* Keyframes */
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes fadeOut {
-  from { opacity: 1; }
-  to   { opacity: 0; }
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
 }
 
 @keyframes popupZoomIn {
-  from { transform: scale(0.8); opacity: 0; }
-  to   { transform: scale(1); opacity: 1; }
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 @keyframes popupZoomOut {
-  from { transform: scale(1); opacity: 1; }
-  to   { transform: scale(0.8); opacity: 0; }
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: scale(0.8);
+    opacity: 0;
+  }
 }
 
 .popup-body p {
-  line-height: 2; 
+  line-height: 2;
   font-size: 18px;
   font-weight: bold;
-  
 }
-
-
 
 .close-btn {
   position: absolute;
@@ -177,4 +189,15 @@
   background: #e60000;
 }
 
+.credit-line {
+  display: flex;
+  flex-direction: column; /* stack items vertically */
+  align-items: center; /* align all text to the left */
+  gap: 6px; /* space between lines */
+}
 
+.credit-line .title {
+  margin-top: 10px;
+  font-weight: bold;
+  font-size: 16px;
+}

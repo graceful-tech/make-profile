@@ -6,28 +6,28 @@ import { PaymentService } from 'src/app/services/payment.service';
   selector: 'app-custom-mobile-message',
   standalone: false,
   templateUrl: './custom-mobile-message.component.html',
-  styleUrl: './custom-mobile-message.component.css'
+  styleUrl: './custom-mobile-message.component.css',
 })
 export class CustomMobileMessageComponent {
   @Output() valueSent = new EventEmitter<any>();
   @Output() closePopup = new EventEmitter<any>();
-  
 
   message!: String;
   templateName: any;
-  nickName:any
-   amountInput: number = 10;
+  nickName: any;
+  amountInput: number = 10;
   showPopup: boolean = false;
   isClosing = false;
-  
-    constructor(public ref: DynamicDialogRef, public config: DynamicDialogConfig,private ps: PaymentService,) { }
-  
-    ngOnInit() {
 
-    }
-  
-     
-    addCredits() {
+  constructor(
+    public ref: DynamicDialogRef,
+    public config: DynamicDialogConfig,
+    private ps: PaymentService
+  ) {}
+
+  ngOnInit() {}
+
+  addCredits() {
     const amountNum = Number(this.amountInput);
 
     if (!isNaN(amountNum) && Number.isInteger(amountNum) && amountNum >= 10) {

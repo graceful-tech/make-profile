@@ -371,6 +371,8 @@ img {
 .softSkiilsExample:hover {
   background: #3f045a;
   color: white;
+   padding: 5px;
+  border-radius: 8px;
 }
 
 .popup-box {
@@ -378,7 +380,6 @@ img {
   position: fixed;
   bottom: 20rem;
   left: 60px;
-  width: 700px;
   background: #fff;
   border: 1px solid #514747;
   border-radius: 8px;
@@ -416,7 +417,6 @@ img {
   position: fixed;
   bottom: 15rem;
   right: 60px;
-  width: 700px;
   background: #fff;
   border: 1px solid #514747;
   border-radius: 8px;

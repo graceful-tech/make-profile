@@ -478,7 +478,7 @@ margin-top: 10px;
   position: fixed;
   bottom: 20rem;
   left: 60px;
-  width: 700px;
+  /* width: 700px; */
   background: #fff;
   border: 1px solid #514747;
   border-radius: 8px;
@@ -516,7 +516,7 @@ margin-top: 10px;
   position: fixed;
   bottom: 15rem;
   left: 60px;
-  width: 700px;
+  /* width: 700px; */
   background: #fff;
   border: 1px solid #514747;
   border-radius: 8px;

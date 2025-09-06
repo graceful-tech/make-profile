@@ -21,6 +21,7 @@ import { PaymentService } from 'src/app/services/payment.service';
 import { CollegeProject } from 'src/app/models/candidates/college-project';
 import { LoaderService } from 'src/app/services/loader.service';
 import { ToastService } from 'src/app/services/toast.service';
+import { Project } from 'src/app/models/candidates/project';
 
 @Component({
   selector: 'app-candidate-common-details',
@@ -794,7 +795,9 @@ export class CandidateCommonDetailsComponent {
 
 
 
-    if (candidate.certificates?.length > 0) {
+    if ( candidate.certificates?.some(c => c && (c.courseName?.trim()))) 
+  
+  {
       const certificateFormArray = this.candidateForm.get(
         'certificates'
       ) as FormArray;
@@ -805,10 +808,10 @@ export class CandidateCommonDetailsComponent {
       });
     }
 
-    if (candidate.experiences?.length > 0) {
+    if (candidate.experiences?.some(e => e && (e.companyName.trim()))) {
       this.patchExperiences(candidate.experiences);
     } else {
-      if (candidate.collegeProject?.length > 0) {
+      if (candidate?.collegeProject.some(c => c && (c.collegeProjectName.trim()))) {
         const collegeProjectFromArray = this.candidateForm.get(
           'collegeProject'
         ) as FormArray;
@@ -822,7 +825,7 @@ export class CandidateCommonDetailsComponent {
       }
     }
 
-    if (candidate.qualification?.length > 0) {
+    if ( candidate.qualification?.some(q => q && (q.institutionName?.trim() || q.fieldOfStudy?.trim()))) {
       const qualificationFormArray = this.candidateForm.get(
         'qualification'
       ) as FormArray;
@@ -835,7 +838,7 @@ export class CandidateCommonDetailsComponent {
       });
     }
 
-    if (candidate.achievements?.length > 0) {
+    if (candidate.achievements?.some(a => a && (a.achievementsName.trim()))) {
       const achievementFormArray = this.candidateForm.get(
         'achievements'
       ) as FormArray;
@@ -922,7 +925,7 @@ export class CandidateCommonDetailsComponent {
           isDeleted: false,
         });
 
-        if (experience.projects?.length > 0) {
+        if (experience?.projects.some((p: Project) =>  p?.projectName?.trim())) {
           const projectFormArray = experienceForm.get('projects') as FormArray;
           projectFormArray.clear();
           experience.projects?.forEach((project: any) => {

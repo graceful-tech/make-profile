@@ -10,6 +10,7 @@ import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { PaymentService } from 'src/app/services/payment.service';
 
 import { LoaderService } from 'src/app/services/loader.service';
+import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
   selector: 'app-mobile-analyse-ai',
@@ -25,6 +26,9 @@ export class MobileAnalyseAiComponent {
   isUploading: boolean = false;
   isAnalysing: boolean = false;
   analysisText: string = '';
+  showErrorPopup: boolean = false;
+  errorMessage: any;
+  errorStatus: any;
 
   constructor(
     private api: ApiService,
@@ -38,8 +42,10 @@ export class MobileAnalyseAiComponent {
     public ref: DynamicDialogRef,
     private ngxLoader: NgxUiLoaderService,
     private ps: PaymentService,
-    private loader: LoaderService
+    private loader: LoaderService,
+    private toast:ToastService
   ) {
+
   }
 
   togglePopup() {
@@ -49,7 +55,7 @@ export class MobileAnalyseAiComponent {
     }
   }
 
-   hintPopup() {
+  hintPopup() {
     const popup = document.getElementById('hintPopup');
     if (popup !== null) {
       popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
@@ -130,7 +136,10 @@ export class MobileAnalyseAiComponent {
   }
 
   analyseWithAi(content: any) {
-   if (content.replace(/\s/g, '').length > 400 && content.replace(/\s/g, '').length <= 3000) {
+    if (
+      content.replace(/\s/g, '').length > 400 &&
+      content.replace(/\s/g, '').length <= 3000
+    ) {
       this.isAnalysing = true;
 
       const route = 'open-ai/get-details';
@@ -142,31 +151,55 @@ export class MobileAnalyseAiComponent {
 
       this.api.upload(route, formData).subscribe({
         next: (response) => {
-          this.isAnalysing = true;
-          if (response !== null) {
+          this.isAnalysing = false;
+           if (response !== null) {
+            if(Array.isArray(response) ){
+            this.showErrorPopup= true;
+            this.errorMessage = response;
+            this.errorStatus ='Correct Your Content';
+            }
+           else{
             this.gs.setCandidateDetails(response);
             this.router.navigate(['mob-candidate/enter-new-details']);
+           }
+          }
+          else{
+            this.toast.showToast('info','Please try After sometime or try Another Way')
           }
         },
         error: (error) => {
-          this.isAnalysing = true;
-          this.gs.showMobileMessage('error', error.error?.message);
-          window.location.reload();
+          this.isAnalysing = false;
+          this.toast.showToast('info','Please try After sometime or try Another Way')
+          
         },
       });
     } else {
-       
-      this.gs.showMobileMessage('Note!..', 'Please enter more details | below count should between 400 to 3000 ');
+       this.isAnalysing = false;
+      this.gs.showMobileMessage(
+        'Note!..',
+        'Please enter more details | below count should between 400 to 3000 '
+      );
     }
   }
 
   getCharacterCount(text: string): number {
-  if (!text) return 0;
-  return text.replace(/\s/g, '').length;  
-}
+    if (!text) return 0;
+    return text.replace(/\s/g, '').length;
+  }
 
-  goToHome(){
+  goToHome() {
     this.gs.setNavigate(true);
     this.router.navigate(['mob-candidate']);
+  }
+
+  copyContent() {
+    const content = `Hi my name is Abc I have completed my BTech in Computer Science from XXXXX Engineering College with an overall percentage of 82% I am passionate about learning and applying technology to real-world problems I also have one year of experience at YYY Company, where I built strong skills in problem-solving, teamwork, software development, testing, sales, data entry & analysis, voice and non-voice support, communication, and adaptability In addition, I have gained skills in leadership, time management, customer handling, multitasking, negotiation, and creativity I enjoy exploring new ideas, taking on challenges, and contributing to projects that create meaningful impact across industries.You can contact me through this Contact Number +91-1234567891`;
+    navigator.clipboard.writeText(content).then(() => {
+      this.togglePopup();
+    });
+  }
+
+  closePopupTap(event: any) {
+    this.showErrorPopup = false;
   }
 }
