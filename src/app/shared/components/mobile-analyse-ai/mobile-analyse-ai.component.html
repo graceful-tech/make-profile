@@ -51,10 +51,10 @@
             <span class="star">★</span>
           </span>
         </span>
-        <span class="hint-btn" (click)="hintPopup()">Hints</span>
+        <span class="hint-btn" (click)="togglePopup()">Example</span>
       </span>
 
-      <div style="margin-top: 15px">
+      <div style="margin-top: 15px"> 
         <textarea
           id="analysis"
           rows="5"
@@ -64,8 +64,8 @@
         ></textarea>
       </div>
       <span style="display: flex; justify-content: space-between">
-        <span class="example-content" (click)="togglePopup()">
-          Sample Intro
+        <span class="example-content" (click)="hintPopup()">
+          Hints
         </span>
         <p>Count: {{ getCharacterCount(analysisText) }}</p>
       </span>

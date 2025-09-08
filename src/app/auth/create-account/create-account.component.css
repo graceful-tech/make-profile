@@ -1,144 +1,195 @@
 .align {
-    display: flex;
-    justify-content: center;
-    align-items: top;
-    height: 60%;
+  display: flex;
+  justify-content: center;
+  align-items: top;
+  height: 60%;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  margin-top: 20px;
+background: linear-gradient(
+  135deg,
+  rgba(138, 189, 230, 0.6) 0%,
+  rgba(255, 255, 255, 1) 30%,
+  rgba(255, 255, 255, 1) 70%,
+  rgba(99, 64, 161, 0.6) 100%
+);
+
+
 }
 
 .register-wrapper {
-    background: #fff;
-    width: 50%;
-    max-width: 1000px;
-    padding: 1.2rem;
-    border-radius: 12px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  background: #fff;
+  width: 50%;
+  max-width: 1000px;
+  padding: 1.2rem;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
 .form-layout {
-    display: flex;
-    align-items: flex-start;
-    gap: 2rem;
-    flex-wrap: wrap;
+  display: flex;
+  align-items: flex-start;
+  gap: 2rem;
+  flex-wrap: wrap;
 }
 
 .form-section {
-    flex: 1;
-    min-width: 10px;
+  flex: 1;
+  min-width: 10px;
 }
 
 .center {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin-top: 140px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 140px;
 }
 
 .vertical-line,
 .vertical-line1 {
-    width: 2px;
-    background-color: #178be9;
-    height: 80px;
+  width: 2px;
+  background-color: #178be9;
+  height: 80px;
 }
 
 .login-google {
-    width: 250px;
-    height: 300px;
-    background-color: white;
-    border-radius: 8px;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    position: relative;
-    padding: 1rem;
-    box-sizing: border-box;
+  width: 250px;
+  height: 300px;
+  background-color: white;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  position: relative;
+  padding: 1rem;
+  box-sizing: border-box;
 }
 
 .top-right-login {
-    position: absolute;
-    top: 10px;
-    right: 10px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
 }
 
 .google-signup-section {
-    margin-top: 40px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .sign-with {
-    margin-top: 100px;
-    font-weight: 500;
+  margin-top: 100px;
+  font-weight: 500;
 }
 
 .heading {
-    display: flex;
-    margin-left: 33%;
+  display: flex;
+  margin-left: 33%;
 }
 
 .create {
-    padding-bottom: 25px;
+  padding-bottom: 25px;
 }
 
 .error-message {
-    color: red;
-    font-size: 0.8rem;
+  color: red;
+  font-size: 0.8rem;
 }
 
 .grid {
-    width: 100%;
+  width: 100%;
 }
 
 .login a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 .login a {
-    color: #2196F3;
-    text-decoration: none;
-    font-size: large;
+  color: #2196f3;
+  text-decoration: none;
+  font-size: large;
 }
 
 @media (max-width: 768px) {
-    .form-layout {
-        flex-direction: column;
-        align-items: center;
-        padding-bottom: 20px;
-    }
+  .form-layout {
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 20px;
+  }
 
-    .login-google {
-        width: 100%;
-        max-width: 400px;
-        height: auto;
-        padding: 2rem;
-    }
+  .login-google {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    padding: 2rem;
+  }
 
-    .center {
-        flex-direction: row;
-        margin: 1rem 0;
-    }
+  .center {
+    flex-direction: row;
+    margin: 1rem 0;
+  }
 }
-
 
 .header-image {
-    position: relative;
-    top: 0;
-    left: 0;
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
+  position: relative;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-
 .header-images {
-    width: 100px;
-    height: auto;
-    margin-left: 20px;
+  width: 100px;
+  height: auto;
+  margin-left: 20px;
 }
 
 .right-align {
-    margin-right: 20px;
+  margin-right: 20px;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 14px;
+  background: #2196f3;
+  font-size: 18px;
+  color: white;
+  font-weight: bold;
+}
+
+.google-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%; /* Full width like in the first image */
+  max-width: 380px; /* Keeps it neat */
+  height: 44px; /* Same height as first screenshot */
+  border: 1px solid #737477;
+  border-radius: 4px;
+  background-color: #e1ecf2;
+  color: #3c4043;
+  font-family: "Roboto", Arial, sans-serif;
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  cursor: pointer;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  margin: 12px auto;
+}
+
+.google-btn img {
+  width: 18px;
+  height: 18px;
+  margin-right: 10px;
+}
+
+.google-btn span {
+  line-height: 1;
+}
+
+.google-btn:hover {
+  box-shadow: 0 1px 3px rgba(60, 64, 67, 0.3), 0 4px 8px rgba(60, 64, 67, 0.15);
+  transform: translateY(-1px);
 }

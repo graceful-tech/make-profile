@@ -1,101 +1,153 @@
 <div class="header-image">
-    <img class="header-images" src="assets/img/make-profile.svg" alt="Header Image" />
-    <p-button (onClick)="goBack()" label="Back" class="right-align"></p-button>
+  <img
+    class="header-images"
+    src="assets/img/make-profile.svg"
+    alt="Header Image"
+  />
+  <button (click)="goBack()" class="right-align">
+    <i class="fa fa-arrow-left"></i> Back
+  </button>
 </div>
+
+<div class="login-wrapper">
 <div class="main-wrapper">
-    <div class="login-form">
-        <form [formGroup]="loginForm">
-            <div class="heading">
-                <span>Login</span>
+  <div class="login-form">
+    <form [formGroup]="loginForm">
+      <div class="heading">
+        <span style="font-size: 22px; align-items: center">Login</span>
+      </div>
+
+      <div class="login-toggle">
+        <button
+          type="button"
+          [class.active]="loginType === 'mobile'"
+          (click)="setLoginType('mobile')"
+        >
+          Mobile Number
+        </button>
+        <button
+          type="button"
+          [class.active]="loginType === 'userName'"
+          (click)="setLoginType('userName')"
+        >
+          User Name
+        </button>
+      </div>
+
+      <div class="grid">
+        <div class="col-12" *ngIf="loginType === 'mobile'">
+          <div class="field-wrapper">
+            <label class="required">Mobile Number</label>
+            <div class="input-wrapper">
+              <input
+                type="text"
+                pKeyFilter="int"
+                pInputText
+                formControlName="mobileNumber"
+              />
             </div>
-            <div class="grid">
-                <div class="col-12">
-                    <div class="field-wrapper">
-                        <input type="radio" name="loginOption" (change)="setLoginType('mobile')">
-                        Mobile Number
-                        <input type="radio" name="loginOption" (change)="setLoginType('userName')">
-                        User Name
-                    </div>
-                </div>
-                <div class="col-12" *ngIf="loginType === 'mobile'">
-                    <div class="field-wrapper">
-                        <label class="required">Mobile Number</label>
-                        <div class="input-wrapper">
-                            <input type="text" pKeyFilter="int" pInputText formControlName="mobileNumber">
-                        </div>
-                        <small class="error-message"
-                            *ngIf="showError && error === 'Mobile Number is required' && loginType === 'mobile'">
-                            {{ error }}
-                        </small>
-                    </div>
-                </div>
-                <div class="col-12" *ngIf="loginType === 'userName'">
-                    <div class="field-wrapper">
-                        <label class="required">User Name</label>
-                        <div class="input-wrapper">
-                            <input type="text" pInputText formControlName="userName">
-                        </div>
-                        <small class="error-message"
-                            *ngIf="showError && error === 'Username is required' && loginType === 'userName'">
-                            {{ error }}
-                        </small>
-                    </div>
-                </div>
-
-                <div class="col-12">
-                    <div class="field-wrapper">
-                        <label class="required">Password</label>
-                        <div class="input-wrapper">
-                            <p-password formControlName="password" [toggleMask]="true" autocomplete="one-time-code">
-                            </p-password>
-                        </div>
-                    </div>
-                    <small class="error-message" *ngIf="showError && error === 'Password is required'">
-                        {{ error }}
-                    </small>
-                </div>
-
-                <div class="col-6">
-                    <div class="field-wrapper">
-                        <p-button type="submit" [label]="loadingFlag ? 'Please Wait..' : 'Login'"
-                            [disabled]="loadingFlag" (onClick)="login()">
-                        </p-button>
-                    </div>
-                </div>
-                <div class="col-6">
-                    <div class="forgot-password">
-                        <a href="javascript:void(0)" routerLink="/forgot-password">Forgot Password</a>
-                    </div>
-                </div>
-
-            </div>
-            <small class="error-message" *ngIf="loginError">{{ loginError }}</small>
-        </form>
-        <!-- Your login form ends here -->
-    </div>
-
-    <div class="center">
-        <div class="vertical-line"></div>
-        <h5 style="color: #178be9; padding: 8px 0; padding-left: 25px;">♦</h5>
-        <div class="vertical-line1"></div>
-    </div>
-
-    <div class="login-google">
-        <div class="top-right-login">
-            <span class="create-account"><a routerLink="/create-account">Create Account</a></span>
-        </div>
-        <div class="google-signup-section" style="text-align: center;">
-            <div class="sign-with" style="font-size: 15px;">
-                Easy Login
-            </div>
-            <div style="font-size: 20px; ">
-                👇
-            </div>
-            <img #googleImage src="assets/img/google.PNG" alt="Google Login" id="google-btn"
-                style="width: 160px; height: 50px; cursor: pointer; " (click)="onGoogleLogin()">
+            <small
+              class="error-message"
+              *ngIf="
+                showError &&
+                error === 'Mobile Number is required' &&
+                loginType === 'mobile'
+              "
+            >
+              {{ error }}
+            </small>
+          </div>
         </div>
 
+        <div class="col-12" *ngIf="loginType === 'userName'">
+          <div class="field-wrapper">
+            <label class="required">User Name</label>
+            <div class="input-wrapper">
+              <input type="text" pInputText formControlName="userName" />
+            </div>
+            <small
+              class="error-message"
+              *ngIf="
+                showError &&
+                error === 'Username is required' &&
+                loginType === 'userName'
+              "
+            >
+              {{ error }}
+            </small>
+          </div>
+        </div>
 
+        <div class="col-12">
+          <div class="field-wrapper">
+            <label class="required">Password</label>
+            <div class="input-wrapper">
+              <p-password
+                formControlName="password"
+                [toggleMask]="true"
+                autocomplete="one-time-code"
+              >
+              </p-password>
+            </div>
+          </div>
+          <small
+            class="error-message"
+            *ngIf="showError && error === 'Password is required'"
+          >
+            {{ error }}
+          </small>
+        </div>
+
+        <div class="col-6">
+          <div class="field-wrapper">
+            <p-button
+              type="submit"
+              [label]="loadingFlag ? 'Please Wait..' : 'Login'"
+              [disabled]="loadingFlag"
+              (onClick)="login()"
+            >
+            </p-button>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="forgot-password">
+            <a href="javascript:void(0)" routerLink="/forgot-password"
+              >Forgot Password</a
+            >
+          </div>
+        </div>
+      </div>
+      <small class="error-message" *ngIf="loginError">{{ loginError }}</small>
+    </form>
+  </div>
+
+  <div class="center">
+    <div class="vertical-line"></div>
+    <h5 style="color: #178be9; padding: 8px 0; padding-left: 25px">♦</h5>
+    <div class="vertical-line1"></div>
+  </div>
+
+  <div class="login-google">
+    <div class="top-right-login">
+      <span class="create-account"
+        ><a routerLink="/create-account">Create Account</a></span
+      >
     </div>
+    <div class="google-signup-section" style="text-align: center">
+      <div class="sign-with" style="font-size: 15px">Easy Login</div>
+      <div style="font-size: 20px">👇</div>
+      <!-- <img #googleImage src="assets/img/google.PNG" alt="Google Login" id="google-btn"
+                style="width: 160px; height: 50px; cursor: pointer; " (click)="onGoogleLogin()"> -->
 
+      <button class="google-btn" (click)="onGoogleLogin()">
+        <img
+          src="https://developers.google.com/identity/images/g-logo.png"
+          alt="Google logo"
+        />
+        <span>Login With Google</span>
+      </button>
+    </div>
+  </div>
 </div>
+</div>
+

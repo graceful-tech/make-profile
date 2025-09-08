@@ -886,12 +886,8 @@ export class CandidateCommonDetailsComponent {
     return this.fb.group({
       id: certificate.id,
       courseName: certificate.courseName,
-      courseStartDate: certificate.courseStartDate
-        ? new Date(certificate.courseStartDate)
-        : null,
-      courseEndDate: certificate.courseEndDate
-        ? new Date(certificate.courseEndDate)
-        : null,
+      courseStartDate: this.toValidDate(certificate.courseStartDate),
+      courseEndDate: this.toValidDate(certificate.courseEndDate),
       isDeleted: [''],
     });
   }
@@ -914,12 +910,8 @@ export class CandidateCommonDetailsComponent {
           id: experience.id,
           companyName: experience.companyName,
           role: experience.role,
-          experienceYearStartDate: experience.experienceYearStartDate
-            ? new Date(experience.experienceYearStartDate)
-            : null,
-          experienceYearEndDate: experience.experienceYearEndDate
-            ? new Date(experience.experienceYearEndDate)
-            : null,
+          experienceYearStartDate: this.toValidDate(experience.experienceYearStartDate),
+          experienceYearEndDate: this.toValidDate(experience.experienceYearEndDate),
           currentlyWorking: experience.currentlyWorking,
           responsibilities: responsibilities,
           isDeleted: false,
@@ -956,12 +948,8 @@ export class CandidateCommonDetailsComponent {
       id: qualification.id,
       institutionName: qualification.institutionName,
       department: qualification.department,
-      qualificationStartYear: qualification.qualificationStartYear
-        ? new Date(qualification.qualificationStartYear)
-        : null,
-      qualificationEndYear: qualification.qualificationEndYear
-        ? new Date(qualification.qualificationEndYear)
-        : null,
+      qualificationStartYear:this.toValidDate(qualification.qualificationStartYear),
+      qualificationEndYear:this.toValidDate(qualification.qualificationEndYear),
       percentage: qualification.percentage,
       fieldOfStudy: qualification.fieldOfStudy,
       isDeleted: false,
@@ -976,9 +964,7 @@ export class CandidateCommonDetailsComponent {
     return this.fb.group({
       id: achievement.id,
       achievementsName: achievement.achievementsName,
-      achievementsDate: achievement.achievementsDate
-        ? new Date(achievement.achievementsDate)
-        : null,
+      achievementsDate: this.toValidDate(achievement.achievementsDate),
       isDeleted: false,
     });
   }
@@ -1303,4 +1289,34 @@ export class CandidateCommonDetailsComponent {
     }
   }
 }
+
+ 
+
+  toValidDate(value: any): Date | null {
+  if (!value || value === 'NaN/NaN/NaN') return null;
+
+  if (value instanceof Date && !isNaN(value.getTime())) return value;
+
+  if (typeof value === "string") {
+    const trimmed = value.trim();
+
+    // dd/MM/yyyy format
+    const match = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(trimmed);
+    if (match) {
+      const day = parseInt(match[1], 10);
+      const month = parseInt(match[2], 10) - 1;
+      const year = parseInt(match[3], 10);
+      const date = new Date(year, month, day);
+      return !isNaN(date.getTime()) ? date : null;
+    }
+
+    // fallback
+    const date = new Date(trimmed);
+    return !isNaN(date.getTime()) ? date : null;
+  }
+
+  return null;
+}
+
+
 }
