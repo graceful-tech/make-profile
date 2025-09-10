@@ -791,9 +791,7 @@ export class FinalVerifyComponent {
       ? candidate.hobbies.split(',').map((skill: string) => skill.trim())
       : [];
 
-   
-   
-      if (candidate.certificates?.some((c) => c && c.courseName?.trim())) {
+    if (candidate.certificates?.some((c) => c && c.courseName?.trim())) {
       const certificateFormArray = this.candidateForm.get(
         'certificates'
       ) as FormArray;
@@ -884,7 +882,7 @@ export class FinalVerifyComponent {
       id: certificate.id,
       courseName: certificate.courseName,
       courseStartDate: this.isValidDate(certificate.courseStartDate),
-      courseEndDate:this.isValidDate(certificate.courseEndDate),
+      courseEndDate: this.isValidDate(certificate.courseEndDate),
     });
   }
 
@@ -900,13 +898,17 @@ export class FinalVerifyComponent {
           id: experience.id,
           companyName: experience.companyName,
           role: experience.role,
-          experienceYearStartDate: this.isValidDate(experience.experienceYearStartDate), 
-          experienceYearEndDate: this.isValidDate(experience.experienceYearEndDate), 
+          experienceYearStartDate: this.isValidDate(
+            experience.experienceYearStartDate
+          ),
+          experienceYearEndDate: this.isValidDate(
+            experience.experienceYearEndDate
+          ),
           currentlyWorking: experience.currentlyWorking,
           responsibilities: experience.responsibilities,
         });
 
-         if (experience?.projects.some((p: Project) =>  p?.projectName?.trim())) {
+        if (experience?.projects.some((p: Project) => p?.projectName?.trim())) {
           const projectFormArray = experienceForm.get('projects') as FormArray;
           projectFormArray.clear();
           experience.projects?.forEach((project: any) => {
@@ -931,8 +933,12 @@ export class FinalVerifyComponent {
       id: qualification.id,
       institutionName: qualification.institutionName,
       department: qualification.department,
-      qualificationStartYear: this.isValidDate(qualification.qualificationStartYear),
-      qualificationEndYear:this.isValidDate(qualification.qualificationEndYear),
+      qualificationStartYear: this.isValidDate(
+        qualification.qualificationStartYear
+      ),
+      qualificationEndYear: this.isValidDate(
+        qualification.qualificationEndYear
+      ),
       percentage: qualification.percentage,
       fieldOfStudy: qualification.fieldOfStudy,
     });
@@ -947,7 +953,7 @@ export class FinalVerifyComponent {
       id: achievement.id,
       achievementsName: achievement.achievementsName,
       achievementsDate: this.isValidDate(achievement.achievementsDate),
-    }); 
+    });
   }
 
   createCollegeProjectFormGroup(collegeProject: CollegeProject) {
@@ -1102,7 +1108,7 @@ export class FinalVerifyComponent {
       this.templateName = templateName;
     }
 
-     const payload = { ...candidates, templateName: this.templateName };
+    const payload = { ...candidates, templateName: this.templateName };
 
     this.api.retrieve(route, payload).subscribe({
       next: (response) => {
@@ -1118,23 +1124,32 @@ export class FinalVerifyComponent {
           const byteArray = new Uint8Array(byteNumbers);
           const blob = new Blob([byteArray], { type: 'application/pdf' });
 
-          // Create a link element and trigger download
-          const url = window.URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.href = url;
-          a.download = response.candidateName + '.pdf';
-          document.body.appendChild(a);
-          a.click();
+           
+           const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
 
-          // Clean up
-          document.body.removeChild(a);
-          window.URL.revokeObjectURL(url);
+           console.log(isIOS);
 
-         this.toast.showToast('success','Resume Downloaded Successfully')
-          localStorage.removeItem('resumeName');
-          this.ngxLoaderStop();
+          if (isIOS) {
+            
+            const fileURL = URL.createObjectURL(blob);
+            const newWindow = window.open(fileURL, '_blank');
+            if (!newWindow) {
+              this.gs.showMobileMessage('Note!',"If your using iPhone Go to Setting -> Apps -> Safari -> Turn off 'Block Popups' ");
+            }
+          } else {
+            // Other devices: download
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = response.candidateName + '.pdf';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
 
-          window.location.reload();
+            this.toast.showToast('success', 'Resume Downloaded Successfully');
+          }
+         this.ngxLoaderStop();
           this.router.navigate(['/mob-candidate']);
         }
         this.ngxLoaderStop();
@@ -1347,30 +1362,29 @@ export class FinalVerifyComponent {
     this.showErrorPopup = false;
   }
 
-    isValidDate(value: any): Date | null {
-  if (!value || value === 'NaN/NaN/NaN') return null;
+  isValidDate(value: any): Date | null {
+    if (!value || value === 'NaN/NaN/NaN') return null;
 
-  if (value instanceof Date && !isNaN(value.getTime())) return value;
+    if (value instanceof Date && !isNaN(value.getTime())) return value;
 
-  if (typeof value === "string") {
-    const trimmed = value.trim();
+    if (typeof value === 'string') {
+      const trimmed = value.trim();
 
-    // dd/MM/yyyy format
-    const match = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(trimmed);
-    if (match) {
-      const day = parseInt(match[1], 10);
-      const month = parseInt(match[2], 10) - 1;
-      const year = parseInt(match[3], 10);
-      const date = new Date(year, month, day);
+      // dd/MM/yyyy format
+      const match = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(trimmed);
+      if (match) {
+        const day = parseInt(match[1], 10);
+        const month = parseInt(match[2], 10) - 1;
+        const year = parseInt(match[3], 10);
+        const date = new Date(year, month, day);
+        return !isNaN(date.getTime()) ? date : null;
+      }
+
+      // fallback
+      const date = new Date(trimmed);
       return !isNaN(date.getTime()) ? date : null;
     }
 
-    // fallback
-    const date = new Date(trimmed);
-    return !isNaN(date.getTime()) ? date : null;
+    return null;
   }
-
-  return null;
-}
-
 }

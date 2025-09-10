@@ -22,6 +22,8 @@ export class MobileCreateAccountComponent {
   cities: Array<Lookup> = [];
   error!: string;
   isReference = false;
+  showPassword: boolean = false;
+  
   constructor(
     private fb: FormBuilder,
     private api: ApiService,
@@ -114,4 +116,10 @@ export class MobileCreateAccountComponent {
       this.showError = true;
     }
   }
+
+  togglePassword() {
+    this.showPassword = !this.showPassword;
+  }
+ 
+
 }

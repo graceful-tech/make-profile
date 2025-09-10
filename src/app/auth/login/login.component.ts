@@ -22,6 +22,7 @@ export class LoginComponent {
   loginType: string | null = null;
   error!: String;
   loginError!: String;
+  showPassword: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -135,4 +136,9 @@ export class LoginComponent {
     const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
     return /android|iphone|ipad|ipod/i.test(userAgent);
   }
+
+   togglePassword() {
+    this.showPassword = !this.showPassword;
+  }
+ 
 }

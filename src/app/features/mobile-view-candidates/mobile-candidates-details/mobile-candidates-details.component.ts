@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnDestroy, Renderer2, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
@@ -31,7 +31,17 @@ import { ToastService } from 'src/app/services/toast.service';
   templateUrl: './mobile-candidates-details.component.html',
   styleUrl: './mobile-candidates-details.component.css',
 })
-export class MobileCandidatesDetailsComponent {
+export class MobileCandidatesDetailsComponent  {
+
+
+@ViewChild('chipComp', { read: ElementRef }) chipCompEl!: ElementRef;
+
+  form!: FormGroup; // assume initialized elsewhere
+  private removeListeners: (() => void)[] = [];
+
+
+  
+  
   yourResume: Array<any> = [];
   candidateForm!: FormGroup;
   genderList: Array<ValueSet> = [];
@@ -98,6 +108,7 @@ export class MobileCandidatesDetailsComponent {
   editedNickName: string = '';
   balanceCredits: any;
   navigate: boolean = false;
+  separatorPattern: RegExp = /[ ,;]+/;
 
   constructor(
     private api: ApiService,
@@ -112,7 +123,8 @@ export class MobileCandidatesDetailsComponent {
     private ngxLoader: NgxUiLoaderService,
     private ps: PaymentService,
     private loader: MobileLoaderService,
-    private toast: ToastService
+    private toast: ToastService,
+    private renderer: Renderer2
   ) {
     localStorage.removeItem('nickName');
     localStorage.removeItem('templateName');
@@ -170,8 +182,15 @@ export class MobileCandidatesDetailsComponent {
         this.router.navigate(['mob-candidate/analyse-ai']);
       }
     });
+
+
+ 
   }
 
+   
+ 
+
+  
   createCandidateForm() {
     this.candidateForm = this.fb.group({
       id: [''],
@@ -1854,4 +1873,12 @@ export class MobileCandidatesDetailsComponent {
       },
     });
   }
+
+
+
+  
+
+
+
+
 }

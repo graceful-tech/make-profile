@@ -54,7 +54,7 @@
         <span class="hint-btn" (click)="togglePopup()">Example</span>
       </span>
 
-      <div style="margin-top: 15px"> 
+      <div style="margin-top: 15px">
         <textarea
           id="analysis"
           rows="5"
@@ -64,9 +64,7 @@
         ></textarea>
       </div>
       <span style="display: flex; justify-content: space-between">
-        <span class="example-content" (click)="hintPopup()">
-          Hints
-        </span>
+        <span class="example-content" (click)="hintPopup()"> Hints </span>
         <p>Count: {{ getCharacterCount(analysisText) }}</p>
       </span>
     </div>
@@ -91,29 +89,34 @@
   <div id="examplePopup" class="popup-box">
     <h4>Example Self Introduction</h4>
     <p>
-    Hello, my name is Abc. I have completed my B.Tech in Computer Science from XXXXX Engineering College with an overall score of 100%, during the period 29th January 1955 to 30th March 1963. <br><br>
+      Hello, my name is Abc.My gender is Male/Female I have completed my B.Tech in Computer Science from
+      XXXXX Engineering College with an overall score of 100%, during the period
+      29th January 1955 to 30th March 1963. <br /><br />
 
-   I also have one year of professional experience at YYY Company from 1st April 1963 to 31st March 1964, where I gained strong skills in software development, testing, sales, data entry and analysis, voice and non-voice support, and customer handling. This experience helped me strengthen my abilities in problem-solving, teamwork, communication, adaptability, and multitasking. <br><br>
+      I also have one year of professional experience at YYY Company from 1st
+      April 1963 to 31st March 1964, where I gained strong skills in software
+      development, testing, sales, data entry and analysis, voice and non-voice
+      support, and customer handling. This experience helped me strengthen my
+      abilities in problem-solving, teamwork, communication, adaptability, and
+      multitasking. <br /><br />
 
-   Along with my technical background, I have developed leadership, time management, negotiation, and creativity skills. I enjoy exploring new ideas, taking on challenges, and contributing to projects that create a meaningful impact across industries.<br><br>
-      <b>  You can reach me at +91-1234567891 or via email at abc&#64;example.com</b>.
+      Along with my technical background, I have developed leadership, time
+      management, negotiation, and creativity skills. I enjoy exploring new
+      ideas, taking on challenges, and contributing to projects that create a
+      meaningful impact across industries.<br /><br />
+      <b>
+        You can reach me at +91-1234567891 or via email at
+        abc&#64;example.com</b
+      >.
     </p>
-
 
     <button class="close-btn" (click)="togglePopup()">Close</button>
     <br />
     <br />
-    <span
-      style="margin-top: 20px; display: flex; justify-content: space-between"
+    <span class="bottom-btn"
+      
     >
-      <span
-        style="
-          font-size: 16px;
-          font-weight: bold;
-          font-style: italic;
-          margin-right: 10px;
-          color: rgb(255, 0, 38);
-        "
+      <span class="copyandpaste-btn"
         >Copy & paste, then modify as per your details</span
       >
 

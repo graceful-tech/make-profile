@@ -30,6 +30,7 @@ export class CreateAccountComponent {
   cities: Array<Lookup> = [];
   error!: string;
   isReference = false;
+  showPassword: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -125,4 +126,9 @@ export class CreateAccountComponent {
   goBack() {
     this.router.navigate(['/login']);
   }
+
+    togglePassword() {
+    this.showPassword = !this.showPassword;
+  }
+ 
 }

@@ -20,6 +20,7 @@ export class MobileLoginComponent {
   loginType: string | null = null;
   error!: String;
   loginError!: String;
+  showPassword: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -120,5 +121,15 @@ export class MobileLoginComponent {
     this.loginError = '';
     this.showError = false;
   }
+
+
+ 
+
+
+  togglePassword() {
+    this.showPassword = !this.showPassword;
+  }
+ 
+
 
 }

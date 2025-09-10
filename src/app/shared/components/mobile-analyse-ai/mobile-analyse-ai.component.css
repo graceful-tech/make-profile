@@ -18,8 +18,6 @@
   border-color: #3b82f6;
 }
 
- 
-
 .example-contnet {
   background-color: rgb(85, 103, 144);
   color: rgb(255, 248, 255);
@@ -33,11 +31,11 @@
   align-items: center;
   gap: 6px;
   padding: 6px 6px;
-   background: #060965;
-     background: linear-gradient(to right, #3d6530, #33721e);
+  background: #060965;
+  background: linear-gradient(to right, #3d6530, #33721e);
 
   color: #fff;
-   
+
   font-size: 14px;
   border: none;
   border-radius: 6px;
@@ -45,7 +43,7 @@
   transition: background 0.3s;
 }
 
-.analysis:hover{
+.analysis:hover {
   background: #010f24;
   color: #fff;
 }
@@ -58,19 +56,17 @@
   cursor: pointer;
   color: rgb(51, 51, 236);
   text-decoration: underline;
- 
 }
 
- 
- .example-content:hover{
-  color:darkblue;
+.example-content:hover {
+  color: darkblue;
 }
 
 .popup-box {
   display: none;
   position: absolute;
   top: 6rem;
-  left:0;
+  left: 0;
   width: 80%;
   background: #fff;
   border: 1px solid #ddd;
@@ -91,18 +87,7 @@
   color: #333;
 }
 
-.close-btn {
-  margin-top: 10px;
-  background: #ef4444;
-  color: #fff;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-.close-btn:hover {
-  background: #dc2626;
-}
+
 
 .add-details {
   text-decoration: underline;
@@ -205,7 +190,7 @@
 }
 
 .enter-details {
-   background: #060965;
+  background: #060965;
   color: rgb(249, 249, 249);
   border: none;
   padding: 10px 30px;
@@ -283,34 +268,27 @@
 }
 
 .profile-wrapper {
-  min-height: 100vh; /* full page */
-  /* display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center; */
-
-    background: linear-gradient(to bottom, skyblue 0%, white 50%, #c2e4ef 100%);
+  min-height: 100vh;  
+ 
+  background: linear-gradient(to bottom, skyblue 0%, white 50%, #c2e4ef 100%);
   padding: 20px;
   border-radius: 12px;
-  /* background-size: 400% 400%; */
+ 
   animation: gradientBG 15s ease infinite;
   padding: 20px;
   border-radius: 12px;
 }
 
- 
-
-
-.new-button{
+.new-button {
   margin: 0 auto;
 }
 
-.heading-content{
+.heading-content {
   font-weight: bold;
-   font-size: 15px;
+  font-size: 15px;
 }
 
-.home-btn{
+.home-btn {
   border: none;
   border-radius: 8px;
   padding: 5px 8px;
@@ -331,13 +309,6 @@
 }
 
  
-
-
-/* .heading-content {
-  margin-right: 8px;
-  font-weight: bold;
-  font-size: 20px;
-} */
 
 .left-side {
   justify-content: flex-start;
@@ -373,15 +344,7 @@
   animation: arrowGradient 3s infinite;
 }
 
- /* .tooltip-bubble::after {
-  content: "⭐";
-  position: absolute;
-  font-size: 14px;
-  opacity: 0.8;
-  animation: sparkleAnim 3s infinite linear;
-} */
-
-/* Multiple stars OUTSIDE (add in HTML as spans) */
+ 
 .tooltip-bubble .star {
   position: absolute;
   font-size: 15px;
@@ -389,7 +352,6 @@
   opacity: 0.9;
   animation: twinkle 0.5s infinite alternate;
 }
-
 
 /* Top-left */
 .tooltip-bubble .star:nth-child(1) {
@@ -458,32 +420,33 @@
   animation-delay: 0.6s;
 }
 
-
-
 /* Gradient animation */
 @keyframes gradientShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
-/* Sparkle inside */
-/* @keyframes sparkleAnim {
-  0%   { top: 10%; left: 15%; opacity: 0.5; transform: scale(0.8) rotate(0deg); }
-  25%  { top: 30%; left: 70%; opacity: 1; transform: scale(1.2) rotate(30deg); }
-  50%  { top: 60%; left: 40%; opacity: 0.7; transform: scale(0.9) rotate(60deg); }
-  75%  { top: 30%; left: 80%; opacity: 1; transform: scale(1.1) rotate(90deg); }
-  100% { top: 10%; left: 15%; opacity: 0.5; transform: scale(0.8) rotate(120deg); }
-} */
-
-/* Twinkling outside */
+ 
+ 
 @keyframes twinkle {
-  from { opacity: 0.2; transform: scale(0.8) rotate(0deg); }
-  to   { opacity: 1; transform: scale(1.2) rotate(180deg); }
+  from {
+    opacity: 0.2;
+    transform: scale(0.8) rotate(0deg);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1.2) rotate(180deg);
+  }
 }
 
-
-.hint-btn{
+.hint-btn {
   color: #3504f7;
   text-decoration: underline;
   cursor: pointer;
@@ -496,7 +459,7 @@
   display: none;
   position: absolute;
   top: 6rem;
-  right:0;
+  right: 0;
   width: 80%;
   background: #fff;
   border: 1px solid #ddd;
@@ -516,6 +479,8 @@
   font-size: 14px;
   color: #333;
 }
+ 
+ 
 
 .close-btn {
   margin-top: 10px;
@@ -525,7 +490,6 @@
   padding: 6px 12px;
   border-radius: 4px;
   cursor: pointer;
-  font-weight: bold;
 }
 .close-btn:hover {
   background: #dc2626;
@@ -547,54 +511,181 @@
 }
 
 .divider:not(:empty)::before {
-  margin-right: .75em;
+  margin-right: 0.75em;
 }
 
 .divider:not(:empty)::after {
-  margin-left: .75em;
+  margin-left: 0.75em;
 }
 
-
-.Copy-btn{
-  margin-top: 10px;
-  background: #4480ef;
-  color: #fff;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 15px
-}
+ 
 
 .copy-btn:hover {
   background: #281289;
 }
 
+.copyandpaste-btn {
+  font-size: 16px;
+  font-weight: bold;
+  font-style: italic;
+  margin-right: 10px;
+  color: rgb(255, 0, 38);
+}
+
+.bottom-btn{
+   margin-top: 20px; 
+   display: flex; 
+   justify-content: space-between
+}
+
+
+  .Copy-btn {
+    margin-top: 10px;
+    background: #4480ef;
+    color: #fff;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 15px;
+  }
+
+  .copyandpaste-btn {
+    font-size: 10px;
+    font-weight: bold;
+    font-style: italic;
+    margin-right: 10px;
+    color: rgb(255, 0, 38);
+    font-size: 15px;
+  }
+
+
+
+@media screen and (max-width: 330px) {
+  .popup-box {
+    display: none;
+    position: absolute;
+    top: 6rem;
+    left: 0;
+    width: 80%;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    padding: 12px;
+    z-index: 1000;
+    border: solid 1px black;
+  }
+
+  .popup-box h4 {
+    margin-top: 0;
+    color: #3b82f6;
+  }
+
+  .popup-box p {
+    font-size: 8px;
+    color: #333;
+  }
+
+  .Copy-btn {
+    margin-top: 4px;
+    background: #4480ef;
+    color: #fff;
+    border: none;
+    padding: 4px 7px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 10px;
+  }
+
+  .copyandpaste-btn {
+    font-size: 10px;
+    font-weight: bold;
+    font-style: italic;
+    margin-right: 10px;
+    color: rgb(255, 0, 38);
+  }
+
+   .bottom-btn{
+   margin-top: 5px; 
+   display: flex; 
+   justify-content: space-between
+}
+
+.close-btn {
+  margin-top: 10px;
+  background: #ef4444;
+  color: #fff;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 10px;
+}
+
+}
+
 @media screen and (max-width: 390px) {
   .popup-box {
-  display: none;
-  position: absolute;
-  top: 6rem;
-  left:0;
-  width: 80%;
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  padding: 15px;
-  z-index: 1000;
-  border: solid 1px black;
-}
+    display: none;
+    position: absolute;
+    top: 6rem;
+    left: 0;
+    width: 80%;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    padding: 15px;
+    z-index: 1000;
+    border: solid 1px black;
+  }
 
-.popup-box h4 {
-  margin-top: 0;
-  color: #3b82f6;
-}
+  .popup-box h4 {
+    margin-top: 0;
+    color: #3b82f6;
+  }
 
-.popup-box p {
+  .popup-box p {
+    font-size: 10px;
+    color: #333;
+  }
+
+  .Copy-btn {
+    background: #4480ef;
+    color: #fff;
+    border: none;
+    padding: 4px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 10px;
+  }
+
+    .copyandpaste-btn {
+    font-size: 10px;
+    font-weight: bold;
+    font-style: italic;
+    margin-right: 10px;
+    color: rgb(255, 0, 38);
+  }
+
+  .bottom-btn{
+   margin-top: 5px; 
+   display: flex; 
+   justify-content: space-between
+}
+.close-btn {
+  margin-top: 10px;
+  background: #ef4444;
+  color: #fff;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
   font-size: 10px;
-  color: #333;
 }
 
 }

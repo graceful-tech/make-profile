@@ -115,10 +115,10 @@
             <label class="required">Gender</label>
             <div class="input-wrapper">
               <p-dropdown
-                [options]="nationalityList"
+                [options]="genderList"
                 optionLabel="displayValue"
                 optionValue="dataValue"
-                placeholder="Select Nationality"
+                placeholder="Select Gender"
                 formControlName="gender"
                  [filter]="true"
               >
@@ -205,10 +205,10 @@
             <label>Nationality</label>
             <div class="input-wrapper">
               <p-dropdown
-                [options]="genderList"
+                [options]="nationalityList"
                 optionLabel="displayValue"
                 optionValue="dataValue"
-                placeholder="Select Gender"
+                placeholder="Select Nationality"
                 formControlName="nationality"
               >
               </p-dropdown>
@@ -652,7 +652,7 @@
           <div class="grid">
             <div class="col-12 md:col-6 lg:col-3">
               <div class="field-wrapper">
-                <label>Institution Name</label>
+                <label>College/School/Institute Name</label>
                 <div class="input-wrapper">
                   <input
                     type="text"
@@ -683,7 +683,7 @@
 
             <div class="col-12 md:col-6 lg:col-3">
               <div class="field-wrapper">
-                <label>Area of Study</label>
+                <label>Department</label>
                 <div class="input-wrapper">
                   <input
                     type="text"
