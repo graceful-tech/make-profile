@@ -1,14 +1,15 @@
- html, body {
+html,
+body {
   overflow-x: hidden;
   margin: 0;
   padding: 0;
 }
- 
+
 .wrapper {
   margin-top: 0rem;
   padding: 0.5rem;
   display: flex;
-  flex-wrap: wrap; 
+  flex-wrap: wrap;
   width: 100%;
   box-sizing: border-box;
 }
@@ -18,7 +19,7 @@
   padding: 1.2rem 1.5rem;
   border-radius: 5px;
   box-shadow: 0 1px 2px 0 rgb(0 0 0 / 8%);
-  width: 100%; 
+  width: 100%;
   box-sizing: border-box;
 }
 
@@ -32,7 +33,7 @@
   animation: fadeInRotate 3s ease-in-out;
 }
 
- .profile {
+.profile {
   width: 100%;
   max-width: 150px;
   height: auto;
@@ -49,24 +50,8 @@ img {
   height: auto;
 }
 
- .custom-btn {
-  background-color: #415ddb;  
-  color: white;
-  border: none;
-  padding: 8px 5px;
-  font-size: 12px;
-  border-radius: 8px;
-  cursor: pointer;
-  margin-right: 15px;
-   font-weight: bold;
-}
-
-.custom-btn:hover {
-  background-color: #3716dc;  
-}
-
-.remove-btn {
-  background-color: #db4141;  
+.custom-btn {
+  background-color: #415ddb;
   color: white;
   border: none;
   padding: 8px 5px;
@@ -75,17 +60,35 @@ img {
   cursor: pointer;
   margin-right: 15px;
   font-weight: bold;
+  font-style: italic;
+}
+
+.custom-btn:hover {
+  background-color: #3716dc;
+}
+
+.remove-btn {
+  background-color: #db4141;
+  color: white;
+  border: none;
+  padding: 8px 5px;
+  font-size: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-right: 15px;
+  font-weight: bold;
+  font-style: italic;
 }
 
 .remove-btn:hover {
-  background-color: #f40808;  
+  background-color: #f40808;
 }
 
 .p-inputtext {
   background-color: rgb(255, 255, 255) !important;
 }
 
- .bysection-heading {
+.bysection-heading {
   font-size: 1.1rem;
   font-weight: 500;
   color: #178be9;
@@ -93,7 +96,7 @@ img {
   margin-left: 1rem;
 }
 
- .button-wrapper {
+.button-wrapper {
   margin-top: 1rem;
   text-align: right;
   display: flex;
@@ -109,7 +112,7 @@ img {
   cursor: pointer;
 }
 
- .image-container {
+.image-container {
   position: relative;
   display: inline-block;
   margin-top: 20px;
@@ -144,12 +147,12 @@ img {
   padding-left: 1rem;
 }
 
- ::ng-deep .custom-dropdown .p-dropdown {
+::ng-deep .custom-dropdown .p-dropdown {
   width: 100% !important;
   max-width: 200px;
 }
 
-.add-details { 
+.add-details {
   text-decoration: underline;
   font-size: 1.4rem;
   font-weight: 500;
@@ -215,7 +218,8 @@ img {
     max-width: 100% !important;
   }
 
-  .custom-btn, .remove-btn {
+  .custom-btn,
+  .remove-btn {
     font-size: 14px;
     padding: 10px;
   }
@@ -246,21 +250,19 @@ img {
   }
 } */
 
-
-.additional-content{
- background: linear-gradient(to right,#5e84c6, #c85f78);
+.additional-content {
+  background: linear-gradient(to right, #5e84c6, #c85f78);
   z-index: 1000;
   display: flex;
-  flex-direction: column;   
-  align-items: center;     
-  justify-content: center;  
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   padding: 10px 10px;
   color: white;
   border-radius: 10px;
-
 }
 
-.home-btn{
+.home-btn {
   border: none;
   background: #5d71ca;
   border-radius: 7px;
@@ -270,7 +272,7 @@ img {
   font-size: 15px;
 }
 
-.softSkiilsExample{
+.softSkiilsExample {
   text-decoration: underline;
   color: rgb(29, 14, 233);
   font-size: 15px;
@@ -278,7 +280,6 @@ img {
   cursor: pointer;
 }
 
- 
 .softSkiilsExample:hover {
   background: #04045a;
   color: white;
@@ -320,7 +321,6 @@ img {
   background: #dc2626;
 }
 
-
 .core-popup-box {
   display: none;
   position: fixed;
@@ -356,4 +356,21 @@ img {
 
 .copy-btn:hover {
   background-color: #e0e0e0;
+}
+
+.experience-box {
+  border: 2px solid #007ad9;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 25px;
+  background-color: #f9fbff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.project-box {
+  border: 1px dashed #666;
+  border-radius: 6px;
+  padding: 15px;
+  margin-top: 15px;
+  background-color: #fff;
 }

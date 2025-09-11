@@ -281,9 +281,10 @@ export class AddCandidatesComponent {
             'yyyy-MM-dd'
           );
 
-          const responsibilities = Array.isArray(exp.responsibilities)
-            ? exp.responsibilities.join(', ')
+           const responsibilities = Array.isArray(exp.responsibilities)
+           ? exp.responsibilities.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ')
             : exp.responsibilities;
+
 
           let projects = exp.projects || [];
           const hasEmptyProjectName = projects.some(
@@ -295,9 +296,9 @@ export class AddCandidatesComponent {
           } else {
             projects = projects.map((proj: any) => ({
               ...proj,
-              projectSkills: Array.isArray(proj.projectSkills)
-                ? proj.projectSkills.join(', ')
-                : proj.projectSkills,
+               projectSkills: Array.isArray(proj.projectSkills)
+           ? proj.projectSkills.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ')
+            : proj.projectSkills,
             }));
           }
 

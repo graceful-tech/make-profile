@@ -115,12 +115,8 @@
           >
         </div>
       </div>
-       <div class="section-heading mt-2">
-             Additional Personal Details 
-          </div>
+      <div class="section-heading mt-2">Additional Personal Details</div>
       <div class="grid">
-        
-
         <div class="col-12 md:col-6 lg:col-3">
           <div class="field-wrapper">
             <label>Languages Known</label>
@@ -302,15 +298,15 @@
         </div>
       </div>
 
-      <ng-container *ngIf="!candidateForm.get('fresher')?.value">
-        <div formArrayName="experiences" class="border-line" id="experiences">
+           <ng-container *ngIf="!candidateForm.get('fresher')?.value">
+        <div formArrayName="experiences">
           <div
             *ngFor="
               let experience of experienceControls.controls;
               let i = index
             "
             [formGroupName]="i"
-            class="experience-container"
+            class="experience-box"
           >
             <!-- Experience Details -->
             <div class="grid">
@@ -353,18 +349,25 @@
                   <label>Year Ended</label>
                   <div class="input-wrapper">
                     <p-calendar
-                      appendTo="body"
                       formControlName="experienceYearEndDate"
                       [disabled]="experience.get('currentlyWorking')?.value"
-                      placeholder="Select From Date"
+                      placeholder="Select To Date"
                     ></p-calendar>
                   </div>
                 </div>
               </div>
 
-              <div class="col-12 md:col-6 lg:col-3">
-                <div class="field-wrapper">
-                  <div class="input-wrapper">
+              <div class="grid">
+                <div class="col-12 md:col-6 lg:col-3">
+                  <div
+                    class="fresher-checkbox pb-3"
+                    style="
+                      display: flex;
+                      align-items: center;
+                      gap: 5px;
+                      margin-left: 15px;
+                    "
+                  >
                     <p-checkbox
                       [binary]="true"
                       [disabled]="
@@ -372,9 +375,7 @@
                       "
                       formControlName="currentlyWorking"
                     ></p-checkbox>
-                    <label style="padding-left: 5px; white-space: nowrap"
-                      >Currently Working</label
-                    >
+                    <label style="padding-left: 5px">Currently Working</label>
                   </div>
                 </div>
               </div>
@@ -383,17 +384,19 @@
                 <div class="field-wrapper">
                   <label>Responsibilities</label>
                   <div class="input-wrapper">
-                    <p-chips
-                      separator=","
+                    <tag-input
                       formControlName="responsibilities"
-                      [addOnBlur]="true"
-                      [addOnTab]="true"
-                    ></p-chips>
+                      [separatorKeyCodes]="[13, 188]"
+                      [theme]="'modern'"
+                      placeholder="Type and press Enter or Comma"
+                    >
+                    </tag-input>
                   </div>
                 </div>
               </div>
             </div>
 
+            <!-- Project Details -->
             <div formArrayName="projects">
               <div class="bysection-heading mt-4">
                 <div>Project Details</div>
@@ -402,10 +405,10 @@
               <div
                 *ngFor="let project of getProjects(i).controls; let j = index"
                 [formGroupName]="j"
-                class="project-container"
+                class="project-box"
               >
                 <div class="grid">
-                  <div class="col-12 md:col-6 lg:col-3">
+                  <div class="col-12 md:col-6">
                     <div class="field-wrapper">
                       <label>Project Name</label>
                       <div class="input-wrapper">
@@ -418,7 +421,7 @@
                     </div>
                   </div>
 
-                  <div class="col-12 md:col-6 lg:col-3">
+                  <div class="col-12 md:col-6">
                     <div class="field-wrapper">
                       <label>Project Role</label>
                       <div class="input-wrapper">
@@ -431,21 +434,22 @@
                     </div>
                   </div>
 
-                  <div class="col-12 md:col-6 lg:col-3">
+                  <div class="col-12 md:col-6">
                     <div class="field-wrapper">
                       <label>Project Skills</label>
                       <div class="input-wrapper">
-                        <p-chips
-                          separator=","
+                        <tag-input
                           formControlName="projectSkills"
-                          [addOnBlur]="true"
-                          [addOnTab]="true"
-                        ></p-chips>
+                          [separatorKeyCodes]="[13, 188]"
+                          [theme]="'modern'"
+                          placeholder="Type and press Enter or Comma"
+                        >
+                        </tag-input>
                       </div>
                     </div>
                   </div>
 
-                  <div class="col-12">
+                  <div class="col-12 md:col-6">
                     <div class="field-wrapper">
                       <label>Project Description</label>
                       <div class="input-wrapper">
@@ -459,11 +463,7 @@
                     </div>
                   </div>
 
-                  <div
-                    class="col-12 md:col-6 lg:col-3"
-                    *ngIf="j >= 0"
-                    style="padding-top: 20px"
-                  >
+                  <div class="col-12 md:col-6 lg:col-3" *ngIf="j >= 0">
                     <button
                       type="button"
                       class="remove-btn"
@@ -473,21 +473,17 @@
                     </button>
                   </div>
                 </div>
-
-                <hr class="sub-section-divider" />
-              </div>
-              <div class="col-12 md:col-6 lg:col-3">
-                <button
-                  type="button"
-                  class="custom-btn"
-                  (click)="addProject(i)"
-                >
-                  + Add Project
-                </button>
               </div>
             </div>
 
-            <div class="col-12 md:col-6 lg:col-3" *ngIf="i >= 0">
+            <!-- Buttons for Experience -->
+            <div class="col-12 md:col-6 lg:col-3 mt-3">
+              <button type="button" class="custom-btn" (click)="addProject(i)">
+                + Add Project
+              </button>
+            </div>
+
+            <div class="col-12 md:col-6 lg:col-3 mt-3">
               <button
                 type="button"
                 class="remove-btn"
@@ -497,7 +493,9 @@
               </button>
             </div>
           </div>
-          <div class="col-12 md:col-6 lg:col-3">
+
+          <!-- Add Experience -->
+          <div class="col-12 md:col-6 lg:col-3 mt-4">
             <button type="button" class="custom-btn" (click)="addExperience()">
               + Add Experience
             </button>
@@ -505,108 +503,114 @@
         </div>
       </ng-container>
 
+
       <div
         *ngIf="candidateForm.errors?.['fresherOrExperienceRequired'] && candidateForm.touched"
         style="color: red; margin-top: 5px"
       >
         Please select Fresher OR add at least one Experience.
       </div>
-
-      <ng-container *ngIf="candidateForm.get('fresher')?.value">
-        <div formArrayName="collegeProject" class="border-line">
-          <div
-            *ngFor="
-              let collegeProject of collegeProjectControls.controls;
-              let i = index
-            "
-            [formGroupName]="i"
-            class="experience-container"
-          >
-            <div class="grid">
-              <div class="col-12 md:col-6">
-                <div class="field-wrapper">
-                  <label>Project Name</label>
-                  <div class="input-wrapper">
-                    <input
-                      type="text"
-                      pInputText
-                      formControlName="collegeProjectName"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-12 md:col-6">
-                <div class="field-wrapper">
-                  <label>Project Skills</label>
-                  <div class="input-wrapper">
-                    <p-chips
-                      separator=","
-                      formControlName="collegeProjectSkills"
-                      [addOnBlur]="true"
-                      [addOnTab]="true"
-                    ></p-chips>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-12">
-                <div class="field-wrapper">
-                  <label>Project Description</label>
-                  <div class="input-wrapper">
-                    <textarea
-                      rows="2"
-                      type="text"
-                      pInputText
-                      formControlName="collegeProjectDescription"
-                    ></textarea>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-12 md:col-6 lg:col-3" *ngIf="i >= 0">
-                <button
-                  type="button"
-                  class="remove-btn"
-                  (click)="removeCollegeProject(i)"
+   <ng-container *ngIf="candidateForm.get('fresher')?.value">
+              <div formArrayName="collegeProject">
+                <div
+                  *ngFor="
+                    let collegeProject of collegeProjectControls.controls;
+                    let i = index
+                  "
+                  [formGroupName]="i"
+                  class="college-project-box"
                 >
-                  Remove Project
-                </button>
-              </div>
-            </div>
+                  <div class="grid">
+                    <!-- Project Name -->
+                    <div class="col-12 md:col-6">
+                      <div class="field-wrapper">
+                        <label>Project Name</label>
+                        <div class="input-wrapper">
+                          <input
+                            type="text"
+                            pInputText
+                            formControlName="collegeProjectName"
+                          />
+                        </div>
+                      </div>
+                    </div>
 
-            <hr class="sub-section-divider" />
-          </div>
-          <div class="col-12 md:col-6 lg:col-3">
-            <button
-              type="button"
-              class="custom-btn"
-              (click)="addCollegeProject()"
-            >
-              + Add Project
-            </button>
-          </div>
-        </div>
-      </ng-container>
+                    <!-- Project Skills -->
+                    <div class="col-12 md:col-6">
+                      <div class="field-wrapper">
+                        <label>Project Skills</label>
+                        <div class="input-wrapper">
+                          <tag-input
+                            formControlName="collegeProjectSkills"
+                            [separatorKeyCodes]="[13, 188]"
+                            [theme]="'modern'"
+                            placeholder="Type and press Enter or Comma"
+                          >
+                          </tag-input>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Project Description -->
+                    <div class="col-12">
+                      <div class="field-wrapper">
+                        <label>Project Description</label>
+                        <div class="input-wrapper">
+                          <textarea
+                            rows="2"
+                            type="text"
+                            pInputText
+                            formControlName="collegeProjectDescription"
+                          ></textarea>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Remove Project -->
+                    <div class="col-12 md:col-6 lg:col-3" *ngIf="i >= 0">
+                      <button
+                        type="button"
+                        class="remove-btn"
+                        (click)="removeCollegeProject(i)"
+                      >
+                        Remove Project
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Add Project Button -->
+                <div class="col-12 md:col-6 lg:col-3 mt-3">
+                  <button
+                    type="button"
+                    class="custom-btn"
+                    (click)="addCollegeProject()"
+                  >
+                    + Add Project
+                  </button>
+                </div>
+              </div>
+            </ng-container>
 
       <app-make-profile-divider></app-make-profile-divider>
       <div class="section-heading mt-3">
         <div>Qualification Details</div>
       </div>
 
-      <div formArrayName="qualification" class="border-line" id="qualification">
+        <div formArrayName="qualification">
         <div
           *ngFor="
             let qualifications of qualificationControls.controls;
             let i = index
           "
           [formGroupName]="i"
-          class="experience-container"
+          class="qualification-box"
         >
           <div class="grid">
+            <!-- Institution Name -->
             <div class="col-12 md:col-6 lg:col-3">
               <div class="field-wrapper">
-                <label>College/School/Institute Name</label>
+                <label>Institution Name</label>
                 <div class="input-wrapper">
                   <input
                     type="text"
@@ -617,6 +621,7 @@
               </div>
             </div>
 
+            <!-- Qualification -->
             <div class="col-12 md:col-6 lg:col-3">
               <div class="field-wrapper">
                 <label>Qualification</label>
@@ -628,12 +633,14 @@
                     placeholder="Select Qualification"
                     formControlName="department"
                     [filter]="true"
+                    styleClass="narrow-dropdown"
                   >
                   </p-dropdown>
                 </div>
               </div>
             </div>
 
+            <!-- Department -->
             <div class="col-12 md:col-6 lg:col-3">
               <div class="field-wrapper">
                 <label>Department</label>
@@ -647,6 +654,7 @@
               </div>
             </div>
 
+            <!-- Start Year -->
             <div class="col-12 md:col-6 lg:col-3">
               <div class="field-wrapper">
                 <label>Start Year</label>
@@ -659,9 +667,10 @@
               </div>
             </div>
 
+            <!-- End Year -->
             <div class="col-12 md:col-6 lg:col-3">
               <div class="field-wrapper">
-                <label>End year</label>
+                <label>End Year</label>
                 <div class="input-wrapper">
                   <p-calendar
                     formControlName="qualificationEndYear"
@@ -671,12 +680,13 @@
               </div>
             </div>
 
+            <!-- Percentage -->
             <div class="col-12 md:col-6 lg:col-3">
               <div class="field-wrapper">
                 <label>Percentage</label>
                 <div class="input-wrapper">
                   <input
-                    placeholder="Ex:88.8"
+                    placeholder="Ex: 88.8"
                     pKeyFilter="num"
                     [maxLength]="4"
                     type="number"
@@ -690,13 +700,8 @@
             </div>
           </div>
 
-          <hr class="sub-section-divider" />
-
-          <div
-            class="col-12 md:col-6 lg:col-3"
-            style="padding-left: 15px"
-            *ngIf="i >= 0"
-          >
+          <!-- Remove Qualification -->
+          <div class="col-12 md:col-6 lg:col-3 mt-2">
             <button
               type="button"
               class="remove-btn"
@@ -704,16 +709,14 @@
             >
               Remove Qualification
             </button>
-
-            <!-- <p-button type="button" label="Remove Qualification" styleClass="p-buttonFailure" (click)="removeQualification(i)"></p-button> -->
           </div>
         </div>
-        <div class="col-12 md:col-6 lg:col-3">
-          <button type="button" class="custom-btn" (click)="addQualication()">
-            + Add Qualifications
-          </button>
 
-          <!-- <p-button type="button" label="+ Add Qualifications" (click)="addQualication()"></p-button> -->
+        <!-- Add Qualification -->
+        <div class="col-12 md:col-6 lg:col-3 mt-3">
+          <button type="button" class="custom-btn" (click)="addQualication()">
+            + Add Qualification
+          </button>
         </div>
       </div>
 
@@ -738,16 +741,17 @@
         </div> -->
       </div>
 
-      <div formArrayName="certificates" class="border-line" id="course">
+          <div formArrayName="certificates">
         <div
           *ngFor="
             let certificate of certificateControls.controls;
             let i = index
           "
           [formGroupName]="i"
-          class="experience-container"
+          class="certificate-box"
         >
           <div class="grid">
+            <!-- Course Name -->
             <div class="col-12 md:col-6 lg:col-3">
               <div class="field-wrapper">
                 <label>Course Name</label>
@@ -757,6 +761,7 @@
               </div>
             </div>
 
+            <!-- Course Start Year -->
             <div class="col-12 md:col-6 lg:col-3">
               <div class="field-wrapper">
                 <label>Course Start Year</label>
@@ -769,26 +774,22 @@
               </div>
             </div>
 
+            <!-- Course End Year -->
             <div class="col-12 md:col-6 lg:col-3">
               <div class="field-wrapper">
-                <label>Course End year</label>
+                <label>Course End Year</label>
                 <div class="input-wrapper">
                   <p-calendar
                     formControlName="courseEndDate"
-                    placeholder="Select From Date"
+                    placeholder="Select To Date"
                   ></p-calendar>
                 </div>
               </div>
             </div>
           </div>
 
-          <hr class="sub-section-divider" />
-
-          <div
-            class="col-12 md:col-6 lg:col-3"
-            style="padding-left: 15px"
-            *ngIf="i >= 0"
-          >
+          <!-- Remove Button -->
+          <div class="col-12 md:col-6 lg:col-3 mt-2">
             <button
               type="button"
               class="remove-btn"
@@ -798,9 +799,11 @@
             </button>
           </div>
         </div>
-        <div class="col-12 md:col-6 lg:col-3">
+
+        <!-- Add Certificate -->
+        <div class="col-12 md:col-6 lg:col-3 mt-3">
           <button type="button" class="custom-btn" (click)="addCertificates()">
-            + Add Couse
+            + Add Course
           </button>
         </div>
       </div>
@@ -810,19 +813,20 @@
         <Span>Achievements & Awards</Span>
       </div>
 
-      <div formArrayName="achievements" class="border-line" id="achievements">
+      <div formArrayName="achievements">
         <div
           *ngFor="
-            let certificate of achievementsControls.controls;
+            let achievement of achievementsControls.controls;
             let i = index
           "
           [formGroupName]="i"
-          class="experience-container"
+          class="achievement-box"
         >
           <div class="grid">
+            <!-- Award Name -->
             <div class="col-12 md:col-6 lg:col-3">
               <div class="field-wrapper">
-                <label>Awards Name</label>
+                <label>Award Name</label>
                 <div class="input-wrapper">
                   <input
                     type="text"
@@ -833,6 +837,7 @@
               </div>
             </div>
 
+            <!-- Awarded Year -->
             <div class="col-12 md:col-6 lg:col-3">
               <div class="field-wrapper">
                 <label>Awarded Year</label>
@@ -846,26 +851,22 @@
             </div>
           </div>
 
-          <hr class="sub-section-divider" />
-
-          <div
-            class="col-12 md:col-6 lg:col-3"
-            style="padding-left: 15px"
-            *ngIf="i >= 0"
-          >
+          <!-- Remove Button -->
+          <div class="col-12 md:col-6 lg:col-3 mt-2">
             <button
               type="button"
               class="remove-btn"
-              icon="pi pi-trash"
               (click)="removeaddAchievements(i)"
             >
-              Remove Achievements
+              Remove Achievement
             </button>
           </div>
         </div>
-        <div class="col-12 md:col-6 lg:col-3">
+
+        <!-- Add Button -->
+        <div class="col-12 md:col-6 lg:col-3 mt-3">
           <button type="button" class="custom-btn" (click)="addAchievements()">
-            + Add Achievements
+            + Add Achievement
           </button>
         </div>
       </div>
@@ -882,21 +883,7 @@
             "
           >
             <Span>Soft Skills</Span>
-            <!-- <div
-              style="
-                color: #040404;
-                font-weight: bold;
-                background-color: rgb(235, 235, 235);
-                border-radius: 50px;
-                padding: 5px 5px;
-              "
-            >
-              <p-checkbox
-                [binary]="true"
-                formControlName="softSkillsMandatory"
-                label="Is Mandatory"
-              ></p-checkbox>
-            </div> -->
+          
           </div>
           <div class="input-wrapper">
             <p-chips
@@ -919,21 +906,7 @@
             "
           >
             <Span>Core Competencies</Span>
-            <!-- <div
-              style="
-                color: #313133;
-                font-weight: bold;
-                background-color: rgb(235, 235, 235);
-                border-radius: 50px;
-                padding: 5px 5px;
-              "
-            >
-              <p-checkbox
-                [binary]="true"
-                formControlName="coreCompentenciesMandatory"
-                label="Is Mandatory"
-              ></p-checkbox>
-            </div> -->
+     
           </div>
           <div class="input-wrapper">
             <p-chips

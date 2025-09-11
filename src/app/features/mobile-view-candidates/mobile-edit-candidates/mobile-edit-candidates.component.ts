@@ -1,7 +1,13 @@
 import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormArray,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
- import {
+import {
   DialogService,
   DynamicDialogConfig,
   DynamicDialogRef,
@@ -69,7 +75,7 @@ export class MobileEditCandidatesComponent {
   candidatesUpdateData: any;
   resumeName: any;
   nickName: any;
-  isUploading:boolean=false;
+  isUploading: boolean = false;
 
   constructor(
     private api: ApiService,
@@ -85,7 +91,6 @@ export class MobileEditCandidatesComponent {
     private ps: PaymentService,
     private loader: MobileLoaderService
   ) {
-    
     this.gs.candidateDetails$.subscribe((response) => {
       if (response !== null) {
         this.candidates = response;
@@ -103,7 +108,6 @@ export class MobileEditCandidatesComponent {
         this.candidateImageUrl = response;
       }
     });
-
   }
 
   ngOnInit() {
@@ -120,53 +124,73 @@ export class MobileEditCandidatesComponent {
 
       const candidateClone = JSON.parse(JSON.stringify(this.candidates));
       this.patchCandidateForm(candidateClone);
-
     } else {
       this.getCandidates();
     }
-
   }
 
   ngAfterViewInit() {
-    if (this.candidateImageUrl === null && this.candidateImageUrl === undefined) {
-    this.getCandidateImage(this.candidateId);
+    if (
+      this.candidateImageUrl === null &&
+      this.candidateImageUrl === undefined
+    ) {
+      this.getCandidateImage(this.candidateId);
     }
   }
 
   createCandidateForm() {
-    this.candidateForm = this.fb.group({
-      id: [''],
-      name: ['', Validators.required],
-      mobileNumber: [
-        '',
-        Validators.compose([Validators.required, Validators.minLength(10)]),
-      ],
-      email: ['', Validators.compose([Validators.required, Validators.email])],
-      gender: ['', Validators.required],
-      nationality: [''],
-      languagesKnown: [[]],
-      fresher: [''],
-      skills: ['', Validators.required],
-      linkedIn: [''],
-      dob: [''],
-      address: [''],
-      maritalStatus: [''],
-      experiences: this.fb.array([]),
-      qualification: this.fb.array([]),
-      certificates: this.fb.array([]),
-      achievements: this.fb.array([]),
-      softSkills: [''],
-      coreCompentencies: [''],
-      collegeProject: this.fb.array([]),
-      summary: [''],
-      careerObjective: [''],
-      coreCompentenciesMandatory: [''],
-      softSkillsMandatory: [''],
-      achievementsMandatory: [''],
-      certificatesMandatory: [''],
-      fatherName:[''],
-      hobbies:['']
-    });
+    this.candidateForm = this.fb.group(
+      {
+        id: [''],
+        name: ['', Validators.required],
+        mobileNumber: [
+          '',
+          Validators.compose([Validators.required, Validators.minLength(10)]),
+        ],
+        email: [
+          '',
+          Validators.compose([Validators.required, Validators.email]),
+        ],
+        gender: ['', Validators.required],
+        nationality: [''],
+        languagesKnown: [[]],
+        fresher: [''],
+        skills: ['', Validators.required],
+        linkedIn: [''],
+        dob: [''],
+        address: [''],
+        maritalStatus: [''],
+        experiences: this.fb.array([]),
+        qualification: this.fb.array([]),
+        certificates: this.fb.array([]),
+        achievements: this.fb.array([]),
+        softSkills: [''],
+        coreCompentencies: [''],
+        collegeProject: this.fb.array([]),
+        summary: [''],
+        careerObjective: [''],
+        coreCompentenciesMandatory: [''],
+        softSkillsMandatory: [''],
+        achievementsMandatory: [''],
+        certificatesMandatory: [''],
+        fatherName: [''],
+        hobbies: [''],
+      },
+      { validators: [this.fresherOrExperienceValidator()] }
+    );
+  }
+
+  fresherOrExperienceValidator() {
+    return (formGroup: AbstractControl): { [key: string]: any } | null => {
+      const fresher = formGroup.get('fresher')?.value;
+      const experiences = formGroup.get('experiences') as FormArray;
+
+      if (!fresher && experiences.length === 0) {
+        return { fresherOrExperienceRequired: true };
+      }
+
+      return null;
+    };
   }
 
   getGenderList() {
@@ -207,7 +231,7 @@ export class MobileEditCandidatesComponent {
   }
 
   generatingResume() {
-    this.isUploading =true;
+    this.isUploading = true;
     if (this.candidateForm.valid) {
       this.dataLoaded = false;
 
@@ -335,14 +359,13 @@ export class MobileEditCandidatesComponent {
         });
       }
 
-       if (Object.is(payload.hobbies, '')) {
+      if (Object.is(payload.hobbies, '')) {
         payload.hobbies = '';
       } else {
         const hobbiesList: string[] = payload.hobbies;
         const commaSeparatedString: string = hobbiesList.join(', ');
         payload.hobbies = commaSeparatedString;
       }
-
 
       if (
         payload.languagesKnown.length === 0 ||
@@ -444,8 +467,7 @@ export class MobileEditCandidatesComponent {
           }
           response.candidateLogo = this.candidateImageUrl;
 
- 
-          this.isUploading =false;
+          this.isUploading = false;
 
           if (this.templateName !== null && this.templateName !== undefined) {
             this.gs.setResumeName(this.templateName);
@@ -461,7 +483,7 @@ export class MobileEditCandidatesComponent {
           }
         },
         error: (error) => {
-          this.isUploading =false;
+          this.isUploading = false;
           this.dataLoaded = true;
           window.alert('Error in Updating please try again');
           console.log(error);
@@ -469,7 +491,7 @@ export class MobileEditCandidatesComponent {
       });
       this.dataLoaded = true;
     } else {
-       this.isUploading =false;
+      this.isUploading = false;
       this.showError = true;
       window.alert('Enter the mandatory details');
     }
@@ -502,7 +524,7 @@ export class MobileEditCandidatesComponent {
     return this.fb.group({
       id: [''],
       projectName: [''],
-      projectSkills: [[]],
+      projectSkills: [''],
       projectRole: [''],
       projectDescription: [''],
     });
@@ -762,14 +784,11 @@ export class MobileEditCandidatesComponent {
           .map((skill: string) => skill.trim())
       : [];
 
-       candidate.hobbies = candidate?.hobbies
-      ? candidate.hobbies
-          .split(',')
-          .map((skill: string) => skill.trim())
+    candidate.hobbies = candidate?.hobbies
+      ? candidate.hobbies.split(',').map((skill: string) => skill.trim())
       : [];
 
-
-    if (candidate.certificates?.length > 0) {
+    if (candidate.certificates?.some((c) => c && c.courseName?.trim())) {
       const certificateFormArray = this.candidateForm.get(
         'certificates'
       ) as FormArray;
@@ -780,23 +799,12 @@ export class MobileEditCandidatesComponent {
       });
     }
 
-    if (candidate.qualification?.length > 0) {
-      const qualificationFormArray = this.candidateForm.get(
-        'qualification'
-      ) as FormArray;
-      qualificationFormArray.clear();
-
-      candidate.qualification?.forEach((qualification) => {
-        qualificationFormArray.push(
-          this.createQualificationFormGroup(qualification)
-        );
-      });
-    }
-
-    if (candidate.experiences?.length > 0) {
+    if (candidate.experiences?.some((e) => e && e.companyName.trim())) {
       this.patchExperiences(candidate.experiences);
     } else {
-      if (candidate.collegeProject?.length > 0) {
+      if (
+        candidate?.collegeProject.some((c) => c && c.collegeProjectName.trim())
+      ) {
         const collegeProjectFromArray = this.candidateForm.get(
           'collegeProject'
         ) as FormArray;
@@ -810,7 +818,24 @@ export class MobileEditCandidatesComponent {
       }
     }
 
-    if (candidate.achievements?.length > 0) {
+    if (
+      candidate.qualification?.some(
+        (q) => q && (q.institutionName?.trim() || q.fieldOfStudy?.trim())
+      )
+    ) {
+      const qualificationFormArray = this.candidateForm.get(
+        'qualification'
+      ) as FormArray;
+      qualificationFormArray.clear();
+
+      candidate.qualification?.forEach((qualification) => {
+        qualificationFormArray.push(
+          this.createQualificationFormGroup(qualification)
+        );
+      });
+    }
+
+    if (candidate.achievements?.some((a) => a && a.achievementsName.trim())) {
       const achievementFormArray = this.candidateForm.get(
         'achievements'
       ) as FormArray;
@@ -849,8 +874,8 @@ export class MobileEditCandidatesComponent {
       certificatesMandatory: candidate?.certificatesMandatory,
       achievementsMandatory: candidate?.achievementsMandatory,
       careerObjective: candidate?.careerObjective,
-       hobbies: candidate?.hobbies ? candidate?.hobbies : [],
-      fatherName:candidate?.fatherName,
+      hobbies: candidate?.hobbies ? candidate?.hobbies : [],
+      fatherName: candidate?.fatherName,
     });
   }
 
@@ -899,11 +924,16 @@ export class MobileEditCandidatesComponent {
           const projectFormArray = experienceForm.get('projects') as FormArray;
           projectFormArray.clear();
           experience.projects?.forEach((project: any) => {
+            const projectSkills = project.projectSkills
+              ? project.projectSkills
+                  .split(',')
+                  .map((res: string) => res.trim())
+              : [];
             const projectForm = this.createProject();
             projectForm.patchValue({
               id: project.id,
               projectName: project.projectName,
-              projectSkills: project.projectSkills,
+              projectSkills: projectSkills,
               projectRole: project.projectRole,
               projectDescription: project.projectDescription,
             });
@@ -1078,9 +1108,9 @@ export class MobileEditCandidatesComponent {
     this.router.navigate(['mob-candidate']);
   }
 
-   getNationalityList() {
+  getNationalityList() {
     const route = 'value-sets/search-by-code';
-     const postData = { valueSetCode: 'NATIONALITY' };
+    const postData = { valueSetCode: 'NATIONALITY' };
     this.api.retrieve(route, postData).subscribe({
       next: (response) => {
         this.nationalityList = response;

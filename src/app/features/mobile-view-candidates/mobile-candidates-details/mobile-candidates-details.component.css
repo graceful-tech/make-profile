@@ -71,6 +71,8 @@ img {
   border-radius: 8px;
   cursor: pointer;
   margin-right: 15px;
+  font-style: italic;
+  font-weight: bold;
 }
 
 .remove-btn:hover {
@@ -394,11 +396,12 @@ img {
     color: white;
     border: none;
     padding: 6px 10px;
-    font-size: 11px;
+    font-size: 12px;
     border-radius: 8px;
     cursor: pointer;
     /* margin-right: 15px; */
     font-style: italic;
+    font-weight: bold;
   }
 
   .header-middle {
@@ -559,7 +562,7 @@ ngx-ui-loader .ngx-ui-loader__fg {
 
 .profile-wrapper {
   margin-top: 50px;
-  padding:1.2rem 0.5rem 1.5rem 0.5rem;
+  padding: 1.2rem 0.5rem 1.5rem 0.5rem;
 }
 
 .account-wrapper {
@@ -1100,14 +1103,14 @@ footer {
 }
 
 .refer-credit {
-   border-radius: 8px;
+  border-radius: 8px;
   color: #7e7d7d;
   margin-left: 10px;
   width: 3%;
 }
 
- 
- html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   width: 100%;
@@ -1116,18 +1119,16 @@ footer {
   font-size: 14px;
   color: #111;
   background: #fff;
-  -webkit-text-size-adjust: 100%;  
+  -webkit-text-size-adjust: 100%;
 }
 
- 
-
- .resume-table,
+.resume-table,
 .jobs-table {
   width: 100%;
   border-collapse: collapse;
   font-size: 14px;
   overflow-x: auto;
-  display: block;  
+  display: block;
 }
 
 .resume-table th,
@@ -1146,7 +1147,7 @@ footer {
   font-weight: bold;
 }
 
- .upload-container {
+.upload-container {
   margin: 12px 0;
 }
 
@@ -1157,7 +1158,6 @@ footer {
   font-size: 14px;
 }
 
- 
 button {
   background: #007bff;
   color: #fff;
@@ -1173,7 +1173,9 @@ button:disabled {
   cursor: not-allowed;
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   font-size: 1.2rem;
   margin: 10px 0;
 }
@@ -1183,32 +1185,60 @@ p {
   line-height: 1.4;
 }
 
- @media screen and (max-width: 768px) {
+@media screen and (max-width: 768px) {
   body {
     font-size: 13px;
   }
 
-  .resume-table td, .resume-table th,
-  .jobs-table td, .jobs-table th {
+  .resume-table td,
+  .resume-table th,
+  .jobs-table td,
+  .jobs-table th {
     padding: 6px;
     font-size: 12px;
   }
- 
 }
 
 .action-buttons {
-  display: flex;   
-  gap: 10px;     
+  display: flex;
+  gap: 10px;
   flex-direction: column;
 }
 
-.edit-nick{
-    background-color: #366fe0;
-    color: white;
-    border: none;
-    padding: 4px 5px;
-    font-size: 11px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-style: italic;
+.edit-nick {
+  background-color: #366fe0;
+  color: white;
+  border: none;
+  padding: 4px 5px;
+  font-size: 11px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-style: italic;
+}
+
+.experience-box {
+  border: 2px solid #007ad9;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 25px;
+  background-color: #f9fbff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.project-box {
+  border: 1px dashed #666;
+  border-radius: 6px;
+  padding: 15px;
+  margin-top: 15px;
+  background-color: #fff;
+}
+
+ 
+.achievement-box {
+  border: 2px solid #ff9800;    
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+  background-color: #fff8e1;    
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
 }

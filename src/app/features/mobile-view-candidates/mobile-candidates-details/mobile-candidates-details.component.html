@@ -357,23 +357,14 @@
               <div class="col-12 md:col-6 lg:col-3">
                 <div class="field-wrapper">
                   <div class="input-wrapper">
-                    <p-chips
-                      separator=","
+                    <tag-input
                       formControlName="skills"
-                      [addOnBlur]="true"
-                      [addOnTab]="true"
-                      inputId="chipInput"
-                      placeholder="Skills Are Separated By Comma"
-                    ></p-chips>
-                    <div style="display: flex; align-items: left">
-                      <button
-                        type="button"
-                        class="addButton"
-                        (click)="addSkill('skills', 'chipInput')"
-                      >
-                        Add Skills
-                      </button>
-                    </div>
+                      [separatorKeyCodes]="[13, 188]"
+                      [theme]="'modern'"
+                      placeholder="Type skills press Enter or Comma"
+                    >
+                    </tag-input>
+                    <div style="display: flex; align-items: left"></div>
                   </div>
                 </div>
               </div>
@@ -799,7 +790,7 @@
                       optionValue="dataValue"
                       placeholder="Select Nationality"
                       formControlName="nationality"
-                       [filter]="true"
+                      [filter]="true"
                     >
                     </p-dropdown>
                   </div>
@@ -810,19 +801,13 @@
                 <div class="field-wrapper">
                   <label>Hobbies</label>
                   <div class="input-wrapper">
-                    <p-chips
-                      separator=","
+                    <tag-input
                       formControlName="hobbies"
-                      [addOnBlur]="true"
-                      [addOnTab]="true"
-                      inputId="chipInput"
-                    ></p-chips>
-
-                    <p-button
-                      type="button"
-                      (onClick)="addSkill('hoppies', 'chipInput')"
-                      >Add</p-button
+                      [separatorKeyCodes]="[13, 188]"
+                      [theme]="'modern'"
+                      placeholder="Type and press Enter or Comma"
                     >
+                    </tag-input>
                   </div>
                 </div>
               </div>
@@ -849,19 +834,13 @@
                     >Skills</label
                   >
                   <div class="input-wrapper">
-                    <p-chips
-                      separator=","
+                    <tag-input
                       formControlName="skills"
-                      [addOnBlur]="true"
-                      [addOnTab]="true"
-                      inputId="chipInput"
-                    ></p-chips>
-
-                    <p-button
-                      type="button"
-                      (onClick)="addSkill('skills', 'chipInput')"
-                      >Add</p-button
+                      [separatorKeyCodes]="[13, 188]"
+                      [theme]="'modern'"
+                      placeholder="Type and press Enter or Comma"
                     >
+                    </tag-input>
                   </div>
                 </div>
                 <small
@@ -904,7 +883,7 @@
                     let i = index
                   "
                   [formGroupName]="i"
-                  class="experience-container"
+                  class="experience-box"
                 >
                   <!-- Experience Details -->
                   <div class="grid">
@@ -955,7 +934,7 @@
                             [disabled]="
                               experience.get('currentlyWorking')?.value
                             "
-                            placeholder="Select From Date"
+                            placeholder="Select To Date"
                           ></p-calendar>
                         </div>
                       </div>
@@ -965,7 +944,12 @@
                       <div class="col-12 md:col-6 lg:col-3">
                         <div
                           class="fresher-checkbox pb-3"
-                          style="display: flex; align-items: center; gap: 5px; margin-left: 15px;"
+                          style="
+                            display: flex;
+                            align-items: center;
+                            gap: 5px;
+                            margin-left: 15px;
+                          "
                         >
                           <p-checkbox
                             [binary]="true"
@@ -981,41 +965,19 @@
                       </div>
                     </div>
 
-                 
-
                     <div class="col-12 md:col-6">
                       <div class="field-wrapper">
                         <label>Responsibilities</label>
                         <div class="input-wrapper">
-                          <p-chips
-                            separator=","
+                          <tag-input
                             formControlName="responsibilities"
-                            [addOnBlur]="true"
-                            [addOnTab]="true"
-                            inputId="responsibilityInput"
-                          ></p-chips>
-                          <p-button
-                            type="button"
-                            (onClick)="
-                              addSkill(
-                                'responsibilities',
-                                'responsibilityInput'
-                              )
-                            "
-                            >Add</p-button
+                            [separatorKeyCodes]="[13, 188]"
+                            [theme]="'modern'"
+                            placeholder="Type and press Enter or Comma"
                           >
+                          </tag-input>
                         </div>
                       </div>
-                    </div>
-
-                    <div class="col-12 md:col-6 lg:col-3" *ngIf="i >= 0">
-                      <button
-                        type="button"
-                        class="remove-btn"
-                        (click)="removeExperience(i)"
-                      >
-                        Remove Experience
-                      </button>
                     </div>
                   </div>
 
@@ -1031,7 +993,7 @@
                         let j = index
                       "
                       [formGroupName]="j"
-                      class="project-container"
+                      class="project-box"
                     >
                       <div class="grid">
                         <div class="col-12 md:col-6 lg:col-3">
@@ -1064,20 +1026,13 @@
                           <div class="field-wrapper">
                             <label>Project Skills</label>
                             <div class="input-wrapper">
-                              <p-chips
-                                separator=","
+                              <tag-input
                                 formControlName="projectSkills"
-                                [addOnBlur]="true"
-                                [addOnTab]="true"
-                                inputId="projectInput"
-                              ></p-chips>
-                              <p-button
-                                type="button"
-                                (onClick)="
-                                  addSkill('projectSkills', 'projectInput')
-                                "
-                                >Add</p-button
+                                [separatorKeyCodes]="[13, 188]"
+                                [theme]="'modern'"
+                                placeholder="Type and press Enter or Comma"
                               >
+                              </tag-input>
                             </div>
                           </div>
                         </div>
@@ -1106,11 +1061,11 @@
                           </button>
                         </div>
                       </div>
-
-                      <hr class="sub-section-divider" />
                     </div>
                   </div>
-                  <div class="col-12 md:col-6 lg:col-3">
+
+                  <!-- Buttons for Experience -->
+                  <div class="col-12 md:col-6 lg:col-3 mt-3">
                     <button
                       type="button"
                       class="custom-btn"
@@ -1119,8 +1074,20 @@
                       + Add Project
                     </button>
                   </div>
+
+                  <div class="col-12 md:col-6 lg:col-3 mt-3">
+                    <button
+                      type="button"
+                      class="remove-btn"
+                      (click)="removeExperience(i)"
+                    >
+                      Remove Experience
+                    </button>
+                  </div>
                 </div>
-                <div class="col-12 md:col-6 lg:col-3 mt-2">
+
+                <!-- Add Experience -->
+                <div class="col-12 md:col-6 lg:col-3 mt-4">
                   <button
                     type="button"
                     class="custom-btn"
@@ -1147,9 +1114,10 @@
                     let i = index
                   "
                   [formGroupName]="i"
-                  class="experience-container"
+                  class="college-project-box"
                 >
                   <div class="grid">
+                    <!-- Project Name -->
                     <div class="col-12 md:col-6">
                       <div class="field-wrapper">
                         <label>Project Name</label>
@@ -1163,31 +1131,23 @@
                       </div>
                     </div>
 
+                    <!-- Project Skills -->
                     <div class="col-12 md:col-6">
                       <div class="field-wrapper">
                         <label>Project Skills</label>
                         <div class="input-wrapper">
-                          <p-chips
-                            separator=","
+                          <tag-input
                             formControlName="collegeProjectSkills"
-                            [addOnBlur]="true"
-                            [addOnTab]="true"
-                            inputId="collegeProjectInput"
-                          ></p-chips>
-                          <p-button
-                            type="button"
-                            (onClick)="
-                              addSkill(
-                                'collegeProjectSkills',
-                                'collegeProjectInput'
-                              )
-                            "
-                            >Add</p-button
+                            [separatorKeyCodes]="[13, 188]"
+                            [theme]="'modern'"
+                            placeholder="Type and press Enter or Comma"
                           >
+                          </tag-input>
                         </div>
                       </div>
                     </div>
 
+                    <!-- Project Description -->
                     <div class="col-12">
                       <div class="field-wrapper">
                         <label>Project Description</label>
@@ -1202,6 +1162,7 @@
                       </div>
                     </div>
 
+                    <!-- Remove Project -->
                     <div class="col-12 md:col-6 lg:col-3" *ngIf="i >= 0">
                       <button
                         type="button"
@@ -1213,7 +1174,9 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-12 md:col-6 lg:col-3">
+
+                <!-- Add Project Button -->
+                <div class="col-12 md:col-6 lg:col-3 mt-3">
                   <button
                     type="button"
                     class="custom-btn"
@@ -1237,10 +1200,10 @@
                   let i = index
                 "
                 [formGroupName]="i"
-                class="experience-container"
+                class="qualification-box"
               >
-                <hr />
                 <div class="grid">
+                  <!-- Institution Name -->
                   <div class="col-12 md:col-6 lg:col-3">
                     <div class="field-wrapper">
                       <label>Institution Name</label>
@@ -1254,6 +1217,7 @@
                     </div>
                   </div>
 
+                  <!-- Qualification -->
                   <div class="col-12 md:col-6 lg:col-3">
                     <div class="field-wrapper">
                       <label>Qualification</label>
@@ -1272,9 +1236,10 @@
                     </div>
                   </div>
 
+                  <!-- Department -->
                   <div class="col-12 md:col-6 lg:col-3">
                     <div class="field-wrapper">
-                      <label>Area of Study</label>
+                      <label>Department</label>
                       <div class="input-wrapper">
                         <input
                           type="text"
@@ -1285,6 +1250,7 @@
                     </div>
                   </div>
 
+                  <!-- Start Year -->
                   <div class="col-12 md:col-6 lg:col-3">
                     <div class="field-wrapper">
                       <label>Start Year</label>
@@ -1297,9 +1263,10 @@
                     </div>
                   </div>
 
+                  <!-- End Year -->
                   <div class="col-12 md:col-6 lg:col-3">
                     <div class="field-wrapper">
-                      <label>End year</label>
+                      <label>End Year</label>
                       <div class="input-wrapper">
                         <p-calendar
                           formControlName="qualificationEndYear"
@@ -1309,12 +1276,13 @@
                     </div>
                   </div>
 
+                  <!-- Percentage -->
                   <div class="col-12 md:col-6 lg:col-3">
                     <div class="field-wrapper">
                       <label>Percentage</label>
                       <div class="input-wrapper">
                         <input
-                          placeholder="Ex:88.8"
+                          placeholder="Ex: 88.8"
                           pKeyFilter="num"
                           [maxLength]="4"
                           type="number"
@@ -1327,11 +1295,9 @@
                     </div>
                   </div>
                 </div>
-                <div
-                  class="col-12 md:col-6 lg:col-3"
-                  style="padding-left: 15px"
-                  *ngIf="i >= 0"
-                >
+
+                <!-- Remove Qualification -->
+                <div class="col-12 md:col-6 lg:col-3 mt-2">
                   <button
                     type="button"
                     class="remove-btn"
@@ -1339,20 +1305,18 @@
                   >
                     Remove Qualification
                   </button>
-
-                  <!-- <p-button type="button" label="Remove Qualification" styleClass="p-buttonFailure" (click)="removeQualification(i)"></p-button> -->
                 </div>
               </div>
-              <div class="col-12 md:col-6 lg:col-3">
+
+              <!-- Add Qualification -->
+              <div class="col-12 md:col-6 lg:col-3 mt-3">
                 <button
                   type="button"
                   class="custom-btn"
                   (click)="addQualication()"
                 >
-                  + Add Qualifications
+                  + Add Qualification
                 </button>
-
-                <!-- <p-button type="button" label="+ Add Qualifications" (click)="addQualication()"></p-button> -->
               </div>
             </div>
 
@@ -1368,9 +1332,10 @@
                   let i = index
                 "
                 [formGroupName]="i"
-                class="experience-container"
+                class="certificate-box"
               >
                 <div class="grid">
+                  <!-- Course Name -->
                   <div class="col-12 md:col-6 lg:col-3">
                     <div class="field-wrapper">
                       <label>Course Name</label>
@@ -1384,6 +1349,7 @@
                     </div>
                   </div>
 
+                  <!-- Course Start Year -->
                   <div class="col-12 md:col-6 lg:col-3">
                     <div class="field-wrapper">
                       <label>Course Start Year</label>
@@ -1396,23 +1362,22 @@
                     </div>
                   </div>
 
+                  <!-- Course End Year -->
                   <div class="col-12 md:col-6 lg:col-3">
                     <div class="field-wrapper">
-                      <label>Course End year</label>
+                      <label>Course End Year</label>
                       <div class="input-wrapper">
                         <p-calendar
                           formControlName="courseEndDate"
-                          placeholder="Select From Date"
+                          placeholder="Select To Date"
                         ></p-calendar>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div
-                  class="col-12 md:col-6 lg:col-3"
-                  style="padding-left: 15px"
-                  *ngIf="i >= 0"
-                >
+
+                <!-- Remove Button -->
+                <div class="col-12 md:col-6 lg:col-3 mt-2">
                   <button
                     type="button"
                     class="remove-btn"
@@ -1420,18 +1385,17 @@
                   >
                     Remove Course
                   </button>
-
-                  <!-- <p-button type="button" label="Remove Course" styleClass="p-buttonFailure" (click)="removeCertificates(i)"></p-button> -->
                 </div>
               </div>
-              <div class="col-12 md:col-6 lg:col-3">
-                <!-- <p-button type="button" label="+ Add Couse" (click)="addCertificates()"></p-button> -->
+
+              <!-- Add Certificate -->
+              <div class="col-12 md:col-6 lg:col-3 mt-3">
                 <button
                   type="button"
                   class="custom-btn"
                   (click)="addCertificates()"
                 >
-                  + Add Couse
+                  + Add Course
                 </button>
               </div>
             </div>
@@ -1444,16 +1408,17 @@
             <div formArrayName="achievements">
               <div
                 *ngFor="
-                  let certificate of achievementsControls.controls;
+                  let achievement of achievementsControls.controls;
                   let i = index
                 "
                 [formGroupName]="i"
-                class="experience-container"
+                class="achievement-box"
               >
                 <div class="grid">
+                  <!-- Award Name -->
                   <div class="col-12 md:col-6 lg:col-3">
                     <div class="field-wrapper">
-                      <label>Awards Name</label>
+                      <label>Award Name</label>
                       <div class="input-wrapper">
                         <input
                           type="text"
@@ -1464,6 +1429,7 @@
                     </div>
                   </div>
 
+                  <!-- Awarded Year -->
                   <div class="col-12 md:col-6 lg:col-3">
                     <div class="field-wrapper">
                       <label>Awarded Year</label>
@@ -1476,30 +1442,27 @@
                     </div>
                   </div>
                 </div>
-                <div
-                  class="col-12 md:col-6 lg:col-3"
-                  style="padding-left: 15px"
-                  *ngIf="i >= 0"
-                >
+
+                <!-- Remove Button -->
+                <div class="col-12 md:col-6 lg:col-3 mt-2">
                   <button
                     type="button"
                     class="remove-btn"
-                    icon="pi pi-trash"
                     (click)="removeaddAchievements(i)"
                   >
-                    Remove Achievements
+                    Remove Achievement
                   </button>
-                  <!-- <p-button type="button" label="Remove Achievements" styleClass="p-buttonFailure" (click)="removeaddAchievements(i)"></p-button> -->
                 </div>
               </div>
-              <div class="col-12 md:col-6 lg:col-3">
-                <!-- <p-button type="button" styleClass="p-resumeButton" label="+ Add Achievements" (click)="addAchievements()"></p-button> -->
+
+              <!-- Add Button -->
+              <div class="col-12 md:col-6 lg:col-3 mt-3">
                 <button
                   type="button"
                   class="custom-btn"
                   (click)="addAchievements()"
                 >
-                  + Add Achievements
+                  + Add Achievement
                 </button>
               </div>
             </div>
@@ -1510,25 +1473,15 @@
               <div class="field-wrapper">
                 <div style="display: flex; justify-content: space-between">
                   <label>Soft Skills</label>
-                  <!-- <p-checkbox
-                    [binary]="true"
-                    formControlName="softSkillsMandatory"
-                    label="Is Mandatory"
-                  ></p-checkbox> -->
                 </div>
                 <div class="input-wrapper">
-                  <p-chips
-                    separator=","
+                  <tag-input
                     formControlName="softSkills"
-                    [addOnBlur]="true"
-                    [addOnTab]="true"
-                    inputId="softInput"
-                  ></p-chips>
-                  <p-button
-                    type="button"
-                    (onClick)="addSkill('softSkills', 'softInput')"
-                    >Add</p-button
+                    [separatorKeyCodes]="[13, 188]"
+                    [theme]="'modern'"
+                    placeholder="Type and press Enter or Comma"
                   >
+                  </tag-input>
                 </div>
               </div>
             </div>
@@ -1537,27 +1490,15 @@
               <div class="field-wrapper">
                 <div style="display: flex; justify-content: space-between">
                   <label>Core Competencies</label>
-                  <!-- <p-checkbox
-                    [binary]="true"
-                    formControlName="coreCompentenciesMandatory"
-                    label="Is Mandatory"
-                  ></p-checkbox> -->
                 </div>
                 <div class="input-wrapper">
-                  <p-chips
-                    separator=","
+                  <tag-input
                     formControlName="coreCompentencies"
-                    [addOnBlur]="true"
-                    [addOnTab]="true"
-                    inputId="compentenciesInput"
-                  ></p-chips>
-                  <p-button
-                    type="button"
-                    (onClick)="
-                      addSkill('coreCompentencies', 'compentenciesInput')
-                    "
-                    >Add</p-button
+                    [separatorKeyCodes]="[13, 188]"
+                    [theme]="'modern'"
+                    placeholder="Type and press Enter or Comma"
                   >
+                  </tag-input>
                 </div>
               </div>
             </div>

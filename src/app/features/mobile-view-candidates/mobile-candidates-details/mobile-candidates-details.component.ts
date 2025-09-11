@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
-import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnDestroy, Renderer2, ViewChild } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ApiService } from '../../../services/api.service';
@@ -24,6 +24,7 @@ import { ChooseNewTemplateComponent } from '../choose-new-template/choose-new-te
 import { MobileLoaderComponent } from 'src/app/shared/components/mobile-loader/mobile-loader.component';
 import { MobileLoaderService } from 'src/app/services/mobile.loader.service';
 import { ToastService } from 'src/app/services/toast.service';
+import { Chips } from 'primeng/chips';
 
 @Component({
   selector: 'app-mobile-candidates-details',
@@ -31,17 +32,8 @@ import { ToastService } from 'src/app/services/toast.service';
   templateUrl: './mobile-candidates-details.component.html',
   styleUrl: './mobile-candidates-details.component.css',
 })
-export class MobileCandidatesDetailsComponent  {
+export class MobileCandidatesDetailsComponent {
 
-
-@ViewChild('chipComp', { read: ElementRef }) chipCompEl!: ElementRef;
-
-  form!: FormGroup; // assume initialized elsewhere
-  private removeListeners: (() => void)[] = [];
-
-
-  
-  
   yourResume: Array<any> = [];
   candidateForm!: FormGroup;
   genderList: Array<ValueSet> = [];
@@ -225,8 +217,21 @@ export class MobileCandidatesDetailsComponent  {
       careerObjective: [''],
       hobbies:[''],
       fatherName:['']
-    });
+    },{ validators: [this.fresherOrExperienceValidator()] });
   }
+
+   fresherOrExperienceValidator() {
+      return (formGroup: AbstractControl): { [key: string]: any } | null => {
+        const fresher = formGroup.get('fresher')?.value;
+        const experiences = formGroup.get('experiences') as FormArray;
+  
+        if (!fresher && experiences.length === 0) {
+          return { fresherOrExperienceRequired: true };
+        }
+  
+        return null;
+      };
+    }
 
   createRequirementForm() {
     this.requirementForm = this.fb.group({
@@ -278,7 +283,7 @@ export class MobileCandidatesDetailsComponent  {
     this.loader.start();
 
     if (this.candidateForm.valid) {
-       this.dataLoaded = false;
+      this.dataLoaded = false;
 
       const route = 'candidate/create';
       const payload = this.candidateForm.getRawValue();
@@ -323,9 +328,9 @@ export class MobileCandidatesDetailsComponent  {
               'yyyy-MM-dd'
             );
 
-            const responsibilities = Array.isArray(exp.responsibilities)
-              ? exp.responsibilities.join(', ')
-              : exp.responsibilities;
+           const responsibilities = Array.isArray(exp.responsibilities)
+           ? exp.responsibilities.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ')
+            : exp.responsibilities;
 
             let projects = exp.projects || [];
             const hasEmptyProjectName = projects.some(
@@ -338,8 +343,8 @@ export class MobileCandidatesDetailsComponent  {
               projects = projects.map((proj: any) => ({
                 ...proj,
                 projectSkills: Array.isArray(proj.projectSkills)
-                  ? proj.projectSkills.join(', ')
-                  : proj.projectSkills,
+           ? proj.projectSkills.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ')
+            : proj.projectSkills,
               }));
             }
 
@@ -408,7 +413,7 @@ export class MobileCandidatesDetailsComponent  {
         payload.hobbies = '';
       } else {
         const hobbiesList: string[] = payload.hobbies;
-        const commaSeparatedString: string = hobbiesList.join(', ');
+        const commaSeparatedString: string = hobbiesList.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ');
         payload.hobbies = commaSeparatedString;
       }
 
@@ -420,15 +425,16 @@ export class MobileCandidatesDetailsComponent  {
         payload.languagesKnown = '';
       } else {
         const stringList: string[] = payload.languagesKnown;
-        const commaSeparatedString: string = stringList.join(', ');
+        const commaSeparatedString: string = stringList.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ');
         payload.languagesKnown = commaSeparatedString;
       }
 
       if (Object.is(payload.skills, '')) {
         payload.skills = '';
       } else {
+
         const stringList: string[] = payload.skills;
-        const commaSeparatedString: string = stringList.join(', ');
+        const commaSeparatedString: string = stringList.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ');
         payload.skills = commaSeparatedString;
       }
 
@@ -436,7 +442,7 @@ export class MobileCandidatesDetailsComponent  {
         payload.softSkills = '';
       } else {
         const stringList: string[] = payload.softSkills;
-        const commaSeparatedString: string = stringList.join(', ');
+        const commaSeparatedString: string = stringList.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ');
         payload.softSkills = commaSeparatedString;
       }
 
@@ -444,7 +450,7 @@ export class MobileCandidatesDetailsComponent  {
         payload.coreCompentencies = '';
       } else {
         const stringList: string[] = payload.coreCompentencies;
-        const commaSeparatedString: string = stringList.join(', ');
+        const commaSeparatedString: string = stringList.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ');
         payload.coreCompentencies = commaSeparatedString;
       }
 
@@ -467,16 +473,15 @@ export class MobileCandidatesDetailsComponent  {
             payload.collegeProject = payload.collegeProject.map(
               (project: any) => ({
                 ...project,
-                collegeProjectSkills: Array.isArray(
-                  project.collegeProjectSkills
-                )
-                  ? project.collegeProjectSkills.join(', ')
-                  : '',
+                collegeProjectSkills:  Array.isArray(project.collegeProjectSkills)
+           ? project.collegeProjectSkills.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ')
+            : project.collegeProjectSkills,
               })
             );
           }
         }
       }
+
 
 
        payload.coreCompentenciesMandatory =
@@ -571,7 +576,7 @@ export class MobileCandidatesDetailsComponent  {
     return this.fb.group({
       id: [''],
       projectName: [''],
-      projectSkills: [[]],
+      projectSkills: [''],
       projectRole: [''],
       projectDescription: [''],
     });
@@ -1139,11 +1144,18 @@ export class MobileCandidatesDetailsComponent  {
           const projectFormArray = experienceForm.get('projects') as FormArray;
           projectFormArray.clear();
           experience.projects?.forEach((project: any) => {
+
+            const projectSkills = project.projectSkills
+          ? project.projectSkills
+              .split(',')
+              .map((res: string) => res.trim())
+          : [];
+
             const projectForm = this.createProject();
             projectForm.patchValue({
               id: project.id,
               projectName: project.projectName,
-              projectSkills: project.projectSkills,
+              projectSkills: projectSkills,
               projectRole: project.projectRole,
               projectDescription: project.projectDescription,
             });
@@ -1259,7 +1271,7 @@ export class MobileCandidatesDetailsComponent  {
     return this.fb.group({
       id: [''],
       collegeProjectName: [''],
-      collegeProjectSkills: [[]],
+      collegeProjectSkills: [''],
       collegeProjectDescription: [''],
     });
   }
@@ -1876,9 +1888,5 @@ export class MobileCandidatesDetailsComponent  {
 
 
 
-  
-
-
-
-
+ 
 }

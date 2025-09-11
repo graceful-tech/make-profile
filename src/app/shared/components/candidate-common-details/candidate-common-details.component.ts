@@ -264,9 +264,9 @@ export class CandidateCommonDetailsComponent {
               'yyyy-MM-dd'
             );
 
-            const responsibilities = Array.isArray(exp.responsibilities)
-              ? exp.responsibilities.join(', ')
-              : exp.responsibilities;
+           const responsibilities = Array.isArray(exp.responsibilities)
+           ? exp.responsibilities.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ')
+            : exp.responsibilities;
 
             let projects = exp.projects || [];
             const hasEmptyProjectName = projects.some(
@@ -279,8 +279,8 @@ export class CandidateCommonDetailsComponent {
               projects = projects.map((proj: any) => ({
                 ...proj,
                 projectSkills: Array.isArray(proj.projectSkills)
-                  ? proj.projectSkills.join(', ')
-                  : proj.projectSkills,
+           ? proj.projectSkills.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ')
+            : proj.projectSkills,
               }));
             }
 
@@ -408,11 +408,9 @@ export class CandidateCommonDetailsComponent {
             payload.collegeProject = payload.collegeProject.map(
               (project: any) => ({
                 ...project,
-                collegeProjectSkills: Array.isArray(
-                  project.collegeProjectSkills
-                )
-                  ? project.collegeProjectSkills.join(', ')
-                  : '',
+             collegeProjectSkills:  Array.isArray(project.collegeProjectSkills)
+           ? project.collegeProjectSkills.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ')
+            : project.collegeProjectSkills,
               })
             );
           }
@@ -933,7 +931,6 @@ export class CandidateCommonDetailsComponent {
               projectSkills: projectSkills,
               projectRole: project.projectRole,
               projectDescription: project.projectDescription,
-              isDeleted: false,
             });
             projectFormArray.push(projectForm);
           });

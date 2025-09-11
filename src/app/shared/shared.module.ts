@@ -32,6 +32,7 @@ import { MobileAnalyseAiComponent } from './components/mobile-analyse-ai/mobile-
 import { ToastMessageComponent } from './components/toast-message/toast-message.component';
 import { ErrorMessageComponent } from './components/error-message/error-message.component';
 import { ErrorMobilePopupComponent } from './components/error-mobile-popup/error-mobile-popup.component';
+import { TagInputModule } from 'ngx-chips';
 
  
 @NgModule({
@@ -57,7 +58,8 @@ import { ErrorMobilePopupComponent } from './components/error-mobile-popup/error
     NewDetailsComponent,
     MobileAnalyseAiComponent,
     ErrorMessageComponent,
-    ErrorMobilePopupComponent
+    ErrorMobilePopupComponent,
+    
    
     
    ],
@@ -72,6 +74,8 @@ import { ErrorMobilePopupComponent } from './components/error-mobile-popup/error
     MatProgressSpinnerModule,
     MatDialogModule,
     DragDropModule,
+    TagInputModule
+    
     
   ],
   exports: [
@@ -107,7 +111,8 @@ import { ErrorMobilePopupComponent } from './components/error-mobile-popup/error
     NewDetailsComponent,
     MobileAnalyseAiComponent,
     ErrorMessageComponent,
-    ErrorMobilePopupComponent
+    ErrorMobilePopupComponent,
+    TagInputModule
   ],
 })
 export class SharedModule {}

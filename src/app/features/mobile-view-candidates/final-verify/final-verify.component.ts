@@ -42,8 +42,6 @@ import { Project } from 'src/app/models/candidates/project';
   styleUrl: './final-verify.component.css',
 })
 export class FinalVerifyComponent {
-  @ViewChild('chipInput', { static: false }) chipInputRef!: ElementRef;
-
   candidateForm!: FormGroup;
   genderList: Array<ValueSet> = [];
   nationalityList: Array<ValueSet> = [];
@@ -253,7 +251,7 @@ export class FinalVerifyComponent {
     this.ngxLoaderStart();
 
     if (this.candidateForm.valid) {
-      this.dataLoaded = false;
+       this.dataLoaded = false;
 
       const route = 'candidate/create';
       const payload = this.candidateForm.getRawValue();
@@ -298,9 +296,9 @@ export class FinalVerifyComponent {
               'yyyy-MM-dd'
             );
 
-            const responsibilities = Array.isArray(exp.responsibilities)
-              ? exp.responsibilities.join(', ')
-              : exp.responsibilities;
+           const responsibilities = Array.isArray(exp.responsibilities)
+           ? exp.responsibilities.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ')
+            : exp.responsibilities;
 
             let projects = exp.projects || [];
             const hasEmptyProjectName = projects.some(
@@ -313,8 +311,8 @@ export class FinalVerifyComponent {
               projects = projects.map((proj: any) => ({
                 ...proj,
                 projectSkills: Array.isArray(proj.projectSkills)
-                  ? proj.projectSkills.join(', ')
-                  : proj.projectSkills,
+           ? proj.projectSkills.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ')
+            : proj.projectSkills,
               }));
             }
 
@@ -379,13 +377,14 @@ export class FinalVerifyComponent {
         });
       }
 
-      if (Object.is(payload.hobbies, '')) {
+       if (Object.is(payload.hobbies, '')) {
         payload.hobbies = '';
       } else {
         const hobbiesList: string[] = payload.hobbies;
-        const commaSeparatedString: string = hobbiesList.join(', ');
+        const commaSeparatedString: string = hobbiesList.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ');
         payload.hobbies = commaSeparatedString;
       }
+
 
       if (
         payload.languagesKnown.length === 0 ||
@@ -394,23 +393,22 @@ export class FinalVerifyComponent {
         payload.languagesKnown = '';
       } else {
         const stringList: string[] = payload.languagesKnown;
-        const commaSeparatedString: string = stringList.join(', ');
+        const commaSeparatedString: string = stringList.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ');
         payload.languagesKnown = commaSeparatedString;
       }
 
-      if (Object.is(payload.skills, '')) {
-        payload.skills = '';
-      } else {
-        const stringList: string[] = payload.skills;
-        const commaSeparatedString: string = stringList.join(', ');
-        payload.skills = commaSeparatedString;
+      if (Array.isArray(payload.skills)) {
+        payload.skills = payload.skills.map((r: any) =>
+          typeof r === 'string' ? r : r.task || r.value || ''
+        ).join(', ');
       }
+
 
       if (Object.is(payload.softSkills, '')) {
         payload.softSkills = '';
       } else {
         const stringList: string[] = payload.softSkills;
-        const commaSeparatedString: string = stringList.join(', ');
+        const commaSeparatedString: string = stringList.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ');
         payload.softSkills = commaSeparatedString;
       }
 
@@ -418,7 +416,7 @@ export class FinalVerifyComponent {
         payload.coreCompentencies = '';
       } else {
         const stringList: string[] = payload.coreCompentencies;
-        const commaSeparatedString: string = stringList.join(', ');
+        const commaSeparatedString: string = stringList.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ');
         payload.coreCompentencies = commaSeparatedString;
       }
 
@@ -441,16 +439,15 @@ export class FinalVerifyComponent {
             payload.collegeProject = payload.collegeProject.map(
               (project: any) => ({
                 ...project,
-                collegeProjectSkills: Array.isArray(
-                  project.collegeProjectSkills
-                )
-                  ? project.collegeProjectSkills.join(', ')
-                  : '',
+                collegeProjectSkills:  Array.isArray(project.collegeProjectSkills)
+           ? project.collegeProjectSkills.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ')
+            : project.collegeProjectSkills,
               })
             );
           }
         }
       }
+
       payload.coreCompentenciesMandatory =
         this.candidates?.coreCompentenciesMandatory !== null
           ? this.candidates?.coreCompentenciesMandatory
@@ -772,6 +769,7 @@ export class FinalVerifyComponent {
   }
 
   patchCandidateForm(candidate: Candidate) {
+    
     candidate.languagesKnown = candidate?.languagesKnown
       ? candidate.languagesKnown.split(',').map((skill: string) => skill.trim())
       : [];
@@ -787,11 +785,18 @@ export class FinalVerifyComponent {
           .map((skill: string) => skill.trim())
       : [];
 
-    candidate.hobbies = candidate?.hobbies
-      ? candidate.hobbies.split(',').map((skill: string) => skill.trim())
+       candidate.hobbies = candidate?.hobbies
+      ? candidate.hobbies
+          .split(',')
+          .map((skill: string) => skill.trim())
       : [];
 
-    if (candidate.certificates?.some((c) => c && c.courseName?.trim())) {
+
+
+    
+    if ( candidate.certificates?.some(c => c && (c.courseName?.trim()))) 
+  
+  {
       const certificateFormArray = this.candidateForm.get(
         'certificates'
       ) as FormArray;
@@ -802,12 +807,10 @@ export class FinalVerifyComponent {
       });
     }
 
-    if (candidate.experiences?.some((e) => e && e.companyName.trim())) {
+    if (candidate.experiences?.some(e => e && (e.companyName.trim()))) {
       this.patchExperiences(candidate.experiences);
     } else {
-      if (
-        candidate?.collegeProject.some((c) => c && c.collegeProjectName.trim())
-      ) {
+      if (candidate?.collegeProject.some(c => c && (c.collegeProjectName.trim()))) {
         const collegeProjectFromArray = this.candidateForm.get(
           'collegeProject'
         ) as FormArray;
@@ -821,11 +824,7 @@ export class FinalVerifyComponent {
       }
     }
 
-    if (
-      candidate.qualification?.some(
-        (q) => q && (q.institutionName?.trim() || q.fieldOfStudy?.trim())
-      )
-    ) {
+    if ( candidate.qualification?.some(q => q && (q.institutionName?.trim() || q.fieldOfStudy?.trim()))) {
       const qualificationFormArray = this.candidateForm.get(
         'qualification'
       ) as FormArray;
@@ -838,7 +837,7 @@ export class FinalVerifyComponent {
       });
     }
 
-    if (candidate.achievements?.some((a) => a && a.achievementsName.trim())) {
+    if (candidate.achievements?.some(a => a && (a.achievementsName.trim()))) {
       const achievementFormArray = this.candidateForm.get(
         'achievements'
       ) as FormArray;
@@ -850,6 +849,7 @@ export class FinalVerifyComponent {
         );
       });
     }
+
     const candidateDob = candidate.dob ? new Date(candidate.dob) : null;
 
     this.candidateForm.patchValue({
@@ -871,9 +871,13 @@ export class FinalVerifyComponent {
         ? candidate?.coreCompentencies
         : [],
       summary: candidate?.summary,
+      coreCompentenciesMandatory: candidate?.coreCompentenciesMandatory,
+      softSkillsMandatory: candidate?.softSkillsMandatory,
+      certificatesMandatory: candidate?.certificatesMandatory,
+      achievementsMandatory: candidate?.achievementsMandatory,
       careerObjective: candidate?.careerObjective,
-      hobbies: candidate?.hobbies ? candidate?.hobbies : [],
-      fatherName: candidate?.fatherName,
+       hobbies: candidate?.hobbies ? candidate?.hobbies : [],
+      fatherName:candidate?.fatherName,
     });
   }
 
@@ -912,11 +916,18 @@ export class FinalVerifyComponent {
           const projectFormArray = experienceForm.get('projects') as FormArray;
           projectFormArray.clear();
           experience.projects?.forEach((project: any) => {
+
+             const projectSkills = project.projectSkills
+          ? project.projectSkills
+              .split(',')
+              .map((res: string) => res.trim())
+          : [];
+
             const projectForm = this.createProject();
             projectForm.patchValue({
               id: project.id,
               projectName: project.projectName,
-              projectSkills: project.projectSkills,
+              projectSkills: projectSkills,
               projectRole: project.projectRole,
               projectDescription: project.projectDescription,
             });
@@ -1034,12 +1045,12 @@ export class FinalVerifyComponent {
   }
 
   getCandidates() {
-    this.loader.start();
+     this.loader.start();
 
     const route = 'candidate';
     this.api.get(route).subscribe({
       next: (response) => {
-        this.loader.stop();
+          
         const candidate = response as Candidate;
         if (candidate !== null) {
           this.candidateId = candidate?.id;
@@ -1212,48 +1223,7 @@ export class FinalVerifyComponent {
     });
   }
 
-  getResumeContent(content: any) {
-    this.loader.start();
-    const route = `content/openai?content=${content}`;
-    this.api.get(route).subscribe({
-      next: (response) => {
-        if (response) {
-          const responseContent = response as any;
-          this.candidateForm
-            .get('summary')
-            ?.setValue(responseContent?.resumeContent);
-          this.loader.stop();
-          this.getResumeContentObjective('Career Objective');
-        }
-      },
-      error: (error) => {
-        this.loader.stop();
-        this.dataLoaded = true;
-        this.gs.showMobileMessage('Error', 'Please try after some time');
-      },
-    });
-  }
-
-  getResumeContentObjective(content: any) {
-    this.loader.start();
-    const route = `content/openai?content=${content}`;
-    this.api.get(route).subscribe({
-      next: (response) => {
-        if (response) {
-          const responseContent = response as any;
-          this.candidateForm
-            .get('careerObjective')
-            ?.setValue(responseContent?.resumeContent);
-          this.loader.stop();
-        }
-      },
-      error: (error) => {
-        this.loader.stop();
-        this.dataLoaded = true;
-        this.gs.showMobileMessage('Error', 'Please try after some time');
-      },
-    });
-  }
+ 
 
   getAvailableCredits(): Promise<void> {
     return new Promise((resolve, reject) => {
@@ -1331,7 +1301,7 @@ export class FinalVerifyComponent {
   }
 
   getSummaryAndObjectiveContent() {
-    this.loader.start();
+
     const route = 'content/get-content';
 
     this.api.get(route).subscribe({
@@ -1348,8 +1318,6 @@ export class FinalVerifyComponent {
             .get('careerObjective')
             ?.setValue(this.summaryObjectiveContent?.careerObjective);
         }
-
-        this.loader.stop();
       },
       error: (error) => {
         this.loader.stop();

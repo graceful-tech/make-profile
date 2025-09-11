@@ -19,6 +19,7 @@ import { EditUserComponent } from './features/users/edit-user/edit-user.componen
 import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
 import { ToastrModule } from 'ngx-toastr';
 import { ToastMessageComponent } from './shared/components/toast-message/toast-message.component';
+ 
 
 
 
@@ -44,7 +45,7 @@ import { ToastMessageComponent } from './shared/components/toast-message/toast-m
     ToastrModule.forRoot({
       positionClass: 'toast-top-right',
       timeOut: 4000
-    })
+    }),
   ],
   providers: [
     DialogService,

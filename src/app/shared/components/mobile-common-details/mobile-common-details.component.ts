@@ -252,9 +252,9 @@ export class MobileCommonDetailsComponent {
               'yyyy-MM-dd'
             );
 
-            const responsibilities = Array.isArray(exp.responsibilities)
-              ? exp.responsibilities.join(', ')
-              : exp.responsibilities;
+           const responsibilities = Array.isArray(exp.responsibilities)
+           ? exp.responsibilities.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ')
+            : exp.responsibilities;
 
             let projects = exp.projects || [];
             const hasEmptyProjectName = projects.some(
@@ -267,8 +267,8 @@ export class MobileCommonDetailsComponent {
               projects = projects.map((proj: any) => ({
                 ...proj,
                 projectSkills: Array.isArray(proj.projectSkills)
-                  ? proj.projectSkills.join(', ')
-                  : proj.projectSkills,
+           ? proj.projectSkills.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ')
+            : proj.projectSkills,
               }));
             }
 
@@ -337,7 +337,7 @@ export class MobileCommonDetailsComponent {
         payload.hobbies = '';
       } else {
         const hobbiesList: string[] = payload.hobbies;
-        const commaSeparatedString: string = hobbiesList.join(', ');
+        const commaSeparatedString: string = hobbiesList.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ');
         payload.hobbies = commaSeparatedString;
       }
 
@@ -349,15 +349,16 @@ export class MobileCommonDetailsComponent {
         payload.languagesKnown = '';
       } else {
         const stringList: string[] = payload.languagesKnown;
-        const commaSeparatedString: string = stringList.join(', ');
+        const commaSeparatedString: string = stringList.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ');
         payload.languagesKnown = commaSeparatedString;
       }
 
       if (Object.is(payload.skills, '')) {
         payload.skills = '';
       } else {
+
         const stringList: string[] = payload.skills;
-        const commaSeparatedString: string = stringList.join(', ');
+        const commaSeparatedString: string = stringList.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ');
         payload.skills = commaSeparatedString;
       }
 
@@ -365,7 +366,7 @@ export class MobileCommonDetailsComponent {
         payload.softSkills = '';
       } else {
         const stringList: string[] = payload.softSkills;
-        const commaSeparatedString: string = stringList.join(', ');
+        const commaSeparatedString: string = stringList.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ');
         payload.softSkills = commaSeparatedString;
       }
 
@@ -373,7 +374,7 @@ export class MobileCommonDetailsComponent {
         payload.coreCompentencies = '';
       } else {
         const stringList: string[] = payload.coreCompentencies;
-        const commaSeparatedString: string = stringList.join(', ');
+        const commaSeparatedString: string = stringList.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ');
         payload.coreCompentencies = commaSeparatedString;
       }
 
@@ -396,11 +397,9 @@ export class MobileCommonDetailsComponent {
             payload.collegeProject = payload.collegeProject.map(
               (project: any) => ({
                 ...project,
-                collegeProjectSkills: Array.isArray(
-                  project.collegeProjectSkills
-                )
-                  ? project.collegeProjectSkills.join(', ')
-                  : '',
+                collegeProjectSkills:  Array.isArray(project.collegeProjectSkills)
+           ? project.collegeProjectSkills.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ')
+            : project.collegeProjectSkills,
               })
             );
           }
@@ -507,7 +506,7 @@ export class MobileCommonDetailsComponent {
     return this.fb.group({
       id: [''],
       projectName: [''],
-      projectSkills: [[]],
+      projectSkills: [''],
       projectRole: [''],
       projectDescription: [''],
     });
@@ -905,11 +904,17 @@ export class MobileCommonDetailsComponent {
           const projectFormArray = experienceForm.get('projects') as FormArray;
           projectFormArray.clear();
           experience.projects?.forEach((project: any) => {
+
+              const projectSkills = project.projectSkills
+          ? project.projectSkills
+              .split(',')
+              .map((res: string) => res.trim())
+          : [];
             const projectForm = this.createProject();
             projectForm.patchValue({
               id: project.id,
               projectName: project.projectName,
-              projectSkills: project.projectSkills,
+              projectSkills: projectSkills,
               projectRole: project.projectRole,
               projectDescription: project.projectDescription,
             });

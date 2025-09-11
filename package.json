@@ -30,6 +30,7 @@
     "hammerjs": "^2.0.8",
     "handsontable": "^14.6.1",
     "ng-apexcharts": "^1.12.0",
+    "ngx-chips": "^3.0.0",
     "ngx-clipboard": "^16.0.0",
     "ngx-device-detector": "^8.0.0",
     "ngx-toastr": "^19.0.0",

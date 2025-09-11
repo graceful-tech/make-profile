@@ -91,6 +91,7 @@ img {
   cursor: pointer;
   margin-right: 15px;
   font-weight: bold;
+  font-style: italic;
  
   
 }
@@ -109,6 +110,7 @@ img {
   cursor: pointer;
   margin-right: 15px;
   font-weight: bold;
+  font-style: italic;
 }
 
 .remove-btn:hover {

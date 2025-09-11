@@ -289,7 +289,10 @@ export class ResumeCreatingComponent {
           document.body.removeChild(a);
           window.URL.revokeObjectURL(url);
 
-         this.toast.showToast('success', 'Your resume has been downloaded successfully');
+          this.toast.showToast(
+            'success',
+            'Your resume has been downloaded successfully'
+          );
           localStorage.removeItem('resumeName');
           this.generating = false;
 
@@ -392,7 +395,11 @@ export class ResumeCreatingComponent {
             );
 
             const responsibilities = Array.isArray(exp.responsibilities)
-              ? exp.responsibilities.join(', ')
+              ? exp.responsibilities
+                  .map((r: any) =>
+                    typeof r === 'string' ? r : r.task || r.value || ''
+                  )
+                  .join(', ')
               : exp.responsibilities;
 
             let projects = exp.projects || [];
@@ -406,7 +413,11 @@ export class ResumeCreatingComponent {
               projects = projects.map((proj: any) => ({
                 ...proj,
                 projectSkills: Array.isArray(proj.projectSkills)
-                  ? proj.projectSkills.join(', ')
+                  ? proj.projectSkills
+                      .map((r: any) =>
+                        typeof r === 'string' ? r : r.task || r.value || ''
+                      )
+                      .join(', ')
                   : proj.projectSkills,
               }));
             }
@@ -537,8 +548,12 @@ export class ResumeCreatingComponent {
                 collegeProjectSkills: Array.isArray(
                   project.collegeProjectSkills
                 )
-                  ? project.collegeProjectSkills.join(', ')
-                  : '',
+                  ? project.collegeProjectSkills
+                      .map((r: any) =>
+                        typeof r === 'string' ? r : r.task || r.value || ''
+                      )
+                      .join(', ')
+                  : project.collegeProjectSkills,
               })
             );
           }
@@ -1008,8 +1023,8 @@ export class ResumeCreatingComponent {
     return this.fb.group({
       id: certificate.id,
       courseName: certificate.courseName,
-      courseStartDate: this.isValidDate(certificate.courseStartDate), 
-      courseEndDate: this.isValidDate(certificate.courseEndDate), 
+      courseStartDate: this.isValidDate(certificate.courseStartDate),
+      courseEndDate: this.isValidDate(certificate.courseEndDate),
       isDeleted: [''],
     });
   }
@@ -1032,8 +1047,12 @@ export class ResumeCreatingComponent {
           id: experience.id,
           companyName: experience.companyName,
           role: experience.role,
-          experienceYearStartDate: this.isValidDate(experience.experienceYearStartDate), 
-          experienceYearEndDate:  this.isValidDate(experience.experienceYearEndDate), 
+          experienceYearStartDate: this.isValidDate(
+            experience.experienceYearStartDate
+          ),
+          experienceYearEndDate: this.isValidDate(
+            experience.experienceYearEndDate
+          ),
           currentlyWorking: experience.currentlyWorking,
           responsibilities: responsibilities,
           isDeleted: false,
@@ -1069,8 +1088,12 @@ export class ResumeCreatingComponent {
       id: qualification.id,
       institutionName: qualification.institutionName,
       department: qualification.department,
-      qualificationStartYear: this.isValidDate(qualification.qualificationStartYear), 
-      qualificationEndYear: this.isValidDate(qualification.qualificationEndYear), 
+      qualificationStartYear: this.isValidDate(
+        qualification.qualificationStartYear
+      ),
+      qualificationEndYear: this.isValidDate(
+        qualification.qualificationEndYear
+      ),
       percentage: qualification.percentage,
       fieldOfStudy: qualification.fieldOfStudy,
     });
@@ -1084,7 +1107,7 @@ export class ResumeCreatingComponent {
     return this.fb.group({
       id: achievement.id,
       achievementsName: achievement.achievementsName,
-      achievementsDate: this.isValidDate(achievement.achievementsDate), 
+      achievementsDate: this.isValidDate(achievement.achievementsDate),
     });
   }
 
@@ -1365,29 +1388,29 @@ export class ResumeCreatingComponent {
     this.showErrorPopup = false;
   }
 
-      isValidDate(value: any): Date | null {
-  if (!value || value === 'NaN/NaN/NaN') return null;
+  isValidDate(value: any): Date | null {
+    if (!value || value === 'NaN/NaN/NaN') return null;
 
-  if (value instanceof Date && !isNaN(value.getTime())) return value;
+    if (value instanceof Date && !isNaN(value.getTime())) return value;
 
-  if (typeof value === "string") {
-    const trimmed = value.trim();
+    if (typeof value === 'string') {
+      const trimmed = value.trim();
 
-    // dd/MM/yyyy format
-    const match = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(trimmed);
-    if (match) {
-      const day = parseInt(match[1], 10);
-      const month = parseInt(match[2], 10) - 1;
-      const year = parseInt(match[3], 10);
-      const date = new Date(year, month, day);
+      // dd/MM/yyyy format
+      const match = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(trimmed);
+      if (match) {
+        const day = parseInt(match[1], 10);
+        const month = parseInt(match[2], 10) - 1;
+        const year = parseInt(match[3], 10);
+        const date = new Date(year, month, day);
+        return !isNaN(date.getTime()) ? date : null;
+      }
+
+      // fallback
+      const date = new Date(trimmed);
       return !isNaN(date.getTime()) ? date : null;
     }
 
-    // fallback
-    const date = new Date(trimmed);
-    return !isNaN(date.getTime()) ? date : null;
+    return null;
   }
-
-  return null;
-}
 }

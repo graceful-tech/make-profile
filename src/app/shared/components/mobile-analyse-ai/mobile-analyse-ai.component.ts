@@ -192,12 +192,35 @@ export class MobileAnalyseAiComponent {
     this.router.navigate(['mob-candidate']);
   }
 
-  copyContent() {
-    const content = `Hello, my name is Abc.My gender is Male/Female I have completed my B.Tech in Computer Science from XXXXX Engineering College with an overall score of 100%, during the period 29th January 1955 to 30th March 1963.I also have one year of professional experience at YYY Company from 1st April 1963 to 31st March 1964, where I gained strong skills in software development, testing, sales, data entry and analysis, voice and non-voice support, and customer handling. This experience helped me strengthen my abilities in problem-solving, teamwork, communication, adaptability, and multitasking. Along with my technical background, I have developed leadership, time management, negotiation, and creativity skills. I enjoy exploring new ideas, taking on challenges, and contributing to projects that create a meaningful impact across industries.You can reach me at +91-1234567891 or via email at abc@example.com`;
+copyContent() {
+  const content = `Hello, my name is Abc.My gender is Male/Female I have completed my B.Tech in Computer Science from XXXXX Engineering College with an overall score of 100%, during the period 29th January 1955 to 30th March 1963.I also have one year of professional experience at YYY Company from 1st April 1963 to 31st March 1964, where I gained strong skills in software development, testing, sales, data entry and analysis, voice and non-voice support, and customer handling. This experience helped me strengthen my abilities in problem-solving, teamwork, communication, adaptability, and multitasking. Along with my technical background, I have developed leadership, time management, negotiation, and creativity skills. I enjoy exploring new ideas, taking on challenges, and contributing to projects that create a meaningful impact across industries.You can reach me at +91-1234567891 or via email at abc@example.com`;  
+
+  if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(content).then(() => {
       this.togglePopup();
+    }).catch(() => {
+      this.fallbackCopy(content);
     });
-  } 
+  } else {
+    this.fallbackCopy(content);
+  }
+}
+
+fallbackCopy(text: string) {
+  const textarea = document.createElement('textarea');
+  textarea.value = text;
+  textarea.style.position = 'fixed';  
+  document.body.appendChild(textarea);
+  textarea.focus();
+  textarea.select();
+  try {
+    document.execCommand('copy');
+    this.togglePopup();
+  } catch (err) {
+    console.error('Fallback copy failed', err);
+  }
+  document.body.removeChild(textarea);
+}
 
   closePopupTap(event: any) {
     this.showErrorPopup = false;
