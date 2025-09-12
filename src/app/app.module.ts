@@ -19,6 +19,9 @@ import { EditUserComponent } from './features/users/edit-user/edit-user.componen
 import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
 import { ToastrModule } from 'ngx-toastr';
 import { ToastMessageComponent } from './shared/components/toast-message/toast-message.component';
+import { CreateResumeDirectlyComponent } from './auth/create-resume-directly/create-resume-directly.component';
+import { CreateResumeCommonDetailsComponent } from './shared/components/create-resume-common-details/create-resume-common-details.component';
+import { MobileCreateResumeDirectlyComponent } from './auth-mobile/mobile-create-resume-directly/mobile-create-resume-directly.component';
  
 
 
@@ -31,7 +34,11 @@ import { ToastMessageComponent } from './shared/components/toast-message/toast-m
     ViewAccountComponent,
     EditUserComponent,
     ForgotPasswordComponent,
-    ToastMessageComponent
+    ToastMessageComponent,
+    CreateResumeDirectlyComponent,
+    CreateResumeCommonDetailsComponent,
+    MobileCreateResumeDirectlyComponent
+    
   ],
   imports: [
     BrowserModule,

@@ -33,6 +33,9 @@ import { ToastMessageComponent } from './components/toast-message/toast-message.
 import { ErrorMessageComponent } from './components/error-message/error-message.component';
 import { ErrorMobilePopupComponent } from './components/error-mobile-popup/error-mobile-popup.component';
 import { TagInputModule } from 'ngx-chips';
+import { DetailsFillDirectlyComponent } from './components/details-fill-directly/details-fill-directly.component';
+import { MobileResumeCommonDetailsComponent } from './components/mobile-resume-common-details/mobile-resume-common-details.component';
+import { MobileDetailsDillDirectlyComponent } from './components/mobile-details-dill-directly/mobile-details-dill-directly.component';
 
  
 @NgModule({
@@ -59,6 +62,9 @@ import { TagInputModule } from 'ngx-chips';
     MobileAnalyseAiComponent,
     ErrorMessageComponent,
     ErrorMobilePopupComponent,
+    DetailsFillDirectlyComponent,
+    MobileResumeCommonDetailsComponent,
+    MobileDetailsDillDirectlyComponent
     
    
     
@@ -74,7 +80,8 @@ import { TagInputModule } from 'ngx-chips';
     MatProgressSpinnerModule,
     MatDialogModule,
     DragDropModule,
-    TagInputModule
+    TagInputModule,
+    
     
     
   ],
@@ -112,7 +119,10 @@ import { TagInputModule } from 'ngx-chips';
     MobileAnalyseAiComponent,
     ErrorMessageComponent,
     ErrorMobilePopupComponent,
-    TagInputModule
+    TagInputModule,
+    DetailsFillDirectlyComponent,
+    MobileResumeCommonDetailsComponent,
+    MobileDetailsDillDirectlyComponent
   ],
 })
 export class SharedModule {}

@@ -398,9 +398,9 @@ export class AddCandidatesComponent {
         payload.collegeProject = payload.collegeProject.map(
           (project: { collegeProjectSkills: any[] }) => ({
             ...project,
-            collegeProjectSkills: Array.isArray(project.collegeProjectSkills)
-              ? project.collegeProjectSkills.join(', ')
-              : '',
+           collegeProjectSkills:  Array.isArray(project.collegeProjectSkills)
+           ? project.collegeProjectSkills.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ')
+            : project.collegeProjectSkills,
           })
         );
       }

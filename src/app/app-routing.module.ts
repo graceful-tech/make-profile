@@ -7,7 +7,12 @@ import { CreateAccountComponent } from './auth/create-account/create-account.com
 import { ViewAccountComponent } from './features/users/view-account/view-account.component';
 import { EditUserComponent } from './features/users/edit-user/edit-user.component';
 import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
-
+import { CreateResumeDirectlyComponent } from './auth/create-resume-directly/create-resume-directly.component';
+import { DetailsFillDirectlyComponent } from './shared/components/details-fill-directly/details-fill-directly.component';
+import { CreateResumeCommonDetailsComponent } from './shared/components/create-resume-common-details/create-resume-common-details.component';
+import { MobileResumeCommonDetailsComponent } from './shared/components/mobile-resume-common-details/mobile-resume-common-details.component';
+import { MobileDetailsDillDirectlyComponent } from './shared/components/mobile-details-dill-directly/mobile-details-dill-directly.component';
+ 
 
 
 const routes: Routes = [
@@ -26,6 +31,19 @@ const routes: Routes = [
 
   { path: 'forgot-password', component: ForgotPasswordComponent },
 
+  { path: 'create-resume-directly', component: CreateResumeDirectlyComponent },
+
+   { path: 'enter-details', component: DetailsFillDirectlyComponent },
+
+   { path: 'common-details', component: CreateResumeCommonDetailsComponent },
+
+   { path: 'resume-details', component: MobileResumeCommonDetailsComponent },
+
+   { path: 'get-details-using-ai', component: MobileDetailsDillDirectlyComponent },
+
+   
+
+   
   {
     path: 'candidate',
     loadChildren: () => import('./features/candidates/candidates.module').then((m) => m.CandidatesModule),
@@ -42,6 +60,8 @@ const routes: Routes = [
     path: 'mob-login',
     loadChildren: () => import('./auth-mobile/mobile-auth.module').then((m) => m.MobileAuthModule),
   }
+
+  
 
 ];
 

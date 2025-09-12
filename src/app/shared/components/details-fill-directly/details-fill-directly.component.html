@@ -1,0 +1,185 @@
+<div class="overlay" *ngIf="isUploading">
+  <div class="spinner-container">
+    <mat-spinner
+      [diameter]="80"
+      strokeWidth="5"
+      class="custom-blue"
+    ></mat-spinner>
+    <p class="loading-text">
+      Analysing Resume<span class="dot dot1">.</span
+      ><span class="dot dot2">.</span><span class="dot dot3">.</span>
+    </p>
+  </div>
+</div>
+
+<div class="overlay" *ngIf="isAnalysing">
+  <div class="spinner-container">
+    <mat-spinner
+      [diameter]="80"
+      strokeWidth="5"
+      class="custom-blue"
+    ></mat-spinner>
+    <p class="loading-text">
+      Analysing Details<span class="dot dot1">.</span
+      ><span class="dot dot2">.</span><span class="dot dot3">.</span>
+    </p>
+  </div>
+</div>
+
+<div class="profile-wrapper">
+  <button class="home-btn" (click)="goBack()">
+      <i class="fa fa-arrow-left"></i> Back
+  </button>
+  <div class="col-12 md:col-6" style="margin: 0 auto">
+    <div class="inside-label-textarea">
+      <span class="btn-position">
+        <span class="left-side">
+          <span class="heading-content">Tell about yourself (Intro)</span>
+          <span class="tooltip-bubble"
+            >Suggested
+            <span class="star">★</span>
+            <span class="star">★</span>
+            <span class="star">★</span>
+            <span class="star">★</span>
+            <span class="star">★</span>
+            <span class="star">★</span>
+            <span class="star">★</span>
+            <span class="star">★</span>
+            <span class="star">★</span>
+          </span>
+        </span>
+
+        <span class="right-side">
+          <span class="example-content"  (click)="togglePopup()">
+             Example Intro
+          </span>
+        </span>
+      </span>
+
+      <textarea
+        id="analysis"
+        rows="5"
+        #analysisBox
+        placeholder="Enter your details"
+        [(ngModel)]="analysisText"
+      ></textarea>
+      <span style="display: flex; justify-content: space-between">
+        <p>Count: {{ getCharacterCount(analysisText) }}</p>
+        <span class="hint-btn" (click)="hintPopup()">Hints/Tips</span>
+      </span>
+    </div>
+  </div>
+  <div style="display: flex; align-items: center; justify-content: center">
+    <button class="analysis" (click)="analyseWithAi(analysisBox.value)">
+      Continue With AI &#10024;
+    </button>
+  </div>
+
+  <div class="divider">
+    <span>or</span>
+  </div>
+
+  <div id="examplePopup" class="popup-box">
+    <h4>Example Self Introduction</h4>
+    <p>
+    Hello, my name is Abc.my gender is Male/Female I have completed my B.Tech in Computer Science from XXXXX Engineering College with an overall score of 100%, during the period 29th January 1955 to 30th March 1963. <br><br>
+
+   I also have one year of professional experience at YYY Company from 1st April 1963 to 31st March 1964, where I gained strong skills in software development, testing, sales, data entry and analysis, voice and non-voice support, and customer handling. This experience helped me strengthen my abilities in problem-solving, teamwork, communication, adaptability, and multitasking. <br><br>
+
+   Along with my technical background, I have developed leadership, time management, negotiation, and creativity skills. I enjoy exploring new ideas, taking on challenges, and contributing to projects that create a meaningful impact across industries.<br><br>
+      <b>  You can reach me at +91-1234567891 or via email at abc&#64;example.com</b>.
+    </p>
+
+    <span style="display: flex; justify-content: space-between">
+      <button class="close-btn" (click)="togglePopup()">Close</button>
+      <span>
+        <span
+          style="
+            font-size: 20px;
+            font-weight: bold;
+            font-style: italic;
+            margin-right: 10px;
+            color: rgb(255, 0, 38);
+            box-shadow: rgb(209, 199, 199);
+          "
+          >Copy & paste, then modify as per your details</span
+        >
+        <button class="Copy-btn" (click)="copyContent()">Copy</button>
+      </span>
+    </span>
+  </div>
+
+  <div id="hintPopup" class="hint-popup-box">
+    <h4>Sample Intro</h4>
+    <ul>
+      <li>You can add your <b>Name & Address</b></li>
+      <li><b>Education details</b> (College / School)</li>
+      <li><b>Work / Internship experience</b></li>
+      <li><b>Project details</b></li>
+      <li>
+        <b>Personal details</b> (DOB, Gender, Father’s Name, Nationality,
+        Marital Status, etc.)
+      </li>
+      <li><b>Contact details</b> (Mobile, Email, LinkedIn)</li>
+      <li><b>Additional Courses / Certificate details</b></li>
+      <li><b>Hobbies</b></li>
+      <li><b>Skills / Alternate skills</b></li>
+      <li><b>Known Technologies</b></li>
+      <li><b>Type of Job searching</b></li>
+      <li><b>Current / Preferred location</b></li>
+      <li><b>Last designation</b></li>
+      <li>Always add <b>duration</b> for Education / Work details</li>
+    </ul>
+    <button class="close-btn" (click)="hintPopup()">Close</button>
+  </div>
+
+  <div class="full-page-center">
+    <div class="upload-container">
+      <div class="upload-title">Upload Your Existing/Old Resume</div>
+      <input
+        type="file"
+        #attachment
+        style="display: none"
+        (change)="addAttachment($event)"
+        accept=".doc, .docx, .pdf"
+      />
+      <div class="upload-box">
+        <p *ngIf="!resume?.fileName">Upload your old resume here</p>
+        <button class="browse-btn" (click)="attachment.click()">
+          Upload Resume
+        </button>
+        <div *ngIf="resume?.fileName" class="uploaded-file mt-3">
+          <i class="pi pi-paperclip mr-2"></i>
+          <span>{{ resume?.fileName }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <span
+    style="
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    "
+    >— or —</span
+  >
+  <div style="display: flex; align-items: center; justify-content: center">
+    <button
+      class="enter-details"
+      style="margin-top: 10px"
+      (click)="enterDetails()"
+    >
+      Fill Details Yourself
+    </button>
+  </div>
+</div>
+
+<ng-container *ngIf="showErrorPopup">
+  <app-error-message
+    [message]="errorMessage"
+    (closePopupTap)="closePopupTap($event)"
+    [status]="errorStatus"
+  ></app-error-message>
+</ng-container>

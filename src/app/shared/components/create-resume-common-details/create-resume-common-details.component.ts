@@ -1,8 +1,13 @@
 import { DatePipe } from '@angular/common';
-import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ChangeDetectorRef, Component } from '@angular/core';
+import {
+  AbstractControl,
+  FormArray,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NgxUiLoaderService } from 'ngx-ui-loader';
 import {
   DialogService,
   DynamicDialogConfig,
@@ -17,23 +22,22 @@ import { Candidate } from 'src/app/models/candidates/candidate.model';
 import { Qualification } from 'src/app/models/candidates/qualification';
 import { Certificates } from 'src/app/models/candidates/certificates';
 import { Achievements } from 'src/app/models/candidates/achievements';
-import { PaymentService } from 'src/app/services/payment.service';
 import { CollegeProject } from 'src/app/models/candidates/college-project';
-import { MobileLoaderComponent } from 'src/app/shared/components/mobile-loader/mobile-loader.component';
+import { LoaderService } from 'src/app/services/loader.service';
+import { ToastService } from 'src/app/services/toast.service';
+import { Project } from 'src/app/models/candidates/project';
 
 @Component({
-  selector: 'app-resume-details-mobile',
+  selector: 'app-create-resume-common-details',
   standalone: false,
-  templateUrl: './resume-details-mobile.component.html',
-  styleUrl: './resume-details-mobile.component.css',
+  templateUrl: './create-resume-common-details.component.html',
+  styleUrl: './create-resume-common-details.component.css',
 })
-export class ResumeDetailsMobileComponent {
-  @ViewChild(MobileLoaderComponent)
-  mobileLoaderComponent!: MobileLoaderComponent;
-
+export class CreateResumeCommonDetailsComponent {
   candidateForm!: FormGroup;
   genderList: Array<ValueSet> = [];
   languages: Array<ValueSet> = [];
+  nationalityList: Array<ValueSet> = [];
   noticePeriodList: Array<ValueSet> = [];
   candidateId: any;
   showError: boolean = false;
@@ -83,23 +87,26 @@ export class ResumeDetailsMobileComponent {
   achievements: boolean = true;
   extraSkills: boolean = true;
   qualification: boolean = true;
-  candidatesUpdateData: any;
-  resumeDetailsFlag: boolean = false;
+  isUploading: boolean = false;
+  citiesName: any;
+  stateNames: any;
+  additionalDetailsForm!: FormGroup;
 
   constructor(
     private api: ApiService,
     private fb: FormBuilder,
     private gs: GlobalService,
     private datePipe: DatePipe,
-    private dialog: DialogService,
-    private route: ActivatedRoute,
-    private cdr: ChangeDetectorRef,
     private router: Router,
     public ref: DynamicDialogRef,
-    private config: DynamicDialogConfig,
-    private ps: PaymentService
+    private loader: LoaderService,
+    private toast: ToastService
   ) {
-    this.candidates = this.config.data?.candidates;
+    this.gs.candidateDetails$.subscribe((response) => {
+      if (response !== null && response !== undefined) {
+        this.candidates = response;
+      }
+    });
   }
 
   ngOnInit() {
@@ -109,29 +116,12 @@ export class ResumeDetailsMobileComponent {
     this.getLanguages();
     this.getMaritalStatus();
     this.getFieldOfStudy();
+    this.createAdditionalDetailsForm();
+    this.getStateNames();
+    this.getNationalityList();
 
     if (this.candidates !== null && this.candidates !== undefined) {
-      this.candidateId = this.candidates.id;
       const candidateClone = JSON.parse(JSON.stringify(this.candidates));
-      this.patchCandidateForm(candidateClone);
-    }
-
-    this.gs.candidateDetails$.subscribe((response) => {
-      this.candidatesUpdateData = response;
-    });
-
-    if (
-      this.candidatesUpdateData !== null &&
-      this.candidatesUpdateData !== undefined
-    ) {
-      this.resumeDetailsFlag = true;
-
-      this.candidateId = this.candidatesUpdateData?.id;
-      this.candidates = this.candidatesUpdateData;
-
-      const candidateClone = JSON.parse(
-        JSON.stringify(this.candidatesUpdateData)
-      );
       this.patchCandidateForm(candidateClone);
     }
   }
@@ -139,31 +129,58 @@ export class ResumeDetailsMobileComponent {
   ngAfterViewInit() {}
 
   createCandidateForm() {
-    this.candidateForm = this.fb.group({
-      id: [''],
-      name: ['', Validators.required],
-      mobileNumber: [
-        '',
-        Validators.compose([Validators.required, Validators.minLength(10)]),
-      ],
-      email: ['', Validators.compose([Validators.required, Validators.email])],
-      gender: ['',Validators.required],
-      nationality: [''],
-      languagesKnown: [''],
-      fresher: [''],
-      skills: ['', Validators.required],
-      linkedIn: [''],
-      dob: [''],
-      address: [''],
-      maritalStatus: [''],
-      experiences: this.fb.array([this.createExperience()]),
-      qualification: this.fb.array([this.createQualification()]),
-      certificates: this.fb.array([this.createCertificates()]),
-      achievements: this.fb.array([this.createAchievements()]),
-      softSkills: [''],
-      coreCompentencies: [''],
-      collegeProject: this.fb.array([this.createCollegeProject()]),
-    });
+    this.candidateForm = this.fb.group(
+      {
+        id: [''],
+        name: ['', Validators.required],
+        mobileNumber: [
+          '',
+          Validators.compose([Validators.required, Validators.minLength(10)]),
+        ],
+        email: [
+          '',
+          Validators.compose([Validators.required, Validators.email]),
+        ],
+        gender: ['', Validators.required],
+        nationality: [''],
+        languagesKnown: [''],
+        fresher: [''],
+        skills: ['', Validators.required],
+        linkedIn: [''],
+        dob: [''],
+        address: [''],
+        maritalStatus: [''],
+        experiences: this.fb.array([]),
+        qualification: this.fb.array([]),
+        certificates: this.fb.array([]),
+        achievements: this.fb.array([]),
+        softSkills: [''],
+        coreCompentencies: [''],
+        collegeProject: this.fb.array([]),
+        coreCompentenciesMandatory: [''],
+        softSkillsMandatory: [''],
+        certificatesMandatory: [''],
+        achievementsMandatory: [''],
+        summary: [''],
+        careerObjective: [''],
+        fatherName: [''],
+        hobbies: [''],
+      },
+      { validators: [this.fresherOrExperienceValidator()] }
+    );
+  }
+
+  fresherOrExperienceValidator() {
+    return (formGroup: AbstractControl): { [key: string]: any } | null => {
+      const fresher = formGroup.get('fresher')?.value;
+      const experiences = formGroup.get('experiences') as FormArray;
+
+      if (!fresher && experiences.length === 0) {
+        return { fresherOrExperienceRequired: true };
+      }
+
+      return null;
+    };
   }
 
   getGenderList() {
@@ -203,9 +220,10 @@ export class ResumeDetailsMobileComponent {
     );
   }
 
-  createCandidate() {
+  createCandidateAfterLogin() {
+    this.loader.start();
     if (this.candidateForm.valid) {
-   this.dataLoaded = false;
+      this.dataLoaded = false;
 
       const route = 'candidate/create';
       const payload = this.candidateForm.getRawValue();
@@ -250,9 +268,13 @@ export class ResumeDetailsMobileComponent {
               'yyyy-MM-dd'
             );
 
-           const responsibilities = Array.isArray(exp.responsibilities)
-           ? exp.responsibilities.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ')
-            : exp.responsibilities;
+            const responsibilities = Array.isArray(exp.responsibilities)
+              ? exp.responsibilities
+                  .map((r: any) =>
+                    typeof r === 'string' ? r : r.task || r.value || ''
+                  )
+                  .join(', ')
+              : exp.responsibilities;
 
             let projects = exp.projects || [];
             const hasEmptyProjectName = projects.some(
@@ -265,8 +287,12 @@ export class ResumeDetailsMobileComponent {
               projects = projects.map((proj: any) => ({
                 ...proj,
                 projectSkills: Array.isArray(proj.projectSkills)
-           ? proj.projectSkills.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ')
-            : proj.projectSkills,
+                  ? proj.projectSkills
+                      .map((r: any) =>
+                        typeof r === 'string' ? r : r.task || r.value || ''
+                      )
+                      .join(', ')
+                  : proj.projectSkills,
               }));
             }
 
@@ -331,14 +357,13 @@ export class ResumeDetailsMobileComponent {
         });
       }
 
-       if (Object.is(payload.hobbies, '')) {
+      if (Object.is(payload.hobbies, '')) {
         payload.hobbies = '';
       } else {
         const hobbiesList: string[] = payload.hobbies;
-        const commaSeparatedString: string = hobbiesList.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ');
+        const commaSeparatedString: string = hobbiesList.join(', ');
         payload.hobbies = commaSeparatedString;
       }
-
 
       if (
         payload.languagesKnown.length === 0 ||
@@ -347,16 +372,15 @@ export class ResumeDetailsMobileComponent {
         payload.languagesKnown = '';
       } else {
         const stringList: string[] = payload.languagesKnown;
-        const commaSeparatedString: string = stringList.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ');
+        const commaSeparatedString: string = stringList.join(', ');
         payload.languagesKnown = commaSeparatedString;
       }
 
       if (Object.is(payload.skills, '')) {
         payload.skills = '';
       } else {
-
         const stringList: string[] = payload.skills;
-        const commaSeparatedString: string = stringList.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ');
+        const commaSeparatedString: string = stringList.join(', ');
         payload.skills = commaSeparatedString;
       }
 
@@ -364,7 +388,7 @@ export class ResumeDetailsMobileComponent {
         payload.softSkills = '';
       } else {
         const stringList: string[] = payload.softSkills;
-        const commaSeparatedString: string = stringList.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ');
+        const commaSeparatedString: string = stringList.join(', ');
         payload.softSkills = commaSeparatedString;
       }
 
@@ -372,7 +396,7 @@ export class ResumeDetailsMobileComponent {
         payload.coreCompentencies = '';
       } else {
         const stringList: string[] = payload.coreCompentencies;
-        const commaSeparatedString: string = stringList.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ');
+        const commaSeparatedString: string = stringList.join(', ');
         payload.coreCompentencies = commaSeparatedString;
       }
 
@@ -395,15 +419,20 @@ export class ResumeDetailsMobileComponent {
             payload.collegeProject = payload.collegeProject.map(
               (project: any) => ({
                 ...project,
-                collegeProjectSkills:  Array.isArray(project.collegeProjectSkills)
-           ? project.collegeProjectSkills.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ')
-            : project.collegeProjectSkills,
+                collegeProjectSkills: Array.isArray(
+                  project.collegeProjectSkills
+                )
+                  ? project.collegeProjectSkills
+                      .map((r: any) =>
+                        typeof r === 'string' ? r : r.task || r.value || ''
+                      )
+                      .join(', ')
+                  : project.collegeProjectSkills,
               })
             );
           }
         }
       }
-
 
       payload.coreCompentenciesMandatory =
         this.candidates?.coreCompentenciesMandatory !== null
@@ -429,32 +458,107 @@ export class ResumeDetailsMobileComponent {
         next: (response) => {
           this.candidateId = response?.id;
           this.dataLoaded = true;
-          localStorage.setItem('candidateId', this.candidateId);
+          this.returnCandidate = response;
 
           this.uploadCandidateImage();
 
-          this.returnCandidate = response;
           this.returnCandidate.candidateLogo = this.candidateImageUrl;
           response.candidateLogo = this.candidateImageUrl;
 
-          this.close(this.returnCandidate);
+          if (!response?.fresher) {
+            this.saveCandidateAddtionalDetails(
+              this.candidateId,
+              response?.mobileNumber
+            );
+          }
 
-          window.alert('Candidate Created Successfully');
+          this.loader.stop();
+
+          this.gs.setCandidateDetails(response);
+
+          if (
+            this.candidateImageUrl !== null &&
+            this.candidateImageUrl !== undefined
+          ) {
+            this.gs.setCandidateImage(this.candidateImageUrl);
+          }
+
+          const username = sessionStorage.getItem('userName');
+          const password = sessionStorage.getItem('password');
+
+         const proceed = window.confirm(
+            "Login anytime by your UserName '" +
+              username +
+              "' and Password '" +
+              password
+          );
+
+          if (proceed) {
+            this.router.navigate(['candidate/template']);
+          } else {
+            this.router.navigate(['candidate/template']);
+          }
         },
         error: (error) => {
+          this.loader.stop();
           this.dataLoaded = true;
-          window.alert('Error in Creating Resume ');
+          this.gs.showMessage('Error', 'Error in Creating Resume');
+
+          console.log(error);
         },
       });
       this.dataLoaded = true;
     } else {
-      window.alert('Please fill the mandatory fields');
+      this.loader.stop();
       this.showError = true;
+      this.toast.showToast('error', 'Enter All Mandatory Fields');
+      this.candidateForm.markAllAsTouched();
     }
   }
 
   reset() {
     this.candidateForm.reset();
+  }
+
+  createCandidate() {
+    this.loader.start();
+    if (this.candidateForm.valid) {
+      this.dataLoaded = false;
+
+      const route = 'user/create-by-resume';
+      const postData = {
+        name: this.candidateForm.get('name')?.value,
+        email: this.candidateForm.get('email')?.value,
+        mobileNumber: this.candidateForm.get('mobileNumber')?.value,
+        userName: this.candidateForm.get('name')?.value,
+      };
+
+      this.api.retrieve(route, postData).subscribe({
+        next: (response) => {
+          if (response) {
+            localStorage.clear();
+            this.gs.navigate.next(false);
+            sessionStorage.setItem('authType', 'custom');
+            sessionStorage.setItem('token', response.token);
+            sessionStorage.setItem('userName', response.userName);
+            sessionStorage.setItem('userId', response.id);
+            sessionStorage.setItem('password', response.password);
+
+            this.createCandidateAfterLogin();
+          }
+        },
+        error: (error) => {
+          this.loader.stop();
+          this.dataLoaded = true;
+          this.gs.showMessage(error.error?.status, error.error?.message);
+        },
+      });
+    } else {
+      this.loader.stop();
+      this.showError = true;
+      this.toast.showToast('error', 'Enter All Mandatory Fields');
+      this.candidateForm.markAllAsTouched();
+    }
   }
 
   //For experience
@@ -470,9 +574,10 @@ export class ResumeDetailsMobileComponent {
       role: [''],
       experienceYearStartDate: [''],
       experienceYearEndDate: [''],
-      projects: this.fb.array([this.createProject()]),
+      projects: this.fb.array([]),
       currentlyWorking: [''],
       responsibilities: [''],
+      isDeleted: false,
     });
   }
 
@@ -483,6 +588,7 @@ export class ResumeDetailsMobileComponent {
       projectSkills: [''],
       projectRole: [''],
       projectDescription: [''],
+      isDeleted: false,
     });
   }
 
@@ -494,7 +600,7 @@ export class ResumeDetailsMobileComponent {
     const confirmDelete = window.confirm(
       'Are you sure you want to remove this Experience?'
     );
-    if (confirmDelete && this.experienceControls.length > 1) {
+    if (confirmDelete && this.experienceControls.length >= 1) {
       const removedExperience = this.experienceControls.at(index).value;
       console.log('Removed Experience:', removedExperience);
       if (removedExperience.id) {
@@ -534,7 +640,7 @@ export class ResumeDetailsMobileComponent {
 
     const projectArray = this.getProjects(experienceIndex);
 
-    if (confirmDelete && projectArray.length > 1) {
+    if (confirmDelete && projectArray.length >= 1) {
       const removedProject = projectArray.at(projectIndex).value;
 
       if (removedProject.id) {
@@ -558,6 +664,7 @@ export class ResumeDetailsMobileComponent {
       qualificationEndYear: [''],
       percentage: [''],
       fieldOfStudy: [''],
+      isDeleted: false,
     });
   }
 
@@ -573,7 +680,7 @@ export class ResumeDetailsMobileComponent {
     const confirmDelete = window.confirm(
       'Are you sure you want to remove this qualification?'
     );
-    if (confirmDelete && this.qualificationControls.length > 1) {
+    if (confirmDelete && this.qualificationControls.length >= 1) {
       const removedQualification = this.qualificationControls.at(index).value;
       if (removedQualification.id) {
         removedQualification.isDeleted = true;
@@ -606,7 +713,7 @@ export class ResumeDetailsMobileComponent {
     const confirmDelete = window.confirm(
       'Are you sure you want to remove this certificates?'
     );
-    if (confirmDelete && this.certificateControls.length > 1) {
+    if (confirmDelete && this.certificateControls.length >= 1) {
       const removedCertificate = this.certificateControls.at(index).value;
       if (removedCertificate.id) {
         removedCertificate.isDeleted = true;
@@ -624,6 +731,7 @@ export class ResumeDetailsMobileComponent {
       courseName: [''],
       courseStartDate: [''],
       courseEndDate: [''],
+      isDeleted: false,
     });
   }
 
@@ -641,7 +749,7 @@ export class ResumeDetailsMobileComponent {
     const confirmDelete = window.confirm(
       'Are you sure you want to remove this achievements?'
     );
-    if (confirmDelete && this.achievementsControls.length > 1) {
+    if (confirmDelete && this.achievementsControls.length >= 1) {
       const removedAchievement = this.achievementsControls.at(index).value;
       if (removedAchievement.id) {
         removedAchievement.isDeleted = true;
@@ -658,6 +766,7 @@ export class ResumeDetailsMobileComponent {
       id: [''],
       achievementsName: [''],
       achievementsDate: [''],
+      isDeleted: [''],
     });
   }
 
@@ -750,7 +859,11 @@ export class ResumeDetailsMobileComponent {
           .map((skill: string) => skill.trim())
       : [];
 
-    if (candidate.certificates?.length > 0) {
+    candidate.hobbies = candidate?.hobbies
+      ? candidate.hobbies.split(',').map((skill: string) => skill.trim())
+      : [];
+
+    if (candidate.certificates?.some((c) => c && c.courseName?.trim())) {
       const certificateFormArray = this.candidateForm.get(
         'certificates'
       ) as FormArray;
@@ -761,10 +874,12 @@ export class ResumeDetailsMobileComponent {
       });
     }
 
-    if (candidate.experiences?.length > 0) {
+    if (candidate.experiences?.some((e) => e && e.companyName.trim())) {
       this.patchExperiences(candidate.experiences);
     } else {
-      if (candidate.collegeProject?.length > 0) {
+      if (
+        candidate?.collegeProject.some((c) => c && c.collegeProjectName.trim())
+      ) {
         const collegeProjectFromArray = this.candidateForm.get(
           'collegeProject'
         ) as FormArray;
@@ -778,7 +893,11 @@ export class ResumeDetailsMobileComponent {
       }
     }
 
-    if (candidate.qualification?.length > 0) {
+    if (
+      candidate.qualification?.some(
+        (q) => q && (q.institutionName?.trim() || q.fieldOfStudy?.trim())
+      )
+    ) {
       const qualificationFormArray = this.candidateForm.get(
         'qualification'
       ) as FormArray;
@@ -791,7 +910,7 @@ export class ResumeDetailsMobileComponent {
       });
     }
 
-    if (candidate.achievements?.length > 0) {
+    if (candidate.achievements?.some((a) => a && a.achievementsName.trim())) {
       const achievementFormArray = this.candidateForm.get(
         'achievements'
       ) as FormArray;
@@ -824,12 +943,14 @@ export class ResumeDetailsMobileComponent {
       coreCompentencies: candidate?.coreCompentencies
         ? candidate?.coreCompentencies
         : [],
-      summary: candidate?.summary,
-      careerObjective: candidate?.careerObjective,
-      coreCompentenciesMandatory: candidate?.coreCompentenciesMandatory,
+      coreCompentenciesMandatory: candidate?.certificatesMandatory,
       softSkillsMandatory: candidate?.softSkillsMandatory,
       certificatesMandatory: candidate?.certificatesMandatory,
       achievementsMandatory: candidate?.achievementsMandatory,
+      summary: candidate?.summary,
+      careerObjective: candidate?.careerObjective,
+      hobbies: candidate?.hobbies ? candidate?.hobbies : [],
+      fatherName: candidate?.fatherName,
     });
   }
 
@@ -837,12 +958,8 @@ export class ResumeDetailsMobileComponent {
     return this.fb.group({
       id: certificate.id,
       courseName: certificate.courseName,
-      courseStartDate: certificate.courseStartDate
-        ? new Date(certificate.courseStartDate)
-        : null,
-      courseEndDate: certificate.courseEndDate
-        ? new Date(certificate.courseEndDate)
-        : null,
+      courseStartDate: this.toValidDate(certificate.courseStartDate),
+      courseEndDate: this.toValidDate(certificate.courseEndDate),
       isDeleted: [''],
     });
   }
@@ -865,17 +982,18 @@ export class ResumeDetailsMobileComponent {
           id: experience.id,
           companyName: experience.companyName,
           role: experience.role,
-          experienceYearStartDate: experience.experienceYearStartDate
-            ? new Date(experience.experienceYearStartDate)
-            : null,
-          experienceYearEndDate: experience.experienceYearEndDate
-            ? new Date(experience.experienceYearEndDate)
-            : null,
+          experienceYearStartDate: this.toValidDate(
+            experience.experienceYearStartDate
+          ),
+          experienceYearEndDate: this.toValidDate(
+            experience.experienceYearEndDate
+          ),
           currentlyWorking: experience.currentlyWorking,
           responsibilities: responsibilities,
+          isDeleted: false,
         });
 
-        if (experience.projects?.length > 0) {
+        if (experience?.projects.some((p: Project) => p?.projectName?.trim())) {
           const projectFormArray = experienceForm.get('projects') as FormArray;
           projectFormArray.clear();
           experience.projects?.forEach((project: any) => {
@@ -905,14 +1023,15 @@ export class ResumeDetailsMobileComponent {
       id: qualification.id,
       institutionName: qualification.institutionName,
       department: qualification.department,
-      qualificationStartYear: qualification.qualificationStartYear
-        ? new Date(qualification.qualificationStartYear)
-        : null,
-      qualificationEndYear: qualification.qualificationEndYear
-        ? new Date(qualification.qualificationEndYear)
-        : null,
+      qualificationStartYear: this.toValidDate(
+        qualification.qualificationStartYear
+      ),
+      qualificationEndYear: this.toValidDate(
+        qualification.qualificationEndYear
+      ),
       percentage: qualification.percentage,
       fieldOfStudy: qualification.fieldOfStudy,
+      isDeleted: false,
     });
   }
 
@@ -924,9 +1043,8 @@ export class ResumeDetailsMobileComponent {
     return this.fb.group({
       id: achievement.id,
       achievementsName: achievement.achievementsName,
-      achievementsDate: achievement.achievementsDate
-        ? new Date(achievement.achievementsDate)
-        : null,
+      achievementsDate: this.toValidDate(achievement.achievementsDate),
+      isDeleted: false,
     });
   }
 
@@ -963,7 +1081,7 @@ export class ResumeDetailsMobileComponent {
     const confirmDelete = window.confirm(
       'Are you sure you want to remove this project?'
     );
-    if (confirmDelete && this.collegeProjectControls.length > 1) {
+    if (confirmDelete && this.collegeProjectControls.length >= 1) {
       const removeCollegeProject = this.collegeProjectControls.at(index).value;
       if (removeCollegeProject.id) {
         removeCollegeProject.isDeleted = true;
@@ -981,6 +1099,7 @@ export class ResumeDetailsMobileComponent {
       collegeProjectName: [''],
       collegeProjectSkills: [''],
       collegeProjectDescription: [''],
+      isDeleted: false,
     });
   }
 
@@ -997,6 +1116,7 @@ export class ResumeDetailsMobileComponent {
 
           this.patchCandidateForm(candidateClone);
           this.getCandidateImage(candidate?.id);
+          this.getAdditionaDetails(candidate?.mobileNumber);
 
           if (this.candidateId !== null && this.candidateId !== undefined) {
             this.candidateForm.controls['mobileNumber'].disable();
@@ -1020,248 +1140,265 @@ export class ResumeDetailsMobileComponent {
     });
   }
 
-  saveandcreateresume() {
-    this.mobileLoaderComponent.startLoader();
-    if (this.candidateForm.valid) {
-      this.dataLoaded = false;
+  getResumeContent(content: any) {
+    this.ngxLoaderStart();
 
-      const route = 'candidate/create';
-      const payload = this.candidateForm.getRawValue();
+    const route = `content/openai?content=${content}`;
 
-      if (payload.lastWorkingDate) {
-        payload['lastWorkingDate'] = this.datePipe.transform(
-          payload.lastWorkingDate,
-          'yyyy-MM-dd'
-        );
-      }
+    this.api.get(route).subscribe({
+      next: (response) => {
+        if (response) {
+          const responseContent = response as any;
+          if (content === 'Summary') {
+            this.candidateForm
+              .get('summary')
+              ?.setValue(responseContent?.resumeContent);
 
-      if (payload.dob != null) {
-        payload.dob = this.datePipe.transform(payload.dob, 'yyyy-MM-dd');
-      }
+            this.ngxLoaderStop();
+          } else {
+            this.candidateForm
+              .get('careerObjective')
+              ?.setValue(responseContent?.resumeContent);
 
-      if (payload.fresher != null && payload.fresher) {
-        payload['fresher'] = true;
-      } else {
-        payload['fresher'] = false;
-      }
-
-      if (payload.fresher) {
-        payload.experiences = [];
-      }
-
-      if (payload.fresher) {
-        if (Object.is(payload.collegeProject[0].collegeProjectName, '')) {
-          payload.collegeProject = [];
-        } else {
-          payload.collegeProject = payload.collegeProject.map((proj: any) => ({
-            ...proj,
-            collegeProjectSkills: Array.isArray(proj.collegeProjectSkills)
-              ? proj.collegeProjectSkills.join(', ')
-              : proj.collegeProjectSkills,
-          }));
+            this.ngxLoaderStop();
+          }
         }
-      }
+      },
+      error: (error) => {
+        this.dataLoaded = true;
+        this.gs.showMessage('Error', 'Please try after some time');
 
-      if (!payload.fresher) {
-        if (Object.is(payload.experiences?.[0]?.companyName, '')) {
-          payload.experiences = [];
-        } else {
-          payload.experiences = payload.experiences.map((exp: any) => {
-            const experienceYearStartDate = this.datePipe.transform(
-              exp.experienceYearStartDate,
-              'yyyy-MM-dd'
-            );
-            const experienceYearEndDate = this.datePipe.transform(
-              exp.experienceYearEndDate,
-              'yyyy-MM-dd'
-            );
+        console.log(error);
+      },
+    });
+  }
 
-            const responsibilities = Array.isArray(exp.responsibilities)
-              ? exp.responsibilities.join(', ')
-              : exp.responsibilities;
+  ngxLoaderStop() {
+    setTimeout(() => {
+      this.isUploading = false;
+    }, 2000);
+  }
 
-            let projects = exp.projects || [];
-            const hasEmptyProjectName = projects.some(
-              (proj: any) => proj.projectName === ''
-            );
+  ngxLoaderStart() {
+    this.isUploading = true;
+  }
 
-            if (hasEmptyProjectName) {
-              projects = [];
-            } else {
-              projects = projects.map((proj: any) => ({
-                ...proj,
-                projectSkills: Array.isArray(proj.projectSkills)
-                  ? proj.projectSkills.join(', ')
-                  : proj.projectSkills,
-              }));
-            }
+  createAdditionalDetailsForm() {
+    this.additionalDetailsForm = this.fb.group({
+      stateName: ['', Validators.required],
+      preferredLocation: ['', Validators.required],
+      currentCostToCompany: [''],
+      expectedCostToCompany: [''],
+      totalWorkExperience: [''],
+      relevantExperience: [''],
+      companyName: [''],
+      qualification: [''],
+    });
+  }
 
-            return {
-              ...exp,
-              experienceYearStartDate,
-              experienceYearEndDate,
-              responsibilities,
-              projects,
-            };
-          });
-        }
-      }
+  selectedState(event: any) {
+    const stateId = event.value;
 
-      if (Object.is(payload.qualification[0].institutionName, '')) {
-        payload.qualification = [];
-      } else {
-        payload.qualification.forEach((q: any) => {
-          q.qualificationStartYear = this.datePipe.transform(
-            q.qualificationStartYear,
-            'yyyy-MM-dd'
-          );
-          q.qualificationEndYear = this.datePipe.transform(
-            q.qualificationEndYear,
-            'yyyy-MM-dd'
-          );
-        });
-      }
+    const route = 'cities/retrive-cities';
+    const stateIdList: Array<any> = [];
+    stateId.forEach((state: any) => {
+      stateIdList.push(state);
+    });
 
-      if (Object.is(payload.achievements[0].achievementsName, '')) {
-        payload.achievements = [];
-      } else {
-        payload.achievements.forEach((cert: any) => {
-          cert.achievementsDate = this.datePipe.transform(
-            cert.achievementsDate,
-            'yyyy-MM-dd'
-          );
-        });
-      }
+    const postData = { stateIdList: stateIdList };
+    this.api.retrieve(route, postData).subscribe({
+      next: (response: any) => {
+        this.citiesName = response;
+      },
+    });
+  }
 
-      if (Object.is(payload.certificates[0].courseName, '')) {
-        payload.certificates = [];
-      } else {
-        payload.certificates.forEach((cert: any) => {
-          cert.courseStartDate = this.datePipe.transform(
-            cert.courseStartDate,
-            'yyyy-MM-dd'
-          );
-          cert.courseEndDate = this.datePipe.transform(
-            cert.courseEndDate,
-            'yyyy-MM-dd'
-          );
-        });
-      }
+  getStateNames() {
+    const route = 'cities';
+    this.api.get(route).subscribe({
+      next: (response: any) => {
+        this.stateNames = response;
+      },
+    });
+  }
 
-      if (Object.is(payload.languagesKnown, '')) {
-        payload.languagesKnown = '';
-      } else {
-        const stringList: string[] = payload.languagesKnown;
-        const commaSeparatedString: string = stringList.join(', ');
-        payload.languagesKnown = commaSeparatedString;
-      }
+  saveCandidateAddtionalDetails(id: any, mobile: any) {
+    if (this.additionalDetailsForm.valid) {
+      const stateIds = this.additionalDetailsForm.controls['stateName'].value;
 
-      if (Object.is(payload.skills, '')) {
-        payload.skills = '';
-      } else {
-        const stringList: string[] = payload.skills;
-        const commaSeparatedString: string = stringList.join(', ');
-        payload.skills = commaSeparatedString;
-      }
+      const selectedStateNames = stateIds
+        .map((id: any) => {
+          const state = this.stateNames.find((s: any) => s.id == id);
+          return state ? state.stateName : null;
+        })
+        .filter((name: string | null) => name !== null)
+        .join(', ');
 
-      if (Object.is(payload.softSkills, '')) {
-        payload.softSkills = '';
-      } else {
-        const stringList: string[] = payload.softSkills;
-        const commaSeparatedString: string = stringList.join(', ');
-        payload.softSkills = commaSeparatedString;
-      }
+      const location =
+        this.additionalDetailsForm.controls['preferredLocation'].value;
 
-      if (Object.is(payload.coreCompentencies, '')) {
-        payload.coreCompentencies = '';
-      } else {
-        const stringList: string[] = payload.coreCompentencies;
-        const commaSeparatedString: string = stringList.join(', ');
-        payload.coreCompentencies = commaSeparatedString;
-      }
+      const preferredLocation = location.join(', ');
 
-      if (payload.fresher) {
-        const hasValidProject = payload.collegeProject.some(
-          (project: { collegeProjectName: string }) =>
-            project.collegeProjectName &&
-            project.collegeProjectName.trim() !== ''
-        );
+      const route = 'candidate/save-additoinal-details';
+      const payload = this.additionalDetailsForm.getRawValue();
 
-        if (!hasValidProject) {
-          payload.collegeProject = [];
-        } else {
-          payload.collegeProject = payload.collegeProject.map(
-            (project: { collegeProjectSkills: any[] }) => ({
-              ...project,
-              collegeProjectSkills: Array.isArray(project.collegeProjectSkills)
-                ? project.collegeProjectSkills.join(', ')
-                : '',
-            })
-          );
-        }
-      } else {
-        payload.collegeProject = [];
-      }
+      payload['stateName'] = selectedStateNames;
+      payload['candidateId'] = id;
+      payload['preferredLocation'] = preferredLocation;
+      payload['mobileNumber'] = mobile;
 
       this.api.retrieve(route, payload).subscribe({
-        next: (response) => {
-          this.candidateId = response?.id;
-
-          localStorage.setItem('candidateId', this.candidateId);
-          this.candidates = response;
-          this.uploadCandidateImage();
-
-          this.mobileLoaderComponent.stopLoader();
-          this.chooseTemplate();
-
-          this.dataLoaded = true;
-        },
-        error: (error) => {
-          this.mobileLoaderComponent.stopLoader();
-          this.dataLoaded = true;
-          window.alert('Error in Creating Resume');
-          console.log(error);
-        },
+        next: (response: any) => {},
       });
-      this.dataLoaded = true;
-    } else {
-      this.mobileLoaderComponent.stopLoader();
-      this.gs.showMessage('error', 'Please fill the mandatory fields');
-      this.showError = true;
-    }
-  }
-  backToDashboard() {
-    history.back();
-  }
-
-  chooseTemplate() {
-    this.gs.setCandidateDetails(this.candidates);
-    if (
-      this.candidateImageUrl !== null &&
-      this.candidateImageUrl !== undefined
-    ) {
-      this.gs.setCandidateImage(this.candidateImageUrl);
-    }
-    if (this.candidates !== null && this.candidates !== undefined) {
-      this.router.navigate(['mob-candidate/choose-Template']);
-    } else {
-      window.alert('Please enter the details');
     }
   }
 
-  addSkill(controlName: string, inputId: string) {
-    const inputEl = document.getElementById(inputId) as HTMLInputElement;
-    const value = inputEl?.value?.trim();
+  patchAdditionalDetails(additonalDetails: any) {
+    const stateNameArray = additonalDetails?.stateName
+      ? additonalDetails.stateName
+          .split(',')
+          .map((state: string) => state.trim())
+      : [];
 
-    if (value) {
-      const control = this.candidateForm.get(controlName);
-      const current = control?.value || [];
+    const matchedStateIds = stateNameArray
+      .map((name: string) => {
+        const state = this.stateNames.find((s: any) => s.stateName === name);
+        return state ? state.id : null;
+      })
+      .filter((id: any) => id !== null);
 
-      if (!current.includes(value)) {
-        control?.setValue([...current, value]);
+    const preferredLocationArray = additonalDetails?.preferredLocation
+      ? additonalDetails.preferredLocation
+          .split(',')
+          .map((city: string) => city.trim())
+          .filter(
+            (city: string) =>
+              city && this.citiesName.some((c: any) => c.cityName === city)
+          )
+      : [];
+
+    this.additionalDetailsForm.patchValue({
+      stateName: matchedStateIds,
+      preferredLocation: preferredLocationArray,
+      currentCostToCompany: additonalDetails?.currentCostToCompany,
+      expectedCostToCompany: additonalDetails?.expectedCostToCompany,
+      totalWorkExperience: additonalDetails?.totalWorkExperience,
+      relevantExperience: additonalDetails?.relevantExperience,
+      companyName: additonalDetails?.companyName,
+      qualification: additonalDetails?.qualification,
+    });
+  }
+
+  getAdditionaDetails(mobile: any) {
+    const route = `candidate/by_mobile?mobile=${mobile}`;
+    this.api.get(route).subscribe({
+      next: (response: any) => {
+        if (response) {
+          const candidateAdditinalDetails = response;
+
+          this.getPrefferedLocationByStateId(response);
+        }
+      },
+      error: (error) => {},
+    });
+  }
+
+  getPrefferedLocationByStateId(additonalDetails: any) {
+    const stateNameArray = additonalDetails?.stateName
+      ? additonalDetails.stateName
+          .split(',')
+          .map((state: string) => state.trim())
+      : [];
+
+    const matchedStateIds = stateNameArray
+      .map((name: string) => {
+        const state = this.stateNames.find((s: any) => s.stateName === name);
+        return state ? state.id : null;
+      })
+      .filter((id: any) => id !== null);
+
+    const route = 'cities/retrive-cities';
+    const postData = { stateIdList: matchedStateIds };
+    this.api.retrieve(route, postData).subscribe({
+      next: (response: any) => {
+        this.citiesName = response;
+
+        this.patchAdditionalDetails(additonalDetails);
+      },
+    });
+  }
+
+  home() {
+    this.router.navigate(['enter-details']);
+  }
+
+  getNationalityList() {
+    const route = 'value-sets/search-by-code';
+    const postData = { valueSetCode: 'NATIONALITY' };
+    this.api.retrieve(route, postData).subscribe({
+      next: (response) => {
+        this.nationalityList = response;
+      },
+    });
+  }
+
+  openSoftSkillsExample() {
+    const popup = document.getElementById('examplePopup');
+    if (popup !== null) {
+      popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
+    }
+  }
+
+  openSoftCoreCompentienciesExample() {
+    const popup = document.getElementById('exampleCorePopup');
+    if (popup !== null) {
+      popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
+    }
+  }
+
+  copyTextToChips(text: string, controlName: string) {
+    const control = this.candidateForm.get(controlName);
+    if (control) {
+      let currentValue = control.value || [];
+      // Prevent duplicates
+      if (!currentValue.includes(text)) {
+        currentValue.push(text);
+        control.setValue(currentValue);
+      }
+    }
+  }
+
+  toValidDate(value: any): Date | null {
+    if (!value || value === 'NaN/NaN/NaN') return null;
+
+    if (value instanceof Date && !isNaN(value.getTime())) return value;
+
+    if (typeof value === 'string') {
+      const trimmed = value.trim();
+
+      // dd/MM/yyyy format
+      const match = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(trimmed);
+      if (match) {
+        const day = parseInt(match[1], 10);
+        const month = parseInt(match[2], 10) - 1;
+        const year = parseInt(match[3], 10);
+        const date = new Date(year, month, day);
+        return !isNaN(date.getTime()) ? date : null;
       }
 
-      inputEl.value = '';
+      // fallback
+      const date = new Date(trimmed);
+      return !isNaN(date.getTime()) ? date : null;
     }
+
+    return null;
+  }
+
+  loginIntoApplication() {
+    const route = 'user/create';
+    const postData = { valueSetCode: 'NATIONALITY' };
+    this.api.retrieve(route, postData).subscribe({
+      next: (response) => {},
+    });
   }
 }

@@ -36,7 +36,7 @@ export class LoginComponent {
   ngOnInit() {
       if (this.isMobileDevice()) {
       // redirect to mobile login if mobile
-      this.router.navigate(['/mob-login']);
+      this.router.navigate(['/mob-login/create-account-directly']);
     }
     this.createLoginForm();
   }

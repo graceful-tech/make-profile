@@ -40,7 +40,7 @@ export class LandingPageComponent {
   }
 
   toLogin() {
-    this.router.navigate(['/login']);
+    this.router.navigate(['/create-resume-directly']);
   }
 
   // @HostListener('window:scroll', [])

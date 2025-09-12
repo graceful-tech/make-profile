@@ -278,9 +278,9 @@ export class MobileEditCandidatesComponent {
               'yyyy-MM-dd'
             );
 
-            const responsibilities = Array.isArray(exp.responsibilities)
-              ? exp.responsibilities.join(', ')
-              : exp.responsibilities;
+           const responsibilities = Array.isArray(exp.responsibilities)
+           ? exp.responsibilities.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ')
+            : exp.responsibilities;
 
             let projects = exp.projects || [];
             const hasEmptyProjectName = projects.some(
@@ -293,8 +293,8 @@ export class MobileEditCandidatesComponent {
               projects = projects.map((proj: any) => ({
                 ...proj,
                 projectSkills: Array.isArray(proj.projectSkills)
-                  ? proj.projectSkills.join(', ')
-                  : proj.projectSkills,
+           ? proj.projectSkills.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ')
+            : proj.projectSkills,
               }));
             }
 
@@ -359,13 +359,14 @@ export class MobileEditCandidatesComponent {
         });
       }
 
-      if (Object.is(payload.hobbies, '')) {
+       if (Object.is(payload.hobbies, '')) {
         payload.hobbies = '';
       } else {
         const hobbiesList: string[] = payload.hobbies;
-        const commaSeparatedString: string = hobbiesList.join(', ');
+        const commaSeparatedString: string = hobbiesList.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ');
         payload.hobbies = commaSeparatedString;
       }
+
 
       if (
         payload.languagesKnown.length === 0 ||
@@ -374,15 +375,16 @@ export class MobileEditCandidatesComponent {
         payload.languagesKnown = '';
       } else {
         const stringList: string[] = payload.languagesKnown;
-        const commaSeparatedString: string = stringList.join(', ');
+        const commaSeparatedString: string = stringList.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ');
         payload.languagesKnown = commaSeparatedString;
       }
 
       if (Object.is(payload.skills, '')) {
         payload.skills = '';
       } else {
+
         const stringList: string[] = payload.skills;
-        const commaSeparatedString: string = stringList.join(', ');
+        const commaSeparatedString: string = stringList.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ');
         payload.skills = commaSeparatedString;
       }
 
@@ -390,7 +392,7 @@ export class MobileEditCandidatesComponent {
         payload.softSkills = '';
       } else {
         const stringList: string[] = payload.softSkills;
-        const commaSeparatedString: string = stringList.join(', ');
+        const commaSeparatedString: string = stringList.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ');
         payload.softSkills = commaSeparatedString;
       }
 
@@ -398,7 +400,7 @@ export class MobileEditCandidatesComponent {
         payload.coreCompentencies = '';
       } else {
         const stringList: string[] = payload.coreCompentencies;
-        const commaSeparatedString: string = stringList.join(', ');
+        const commaSeparatedString: string = stringList.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ');
         payload.coreCompentencies = commaSeparatedString;
       }
 
@@ -421,16 +423,15 @@ export class MobileEditCandidatesComponent {
             payload.collegeProject = payload.collegeProject.map(
               (project: any) => ({
                 ...project,
-                collegeProjectSkills: Array.isArray(
-                  project.collegeProjectSkills
-                )
-                  ? project.collegeProjectSkills.join(', ')
-                  : '',
+                collegeProjectSkills:  Array.isArray(project.collegeProjectSkills)
+           ? project.collegeProjectSkills.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ')
+            : project.collegeProjectSkills,
               })
             );
           }
         }
       }
+
 
       payload.coreCompentenciesMandatory =
         this.candidates?.coreCompentenciesMandatory !== null

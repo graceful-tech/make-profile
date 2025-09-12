@@ -1,0 +1,376 @@
+html,
+body {
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+.wrapper {
+  margin-top: 0rem;
+  padding: 0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.profile-wrapper {
+  background: #ffffff;
+  padding: 1.2rem 1.5rem;
+  border-radius: 5px;
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 8%);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.preview-resume {
+  background: #ffffff;
+  padding: 1.2rem 1.5rem;
+  border-radius: 5px;
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 8%);
+  max-width: 30%;
+  flex: 1;
+  animation: fadeInRotate 3s ease-in-out;
+}
+
+.profile {
+  width: 100%;
+  max-width: 150px;
+  height: auto;
+}
+
+.image {
+  width: 100%;
+  max-width: 130px;
+  height: auto;
+}
+
+img {
+  width: 100%;
+  height: auto;
+}
+
+.custom-btn {
+  background-color: #415ddb;
+  color: white;
+  border: none;
+  padding: 8px 5px;
+  font-size: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-right: 15px;
+  font-weight: bold;
+  font-style: italic;
+}
+
+.custom-btn:hover {
+  background-color: #3716dc;
+}
+
+.remove-btn {
+  background-color: #db4141;
+  color: white;
+  border: none;
+  padding: 8px 5px;
+  font-size: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-right: 15px;
+  font-weight: bold;
+  font-style: italic;
+}
+
+.remove-btn:hover {
+  background-color: #f40808;
+}
+
+.p-inputtext {
+  background-color: rgb(255, 255, 255) !important;
+}
+
+.bysection-heading {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #178be9;
+  margin-bottom: 1rem;
+  margin-left: 1rem;
+}
+
+.button-wrapper {
+  margin-top: 1rem;
+  text-align: right;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.delete-btn {
+  background: none;
+  border: none;
+  color: red;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.image-container {
+  position: relative;
+  display: inline-block;
+  margin-top: 20px;
+  max-width: 100%;
+}
+
+.edit-icon {
+  position: absolute;
+  bottom: -5px;
+  right: 0;
+  border-radius: 50%;
+  padding: 3px;
+  cursor: pointer;
+  box-shadow: 0px 2px 5px rgba(255, 254, 254, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+}
+
+.edit-icon i {
+  font-size: 14px;
+  color: #0c0c0c;
+}
+
+.back-button {
+  text-align: right;
+}
+
+.error-message {
+  padding-left: 1rem;
+}
+
+::ng-deep .custom-dropdown .p-dropdown {
+  width: 100% !important;
+  max-width: 200px;
+}
+
+.add-details {
+  text-decoration: underline;
+  font-size: 1.4rem;
+  font-weight: 500;
+  padding-bottom: 0.5rem;
+  color: #178be9;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  background-color: #d5d5d5;
+}
+
+/* Fixed bottom bar */
+.button-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #d5d5d5;
+  padding: 10px 16px;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: flex-end;
+  z-index: 9999;
+  flex-wrap: wrap;
+}
+
+.fresher-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.fresher-checkbox label {
+  white-space: nowrap;
+  margin: 0;
+}
+
+/* ============================= */
+/*   RESPONSIVE MEDIA QUERIES    */
+/* ============================= */
+
+@media (max-width: 768px) {
+  .preview-resume {
+    max-width: 100%;
+    margin-top: 1rem;
+  }
+
+  .profile-wrapper {
+    padding: 1rem;
+  }
+
+  .button-wrapper {
+    justify-content: center;
+  }
+
+  .bysection-heading {
+    margin-left: 0;
+    text-align: center;
+  }
+
+  ::ng-deep .custom-dropdown .p-dropdown {
+    max-width: 100% !important;
+  }
+
+  .custom-btn,
+  .remove-btn {
+    font-size: 14px;
+    padding: 10px;
+  }
+}
+
+/* @media (max-width: 480px) {
+  .image {
+    max-width: 100px;
+  }
+
+  .edit-icon {
+    width: 25px;
+    height: 25px;
+    bottom: -5px;
+  }
+
+  .custom-btn, .remove-btn {
+    width: 100%;
+    margin-bottom: 8px;
+  }
+
+  .button-bar {
+    justify-content: center;
+  }
+
+  .back-button {
+    text-align: center;
+  }
+} */
+
+.additional-content {
+  background: linear-gradient(to right, #5e84c6, #c85f78);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 10px;
+  color: white;
+  border-radius: 10px;
+}
+
+.home-btn {
+  border: none;
+  background: #5d71ca;
+  border-radius: 7px;
+  padding: 5px 10px;
+  color: white;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.softSkiilsExample {
+  text-decoration: underline;
+  color: rgb(29, 14, 233);
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.softSkiilsExample:hover {
+  background: #04045a;
+  color: white;
+}
+
+.popup-box {
+  display: none;
+  position: fixed;
+  bottom: 20rem;
+  left: 60px;
+  background: #fff;
+  border: 1px solid #514747;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  padding: 15px;
+  z-index: 1000;
+}
+
+.popup-box h4 {
+  margin-top: 0;
+  color: #3b82f6;
+}
+
+.popup-box p {
+  font-size: 14px;
+  color: #333;
+}
+
+.close-btn {
+  margin-top: 10px;
+  background: #ef4444;
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.close-btn:hover {
+  background: #dc2626;
+}
+
+.core-popup-box {
+  display: none;
+  position: fixed;
+  bottom: 15rem;
+  right: 60px;
+  background: #fff;
+  border: 1px solid #514747;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  padding: 15px;
+  z-index: 1000;
+}
+
+.core-popup-box h4 {
+  margin-top: 0;
+  color: #3b82f6;
+}
+
+.core-popup-box p {
+  font-size: 14px;
+  color: #333;
+}
+
+.copy-btn {
+  margin-left: 10px;
+  padding: 2px 6px;
+  font-size: 12px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  background-color: #f5f5f5;
+  border-radius: 3px;
+}
+
+.copy-btn:hover {
+  background-color: #e0e0e0;
+}
+
+.experience-box {
+  border: 2px solid #007ad9;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 25px;
+  background-color: #f9fbff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.project-box {
+  border: 1px dashed #666;
+  border-radius: 6px;
+  padding: 15px;
+  margin-top: 15px;
+  background-color: #fff;
+}

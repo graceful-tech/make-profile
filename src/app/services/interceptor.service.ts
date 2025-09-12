@@ -25,7 +25,16 @@ export class InterceptorService implements HttpInterceptor {
       request.url.includes('/user/create') ||
       request.url.includes('/forgot-password/users') ||
       request.url.includes('/forgot-password/verify-otp') ||
-      request.url.includes('/forgot-password/update-password')
+      request.url.includes('/forgot-password/update-password') ||
+      request.url.includes('/value-sets/search-by-code')  ||
+      request.url.includes('/cities') ||
+      request.url.includes('/candidate/create') ||
+      request.url.includes('/candidate/upload-image') ||
+      request.url.includes('/open-ai/get-details') ||
+      request.url.includes('/resume-ai/upload-resume') ||
+      request.url.includes('/user/create-by-resume')
+       
+
     ) {
       console.log('Skipping interceptor for login request');
       return next.handle(request);
