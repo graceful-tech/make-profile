@@ -55,8 +55,8 @@ export class MobileCreditHistoryComponent {
     this.api.create(route, payload).subscribe({
       next: (response) => {
         this.dataLoaded = true;
-        if (response) {
-          this.availableCredits = response;
+        if (response?.results.length > 0) {
+          this.availableCredits = response?.results as any;
           console.log(this.availableCredits);
         }
         this.totalRecords = response?.totalRecords;
