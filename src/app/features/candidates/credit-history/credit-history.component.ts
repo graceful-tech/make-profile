@@ -18,13 +18,13 @@ export class CreditHistoryComponent {
   availableCredits: any;
   totalCreditsAvailable: number = 0;
   balanceCredits: any;
-  dataLoaded:boolean=true;
+  dataLoaded: boolean = true;
   constructor(
     private router: Router,
     private api: ApiService,
     private loader: LoaderService,
     public gs: GlobalService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.getCreditHistory();
@@ -34,7 +34,7 @@ export class CreditHistoryComponent {
     this.router.navigate(['candidate']);
   }
 
-  onPageChangeTemplate(event: any) {
+  onPageChange(event: any) {
     this.currentPage = event.page + 1;
     this.maxLimitPerPageForResume = event.rows;
     this.getCreditHistory();
@@ -53,8 +53,8 @@ export class CreditHistoryComponent {
     this.api.create(route, payload).subscribe({
       next: (response) => {
         this.dataLoaded = true;
-        if (response) {
-          this.availableCredits = response;
+        if (response?.results.length > 0) {
+          this.availableCredits = response?.results as any;
           this.totalCreditsAvailable = this.availableCredits.reduce(
             (sum: any, credit: { creditAvailable: any }) =>
               sum + (credit.creditAvailable || 0),
@@ -63,7 +63,7 @@ export class CreditHistoryComponent {
         }
         this.totalRecords = response?.totalRecords;
       },
-       error: (error) => {
+      error: (error) => {
         this.dataLoaded = true;
       },
     });
