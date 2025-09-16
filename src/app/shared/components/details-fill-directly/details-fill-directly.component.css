@@ -541,3 +541,17 @@
 .copy-btn:hover {
   background: #281289;
 }
+
+.sigupbtn{
+  cursor: pointer;
+  /* margin: 0 auto; */
+  width: 30%;
+  padding-left: 200px;
+}
+#signUPContainer {
+  position: fixed;
+  top: 1rem;
+  right: 0;
+  /* transform: translateX(-10%) scale(1);
+  transition: all 1s ease-in-out; */
+}

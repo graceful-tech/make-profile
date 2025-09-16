@@ -182,7 +182,7 @@ candidateId: any;
   }
 
   goBack() {
-    this.router.navigate(['create-resume-directly']);
+    this.router.navigate(['']);
   }
 
   getCharacterCount(text: string): number {
@@ -203,5 +203,8 @@ candidateId: any;
 
   closePopupTap(event:any){
    this.showErrorPopup = false;
+  }
+  toLogin(){
+    this.router.navigate(['/login'])
   }
 }

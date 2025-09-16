@@ -43,6 +43,10 @@ export class LandingPageComponent {
     this.router.navigate(['/create-resume-directly']);
   }
 
+  toCreateResume(){
+    this.router.navigate(['/enter-details']);
+  }
+
   // @HostListener('window:scroll', [])
   //   onWindowScroll() {
   //     const scrollTop = window.scrollY;

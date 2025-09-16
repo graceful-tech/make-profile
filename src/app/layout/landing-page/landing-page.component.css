@@ -235,11 +235,23 @@ p {
   cursor: pointer;
   margin: 0 auto;
 }
-
+.sigupbtn1{
+  width: 30%;
+  height: 35%;
+  cursor: pointer;
+  margin: 0 auto;
+}
 #signUPContainer {
   position: fixed;
   top: 5rem;
   right: 3%;
+  transform: translateX(-10%) scale(1);
+  transition: all 1s ease-in-out;
+}
+#signUPContainer1 {
+  position: fixed;
+  top: 45rem;
+  right: 0;
   transform: translateX(-10%) scale(1);
   transition: all 1s ease-in-out;
 }
