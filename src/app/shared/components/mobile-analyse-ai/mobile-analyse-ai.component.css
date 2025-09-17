@@ -29,14 +29,15 @@
 .analysis {
   display: flex;
   align-items: center;
-  gap: 6px;
+  /* gap: 2px; */
   padding: 6px 6px;
-  background: #060965;
-  background: linear-gradient(to right, #3d6530, #33721e);
+  background: #0e3fe0;
+  /* background: #060965; */
+  /* background: linear-gradient(to right, #3d6530, #33721e); */
 
   color: #fff;
 
-  font-size: 14px;
+  font-size: 16px;
   border: none;
   border-radius: 6px;
   cursor: pointer;
@@ -141,7 +142,8 @@
 }
 
 .browse-btn {
-  background: linear-gradient(to right, #6884de, #0e3fe0);
+  /* background: linear-gradient(to right, #6884de, #0e3fe0); */
+  background:  #0e3fe0;
   color: white;
   border: none;
   padding: 10px 30px;
@@ -190,7 +192,8 @@
 }
 
 .enter-details {
-  background: #060965;
+  /* background: #060965; */
+  background:  #0e3fe0;
   color: rgb(249, 249, 249);
   border: none;
   padding: 10px 30px;

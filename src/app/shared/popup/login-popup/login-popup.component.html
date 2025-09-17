@@ -1,6 +1,14 @@
 <div class="p-dialog-content">
-    <div class="message">{{message}}</div>
+  
+  <p style="font-weight: bold;">Credentials For Re-visit</p>
+  <br>
+  <p><b>UserName : </b> {{ userName }}</p>
+  <p><b>Password : </b> {{ password }}</p>
+  <br>
+  <p>You Can Change Your Password ( Go to -> My Account -> Edit User )</p>
+  <p>By Default Your Username and Password will be your Mobile Number</p>
 </div>
+
 <div class="p-dialog-footer">
-    <p-button label="Login" (onClick)="goToLoginPage()"></p-button>
+  <p-button label="Close" (onClick)="closePopup()"></p-button>
 </div>

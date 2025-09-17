@@ -6,23 +6,31 @@ import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
   selector: 'app-login-popup',
   standalone: false,
   templateUrl: './login-popup.component.html',
-  styleUrl: './login-popup.component.css'
+  styleUrl: './login-popup.component.css',
 })
 export class LoginPopupComponent {
   message!: String;
+  userName: string = '';
+  password: string = '';
 
-  constructor(public ref: DynamicDialogRef,
+  constructor(
+    public ref: DynamicDialogRef,
     public config: DynamicDialogConfig,
-    private router: Router) { }
-
-  ngOnInit() {
-    this.message = this.config.data?.message;
+    private router: Router
+  ) {
+    if (config.data) {
+      this.userName = config.data.userName || '';
+      this.password = config.data.password || '';
+    }
   }
 
+  // ngOnInit() {
+  //   this.message = this.config.data?.message;
+  // }
 
-  goToLoginPage() {
-    this.router.navigate(['/login']);
+  closePopup() {
+    // this.router.navigate(['/login']);
+    this.router.navigate(['candidate/template']);
     this.ref.close();
   }
-
 }

@@ -26,6 +26,7 @@ import { CollegeProject } from 'src/app/models/candidates/college-project';
 import { LoaderService } from 'src/app/services/loader.service';
 import { ToastService } from 'src/app/services/toast.service';
 import { Project } from 'src/app/models/candidates/project';
+import { LoginPopupComponent } from '../../popup/login-popup/login-popup.component';
 
 @Component({
   selector: 'app-create-resume-common-details',
@@ -100,6 +101,7 @@ export class CreateResumeCommonDetailsComponent {
     private router: Router,
     public ref: DynamicDialogRef,
     private loader: LoaderService,
+    private dialogeService: DialogService,
     private toast: ToastService
   ) {
     this.gs.candidateDetails$.subscribe((response) => {
@@ -483,21 +485,32 @@ export class CreateResumeCommonDetailsComponent {
             this.gs.setCandidateImage(this.candidateImageUrl);
           }
 
-          const username = sessionStorage.getItem('userName');
-          const password = sessionStorage.getItem('password');
+          const userName = sessionStorage.getItem('userName');
+          const password = sessionStorage.getItem('userName');
 
-         const proceed = window.confirm(
-            "Login anytime by your UserName '" +
-              username +
-              "' and Password '" +
-              password
-          );
+          // const proceed = window.confirm(
+          //   "Login anytime by your UserName '" +
+          //     username +
+          //     "' and Password '" +
+          //     password
+          // );
 
-          if (proceed) {
-            this.router.navigate(['candidate/template']);
-          } else {
-            this.router.navigate(['candidate/template']);
-          }
+          const proceed = this.dialogeService.open(LoginPopupComponent, {
+            data: {
+              userName,
+              password,
+            },
+            header: '',
+            width: '400px',
+            styleClass: 'custom-popup',
+            closable: false,
+          });
+
+          // if (proceed) {
+          //   this.router.navigate(['candidate/template']);
+          // } else {
+          //   this.router.navigate(['candidate/template']);
+          // }
         },
         error: (error) => {
           this.loader.stop();
@@ -541,6 +554,7 @@ export class CreateResumeCommonDetailsComponent {
             sessionStorage.setItem('authType', 'custom');
             sessionStorage.setItem('token', response.token);
             sessionStorage.setItem('userName', response.userName);
+            sessionStorage.setItem('mobileNumber', response.mobileNumber);
             sessionStorage.setItem('userId', response.id);
             sessionStorage.setItem('password', response.password);
 

@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class InterceptorService implements HttpInterceptor {
-  constructor(private router: Router) { }
+  constructor(private router: Router) {}
 
   intercept(
     request: HttpRequest<any>,
@@ -24,24 +24,23 @@ export class InterceptorService implements HttpInterceptor {
       request.url.includes('/google-login') ||
       request.url.includes('/user/create') ||
       request.url.includes('/forgot-password/users') ||
+      request.url.includes('/candidate/by_mobile') ||
       request.url.includes('/forgot-password/verify-otp') ||
       request.url.includes('/forgot-password/update-password') ||
-      request.url.includes('/value-sets/search-by-code')  ||
+      request.url.includes('/value-sets/search-by-code') ||
       request.url.includes('/cities') ||
+      request.url.includes('/cities/retrive-cities') ||
       request.url.includes('/candidate/create') ||
       request.url.includes('/candidate/upload-image') ||
       request.url.includes('/open-ai/get-details') ||
       request.url.includes('/resume-ai/upload-resume') ||
       request.url.includes('/user/create-by-resume')
-       
-
     ) {
       console.log('Skipping interceptor for login request');
       return next.handle(request);
     }
     const token = sessionStorage.getItem('token');
     if (token !== 'undefined' && token !== '' && token !== null) {
-
       const payloadBase64 = token.split('.')[1];
       const payloadJson = atob(payloadBase64);
       const payload = JSON.parse(payloadJson);

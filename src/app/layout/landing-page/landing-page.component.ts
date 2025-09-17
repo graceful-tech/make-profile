@@ -40,7 +40,7 @@ export class LandingPageComponent {
   }
 
   toLogin() {
-    this.router.navigate(['/create-resume-directly']);
+    this.router.navigate(['/login']);
   }
 
   toCreateResume(){

@@ -550,3 +550,7 @@ margin-top: 10px;
 .copy-btn:hover {
   background-color: #e0e0e0;
 }
+
+.custom-popup {
+  border-radius: 12px !important;
+}

@@ -38,7 +38,8 @@
   cursor: pointer;
   transition: background 0.3s;
   font-weight: bold;
-  background: #035578;
+  /* background: #035578; */
+   background: #0e3fe0;
 }
 
 .analysis:hover {
@@ -152,7 +153,8 @@
 }
 
 .browse-btn {
-  background: linear-gradient(to right, #6884de, #0e3fe0);
+  /* background: linear-gradient(to right, #6884de, #0e3fe0); */
+   background: #0e3fe0;
   color: white;
   border: none;
   padding: 10px 30px;
@@ -201,7 +203,8 @@
 }
 
 .enter-details {
-  background: linear-gradient(to right, #3d6530, #33721e);
+  /* background: linear-gradient(to right, #3d6530, #33721e); */
+   background: #0e3fe0;
   color: rgb(249, 249, 249);
   border: none;
   padding: 10px 30px;

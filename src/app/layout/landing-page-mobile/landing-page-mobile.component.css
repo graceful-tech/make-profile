@@ -248,6 +248,12 @@ p {
   cursor: pointer;
   margin: 0 auto;
 }
+.sigupbtn1{
+  width: 60%;
+  height: 50%;
+  cursor: pointer;
+  margin: 0 auto;
+}
 
 #signUPContainer {
   position: fixed;
@@ -255,7 +261,13 @@ p {
     right: 3%;
     transform: translateX(20%) scale(1);
     transition: all 1s ease-in-out;
-
+}
+#signUPContainer1 {
+  position: fixed;
+  top: 50rem;
+  margin-left: 210px;
+  transform: translateX(-10%) scale(1);
+  transition: all 1s ease-in-out;
 }
 
 #signUPContainer.scrolled {

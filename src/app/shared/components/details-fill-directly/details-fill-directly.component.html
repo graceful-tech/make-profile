@@ -28,11 +28,17 @@
 
 <div class="profile-wrapper">
   <button class="home-btn" (click)="goBack()">
-      <i class="fa fa-arrow-left"></i> Back
+    <i class="fa fa-arrow-left"></i> Back
   </button>
-   <div class="sigupbtn" id="signUPContainer">
-      <img style="width: 60%;height: 30%;" src="assets/images/Sign Up.png" (click)="toLogin()" title="Click to Sign Up" alt=""/>
-    </div>
+  <div class="sigupbtn" id="signUPContainer">
+    <img
+      style="width: 60%; height: 30%"
+      src="assets/images/Sign In.png"
+      (click)="toLogin()"
+      title="Click to Sign Up"
+      alt=""
+    />
+  </div>
   <div class="col-12 md:col-6" style="margin: 0 auto">
     <div class="inside-label-textarea">
       <span class="btn-position">
@@ -53,8 +59,8 @@
         </span>
 
         <span class="right-side">
-          <span class="example-content"  (click)="togglePopup()">
-             Example Intro
+          <span class="example-content" (click)="togglePopup()">
+            Example Intro
           </span>
         </span>
       </span>
@@ -68,29 +74,55 @@
       ></textarea>
       <span style="display: flex; justify-content: space-between">
         <p>Count: {{ getCharacterCount(analysisText) }}</p>
+        <div
+          style="display: flex; align-items: center; justify-content: center;margin-top: 15px;"
+        >
+          <button class="analysis" (click)="analyseWithAi(analysisBox.value)">
+            Submit
+            <!-- &#10024; -->
+          </button>
+        </div>
         <span class="hint-btn" (click)="hintPopup()">Hints/Tips</span>
       </span>
     </div>
   </div>
-  <div style="display: flex; align-items: center; justify-content: center">
-    <button class="analysis" (click)="analyseWithAi(analysisBox.value)">
-      Continue With AI &#10024;
-    </button>
-  </div>
 
-  <div class="divider">
+  <!-- <div class="divider">
     <span>or</span>
-  </div>
+  </div> -->
+  <span
+    style="
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    "
+    >— or —</span
+  >
 
   <div id="examplePopup" class="popup-box">
     <h4>Example Self Introduction</h4>
     <p>
-    Hello, my name is Abc.my gender is Male/Female I have completed my B.Tech in Computer Science from XXXXX Engineering College with an overall score of 100%, during the period 29th January 1955 to 30th March 1963. <br><br>
+      Hello, my name is Abc.my gender is Male/Female I have completed my B.Tech
+      in Computer Science from XXXXX Engineering College with an overall score
+      of 100%, during the period 29th January 1955 to 30th March 1963.
+      <br /><br />
 
-   I also have one year of professional experience at YYY Company from 1st April 1963 to 31st March 1964, where I gained strong skills in software development, testing, sales, data entry and analysis, voice and non-voice support, and customer handling. This experience helped me strengthen my abilities in problem-solving, teamwork, communication, adaptability, and multitasking. <br><br>
+      I also have one year of professional experience at YYY Company from 1st
+      April 1963 to 31st March 1964, where I gained strong skills in software
+      development, testing, sales, data entry and analysis, voice and non-voice
+      support, and customer handling. This experience helped me strengthen my
+      abilities in problem-solving, teamwork, communication, adaptability, and
+      multitasking. <br /><br />
 
-   Along with my technical background, I have developed leadership, time management, negotiation, and creativity skills. I enjoy exploring new ideas, taking on challenges, and contributing to projects that create a meaningful impact across industries.<br><br>
-      <b>  You can reach me at +91-1234567891 or via email at abc&#64;example.com</b>.
+      Along with my technical background, I have developed leadership, time
+      management, negotiation, and creativity skills. I enjoy exploring new
+      ideas, taking on challenges, and contributing to projects that create a
+      meaningful impact across industries.<br /><br />
+      <b>
+        You can reach me at +91-1234567891 or via email at
+        abc&#64;example.com</b
+      >.
     </p>
 
     <span style="display: flex; justify-content: space-between">

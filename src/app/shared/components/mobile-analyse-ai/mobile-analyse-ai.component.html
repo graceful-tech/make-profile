@@ -65,21 +65,17 @@
       </div>
       <span style="display: flex; justify-content: space-between">
         <span class="example-content" (click)="hintPopup()"> Hints </span>
+        <div
+          style="display: flex; align-items: center; justify-content: center;margin-top: 10px;"
+        >
+          <button class="analysis" (click)="analyseWithAi(analysisBox.value)">
+            Submit 
+            <!-- &#10024; -->
+          </button>
+        </div>
         <p>Count: {{ getCharacterCount(analysisText) }}</p>
       </span>
     </div>
-  </div>
-  <div
-    style="
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-top: 3px;
-    "
-  >
-    <button class="analysis" (click)="analyseWithAi(analysisBox.value)">
-      Continue With AI &#10024;
-    </button>
   </div>
 
   <div class="divider">
@@ -89,9 +85,10 @@
   <div id="examplePopup" class="popup-box">
     <h4>Example Self Introduction</h4>
     <p>
-      Hello, my name is Abc.My gender is Male/Female I have completed my B.Tech in Computer Science from
-      XXXXX Engineering College with an overall score of 100%, during the period
-      29th January 1955 to 30th March 1963. <br /><br />
+      Hello, my name is Abc.My gender is Male/Female I have completed my B.Tech
+      in Computer Science from XXXXX Engineering College with an overall score
+      of 100%, during the period 29th January 1955 to 30th March 1963.
+      <br /><br />
 
       I also have one year of professional experience at YYY Company from 1st
       April 1963 to 31st March 1964, where I gained strong skills in software
@@ -113,9 +110,7 @@
     <button class="close-btn" (click)="togglePopup()">Close</button>
     <br />
     <br />
-    <span class="bottom-btn"
-      
-    >
+    <span class="bottom-btn">
       <span class="copyandpaste-btn"
         >Copy & paste, then modify as per your details</span
       >

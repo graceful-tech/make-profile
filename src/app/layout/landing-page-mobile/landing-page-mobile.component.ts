@@ -35,7 +35,11 @@ export class LandingPageMobileComponent {
   }
 
   toLogin() {
-    this.router.navigate(['/login']);
+    this.router.navigate(['/mob-login']);
+  }
+
+  toCreateResume(){
+    this.router.navigate(['mob-candidate/analyse-ai']);
   }
 
   @HostListener('window:scroll', [])
