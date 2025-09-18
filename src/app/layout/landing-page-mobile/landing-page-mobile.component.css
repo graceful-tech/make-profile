@@ -264,7 +264,7 @@ p {
 }
 #signUPContainer1 {
   position: fixed;
-  top: 50rem;
+  top: 42rem;
   margin-left: 210px;
   transform: translateX(-10%) scale(1);
   transition: all 1s ease-in-out;
