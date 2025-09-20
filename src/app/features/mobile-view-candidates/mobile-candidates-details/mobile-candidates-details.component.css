@@ -1235,10 +1235,10 @@ p {
 
  
 .achievement-box {
-  border: 2px solid #ff9800;    
+ border: 2px solid #007ad9; 
   border-radius: 10px;
   padding: 20px;
   margin-bottom: 20px;
-  background-color: #fff8e1;    
+  background-color: #f9fbff;     
   box-shadow: 0 2px 6px rgba(0,0,0,0.05);
 }
