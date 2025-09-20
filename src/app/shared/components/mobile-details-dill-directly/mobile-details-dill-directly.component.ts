@@ -44,7 +44,10 @@ export class MobileDetailsDillDirectlyComponent {
     private ps: PaymentService,
     private loader: LoaderService,
     private toast: ToastService
-  ) {}
+  ) {
+    sessionStorage.clear();
+    localStorage.clear();
+  }
 
   togglePopup() {
     const popup = document.getElementById('examplePopup');
@@ -136,12 +139,21 @@ export class MobileDetailsDillDirectlyComponent {
     ) {
       this.isAnalysing = true;
 
-      const route = 'open-ai/get-details';
+       const route = 'open-ai/get-details-login';
 
       const username = sessionStorage.getItem('userName');
 
+      let userNamePresent:string;
+      if(username !== null && username !== undefined){
+         userNamePresent = 'true'
+      }
+      else{
+        userNamePresent = 'false'
+      }
+
       const formData = new FormData();
       formData.append('content', content);
+      formData.append('userIsActive', userNamePresent);
 
       this.api.upload(route, formData).subscribe({
         next: (response) => {
@@ -202,7 +214,6 @@ export class MobileDetailsDillDirectlyComponent {
   }
 
   goToHome() {
-
-    this.router.navigate(['mob-login/create-account-directly'])
+    this.router.navigate(['mob-login/create-account-directly']);
   }
 }

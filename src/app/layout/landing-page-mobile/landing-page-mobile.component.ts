@@ -39,7 +39,7 @@ export class LandingPageMobileComponent {
   }
 
   toCreateResume(){
-    this.router.navigate(['mob-candidate/analyse-ai']);
+    this.router.navigate(['get-details-using-ai']);
   }
 
   @HostListener('window:scroll', [])

@@ -36,6 +36,7 @@ import { TagInputModule } from 'ngx-chips';
 import { DetailsFillDirectlyComponent } from './components/details-fill-directly/details-fill-directly.component';
 import { MobileResumeCommonDetailsComponent } from './components/mobile-resume-common-details/mobile-resume-common-details.component';
 import { MobileDetailsDillDirectlyComponent } from './components/mobile-details-dill-directly/mobile-details-dill-directly.component';
+import { MobilePopupComponent } from './popup/mobile-popup/mobile-popup.component';
 
  
 @NgModule({
@@ -64,10 +65,8 @@ import { MobileDetailsDillDirectlyComponent } from './components/mobile-details-
     ErrorMobilePopupComponent,
     DetailsFillDirectlyComponent,
     MobileResumeCommonDetailsComponent,
-    MobileDetailsDillDirectlyComponent
-    
-   
-    
+    MobileDetailsDillDirectlyComponent,
+    MobilePopupComponent
    ],
   imports: [
     CommonModule,
@@ -81,9 +80,6 @@ import { MobileDetailsDillDirectlyComponent } from './components/mobile-details-
     MatDialogModule,
     DragDropModule,
     TagInputModule,
-    
-    
-    
   ],
   exports: [
     CommonModule,

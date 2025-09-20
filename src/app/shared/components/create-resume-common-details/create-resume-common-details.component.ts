@@ -487,15 +487,8 @@ export class CreateResumeCommonDetailsComponent {
 
           const userName = sessionStorage.getItem('userName');
           const password = sessionStorage.getItem('userName');
-
-          // const proceed = window.confirm(
-          //   "Login anytime by your UserName '" +
-          //     username +
-          //     "' and Password '" +
-          //     password
-          // );
-
-          const proceed = this.dialogeService.open(LoginPopupComponent, {
+          
+           this.dialogeService.open(LoginPopupComponent, {
             data: {
               userName,
               password,
@@ -506,11 +499,6 @@ export class CreateResumeCommonDetailsComponent {
             closable: false,
           });
 
-          // if (proceed) {
-          //   this.router.navigate(['candidate/template']);
-          // } else {
-          //   this.router.navigate(['candidate/template']);
-          // }
         },
         error: (error) => {
           this.loader.stop();

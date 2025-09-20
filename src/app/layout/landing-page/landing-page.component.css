@@ -237,7 +237,7 @@ p {
 }
 .sigupbtn1{
   width: 30%;
-  height: 35%;
+  height: 15%;
   cursor: pointer;
   margin: 0 auto;
 }
@@ -250,10 +250,9 @@ p {
 }
 #signUPContainer1 {
   position: fixed;
-  top: 45rem;
+  bottom: 0;
+  margin-top:30rem;
   right: 0;
-  transform: translateX(-10%) scale(1);
-  transition: all 1s ease-in-out;
 }
 
 #signUPContainer.scrolled {
@@ -270,4 +269,12 @@ p {
 
 #signUPContainer.scrolled img {
   width: 120px;  
+}
+
+.footer{
+
+  bottom:0;
+  height: 40px;
+  width: 50px;
+  position: fixed;
 }

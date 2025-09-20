@@ -32,15 +32,14 @@
   gap: 6px;
   padding: 6px 6px;
   background: #060965;
-  background: linear-gradient(to right, #3d6530, #33721e);
-
+  background: linear-gradient(to right, #3439c8, #141aca);
   color: #fff;
-
   font-size: 14px;
   border: none;
   border-radius: 6px;
   cursor: pointer;
   transition: background 0.3s;
+  font-weight: bold;
 }
 
 .analysis:hover {
@@ -141,7 +140,7 @@
 }
 
 .browse-btn {
-  background: linear-gradient(to right, #6884de, #0e3fe0);
+  background: linear-gradient(to right, #3439c8, #141aca);
   color: white;
   border: none;
   padding: 10px 30px;
@@ -150,10 +149,11 @@
   border-radius: 8px;
   cursor: pointer;
   transition: background 0.3s;
+  font-weight: bold;
 }
 
 .browse-btn:hover {
-  background: #1e40af;
+  background: #062073;
 }
 
 .or-divider {
@@ -190,7 +190,7 @@
 }
 
 .enter-details {
-  background: #060965;
+    background: linear-gradient(to right, #3439c8, #141aca);
   color: rgb(249, 249, 249);
   border: none;
   padding: 10px 30px;
@@ -199,6 +199,7 @@
   border-radius: 8px;
   cursor: pointer;
   transition: background 0.3s;
+  font-weight: bold;
 }
 
 .enter-details:hover {

@@ -32,6 +32,8 @@ import { DatePipe } from '@angular/common';
 import { MobileLoaderService } from 'src/app/services/mobile.loader.service';
 import { ToastService } from 'src/app/services/toast.service';
 import { Project } from 'src/app/models/candidates/project';
+import { LoginPopupComponent } from '../../popup/login-popup/login-popup.component';
+import { MobilePopupComponent } from '../../popup/mobile-popup/mobile-popup.component';
 
 @Component({
   selector: 'app-mobile-resume-common-details',
@@ -100,7 +102,8 @@ export class MobileResumeCommonDetailsComponent {
     private config: DynamicDialogConfig,
     private ps: PaymentService,
     private loader: MobileLoaderService,
-    private toast: ToastService
+    private toast: ToastService,
+    private dialogeService: DialogService,
   ) {
     this.gs.candidateDetails$.subscribe((response) => {
       if (response !== null) {
@@ -510,21 +513,21 @@ export class MobileResumeCommonDetailsComponent {
 
           this.loader.stop();
 
-          const username = sessionStorage.getItem('userName');
+          const userName = sessionStorage.getItem('userName');
           const password = sessionStorage.getItem('password');
 
-          const proceed = window.confirm(
-            "Login anytime by your UserName '" +
-              username +
-              "' and Password '" +
-              password
-          );
+          this.dialogeService.open(MobilePopupComponent, {
+                      data: {
+                        userName,
+                        password,
+                      },
+                      header: '',
+                      width: '400px',
+                      styleClass: 'custom-popup',
+                      closable: false,
+                    });
 
-          if (proceed) {
-            this.router.navigate(['mob-candidate/choose-Template']);
-          } else {
-            this.router.navigate(['mob-candidate/choose-Template']);
-          }
+          
         },
         error: (error) => {
           this.loader.stop();

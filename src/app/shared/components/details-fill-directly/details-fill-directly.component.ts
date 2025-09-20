@@ -16,10 +16,10 @@ import { ToastService } from 'src/app/services/toast.service';
   selector: 'app-details-fill-directly',
   standalone: false,
   templateUrl: './details-fill-directly.component.html',
-  styleUrl: './details-fill-directly.component.css'
+  styleUrl: './details-fill-directly.component.css',
 })
 export class DetailsFillDirectlyComponent {
-candidateId: any;
+  candidateId: any;
   multipartFile: any;
   resume: any;
   candidates: any;
@@ -43,8 +43,12 @@ candidateId: any;
     private ngxLoader: NgxUiLoaderService,
     private ps: PaymentService,
     private loader: LoaderService,
-    private toast:ToastService
-  ) {}
+    private toast: ToastService
+  ) {
+
+    sessionStorage.clear();
+    localStorage.clear();
+  }
 
   togglePopup() {
     const popup = document.getElementById('examplePopup');
@@ -93,11 +97,8 @@ candidateId: any;
 
     const route = 'resume-ai/upload-resume';
 
-     
-
     const formData = new FormData();
     formData.append('resume', this.multipartFile);
-   
 
     this.api.upload(route, formData).subscribe({
       next: (response) => {
@@ -139,37 +140,48 @@ candidateId: any;
     ) {
       this.isAnalysing = true;
 
-      const route = 'open-ai/get-details';
+      const route = 'open-ai/get-details-login';
 
       const username = sessionStorage.getItem('userName');
 
+      let userNamePresent:string;
+      if(username !== null && username !== undefined){
+         userNamePresent = 'true'
+      }
+      else{
+        userNamePresent = 'false'
+      }
+
       const formData = new FormData();
       formData.append('content', content);
+      formData.append('userIsActive', userNamePresent);
 
       this.api.upload(route, formData).subscribe({
         next: (response) => {
           this.isAnalysing = false;
           if (response !== null) {
-            if(Array.isArray(response) ){
-            this.isAnalysing = false;
-            this.showErrorPopup= true;
-            this.errorMessage = response;
-            this.errorStatus ='Correct Your Content';
+            if (Array.isArray(response)) {
+              this.isAnalysing = false;
+              this.showErrorPopup = true;
+              this.errorMessage = response;
+              this.errorStatus = 'Correct Your Content';
+            } else {
+              this.gs.setCandidateDetails(response);
+              this.router.navigate(['common-details']);
             }
-           else{
-
-            this.gs.setCandidateDetails(response);
-           this.router.navigate(['common-details']);
-
-           }
-          }
-          else{
-            this.toast.showToast('info','Please try After sometime or try Another Way')
+          } else {
+            this.toast.showToast(
+              'info',
+              'Please try After sometime or try Another Way'
+            );
           }
         },
         error: (error) => {
-         this.isAnalysing = false;
-        this.toast.showToast('info','Please try After sometime or try Another Way')
+          this.isAnalysing = false;
+          this.toast.showToast(
+            'info',
+            'Please try After sometime or try Another Way'
+          );
         },
       });
     } else {
@@ -192,19 +204,16 @@ candidateId: any;
 
   copyContent() {
     const content = `Hello, my name is Abc. My gender is Male/Female I have completed my B.Tech in Computer Science from XXXXX Engineering College with an overall score of 100%, during the period 29th January 1955 to 30th March 1963.I also have one year of professional experience at YYY Company from 1st April 1963 to 31st March 1964, where I gained strong skills in software development, testing, sales, data entry and analysis, voice and non-voice support, and customer handling. This experience helped me strengthen my abilities in problem-solving, teamwork, communication, adaptability, and multitasking. Along with my technical background, I have developed leadership, time management, negotiation, and creativity skills. I enjoy exploring new ideas, taking on challenges, and contributing to projects that create a meaningful impact across industries.You can reach me at +91-1234567891 or via email at abc@example.com`;
-    
-     navigator.clipboard
-      .writeText(content)
-      .then(() => {
-        this.togglePopup();
-      })
-      
+
+    navigator.clipboard.writeText(content).then(() => {
+      this.togglePopup();
+    });
   }
 
-  closePopupTap(event:any){
-   this.showErrorPopup = false;
+  closePopupTap(event: any) {
+    this.showErrorPopup = false;
   }
-  toLogin(){
-    this.router.navigate(['/login'])
+  toLogin() {
+    this.router.navigate(['/login']);
   }
 }

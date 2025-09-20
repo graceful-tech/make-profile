@@ -3,12 +3,12 @@ import { Router } from '@angular/router';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 
 @Component({
-  selector: 'app-login-popup',
+  selector: 'app-mobile-popup',
   standalone: false,
-  templateUrl: './login-popup.component.html',
-  styleUrl: './login-popup.component.css',
+  templateUrl: './mobile-popup.component.html',
+  styleUrl: './mobile-popup.component.css'
 })
-export class LoginPopupComponent {
+export class MobilePopupComponent {
   message!: String;
   userName: any;
   password: any;
@@ -26,7 +26,7 @@ export class LoginPopupComponent {
 
 
   closePopup() {
-    this.router.navigate(['candidate/template']);
+    this.router.navigate(['mob-candidate/choose-Template']);
     this.ref.close();
   }
 }
