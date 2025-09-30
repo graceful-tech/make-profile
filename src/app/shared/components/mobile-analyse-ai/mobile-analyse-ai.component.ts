@@ -189,7 +189,7 @@ export class MobileAnalyseAiComponent {
 
   goToHome() {
     this.gs.setNavigate(true);
-    this.router.navigate(['mob-landing']);
+    this.router.navigate(['mob-candidate']);
   }
 
 copyContent() {
