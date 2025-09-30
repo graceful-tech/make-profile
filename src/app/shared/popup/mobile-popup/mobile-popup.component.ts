@@ -26,7 +26,7 @@ export class MobilePopupComponent {
 
 
   closePopup() {
-    this.router.navigate(['mob-candidate/choose-Template']);
+    this.router.navigate(['mob-candidate/edit-candidate']);
     this.ref.close();
   }
 }

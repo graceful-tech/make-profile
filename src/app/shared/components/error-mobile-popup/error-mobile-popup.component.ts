@@ -1,4 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Router } from '@angular/router';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 
 @Component({
   selector: 'app-error-mobile-popup',
@@ -12,11 +14,24 @@ export class ErrorMobilePopupComponent {
     @Input() status: string = ''; 
 
   isClosing = false;
+
+  constructor(
+     
+      private router: Router,
+      public ref: DynamicDialogRef,
+      private config: DynamicDialogConfig
+    ) {
+    }
   
 
 
   close() {
     this.closePopupTap.emit('hai');
     this.isClosing = false;
+  }
+
+  change_template(){
+     this.closePopupTap.emit('hai');
+     this.router.navigate(['mob-candidate/choose-Template']);
   }
 }

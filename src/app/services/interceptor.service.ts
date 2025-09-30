@@ -35,7 +35,9 @@ export class InterceptorService implements HttpInterceptor {
       request.url.includes('/open-ai/get-details') ||
       request.url.includes('/resume-ai/upload-resume') ||
       request.url.includes('/user/create-by-resume') ||
-      request.url.includes('/open-ai/get-details-login')
+      request.url.includes('/open-ai/get-details-login') || 
+      request.url.includes('/resume-ai/upload-ai-resume') ||
+      request.url.includes('/candidate/check_mobile')  
     ) {
       console.log('Skipping interceptor for login request');
       return next.handle(request);

@@ -26,7 +26,7 @@ export class LoginPopupComponent {
 
 
   closePopup() {
-    this.router.navigate(['candidate/template']);
+    this.router.navigate(['candidate/verify-details']);
     this.ref.close();
   }
 }

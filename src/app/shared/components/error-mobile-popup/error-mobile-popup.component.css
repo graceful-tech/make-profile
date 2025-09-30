@@ -26,12 +26,11 @@
 
 .popup-actions {
   display: flex;
-  justify-content: center;
+  justify-content:space-between;
   gap: 12px;
   flex-wrap: wrap;
 }
-
-
+ 
 
 .primary-btn {
   background-color: #007bff;
@@ -178,8 +177,6 @@
 .popup-box {
    width: 100%;
   background: #fff;
-  border-radius: 10px;
-  
   font-family: Arial, sans-serif;
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
 }
@@ -204,7 +201,7 @@
 
  
  .close{
-  position: absolute;
+  
   background: #ff4d4d;
   border: none;
   color: white;
@@ -218,4 +215,18 @@
 
 .close:hover {
   background: #e60000;
+}
+
+
+.change-template{
+
+  background: #21972d;
+  border: none;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+  margin-bottom: 5px;
 }

@@ -44,7 +44,7 @@ export class LandingPageComponent {
   }
 
   toCreateResume(){
-    this.router.navigate(['/enter-details']);
+    this.router.navigate(['/select-template']);
   }
 
   // @HostListener('window:scroll', [])

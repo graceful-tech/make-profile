@@ -29,7 +29,7 @@
 <div class="profile-wrapper">
   <span style="display: flex; justify-content: space-between">
     <button class="home-btn" (click)="goToHome()">
-       <i class="fa fa-arrow-left"></i> Go Back
+      <i class="fa fa-arrow-left"></i> Go Back
     </button>
   </span>
 
@@ -69,12 +69,19 @@
       </span>
     </div>
   </div>
+
+  <!-- <div>
+      <span style="color: rgb(236, 10, 10); font-weight: bold; font-size: 18px"
+        >Just change the content according to your details and click
+        Submit.</span
+      >
+    </div> -->
   <div
     style="
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-top: 3px;
+      margin-top: 6px;
     "
   >
     <button class="analysis" (click)="analyseWithAi(analysisBox.value)">
@@ -89,9 +96,10 @@
   <div id="examplePopup" class="popup-box">
     <h4>Example Self Introduction</h4>
     <p>
-      Hello, my name is Abc.My gender is Male/Female I have completed my B.Tech in Computer Science from
-      XXXXX Engineering College with an overall score of 100%, during the period
-      29th January 1955 to 30th March 1963. <br /><br />
+      Hello, my name is Abc.My gender is Male/Female I have completed my B.Tech
+      in Computer Science from XXXXX Engineering College with an overall score
+      of 100%, during the period 29th January 1955 to 30th March 1963.
+      <br /><br />
 
       I also have one year of professional experience at YYY Company from 1st
       April 1963 to 31st March 1964, where I gained strong skills in software
@@ -113,9 +121,7 @@
     <button class="close-btn" (click)="togglePopup()">Close</button>
     <br />
     <br />
-    <span class="bottom-btn"
-      
-    >
+    <span class="bottom-btn">
       <span class="copyandpaste-btn"
         >Copy & paste, then modify as per your details</span
       >
@@ -187,9 +193,9 @@
 </div>
 
 <ng-container *ngIf="showErrorPopup">
-  <app-error-message
+  <app-mobile-error-login-popup
     [message]="errorMessage"
     (closePopupTap)="closePopupTap($event)"
     [status]="errorStatus"
-  ></app-error-message>
+  ></app-mobile-error-login-popup>
 </ng-container>

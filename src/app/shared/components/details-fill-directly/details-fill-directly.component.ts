@@ -25,10 +25,12 @@ export class DetailsFillDirectlyComponent {
   candidates: any;
   isUploading: boolean = false;
   isAnalysing: boolean = false;
-  analysisText: string = '';
+   
   showErrorPopup: boolean = false;
   errorMessage: any;
   errorStatus: any;
+  analysisText: string = '';
+  templateName: any;
 
   constructor(
     private api: ApiService,
@@ -46,8 +48,15 @@ export class DetailsFillDirectlyComponent {
     private toast: ToastService
   ) {
 
-    sessionStorage.clear();
-    localStorage.clear();
+    
+  }
+
+  ngOnInit(){
+     this.gs.resumeName$.subscribe((response) => {
+      if (response !== null) {
+        this.templateName = response;
+      }
+    });
   }
 
   togglePopup() {
@@ -95,18 +104,39 @@ export class DetailsFillDirectlyComponent {
   parseResume() {
     this.ngxLoaderStart();
 
-    const route = 'resume-ai/upload-resume';
+    const route = 'resume-ai/upload-ai-resume';
 
     const formData = new FormData();
     formData.append('resume', this.multipartFile);
 
     this.api.upload(route, formData).subscribe({
       next: (response) => {
+
         if (response !== null) {
-          this.ngxLoaderStop();
-          this.candidates = response;
-          this.gs.setCandidateDetails(this.candidates);
-          this.router.navigate(['common-details']);
+           this.ngxLoaderStop();
+         if (Array.isArray(response)) {
+              this.ngxLoaderStop();
+              this.isAnalysing = false;
+              this.showErrorPopup = true;
+              this.errorMessage = response;
+              this.errorStatus = 'Correct Your Content';
+            }
+            else{
+            this.ngxLoaderStop();
+            this.candidates = response;
+            this.gs.setCandidateDetails(this.candidates);
+            
+            if (this.templateName === null || this.templateName === undefined) {
+              const templateName = localStorage.getItem('templateName');
+              this.gs.setResumeName(templateName);
+            } else {
+              this.gs.setResumeName(this.templateName);
+            }
+
+            this.router.navigate(['common-details']);
+
+          }
+         
         } else {
           this.ngxLoaderStop();
           this.gs.showMessage(
@@ -129,7 +159,14 @@ export class DetailsFillDirectlyComponent {
   }
 
   enterDetails() {
-    this.router.navigate(['common-details']);
+    
+    if (this.templateName === null || this.templateName === undefined) {
+      const templateName = localStorage.getItem('templateName');
+      this.gs.setResumeName(templateName);
+    } else {
+      this.gs.setResumeName(this.templateName);
+    }
+    this.router.navigate(['multi-page-details']);
   }
 
   analyseWithAi(content: any) {
@@ -167,6 +204,14 @@ export class DetailsFillDirectlyComponent {
               this.errorStatus = 'Correct Your Content';
             } else {
               this.gs.setCandidateDetails(response);
+              
+            if (this.templateName === null || this.templateName === undefined) {
+              const templateName = localStorage.getItem('templateName');
+              this.gs.setResumeName(templateName);
+            } else {
+              this.gs.setResumeName(this.templateName);
+            }
+
               this.router.navigate(['common-details']);
             }
           } else {
@@ -194,7 +239,7 @@ export class DetailsFillDirectlyComponent {
   }
 
   goBack() {
-    this.router.navigate(['']);
+    this.router.navigate(['select-template']);
   }
 
   getCharacterCount(text: string): number {

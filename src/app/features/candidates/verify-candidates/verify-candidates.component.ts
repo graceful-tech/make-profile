@@ -251,7 +251,10 @@ export class VerifyCandidatesComponent {
     );
   }
 
-  createCandidate() {
+ async createCandidate() {
+
+  const isValid =  await this.checkCandidateOldDetails();
+
     this.isUploading = true;
 
     if (this.candidateForm.valid) {
@@ -487,7 +490,12 @@ export class VerifyCandidatesComponent {
 
           this.isUploading = false;
 
+          if(isValid){
           this.getResumeContentFromOpenAi(response);
+          }
+          else{
+            this.openCreateResumeDialog(response);
+          }
 
           // this.gs.showMessage('Success', 'Create Successfully');
         },
@@ -1214,4 +1222,256 @@ export class VerifyCandidatesComponent {
       },
     });
   }
+
+  checkCandidateOldDetails(): Promise<boolean>{
+    
+    return new Promise((resolve,reject) => {
+
+  if (this.candidateForm.valid) {
+      this.dataLoaded = false;
+
+      const route = 'candidate/check_candidate';
+      const payload = this.candidateForm.getRawValue();
+
+      if (payload.lastWorkingDate) {
+        payload['lastWorkingDate'] = this.datePipe.transform(
+          payload.lastWorkingDate,
+          'yyyy-MM-dd'
+        );
+      }
+
+      if (payload.dob == null && payload.dob !== '') {
+        payload.dob = this.datePipe.transform(payload.dob, 'yyyy-MM-dd');
+      }
+
+      if (payload.fresher === null && payload.experiences.length === 0) {
+        payload['fresher'] = true;
+      } else if (payload.fresher) {
+        payload['fresher'] = true;
+      } else {
+        payload['fresher'] = false;
+      }
+
+      if (payload.fresher) {
+        payload.experiences = [];
+      }
+
+      if (!payload.fresher) {
+        if (
+          payload.experiences.length === 0 ||
+          Object.is(payload.experiences?.[0]?.companyName, '')
+        ) {
+          payload.experiences = [];
+        } else {
+          payload.experiences = payload.experiences.map((exp: any) => {
+            const experienceYearStartDate = this.datePipe.transform(
+              exp.experienceYearStartDate,
+              'yyyy-MM-dd'
+            );
+            const experienceYearEndDate = this.datePipe.transform(
+              exp.experienceYearEndDate,
+              'yyyy-MM-dd'
+            );
+
+           const responsibilities = Array.isArray(exp.responsibilities)
+           ? exp.responsibilities.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ')
+            : exp.responsibilities;
+
+            let projects = exp.projects || [];
+            const hasEmptyProjectName = projects.some(
+              (proj: any) => proj.projectName === ''
+            );
+
+            if (exp.projects.length === 0 || hasEmptyProjectName) {
+              projects = [];
+            } else {
+              projects = projects.map((proj: any) => ({
+                ...proj,
+                projectSkills: Array.isArray(proj.projectSkills)
+           ? proj.projectSkills.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ')
+            : proj.projectSkills,
+              }));
+            }
+
+            return {
+              ...exp,
+              experienceYearStartDate,
+              experienceYearEndDate,
+              responsibilities,
+              projects,
+            };
+          });
+        }
+      }
+
+      if (
+        payload.qualification.length === 0 ||
+        Object.is(payload.qualification[0].institutionName, '')
+      ) {
+        payload.qualification = [];
+      } else {
+        payload.qualification.forEach((q: any) => {
+          q.qualificationStartYear = this.datePipe.transform(
+            q.qualificationStartYear,
+            'yyyy-MM-dd'
+          );
+          q.qualificationEndYear = this.datePipe.transform(
+            q.qualificationEndYear,
+            'yyyy-MM-dd'
+          );
+        });
+      }
+
+      if (
+        payload.achievements.length === 0 ||
+        Object.is(payload.achievements[0].achievementsName, '')
+      ) {
+        payload.achievements = [];
+      } else {
+        payload.achievements.forEach((cert: any) => {
+          cert.achievementsDate = this.datePipe.transform(
+            cert.achievementsDate,
+            'yyyy-MM-dd'
+          );
+        });
+      }
+
+      if (
+        payload.certificates.length === 0 ||
+        Object.is(payload.certificates[0].courseName, '')
+      ) {
+        payload.certificates = [];
+      } else {
+        payload.certificates.forEach((cert: any) => {
+          cert.courseStartDate = this.datePipe.transform(
+            cert.courseStartDate,
+            'yyyy-MM-dd'
+          );
+          cert.courseEndDate = this.datePipe.transform(
+            cert.courseEndDate,
+            'yyyy-MM-dd'
+          );
+        });
+      }
+
+      
+ if (Object.is(payload.hobbies, '')) {
+        payload.hobbies = '';
+      } else {
+        const hobbiesList: string[] = payload.hobbies;
+        const commaSeparatedString: string = hobbiesList.join(', ');
+        payload.hobbies = commaSeparatedString;
+      }
+
+
+      if (
+        payload.languagesKnown.length === 0 ||
+        Object.is(payload.languagesKnown, '')
+      ) {
+        payload.languagesKnown = '';
+      } else {
+        const stringList: string[] = payload.languagesKnown;
+        const commaSeparatedString: string = stringList.join(', ');
+        payload.languagesKnown = commaSeparatedString;
+      }
+
+      if (Object.is(payload.skills, '')) {
+        payload.skills = '';
+      } else {
+        const stringList: string[] = payload.skills;
+        const commaSeparatedString: string = stringList.join(', ');
+        payload.skills = commaSeparatedString;
+      }
+
+      if (Object.is(payload.softSkills, '')) {
+        payload.softSkills = '';
+      } else {
+        const stringList: string[] = payload.softSkills;
+        const commaSeparatedString: string = stringList.join(', ');
+        payload.softSkills = commaSeparatedString;
+      }
+
+      if (Object.is(payload.coreCompentencies, '')) {
+        payload.coreCompentencies = '';
+      } else {
+        const stringList: string[] = payload.coreCompentencies;
+        const commaSeparatedString: string = stringList.join(', ');
+        payload.coreCompentencies = commaSeparatedString;
+      }
+
+      if (payload.fresher) {
+        if (
+          payload.collegeProject.length === 0 ||
+          Object.is(payload.collegeProject[0].collegeProjectName, '')
+        ) {
+          payload.collegeProject = [];
+        } else {
+          const hasValidProject = payload.collegeProject.some(
+            (project: { collegeProjectName: string }) =>
+              project.collegeProjectName &&
+              project.collegeProjectName.trim() !== ''
+          );
+
+          if (!hasValidProject) {
+            payload.collegeProject = [];
+          } else {
+            payload.collegeProject = payload.collegeProject.map(
+              (project: any) => ({
+                ...project,
+               collegeProjectSkills:  Array.isArray(project.collegeProjectSkills)
+           ? project.collegeProjectSkills.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ')
+            : project.collegeProjectSkills,
+              })
+            );
+          }
+        }
+      }
+
+      payload.coreCompentenciesMandatory =
+        this.candidates?.coreCompentenciesMandatory !== null
+          ? this.candidates?.coreCompentenciesMandatory
+          : false;
+
+      payload.softSkillsMandatory =
+        this.candidates?.softSkillsMandatory !== null
+          ? this.candidates?.softSkillsMandatory
+          : false;
+
+      payload.certificatesMandatory =
+        this.candidates?.certificatesMandatory !== null
+          ? this.candidates?.certificatesMandatory
+          : false;
+
+      payload.achievementsMandatory =
+        this.candidates?.achievementsMandatory !== null
+          ? this.candidates?.achievementsMandatory
+          : false;
+
+      this.api.retrieve(route, payload).subscribe({
+        next: (response) => {
+         
+          if(!response){
+            resolve(true);
+          }
+          else{
+            resolve(false);
+          }
+        },
+        error: (error) => {
+          this.isUploading = false;
+
+          this.dataLoaded = true;
+        },
+      });
+      this.dataLoaded = true;
+    } else {
+     
+    }
+
+
+  });
+
+
+  }
+
 }

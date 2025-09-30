@@ -145,7 +145,8 @@ export class FinalVerifyComponent {
         }
       });
 
-      this.goToOpenAi();
+      const candidateClone = JSON.parse(JSON.stringify(this.candidates));
+      this.patchCandidateForm(candidateClone);
     } else {
       this.getCandidates();
     }
@@ -251,7 +252,7 @@ export class FinalVerifyComponent {
     this.ngxLoaderStart();
 
     if (this.candidateForm.valid) {
-       this.dataLoaded = false;
+      this.dataLoaded = false;
 
       const route = 'candidate/create';
       const payload = this.candidateForm.getRawValue();
@@ -296,9 +297,13 @@ export class FinalVerifyComponent {
               'yyyy-MM-dd'
             );
 
-           const responsibilities = Array.isArray(exp.responsibilities)
-           ? exp.responsibilities.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ')
-            : exp.responsibilities;
+            const responsibilities = Array.isArray(exp.responsibilities)
+              ? exp.responsibilities
+                  .map((r: any) =>
+                    typeof r === 'string' ? r : r.task || r.value || ''
+                  )
+                  .join(', ')
+              : exp.responsibilities;
 
             let projects = exp.projects || [];
             const hasEmptyProjectName = projects.some(
@@ -311,8 +316,12 @@ export class FinalVerifyComponent {
               projects = projects.map((proj: any) => ({
                 ...proj,
                 projectSkills: Array.isArray(proj.projectSkills)
-           ? proj.projectSkills.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ')
-            : proj.projectSkills,
+                  ? proj.projectSkills
+                      .map((r: any) =>
+                        typeof r === 'string' ? r : r.task || r.value || ''
+                      )
+                      .join(', ')
+                  : proj.projectSkills,
               }));
             }
 
@@ -377,14 +386,17 @@ export class FinalVerifyComponent {
         });
       }
 
-       if (Object.is(payload.hobbies, '')) {
+      if (Object.is(payload.hobbies, '')) {
         payload.hobbies = '';
       } else {
         const hobbiesList: string[] = payload.hobbies;
-        const commaSeparatedString: string = hobbiesList.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ');
+        const commaSeparatedString: string = hobbiesList
+          .map((r: any) =>
+            typeof r === 'string' ? r : r.task || r.value || ''
+          )
+          .join(', ');
         payload.hobbies = commaSeparatedString;
       }
-
 
       if (
         payload.languagesKnown.length === 0 ||
@@ -393,22 +405,31 @@ export class FinalVerifyComponent {
         payload.languagesKnown = '';
       } else {
         const stringList: string[] = payload.languagesKnown;
-        const commaSeparatedString: string = stringList.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ');
+        const commaSeparatedString: string = stringList
+          .map((r: any) =>
+            typeof r === 'string' ? r : r.task || r.value || ''
+          )
+          .join(', ');
         payload.languagesKnown = commaSeparatedString;
       }
 
       if (Array.isArray(payload.skills)) {
-        payload.skills = payload.skills.map((r: any) =>
-          typeof r === 'string' ? r : r.task || r.value || ''
-        ).join(', ');
+        payload.skills = payload.skills
+          .map((r: any) =>
+            typeof r === 'string' ? r : r.task || r.value || ''
+          )
+          .join(', ');
       }
-
 
       if (Object.is(payload.softSkills, '')) {
         payload.softSkills = '';
       } else {
         const stringList: string[] = payload.softSkills;
-        const commaSeparatedString: string = stringList.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ');
+        const commaSeparatedString: string = stringList
+          .map((r: any) =>
+            typeof r === 'string' ? r : r.task || r.value || ''
+          )
+          .join(', ');
         payload.softSkills = commaSeparatedString;
       }
 
@@ -416,7 +437,11 @@ export class FinalVerifyComponent {
         payload.coreCompentencies = '';
       } else {
         const stringList: string[] = payload.coreCompentencies;
-        const commaSeparatedString: string = stringList.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ');
+        const commaSeparatedString: string = stringList
+          .map((r: any) =>
+            typeof r === 'string' ? r : r.task || r.value || ''
+          )
+          .join(', ');
         payload.coreCompentencies = commaSeparatedString;
       }
 
@@ -439,9 +464,15 @@ export class FinalVerifyComponent {
             payload.collegeProject = payload.collegeProject.map(
               (project: any) => ({
                 ...project,
-                collegeProjectSkills:  Array.isArray(project.collegeProjectSkills)
-           ? project.collegeProjectSkills.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ')
-            : project.collegeProjectSkills,
+                collegeProjectSkills: Array.isArray(
+                  project.collegeProjectSkills
+                )
+                  ? project.collegeProjectSkills
+                      .map((r: any) =>
+                        typeof r === 'string' ? r : r.task || r.value || ''
+                      )
+                      .join(', ')
+                  : project.collegeProjectSkills,
               })
             );
           }
@@ -769,7 +800,6 @@ export class FinalVerifyComponent {
   }
 
   patchCandidateForm(candidate: Candidate) {
-    
     candidate.languagesKnown = candidate?.languagesKnown
       ? candidate.languagesKnown.split(',').map((skill: string) => skill.trim())
       : [];
@@ -785,18 +815,11 @@ export class FinalVerifyComponent {
           .map((skill: string) => skill.trim())
       : [];
 
-       candidate.hobbies = candidate?.hobbies
-      ? candidate.hobbies
-          .split(',')
-          .map((skill: string) => skill.trim())
+    candidate.hobbies = candidate?.hobbies
+      ? candidate.hobbies.split(',').map((skill: string) => skill.trim())
       : [];
 
-
-
-    
-    if ( candidate.certificates?.some(c => c && (c.courseName?.trim()))) 
-  
-  {
+    if (candidate.certificates?.some((c) => c && c.courseName?.trim())) {
       const certificateFormArray = this.candidateForm.get(
         'certificates'
       ) as FormArray;
@@ -807,10 +830,12 @@ export class FinalVerifyComponent {
       });
     }
 
-    if (candidate.experiences?.some(e => e && (e.companyName.trim()))) {
+    if (candidate.experiences?.some((e) => e && e.companyName.trim())) {
       this.patchExperiences(candidate.experiences);
     } else {
-      if (candidate?.collegeProject.some(c => c && (c.collegeProjectName.trim()))) {
+      if (
+        candidate?.collegeProject.some((c) => c && c.collegeProjectName.trim())
+      ) {
         const collegeProjectFromArray = this.candidateForm.get(
           'collegeProject'
         ) as FormArray;
@@ -824,7 +849,11 @@ export class FinalVerifyComponent {
       }
     }
 
-    if ( candidate.qualification?.some(q => q && (q.institutionName?.trim() || q.fieldOfStudy?.trim()))) {
+    if (
+      candidate.qualification?.some(
+        (q) => q && (q.institutionName?.trim() || q.fieldOfStudy?.trim())
+      )
+    ) {
       const qualificationFormArray = this.candidateForm.get(
         'qualification'
       ) as FormArray;
@@ -837,7 +866,7 @@ export class FinalVerifyComponent {
       });
     }
 
-    if (candidate.achievements?.some(a => a && (a.achievementsName.trim()))) {
+    if (candidate.achievements?.some((a) => a && a.achievementsName.trim())) {
       const achievementFormArray = this.candidateForm.get(
         'achievements'
       ) as FormArray;
@@ -876,8 +905,8 @@ export class FinalVerifyComponent {
       certificatesMandatory: candidate?.certificatesMandatory,
       achievementsMandatory: candidate?.achievementsMandatory,
       careerObjective: candidate?.careerObjective,
-       hobbies: candidate?.hobbies ? candidate?.hobbies : [],
-      fatherName:candidate?.fatherName,
+      hobbies: candidate?.hobbies ? candidate?.hobbies : [],
+      fatherName: candidate?.fatherName,
     });
   }
 
@@ -916,12 +945,11 @@ export class FinalVerifyComponent {
           const projectFormArray = experienceForm.get('projects') as FormArray;
           projectFormArray.clear();
           experience.projects?.forEach((project: any) => {
-
-             const projectSkills = project.projectSkills
-          ? project.projectSkills
-              .split(',')
-              .map((res: string) => res.trim())
-          : [];
+            const projectSkills = project.projectSkills
+              ? project.projectSkills
+                  .split(',')
+                  .map((res: string) => res.trim())
+              : [];
 
             const projectForm = this.createProject();
             projectForm.patchValue({
@@ -1045,12 +1073,11 @@ export class FinalVerifyComponent {
   }
 
   getCandidates() {
-     this.loader.start();
+    this.loader.start();
 
     const route = 'candidate';
     this.api.get(route).subscribe({
       next: (response) => {
-          
         const candidate = response as Candidate;
         if (candidate !== null) {
           this.candidateId = candidate?.id;
@@ -1060,7 +1087,14 @@ export class FinalVerifyComponent {
           this.patchCandidateForm(candidateClone);
           this.getCandidateImage(candidate?.id);
 
-          this.getSummaryAndObjectiveContent();
+          if (
+            this.candidates?.summary === null ||
+            this.candidates?.careerObjective == null
+          ) {
+            this.getSummaryAndObjectiveContent();
+          } else {
+            this.loader.stop();
+          }
         }
       },
       error: (err) => {
@@ -1119,7 +1153,7 @@ export class FinalVerifyComponent {
       this.templateName = templateName;
     }
 
-    const payload = { ...candidates, templateName: this.templateName };
+    const payload = { ...candidates, templateName: templateName };
 
     this.api.retrieve(route, payload).subscribe({
       next: (response) => {
@@ -1135,17 +1169,18 @@ export class FinalVerifyComponent {
           const byteArray = new Uint8Array(byteNumbers);
           const blob = new Blob([byteArray], { type: 'application/pdf' });
 
-           
-           const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+          const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
 
-           console.log(isIOS);
+          console.log(isIOS);
 
           if (isIOS) {
-            
             const fileURL = URL.createObjectURL(blob);
             const newWindow = window.open(fileURL, '_blank');
             if (!newWindow) {
-              this.gs.showMobileMessage('Note!',"If your using iPhone Go to Setting -> Apps -> Safari -> Turn off 'Block Popups' ");
+              this.gs.showMobileMessage(
+                'Note!',
+                "If your using iPhone Go to Setting -> Apps -> Safari -> Turn off 'Block Popups' "
+              );
             }
           } else {
             // Other devices: download
@@ -1160,7 +1195,7 @@ export class FinalVerifyComponent {
 
             this.toast.showToast('success', 'Resume Downloaded Successfully');
           }
-         this.ngxLoaderStop();
+          this.ngxLoaderStop();
           this.router.navigate(['/mob-candidate']);
         }
         this.ngxLoaderStop();
@@ -1222,8 +1257,6 @@ export class FinalVerifyComponent {
       },
     });
   }
-
- 
 
   getAvailableCredits(): Promise<void> {
     return new Promise((resolve, reject) => {
@@ -1301,7 +1334,6 @@ export class FinalVerifyComponent {
   }
 
   getSummaryAndObjectiveContent() {
-
     const route = 'content/get-content';
 
     this.api.get(route).subscribe({

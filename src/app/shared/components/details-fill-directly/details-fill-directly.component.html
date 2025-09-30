@@ -39,7 +39,7 @@
       alt=""
     />
   </div>
-  <div class="col-12 md:col-6" style="margin: 0 auto">
+  <div class="col-12  md:col-6" style="margin: 0 auto;">
     <div class="inside-label-textarea">
       <span class="btn-position">
         <span class="left-side">
@@ -67,29 +67,51 @@
 
       <textarea
         id="analysis"
-        rows="5"
+        rows="7"
         #analysisBox
         placeholder="Enter your details"
         [(ngModel)]="analysisText"
       ></textarea>
       <span style="display: flex; justify-content: space-between">
         <p>Count: {{ getCharacterCount(analysisText) }}</p>
+
         <div
-          style="display: flex; align-items: center; justify-content: center;margin-top: 15px;"
+          style="
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 15px;
+          "
         >
-          <button class="analysis" (click)="analyseWithAi(analysisBox.value)">
-            Submit
-            <!-- &#10024; -->
-          </button>
+          <!-- <div>
+      <span style="color: rgb(222, 23, 23); font-weight: bold; font-size: 17px"
+        >Just change the content according to your details and click
+        Submit.</span
+      >
+    </div> -->
         </div>
         <span class="hint-btn" (click)="hintPopup()">Hints/Tips</span>
       </span>
     </div>
   </div>
+  <div
+    style="
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 15px;
+    "
+  >
+    <button class="analysis" (click)="analyseWithAi(analysisBox.value)">
+      Submit
+      <!-- &#10024; -->
+    </button>
+  </div>
 
   <!-- <div class="divider">
     <span>or</span>
   </div> -->
+
   <span
     style="
       display: flex;
@@ -212,9 +234,9 @@
 </div>
 
 <ng-container *ngIf="showErrorPopup">
-  <app-error-message
+  <app-error-login-popup
     [message]="errorMessage"
     (closePopupTap)="closePopupTap($event)"
     [status]="errorStatus"
-  ></app-error-message>
+  ></app-error-login-popup>
 </ng-container>

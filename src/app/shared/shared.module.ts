@@ -37,7 +37,14 @@ import { DetailsFillDirectlyComponent } from './components/details-fill-directly
 import { MobileResumeCommonDetailsComponent } from './components/mobile-resume-common-details/mobile-resume-common-details.component';
 import { MobileDetailsDillDirectlyComponent } from './components/mobile-details-dill-directly/mobile-details-dill-directly.component';
 import { MobilePopupComponent } from './popup/mobile-popup/mobile-popup.component';
-
+import { MobileErrorLoginPopupComponent } from './components/mobile-error-login-popup/mobile-error-login-popup.component';
+import { ErrorLoginPopupComponent } from './components/error-login-popup/error-login-popup.component';
+import { MultiPageFormsComponent } from './multipage-components/multi-page-forms/multi-page-forms.component';
+import { ModelLoginPopupComponent } from './popup/model-login-popup/model-login-popup.component';
+import { MobileMultiPageFormsComponent } from './multipage-components/mobile-multi-page-forms/mobile-multi-page-forms.component';
+import { MobileTemplatesComponent } from './multipage-components/mobile-templates/mobile-templates.component';
+import { ResumeTemplateComponent } from './multipage-components/resume-template/resume-template.component';
+   
  
 @NgModule({
   declarations: [
@@ -66,7 +73,14 @@ import { MobilePopupComponent } from './popup/mobile-popup/mobile-popup.componen
     DetailsFillDirectlyComponent,
     MobileResumeCommonDetailsComponent,
     MobileDetailsDillDirectlyComponent,
-    MobilePopupComponent
+    MobilePopupComponent,
+    MobileErrorLoginPopupComponent,
+    ErrorLoginPopupComponent,
+    MultiPageFormsComponent,
+    ModelLoginPopupComponent,
+    MobileMultiPageFormsComponent,
+    MobileTemplatesComponent,
+    ResumeTemplateComponent
    ],
   imports: [
     CommonModule,
@@ -118,7 +132,14 @@ import { MobilePopupComponent } from './popup/mobile-popup/mobile-popup.componen
     TagInputModule,
     DetailsFillDirectlyComponent,
     MobileResumeCommonDetailsComponent,
-    MobileDetailsDillDirectlyComponent
+    MobileDetailsDillDirectlyComponent,
+    MobileErrorLoginPopupComponent,
+    ErrorLoginPopupComponent,
+    MultiPageFormsComponent,
+    ModelLoginPopupComponent,
+    MobileMultiPageFormsComponent,
+    MobileTemplatesComponent,
+    ResumeTemplateComponent
   ],
 })
 export class SharedModule {}

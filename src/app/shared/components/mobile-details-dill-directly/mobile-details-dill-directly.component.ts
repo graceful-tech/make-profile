@@ -25,10 +25,11 @@ export class MobileDetailsDillDirectlyComponent {
   candidates: any;
   isUploading: boolean = false;
   isAnalysing: boolean = false;
-  analysisText: string = '';
+  analysisText: string ='';
   showErrorPopup: boolean = false;
   errorMessage: any;
   errorStatus: any;
+  templateName: any;
 
   constructor(
     private api: ApiService,
@@ -45,8 +46,16 @@ export class MobileDetailsDillDirectlyComponent {
     private loader: LoaderService,
     private toast: ToastService
   ) {
-    sessionStorage.clear();
-    localStorage.clear();
+    
+  }
+
+
+  ngOnInit(){
+    this.gs.resumeName$.subscribe((response) => {
+      if (response !== null) {
+        this.templateName = response;
+      }
+    });
   }
 
   togglePopup() {
@@ -105,6 +114,15 @@ export class MobileDetailsDillDirectlyComponent {
           this.ngxLoaderStop();
           this.candidates = response;
           this.gs.setCandidateDetails(this.candidates);
+
+           
+            if (this.templateName === null || this.templateName === undefined) {
+              const templateName = localStorage.getItem('templateName');
+              this.gs.setResumeName(templateName);
+            } else {
+              this.gs.setResumeName(this.templateName);
+            }
+
           this.router.navigate(['resume-details']);
         } else {
           this.ngxLoaderStop();
@@ -128,7 +146,14 @@ export class MobileDetailsDillDirectlyComponent {
   }
 
   enterDetails() {
-    this.router.navigate(['resume-details']);
+     
+            if (this.templateName === null || this.templateName === undefined) {
+              const templateName = localStorage.getItem('templateName');
+              this.gs.setResumeName(templateName);
+            } else {
+              this.gs.setResumeName(this.templateName);
+            }
+    this.router.navigate(['mobile-multi']);
   }
 
   analyseWithAi(content: any) {
@@ -166,6 +191,14 @@ export class MobileDetailsDillDirectlyComponent {
               this.errorStatus = 'Correct Your Content';
             } else {
               this.gs.setCandidateDetails(response);
+               
+            if (this.templateName === null || this.templateName === undefined) {
+              const templateName = localStorage.getItem('templateName');
+              this.gs.setResumeName(templateName);
+            } else {
+              this.gs.setResumeName(this.templateName);
+            }
+            
               this.router.navigate(['resume-details']);
             }
           } else {
@@ -214,6 +247,6 @@ export class MobileDetailsDillDirectlyComponent {
   }
 
   goToHome() {
-    this.router.navigate(['mob-login/create-account-directly']);
+    this.router.navigate(['resume-templates']);
   }
 }

@@ -1,0 +1,18 @@
+.message {
+    padding: 0rem 0rem 1.5rem 0rem;
+}
+
+.button-wrapper {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.Heading{
+    font-weight: bold;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    
+}

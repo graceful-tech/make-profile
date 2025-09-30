@@ -1,0 +1,287 @@
+/* Base wrapper */
+.profile-wrapper {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: 100vh;
+}
+
+/* Go Back button */
+.home {
+  background: #007bff;
+  border: none;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  margin-bottom: 1.5rem;
+  padding: 7px 9px;
+  font-size: 12px;
+  border-radius: 9px;
+}
+.home i {
+  margin-right: 5px;
+}
+
+/* Step Tracker */
+.step-tracker {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  flex: 1;
+  min-width: 60px;
+}
+.step span {
+  display: inline-block;
+  width: 36px;
+  height: 36px;
+  line-height: 36px;
+  border-radius: 50%;
+  background-color: #ccc;
+  color: #fff;
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  transition: all 0.3s ease;
+}
+.step.active span {
+  background-color: #007bff;
+  transform: scale(1.2);
+}
+.step.completed span {
+  background-color: #28a745;
+}
+.step p {
+  font-size: 0.85rem;
+  text-align: center;
+  margin: 0;
+}
+.connector {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: 4px;
+  width: 100%;
+  background-color: #ccc;
+  z-index: -1;
+  transform: translateX(50%);
+  border-radius: 2px;
+  transition: background-color 0.3s ease;
+}
+.connector.completed {
+  background-color: #28a745;
+}
+.step:last-child .connector {
+  display: none;
+}
+
+ 
+.section-heading {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #178be9;
+}
+ 
+.field-wrapper input:focus,
+.field-wrapper textarea:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
+}
+
+/* Error messages */
+.error-message {
+  color: #dc3545;
+  font-size: 0.8rem;
+  margin-top: 0.2rem;
+}
+
+.nextbutton {
+  border: none;
+  border-radius: 5px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-weight: bold;
+  background: #007bff;
+  color: white;
+}
+
+.backbutton {
+  border: none;
+  border-radius: 5px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-weight: bold;
+  background: #686d73;
+  color: white;
+}
+.active {
+  background: none;
+  color: #fff;
+  font-weight: 500;
+  padding: 2px 5px;
+  border-radius: 2px;
+  font-size: 13px;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.step-tracker {
+  display: flex;
+  flex-direction: row; /* Always row */
+  align-items: center;
+  justify-content: space-between;
+  margin: 1.5rem 0;
+  overflow-x: auto; /* allow scrolling if too many steps */
+  white-space: nowrap; /* prevent wrapping to next line */
+  padding: 0 0.5rem;
+}
+
+.step {
+  display: flex;
+  flex-direction: column; /* number on top, text below */
+  align-items: center;
+  flex: 0 0 auto; /* don't shrink too much */
+  min-width: 70px; /* ensures each step has space */
+  position: relative;
+}
+
+.step span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: #ccc;
+  color: #fff;
+  font-weight: bold;
+  margin-bottom: 0.3rem;
+  z-index: 2;
+}
+
+.step.active span {
+  background-color: #007bff;
+}
+
+.step.completed span {
+  background-color: #28a745;
+}
+
+.step p {
+  font-size: 0.75rem;
+  margin: 0;
+  text-align: center;
+}
+
+/* connector line between steps */
+.line {
+  flex: 1;
+  height: 3px;
+  background-color: #ccc;
+  margin: 0 4px;
+}
+
+.line.completed {
+  background-color: #28a745;
+}
+
+ 
+@media (max-width: 480px) {
+  .step span {
+    width: 28px;
+    height: 28px;
+    font-size: 0.75rem;
+  }
+  .step p {
+    font-size: 0.65rem;
+  }
+}
+
+.custom-btn {
+  background-color: #415ddb;
+  color: white;
+  border: none;
+  padding: 8px 5px;
+  font-size: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-right: 15px;
+  font-weight: bold;
+  font-style: italic;
+}
+
+.custom-btn:hover {
+  background-color: #3716dc;
+}
+
+.remove-btn {
+  background-color: #db4141;
+  color: white;
+  border: none;
+  padding: 8px 5px;
+  font-size: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-right: 15px;
+  font-weight: bold;
+  font-style: italic;
+}
+
+.remove-btn:hover {
+  background-color: #f40808;
+}
+
+
+@media (max-width: 390px) {
+  
+  .p-inputtext{
+    padding: 0.2rem 0.6rem;
+    width: 100%;
+   }
+
+   .step-tracker{
+     padding: 0 0rem;
+     margin: 1rem 0;
+   }
+
+   .step{
+    max-width: none;
+    min-width: 0px;
+     word-wrap: break-word;
+   }
+
+   .tag-input {
+     padding: 0px !important;;
+   }
+
+   .ng2-tag-input[_ngcontent-ng-c3392130527] {
+     
+      padding: 0rem 0 !important;;  
+     
+   }
+
+   .field-wrapper{
+    padding:0.2rem;
+   }
+
+   .home{
+    margin-bottom: 0.1rem;
+   }
+
+
+}

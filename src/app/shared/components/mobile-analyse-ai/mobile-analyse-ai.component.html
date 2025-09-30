@@ -182,9 +182,9 @@
 </div>
 
 <ng-container *ngIf="showErrorPopup">
-  <app-error-message
+  <app-error-login-popup
     [message]="errorMessage"
     (closePopupTap)="closePopupTap($event)"
     [status]="errorStatus"
-  ></app-error-message>
+  ></app-error-login-popup>
 </ng-container>

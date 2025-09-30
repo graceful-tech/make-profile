@@ -29,6 +29,7 @@ import { CollegeProject } from 'src/app/models/candidates/college-project';
 import { LoaderService } from 'src/app/services/loader.service';
 import { ToastService } from 'src/app/services/toast.service';
 import { Project } from 'src/app/models/candidates/project';
+import { isObject } from 'ngx-chips/core/accessor';
 
 @Component({
   selector: 'app-resume-creating',
@@ -102,6 +103,7 @@ export class ResumeCreatingComponent {
   showErrorPopup: boolean = false;
   errorMessage: any;
   errorStatus: any;
+  reducedContent!: string;
 
   constructor(
     private api: ApiService,
@@ -256,13 +258,13 @@ export class ResumeCreatingComponent {
   createResume(candiateDto: any) {
     this.generating = true;
 
-    if (this.templateName === null || this.templateName === undefined) {
-      this.templateName = localStorage.getItem('templateName');
-    }
+     
+      const templateName = localStorage.getItem('templateName');
+  
 
     const route = 'resume/create';
 
-    const payload = { ...candiateDto, templateName: this.templateName };
+    const payload = { ...candiateDto, templateName: templateName };
 
     this.api.retrieve(route, payload).subscribe({
       next: (response: any) => {
@@ -307,6 +309,54 @@ export class ResumeCreatingComponent {
         this.errorStatus = error.error?.status;
       },
     });
+  }
+
+  trimSummaryContent() {
+    let content = this.returnCandidate.summary?.trim();
+    let summaryContentCount = content.split('.');
+
+    if (content && summaryContentCount.length >= 2) {
+      let sentences = content
+        .split('.')
+        .map((s: any) => s.trim())
+        .filter((s: any) => s !== '');
+
+      sentences.pop();
+
+      content = sentences.join('. ');
+
+      if (content.length > 0) {
+        content += '.';
+      }
+
+      this.candidateForm.get('summary')?.setValue(content);
+
+      this.returnCandidate.summary = content;
+    }
+
+    let objectiveContent = this.returnCandidate.carrierObjective?.trim();
+    let objectiveContentCount = content.split('.');
+
+    if (objectiveContent && objectiveContentCount.length >= 2) {
+      let objectiveSentences = content
+        .split('.')
+        .map((s: any) => s.trim())
+        .filter((s: any) => s !== '');
+
+      objectiveSentences.pop();
+
+      content = objectiveSentences.join('. ');
+
+      if (content.length > 0) {
+        content += '.';
+      }
+
+      this.candidateForm.get('carrierObjective')?.setValue(content);
+
+      this.returnCandidate.carrierObjective = content;
+    }
+
+    this.createResume(this.returnCandidate);
   }
 
   getGenderList() {
@@ -587,9 +637,10 @@ export class ResumeCreatingComponent {
             this.dataLoaded = true;
             localStorage.setItem('candidateId', this.candidateId);
             this.returnCandidate = response;
-
-            this.createResume(response);
+ 
             this.generating = false;
+            this.createResume(response);
+           
           } else {
             this.generating = false;
           }
@@ -1192,8 +1243,14 @@ export class ResumeCreatingComponent {
           const candidateClone = JSON.parse(JSON.stringify(candidate));
 
           this.patchCandidateForm(candidateClone);
-
-          this.getSummaryAndObjectiveContent();
+          if (
+            this.candidates?.summary === null ||
+            this.candidates?.careerObjective == null
+          ) {
+            this.getSummaryAndObjectiveContent();
+          } else {
+            this.loader.stop();
+          }
         }
       },
     });

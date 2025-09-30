@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, QueryList, ViewChildren } from '@angular/core';
 import {
   AbstractControl,
   FormArray,
@@ -35,6 +35,8 @@ import { LoginPopupComponent } from '../../popup/login-popup/login-popup.compone
   styleUrl: './create-resume-common-details.component.css',
 })
 export class CreateResumeCommonDetailsComponent {
+    @ViewChildren('formField') formFields!: QueryList<ElementRef>;
+    
   candidateForm!: FormGroup;
   genderList: Array<ValueSet> = [];
   languages: Array<ValueSet> = [];
@@ -92,6 +94,7 @@ export class CreateResumeCommonDetailsComponent {
   citiesName: any;
   stateNames: any;
   additionalDetailsForm!: FormGroup;
+  templateName: any;
 
   constructor(
     private api: ApiService,
@@ -107,6 +110,12 @@ export class CreateResumeCommonDetailsComponent {
     this.gs.candidateDetails$.subscribe((response) => {
       if (response !== null && response !== undefined) {
         this.candidates = response;
+      }
+    });
+
+      this.gs.resumeName$.subscribe((response) => {
+      if (response !== null) {
+        this.templateName = response;
       }
     });
   }
@@ -487,8 +496,8 @@ export class CreateResumeCommonDetailsComponent {
 
           const userName = sessionStorage.getItem('userName');
           const password = sessionStorage.getItem('userName');
-          
-           this.dialogeService.open(LoginPopupComponent, {
+
+          this.dialogeService.open(LoginPopupComponent, {
             data: {
               userName,
               password,
@@ -498,7 +507,6 @@ export class CreateResumeCommonDetailsComponent {
             styleClass: 'custom-popup',
             closable: false,
           });
-
         },
         error: (error) => {
           this.loader.stop();
@@ -513,17 +521,46 @@ export class CreateResumeCommonDetailsComponent {
       this.loader.stop();
       this.showError = true;
       this.toast.showToast('error', 'Enter All Mandatory Fields');
+      setTimeout(() => this.scrollToFirstInvalidControl(), 100);
       this.candidateForm.markAllAsTouched();
+     
     }
   }
+
+private scrollToFirstInvalidControl() {
+  const invalidControl = Object.keys(this.candidateForm.controls).find(
+    key => this.candidateForm.controls[key].invalid
+  );
+
+  if (invalidControl) {
+    const el = document.getElementById(invalidControl + 'Field');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      console.log('✅ Scrolling to:', invalidControl);
+    } else {
+      console.warn('❌ Not found:', invalidControl + 'Field');
+    }
+  }
+}
+
+
+
+
+
+
 
   reset() {
     this.candidateForm.reset();
   }
 
-  createCandidate() {
+ async createCandidate() {
     this.loader.start();
-    if (this.candidateForm.valid) {
+      
+   const isValid = await this.checkIfDetailsExists(this.candidateForm.get('mobileNumber')?.value);
+
+      
+
+    if (this.candidateForm.valid && isValid) {
       this.dataLoaded = false;
 
       const route = 'user/create-by-resume';
@@ -1403,4 +1440,40 @@ export class CreateResumeCommonDetailsComponent {
       next: (response) => {},
     });
   }
+checkIfDetailsExists(mobile: string): Promise<boolean> {
+  return new Promise((resolve) => {
+    if (mobile && mobile.length === 10) {
+      const route = 'candidate/check_mobile';
+      const formData = new FormData();
+      formData.append('mobile', mobile);
+
+      this.api.upload(route, formData).subscribe({
+        next: (response) => {
+          const control = this.candidateForm.get('mobileNumber');
+          if (control) {
+            if (response === true) {
+              control.setErrors({ ...(control.errors || {}), mobileExists: true });
+              resolve(false);  
+            } else {
+              if (control.hasError('mobileExists')) {
+                const errors = { ...control.errors };
+                delete errors['mobileExists'];
+                control.setErrors(Object.keys(errors).length ? errors : null);
+              }
+              resolve(true);  
+            }
+          }
+        },
+        error: (err) => {
+          console.error('Error checking mobile number:', err);
+          resolve(false); // treat error as "not valid"
+        },
+      });
+    } else {
+      resolve(false);
+    }
+  });
+}
+
+
 }

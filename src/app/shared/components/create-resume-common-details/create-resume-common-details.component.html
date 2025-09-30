@@ -2,7 +2,7 @@
   <div class="profile-wrapper">
     <div>
       <button class="home" (click)="home()">
-       <i class="fa fa-arrow-left"></i> Back
+        <i class="fa fa-arrow-left"></i> Back
       </button>
     </div>
 
@@ -10,7 +10,7 @@
       <app-make-profile-divider></app-make-profile-divider>
       <div class="section-heading">Personal Details</div>
       <div class="grid">
-        <div class="col-12 md:col-6 lg:col-3">
+        <!-- <div class="col-12 md:col-6 lg:col-3">
           <div class="field-wrapper">
             <label class="required">Mobile Number</label>
             <div class="input-wrapper">
@@ -29,13 +29,62 @@
           >
             Mobile Number is required</small
           >
+        </div> -->
+
+        <div class="col-12 md:col-6 lg:col-3">
+          <div class="field-wrapper">
+            <label class="required">Mobile Number</label>
+            <div class="input-wrapper">
+              <input
+                type="text"
+                pKeyFilter="int"
+                [maxlength]="10"
+                pInputText
+                formControlName="mobileNumber"
+                (blur)="checkIfDetailsExists(candidateForm.value.mobileNumber)"
+                (keyup.enter)="
+                  checkIfDetailsExists(candidateForm.value.mobileNumber)
+                "
+              />
+            </div>
+          </div>
+
+          <!-- Required validation -->
+          <small
+            class="error-message"
+            *ngIf="
+              candidateForm.get('mobileNumber')?.hasError('required') &&
+              showError
+            "
+          >
+            Mobile Number is required
+          </small>
+
+        
+          <small
+            class="error-message"
+            *ngIf="
+              candidateForm.get('mobileNumber')?.hasError('minlength') &&
+              showError
+            "
+          >
+            Mobile Number must be 10 digits
+          </small>
+
+         
+          <small
+            class="error-message"
+            *ngIf="candidateForm.get('mobileNumber')?.hasError('mobileExists')"
+          >
+            You have already signed-up ,create resume via sign-in
+          </small>
         </div>
 
         <div class="col-12 md:col-6 lg:col-3">
           <div class="field-wrapper">
             <label class="required">Name</label>
             <div class="input-wrapper">
-              <input type="text" pInputText formControlName="name" />
+              <input type="text" pInputText formControlName="name"   />
             </div>
           </div>
           <small
@@ -143,7 +192,7 @@
           <div class="field-wrapper">
             <label>Father Name</label>
             <div class="input-wrapper">
-              <input type="text" pInputText formControlName="name" />
+              <input type="text" pInputText formControlName="fatherName" />
             </div>
           </div>
         </div>
@@ -479,86 +528,86 @@
       </div>
 
       <ng-container *ngIf="candidateForm.get('fresher')?.value">
-              <div formArrayName="collegeProject">
-                <div
-                  *ngFor="
-                    let collegeProject of collegeProjectControls.controls;
-                    let i = index
-                  "
-                  [formGroupName]="i"
-                  class="college-project-box"
-                >
-                  <div class="grid">
-                    <!-- Project Name -->
-                    <div class="col-12 md:col-6">
-                      <div class="field-wrapper">
-                        <label>Project Name</label>
-                        <div class="input-wrapper">
-                          <input
-                            type="text"
-                            pInputText
-                            formControlName="collegeProjectName"
-                          />
-                        </div>
-                      </div>
-                    </div>
-
-                    <!-- Project Skills -->
-                    <div class="col-12 md:col-6">
-                      <div class="field-wrapper">
-                        <label>Project Skills</label>
-                        <div class="input-wrapper">
-                          <tag-input
-                            formControlName="collegeProjectSkills"
-                            [separatorKeyCodes]="[13, 188]"
-                            [theme]="'modern'"
-                            placeholder="Type and press Enter or Comma"
-                          >
-                          </tag-input>
-                        </div>
-                      </div>
-                    </div>
-
-                    <!-- Project Description -->
-                    <div class="col-12">
-                      <div class="field-wrapper">
-                        <label>Project Description</label>
-                        <div class="input-wrapper">
-                          <textarea
-                            rows="2"
-                            type="text"
-                            pInputText
-                            formControlName="collegeProjectDescription"
-                          ></textarea>
-                        </div>
-                      </div>
-                    </div>
-
-                    <!-- Remove Project -->
-                    <div class="col-12 md:col-6 lg:col-3" *ngIf="i >= 0">
-                      <button
-                        type="button"
-                        class="remove-btn"
-                        (click)="removeCollegeProject(i)"
-                      >
-                        Remove Project
-                      </button>
-                    </div>
+        <div formArrayName="collegeProject">
+          <div
+            *ngFor="
+              let collegeProject of collegeProjectControls.controls;
+              let i = index
+            "
+            [formGroupName]="i"
+            class="college-project-box"
+          >
+            <div class="grid">
+              <!-- Project Name -->
+              <div class="col-12 md:col-6">
+                <div class="field-wrapper">
+                  <label>Project Name</label>
+                  <div class="input-wrapper">
+                    <input
+                      type="text"
+                      pInputText
+                      formControlName="collegeProjectName"
+                    />
                   </div>
                 </div>
+              </div>
 
-                <!-- Add Project Button -->
-                <div class="col-12 md:col-6 lg:col-3 mt-3">
-                  <button
-                    type="button"
-                    class="custom-btn"
-                    (click)="addCollegeProject()"
-                  >
-                    + Add Project
-                  </button>
+              <!-- Project Skills -->
+              <div class="col-12 md:col-6">
+                <div class="field-wrapper">
+                  <label>Project Skills</label>
+                  <div class="input-wrapper">
+                    <tag-input
+                      formControlName="collegeProjectSkills"
+                      [separatorKeyCodes]="[13, 188]"
+                      [theme]="'modern'"
+                      placeholder="Type and press Enter or Comma"
+                    >
+                    </tag-input>
+                  </div>
                 </div>
               </div>
-            </ng-container>
+
+              <!-- Project Description -->
+              <div class="col-12">
+                <div class="field-wrapper">
+                  <label>Project Description</label>
+                  <div class="input-wrapper">
+                    <textarea
+                      rows="2"
+                      type="text"
+                      pInputText
+                      formControlName="collegeProjectDescription"
+                    ></textarea>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Remove Project -->
+              <div class="col-12 md:col-6 lg:col-3" *ngIf="i >= 0">
+                <button
+                  type="button"
+                  class="remove-btn"
+                  (click)="removeCollegeProject(i)"
+                >
+                  Remove Project
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Add Project Button -->
+          <div class="col-12 md:col-6 lg:col-3 mt-3">
+            <button
+              type="button"
+              class="custom-btn"
+              (click)="addCollegeProject()"
+            >
+              + Add Project
+            </button>
+          </div>
+        </div>
+      </ng-container>
 
       <app-make-profile-divider></app-make-profile-divider>
       <div class="section-heading mt-3">
@@ -1024,7 +1073,7 @@
     <div class="button-bar">
       <div class="button-wrapper">
         <button class="home-bottom" (click)="home()">
-        <i class="fa fa-arrow-left"></i> Back
+          <i class="fa fa-arrow-left"></i> Back
         </button>
       </div>
 
