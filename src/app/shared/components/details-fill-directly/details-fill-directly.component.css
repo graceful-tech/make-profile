@@ -558,3 +558,32 @@
   /* transform: translateX(-10%) scale(1);
   transition: all 1s ease-in-out; */
 }
+
+.instruction {
+  display: inline-block;
+  position: relative;
+  border: 1px solid #999;
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 14px;
+  color: #faf8f8;
+  background: #5b41df;
+  margin-bottom: 10px;
+  float: right;   
+  margin-top: 10px;
+}
+
+/* notch at top-right corner */
+.instruction::after {
+  content: "";
+  position: absolute;
+  top: -6px;        /* sits above the box */
+  right: 10px;      /* near right corner */
+  width: 12px;
+  height: 12px;
+  background: #5b41df;  /* same as box background */
+  border-left: 1px solid #999;
+  border-top: 1px solid #999;
+  transform: rotate(45deg);
+  border-top-left-radius: 2px;
+}

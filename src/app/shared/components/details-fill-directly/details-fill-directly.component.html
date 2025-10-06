@@ -60,11 +60,14 @@
 
         <span class="right-side">
           <span class="example-content" (click)="togglePopup()">
-            Example Intro
+            Sample
           </span>
         </span>
       </span>
 
+       <div class="instruction">
+  Don’t worry about writing. Just copy the sample, paste it, and edit as needed.
+  </div>
       <textarea
         id="analysis"
         rows="7"
@@ -80,7 +83,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-top: 15px;
+           
           "
         >
           <!-- <div>
@@ -99,7 +102,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-top: 15px;
+     
     "
   >
     <button class="analysis" (click)="analyseWithAi(analysisBox.value)">

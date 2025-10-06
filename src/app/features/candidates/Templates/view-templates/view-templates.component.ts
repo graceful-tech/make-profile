@@ -246,4 +246,12 @@ changeBackground() {
          }
       });
     }
+
+    onImageLoad() {
+  const image = this.resumeImage.nativeElement;
+  image.classList.remove('fade-in');
+  void image.offsetWidth; // trigger reflow
+  image.classList.add('fade-in');
+}
+
 }

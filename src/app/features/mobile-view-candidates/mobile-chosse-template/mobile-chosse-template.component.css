@@ -136,4 +136,14 @@
 }
 
   
- 
+ .resume-image {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  transition: opacity 0.3s ease-in-out;
+  opacity: 1;
+}
+
+.resume-image.fade-in {
+  opacity: 0;
+}

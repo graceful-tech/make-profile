@@ -1601,9 +1601,5 @@ export class MobileMultiPageFormsComponent {
     if (this.step > step) {
       this.step = step;
     }
-    
-    if(this.step < step && this.step !== 1){
-
-    }
   }
 }

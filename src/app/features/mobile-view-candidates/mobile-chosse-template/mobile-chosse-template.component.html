@@ -1,4 +1,4 @@
-<div class="resume-container" [ngStyle]="{ 'background': backgroundStyle }">
+<div class="resume-container" [ngStyle]="{ background: backgroundStyle }">
   <div class="tick-icon">
     <span>&nbsp;Choose Template&nbsp;</span>
   </div>
@@ -19,7 +19,12 @@
     (touchstart)="onTouchStart($event)"
     (touchend)="onTouchEnd($event)"
   >
-    <img #resumeImage [src]="currentResume" class="resume-image" />
+    <img
+      #resumeImage
+      [src]="currentResume"
+      [class.fade-in]="isImageChanging"
+      class="resume-image"
+    />
   </div>
 
   <div class="arrow-controls">

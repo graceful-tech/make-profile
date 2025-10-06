@@ -1,5 +1,8 @@
 <div class="wrapper">
-  <div class="profile-wrapper" [ngStyle]="{ 'background': backgroundStyle }">
+  <div
+    class="profile-wrapper smooth-bg"
+    [ngStyle]="{ 'background': backgroundStyle }"
+  >
     <section class="header-section">
       <button class="create-resume-btn" (click)="goBack()">
         <i class="fa fa-arrow-left"></i> Back
@@ -7,24 +10,21 @@
 
       <div class="main-container">
         <div class="resume-container">
-          <button (click)="prevResume()" class="arrow-btn left-arrow">
-            ⬅️
-          </button>
+          <button (click)="prevResume()" class="arrow-btn left-arrow">⬅️</button>
+
           <img
             #resumeImage
             [src]="currentResume"
             class="resume-image fade-in"
+            (load)="onImageLoad()"
           />
-          <button (click)="nextResume()" class="arrow-btn right-arrow">
-            ➡️
-          </button>
+
+          <button (click)="nextResume()" class="arrow-btn right-arrow">➡️</button>
         </div>
 
         <div class="content-card">
           <div class="resume-type">
-            <span class="resume-name"
-              >{{ resumeName }} - {{ currentResumePageType }}</span
-            >
+            <span class="resume-name">{{ resumeName }} - {{ currentResumePageType }}</span>
           </div>
 
           <div class="select-btn">

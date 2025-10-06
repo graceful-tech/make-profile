@@ -109,7 +109,7 @@
 
 .upload-container {
   background-color: white;
-  padding: 10px 20px;
+  padding: 10px 10px;
   border-radius: 16px;
   box-shadow: 0px 0px 20px 9px rgba(0, 0, 0, 0.08);
   text-align: center;
@@ -119,17 +119,17 @@
 }
 
 .upload-title {
-  font-size: 20px;
+  font-size: 15px;
   font-weight: 600;
   color: #111827;
-  margin-bottom: 25px;
+  margin-bottom: 10px;
 }
 
 .upload-box {
   border: 2px dashed #94a3b8;
   border-radius: 12px;
   padding: 10px 10px;
-  margin-bottom: 25px;
+  margin-bottom: 10px;
   background-color: #f9fafb;
 }
 
@@ -689,4 +689,30 @@
   font-size: 10px;
 }
 
+}
+
+.instruction {
+  display: inline-block;
+  position: relative;
+  border: 1px solid #999;
+  border-radius: 6px;
+  padding: 2px 5px;
+  font-size: 12px;
+  color: #fffefe;
+  background: #713881;
+}
+
+/* notch at top-right corner */
+.instruction::after {
+  content: "";
+  position: absolute;
+  top: -6px;        /* sits above the box */
+  right: 10px;      /* near right corner */
+  width: 12px;
+  height: 12px;
+  background: #713881;  /* same as box background */
+  border-left: 1px solid #999;
+  border-top: 1px solid #999;
+  transform: rotate(45deg);
+  border-top-left-radius: 2px;
 }
