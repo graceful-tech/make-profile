@@ -32,7 +32,7 @@ import { MobileAnalyseAiComponent } from './components/mobile-analyse-ai/mobile-
 import { ToastMessageComponent } from './components/toast-message/toast-message.component';
 import { ErrorMessageComponent } from './components/error-message/error-message.component';
 import { ErrorMobilePopupComponent } from './components/error-mobile-popup/error-mobile-popup.component';
-import { TagInputModule } from 'ngx-chips';
+import { TagInputModule} from 'ngx-chips';
 import { DetailsFillDirectlyComponent } from './components/details-fill-directly/details-fill-directly.component';
 import { MobileResumeCommonDetailsComponent } from './components/mobile-resume-common-details/mobile-resume-common-details.component';
 import { MobileDetailsDillDirectlyComponent } from './components/mobile-details-dill-directly/mobile-details-dill-directly.component';
@@ -44,8 +44,12 @@ import { ModelLoginPopupComponent } from './popup/model-login-popup/model-login-
 import { MobileMultiPageFormsComponent } from './multipage-components/mobile-multi-page-forms/mobile-multi-page-forms.component';
 import { MobileTemplatesComponent } from './multipage-components/mobile-templates/mobile-templates.component';
 import { ResumeTemplateComponent } from './multipage-components/resume-template/resume-template.component';
-   
- 
+import { ScrollAnimateDirective } from '../services/scroll-animate.directive';
+import { ScrollAnimateDirectiveSection4 } from '../services/scroll-animated-section4';
+import { ScrollAnimateDirectiveSection1 } from '../services/scroll-section-part1';
+import { ScrollFadeDirectiveFade } from '../services/scoll-section-upward';
+import { DrapAndDropSectionComponent } from './components/drap-and-drop-section/drap-and-drop-section.component';
+
 @NgModule({
   declarations: [
     MakeProfileDividerComponent,
@@ -80,8 +84,13 @@ import { ResumeTemplateComponent } from './multipage-components/resume-template/
     ModelLoginPopupComponent,
     MobileMultiPageFormsComponent,
     MobileTemplatesComponent,
-    ResumeTemplateComponent
-   ],
+    ResumeTemplateComponent,
+    ScrollAnimateDirective,
+    ScrollAnimateDirectiveSection4,
+    ScrollAnimateDirectiveSection1,
+    ScrollFadeDirectiveFade,
+    DrapAndDropSectionComponent,
+  ],
   imports: [
     CommonModule,
     PrimengModule,
@@ -94,6 +103,7 @@ import { ResumeTemplateComponent } from './multipage-components/resume-template/
     MatDialogModule,
     DragDropModule,
     TagInputModule,
+   
   ],
   exports: [
     CommonModule,
@@ -139,7 +149,12 @@ import { ResumeTemplateComponent } from './multipage-components/resume-template/
     ModelLoginPopupComponent,
     MobileMultiPageFormsComponent,
     MobileTemplatesComponent,
-    ResumeTemplateComponent
+    ResumeTemplateComponent,
+    ScrollAnimateDirective,
+    ScrollAnimateDirectiveSection4,
+    ScrollAnimateDirectiveSection1,
+    ScrollFadeDirectiveFade,
+    DrapAndDropSectionComponent,
   ],
 })
 export class SharedModule {}

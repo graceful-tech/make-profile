@@ -1219,3 +1219,46 @@ tag-input {
   background-color: #f6fff9; 
   box-shadow: 0 2px 6px rgba(0,0,0,0.05);
 }
+
+
+ .mySwiper {
+  --swiper-navigation-color: #3c85d3; /* arrow icon color */
+  --swiper-navigation-size: 40px;     /* arrow size */
+}
+
+/* Style the arrow buttons container */
+  .swiper-initialized .swiper-button-next svg,
+.swiper .swiper-button-prev svg{
+  background-color: #900a0a;  /* white background */
+  border-radius: 50%;         /* round button */
+  width: 45px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+/* Override the ::after pseudo-element that draws the icon */
+.mySwiper .swiper-button-next::after,
+.mySwiper .swiper-button-prev::after {
+  color: #3c85d3; /* arrow icon color */
+  font-size: 20px;
+}
+
+/* Hover effect */
+.mySwiper .swiper-button-next:hover,
+.mySwiper .swiper-button-prev:hover {
+  background-color: #3c85d3; /* background on hover */
+}
+
+.mySwiper .swiper-button-next:hover::after,
+.mySwiper .swiper-button-prev:hover::after {
+  color: #fff; /* arrow color on hover */
+}
+
+
+.mySwiper .swiper-button-prev { left: -10px; }
+.mySwiper .swiper-button-next { right: -10px; }

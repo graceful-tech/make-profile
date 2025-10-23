@@ -1,12 +1,5 @@
 .wrapper {
-    /* background: #fff;
-    height: auto;
-    padding:1.5rem;
-    margin: 0 auto;
-    margin-top:10%;
-    width: 55%; */
-    /* margin-top:50%; */
-    /* width: 100%; */
+    margin-top: 1rem;
 }      
 
 .align {
@@ -17,7 +10,7 @@
 }
 
 .profile-wrapper {
-    margin-top: 50px;
+    margin-top: 20px;
   }
   
   .input-wrapper {
@@ -104,4 +97,5 @@ background: #F8F9FA;
     max-width: 100%;
     flex: none;
     background: #fff;
+    
   }

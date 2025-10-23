@@ -1,0 +1,1122 @@
+<section class="hero-section">
+   <h2 class="herosection-h2headding">Welcome to Make Profiles</h2>
+  <div class="container">
+    <div
+      class="hero-content"
+      appScrollAnimatesection4
+      [animationName]="'fadeInLeft'"
+      [animationDuration]="1200"
+      [animationDelay]="200"
+    >
+    <h5 class="u-text u-text-default u-text-1">
+                 
+                </h5>
+                <br>
+      <h5>🚀 Create Your Dream Resume in Minutes</h5>
+
+      <h1>Let AI craft your <span>perfect resume</span></h1>
+
+      <p>
+        Forget manual editing — just enter your details and get an
+        <strong>ATS-optimized, recruiter-approved resume</strong>
+        ready for download in under a minute — all for just
+        <span style="color: #ff5e38; font-weight: 700">₹10</span>.
+      </p>
+
+      <a href="#login" class="hero-btn">Build My Resume Now →</a>
+
+      <p>
+        <small
+          >Instant AI creation • Up to 5 free edits • ATS-friendly
+          templates</small
+        >
+      </p>
+    </div>
+
+    <div
+      class="hero-image"
+      appScrollAnimatesection4
+      [animationName]="'fadeInRight'"
+      [animationDuration]="1200"
+      [animationDelay]="200"
+    >
+      <img
+        src="assets/images/generated-image.png"
+        alt="AI Resume Builder Illustration"
+
+        (click)="toCreateResume()"
+      />
+    </div>
+  </div>
+</section>
+
+<section class="template-section">
+  <h2 class="section-title">Explore Our Resume Templates</h2>
+
+  <div class="swiper-container-wrapper">
+    <swiper-container
+      class="mySwiper"
+      slides-per-view="4"
+      space-between="20"
+      navigation="true"
+      loop="true"
+      autoplay-delay="1500"
+      autoplay-disable-on-interaction="false"
+      grab-cursor="true"
+      speed="500"
+      breakpoints='{
+        "320": { "slidesPerView": 1 },
+        "640": { "slidesPerView": 2 },
+        "1024": { "slidesPerView": 3 },
+        "1440": { "slidesPerView": 4 }
+      }'
+    >
+      <swiper-slide *ngFor="let template of resumePaths">
+        <div class="template-card">
+          <h4>{{ template.name }}</h4>
+          <img [src]="template.path" [alt]="template.name"  (click)="selectTemplate(template.name)" />
+          <button class="select-btn" (click)="selectTemplate(template.name)">
+            Select
+          </button>
+        </div>
+      </swiper-slide>
+    </swiper-container>
+  </div>
+</section>
+
+<section
+  class="u-clearfix u-container-align-left u-valign-middle u-section-12"
+  id="sec-ea29"
+>
+  <div
+    class="data-layout-selected u-clearfix u-expanded-width u-gutter-30 u-layout-wrap u-layout-wrap-1"
+  >
+    <div class="u-layout">
+      <div class="u-layout-col">
+        <div class="u-size-30 section12">
+          <div class="u-layout-row">
+            <div
+              class="u-container-align-center u-container-style u-image u-image-round u-layout-cell u-radius u-size-40 u-image-2"
+              data-image-width="2000"
+              data-image-height="1333"
+              appScrollAnimatesection4
+              [animationName]="'fadeInLeft'"
+              [animationDuration]="1200"
+              [animationDelay]="200"
+            >
+              >
+              <div class="u-container-layout u-container-layout-4"></div>
+            </div>
+
+            <div
+              class="u-container-style u-grey-5 u-layout-cell u-radius u-shape-round u-size-20 u-layout-cell-3 backstage animated"
+              appScrollAnimatesection4
+              [animationName]="'fadeInRight'"
+              [animationDuration]="1200"
+              [animationDelay]="200"
+            >
+              >
+              <div class="hero-content" style="padding: 25px">
+                <h1>Create Your <span>Resume</span> and Apply for Jobs</h1>
+
+                <p>
+                  Build a professional resume in minutes and apply for the right
+                  jobs that match your skills. Let AI make your job search
+                  simple and faster.
+                </p>
+
+                <ul class="herosection-ul" style="line-height: 2">
+                  <li>✅ Create your resume with smart AI help</li>
+                  <li>✅ Find and apply for matched job openings</li>
+                  <li>✅ Take the next step toward your dream career</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero-section">
+  <div class="container">
+    <div
+      class="earn-content"
+      appScrollAnimatesection4
+      [animationName]="'fadeInLeft'"
+      [animationDuration]="1200"
+      [animationDelay]="200"
+    >
+      <h5>💰 Create, Earn & Grow with Make Profiles</h5>
+
+      <h1>💸 Refer <span>& Earn Rewards</span></h1>
+
+      <a href="#/login" class="hero-btn">Refer and Earn 💸</a>
+
+      <div class="rewardssection" style="margin-top: 40px">
+        <h5>🎉 Up to 5 Referrals</h5>
+        <p>
+          <strong>₹5 Cash</strong> for each of your first 5 referrals — share
+          and start earning instantly!
+        </p>
+
+        <h5>🚀 5–10 Referrals</h5>
+        <p>
+          <strong>₹7 Cash</strong> for each referral from your 6th to 10th
+          invite — boost your rewards as you grow!
+        </p>
+
+        <h5>💎 10+ Referrals</h5>
+        <p>
+          <strong>₹10 Cash</strong> for every referral after 10 — premium level
+          rewards for top referrers!
+        </p>
+
+        <p></p>
+      </div>
+    </div>
+
+    <div
+      class="hero-image"
+      appScrollAnimatesection4
+      [animationName]="'fadeInRight'"
+      [animationDuration]="1200"
+      [animationDelay]="200"
+    >
+      <img
+        src="assets/images/refer-and-earn.png"
+        alt="AI Resume Builder Illustration"
+      />
+    </div>
+  </div>
+</section>
+
+<section class="u-clearfix u-valign-middle u-section-1" id="sec-7e2e">
+  <div
+    class="data-layout-selected u-clearfix u-expanded-width u-gutter-30 u-layout-wrap u-layout-wrap-1"
+  >
+    <div class="u-gutter-0 u-layout">
+      <div class="u-layout-col">
+        <div class="u-size-30">
+          <div class="u-layout-row">
+            <div
+              class="u-container-style u-grey-5 u-layout-cell u-radius u-shape-round u-size-40 u-layout-cell-1 animated flipInX-played"
+              appScrollAnimatesection1
+              [animationName]="'flipInY'"
+              [animationDuration]="2200"
+              [animationDelay]="0"
+            >
+              <div
+                class="u-container-layout u-valign-middle u-container-layout-1"
+              >
+                <h5 class="u-text u-text-default u-text-1">
+                  Welcome to Make Profiles
+                </h5>
+                <h1 class="u-text u-text-default u-text-2">
+                  The Smartest Way to Build Your Resume
+                </h1>
+                <p class="u-text u-text-3">
+                  Instantly create an AI-powered, professional, and
+                  ATS-optimized resume. Enter your details—download your dream
+                  resume in seconds. No hassle, no complex steps—just results
+                  you can trust for only
+                  <span style="color: #ff5e38; font-weight: bold">₹10</span>.
+                </p>
+                <a href="#select-template" class="u-btn u-button-style u-btn-1"
+                  >Get Started Now</a
+                >
+                <p
+                  class="u-text u-text-4"
+                  style="margin-top: 14px; font-size: 1rem; color: #0496ff"
+                >
+                  Up to 5 edits included. Supercharge your job search instantly.
+                </p>
+              </div>
+            </div>
+            <div
+              class="u-container-style u-image u-image-round u-layout-cell u-radius u-size-20 u-image-1"
+              data-image-width="771"
+              data-image-height="1156"
+              appScrollAnimatesection1
+              [animationName]="'flipInX'"
+              [animationDuration]="2200"
+              [animationDelay]="0"
+            >
+              <div class="u-container-layout u-container-layout-2"></div>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="u-size-30">
+          <div class="u-layout-row">
+            <div
+              class="u-container-style u-layout-cell u-size-20 u-layout-cell-3 animated flipInX-played"
+              appScrollAnimatesection1
+              [animationName]="'flipInY'"
+              [animationDuration]="2200"
+              [animationDelay]="0"
+            >
+              <div
+                class="u-container-layout u-valign-bottom-lg u-valign-bottom-md u-valign-bottom-xl u-valign-top-sm u-valign-top-xs u-container-layout-3"
+              >
+                <p class="u-text u-text-default u-text-4">
+                  🚀 Start Your Career Journey Today<br />
+                  Let Make Profiles AI handle the hard work—focus on landing
+                  your dream job with a world-class resume.
+                </p>
+                <span class="u-file-icon u-icon u-icon-1"
+                  ><img src="assets/images/20959.png" alt=""
+                /></span>
+              </div>
+            </div>
+            <div
+              class="u-container-style u-image u-image-round u-layout-cell u-radius u-size-40 u-image-2"
+              data-image-width="2000"
+              data-image-height="1500"
+            >
+              <div class="u-container-layout u-container-layout-4"></div>
+            </div>
+          </div>
+        </div> -->
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- <section
+  class="u-clearfix u-container-align-center u-grey-5 u-valign-middle-lg u-valign-middle-xl u-valign-middle-xs u-section-2"
+  id="sec-ed4f"
+>
+  <div class="u-expanded-width u-list u-list-1">
+    <div class="u-repeater u-repeater-1">
+      <div
+        class="u-container-align-center u-container-style u-list-item u-radius u-repeater-item u-shape-round u-white u-list-item-1 animated flipInX-played"
+        style="will-change: transform; animation-duration: 1000ms"
+        appScrollAnimatesection1
+        [animationName]="'flipInX'"
+        [animationDuration]="2200"
+        [animationDelay]="0"
+      >
+        <div
+          class="u-container-layout u-similar-container u-valign-middle u-container-layout-1"
+        >
+          <span class="u-align-center u-file-icon u-icon u-icon-1"
+            ><img src="assets/images/8637218.png" alt=""
+          /></span>
+          <h5
+            class="u-align-center u-text u-text-default-sm u-text-default-xs u-text-1"
+          >
+            Automation
+          </h5>
+          <p class="u-align-center u-text u-text-2">
+            Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum
+            dolor sit amet.
+          </p>
+        </div>
+      </div>
+      <div
+        class="u-container-align-center u-container-style u-list-item u-radius u-repeater-item u-shape-round u-white u-list-item-2 animated flipInX-played"
+        appScrollAnimatesection1
+        [animationName]="'flipInX'"
+        [animationDuration]="2200"
+        [animationDelay]="0"
+      >
+        <div
+          class="u-container-layout u-similar-container u-valign-middle u-container-layout-2"
+        >
+          <span class="u-align-center u-file-icon u-icon u-icon-2"
+            ><img src="assets/images/1304170.png" alt=""
+          /></span>
+          <h5
+            class="u-align-center u-text u-text-default-sm u-text-default-xs u-text-3"
+          >
+            Optimization
+          </h5>
+          <p class="u-align-center u-text u-text-4">
+            Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum
+            dolor sit amet.
+          </p>
+        </div>
+      </div>
+      <div
+        class="u-container-align-center u-container-style u-list-item u-radius u-repeater-item u-shape-round u-white u-list-item-3 animated flipInX-played"
+        appScrollAnimatesection1
+        [animationName]="'flipInX'"
+        [animationDuration]="2200"
+        [animationDelay]="0"
+      >
+        <div
+          class="u-container-layout u-similar-container u-valign-middle u-container-layout-3"
+        >
+          <span class="u-align-center u-file-icon u-icon u-icon-3"
+            ><img src="assets/images/1304170.png" alt=""
+          /></span>
+          <h5
+            class="u-align-center u-text u-text-default-sm u-text-default-xs u-text-5"
+          >
+            Insights
+          </h5>
+          <p class="u-align-center u-text u-text-6">
+            Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum
+            dolor sit amet.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section> -->
+<section
+  class="skrollable u-clearfix u-image u-parallax u-section-3 skrollable-after"
+  id="sec-6acf"
+  data-bottom-top="background-position: 50% 0vh;"
+  data-top-bottom="background-position: 50% -20vh"
+  style="
+    background-attachment: fixed;
+    background-position: 50% -20vh;
+    border-radius: 50px;
+  "
+>
+  <div class="u-clearfix u-sheet u-sheet-1"></div>
+</section>
+
+<section class="hero-section">
+  <h2 class="herosection-h2headding">AI Impact on Resume</h2>
+  <div class="container herosection-con">
+    <div
+      class="hero-image"
+      appScrollAnimatesection4
+      [animationName]="'fadeInRight'"
+      [animationDuration]="1200"
+      [animationDelay]="200"
+    >
+      <img
+        src="assets/images/Ai-image.png"
+        alt="AI Resume Builder Illustration"
+      />
+    </div>
+
+    <div
+      class="hero-content"
+      appScrollAnimatesection4
+      [animationName]="'fadeInLeft'"
+      [animationDuration]="1200"
+      [animationDelay]="200"
+    >
+      <h5>🤖 Smart AI. Smarter Resumes.</h5>
+
+      <h1>AI that <span>perfects your words</span></h1>
+
+      <p>
+        Let AI instantly create the
+        <strong>perfect summary, objectives,</strong> and
+        <strong>key skills</strong> that fit your dream job — clear, confident,
+        and recruiter-ready.
+      </p>
+
+      <ul class="herosection-ul" style="line-height: 2">
+        <li>
+          ✅ AI-written <strong>career summary</strong> highlighting your
+          strengths
+        </li>
+        <li>
+          ✅ Job-specific <strong>objectives</strong> aligned with your target
+          roles
+        </li>
+        <li>
+          ✅ Smartly selected <strong>key skills</strong> optimized for ATS
+        </li>
+        <li>✅ Real-time <strong>content improvement suggestions</strong></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- <section class="u-clearfix u-grey-5 u-section-6" id="sec-d06e">
+  <div class="u-expanded-width u-list u-list-1">
+    <div class="u-repeater u-repeater-1">
+      <div
+        class="u-container-style u-list-item u-radius u-repeater-item u-shape-round u-white u-list-item-1 animated flipInX-played"
+        appScrollAnimatesection4
+        [animationName]="'flipInX'"
+        [animationDuration]="1000"
+        [animationDelay]="0"
+      >
+        <div
+          class="u-container-layout u-similar-container u-container-layout-1"
+        >
+          <span
+            class="u-align-left u-file-icon u-icon u-icon-rounded u-palette-1-base u-radius u-text-white u-icon-1"
+            ><img
+              src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAgAElEQVR4XuWdB9g1RXWAQ0xiT4w1IOhviR1jVxQELFhRUbBi/H81FsQOFkSKqIAiGhtB0UAwRoWIglEBG8aEYIkau1EExRLUqIkpJibkfb/sfM/55t97d2Z3794LnueZ5ys7M+fM7NmZM6fNNr92KYFLLrnk1pB6H8oulJtSrkX5Xcq/U35G+SHlHyifpZy9zTbbfGHMoYF/R/rbg3JbirRck3I1yhUpP6FcTPka5a8pZ46Nf8yxxL62WVTHY/TLpPuSn0nZQtmuss9/pP5JlDfyMnxB1QD+q9NoP8rjKDeu7OB71H8r5Y/B/6PKtpNVX0kGYOL9ul5E+SPKlQfOxr/6Eigv50X8R0lf4PerFr/Md5WSNnPq/BvP3kQ5oi8jDsQ/t/nKMQCT/+Bmwq49h/L/5Nn3KX5lV2iY5Ab8vPycNt/g2RZewifmzQj47958uTeaU09G+jbFree/Ka5O2za0zGpm/X3B7xaxMrBSDMDkH8bMHELJ6fpf/vchyl9RPsgkfj2fQdr+Bv9TNrg35SEUX2Tez3/xv/1o/5a2N0AfrjhvoPxm9vwS/j6H8m7Khylfo4//aaFB/PelPIByrxb8tjmMti9dFQ5YGQZg8o9kUl6QTYwT9heUo5i0L9VMWiM0HkSbR7S0ex79vTL+n/rPF0/Li38H/3P7+GIl/ls243kUPy+XtT2S/qRt6bASDMDk+9Ufns3Ghfz92KFLJn37JfrFXy/07xf9OPo+2f9RRyHvT7Mv9gL+fgJ1PjLkLTVbingifrt88SqsBEtnACZodybD5f3Xw0Q76Q9jgn46ZPJTW3Bch9/fS7lz6M993COdc+DRUVkiwbn88hDwe7QbDOD3uPiXlHuEztzW7gEOt5alwVIZgIn5bUb+ecqmMANOyAOYGKXn0aDB9XE6/IPsRfvnTuF/MsOu4Pf0MBqA39PM+ynKJgm+JT1j46ohetkM8GKIfUkgWEl5RybkX2oGUVqXl7A9dVUQ+UW2wT83+D1djA7g/x06VVkVt4ODGe/LRkdW2OHSGIDJ8MjmPu/ynOC+TMaZhbT3qgbeJ9DwhBmN3fNV3iwMwO8p4QMBgcfZG4D3FwtDOqfjZTLAo6HrzwNtHu/ut+hJ4AU4Zk8W+elAaf/R0KCAuFCABhlARkjwSPC+c6FIZ3S+TAZQO+a5O8HeTIKC0sKBF6DA6XZz3QbZd/l5PfArmBUD/VyDym+j3ILiUfW4ksa0exj1Tg11j6ftU0rajl1nmQzgud6JE5TIr8YkqKiZBHgJCmCbGmQXgFtNYhU0iqtDm0bqLK5FP512B9r9FnXVIqaTx5dod6sq5CNVnpQBGLgKEc/bqnuvSkn4J5+AkRjgQMbwiuZdaJW8Di/y5yXvBvzxA3Dbsb3M8wOKcoEq67Mon1/ktjQ1A+zJgE5vmaD3MUifTQYjMYBGIzWKrmTHMob3lQ4A/NZVZdwFbk+vprhNFDFXV4fx+agMwKDUx/si5egzIHiDvpzn2vI9i+fwBuruX0P40LpjMMAQGsD/N7S/a0UfP6buYRTnajRBdTQGYEBaxJSuk6LjGAh1idwA1NPEujdFa5/n8S9TVPleVDEZg6uuAAO41KcjsEdAbQ3qCfyf2+MscAV9PPMlQwyGURiAydRZQitZVHB8ASL1nFlJWCYDgPsmTIreQwk+zFxps1gDnmuKvidlH8r6/0P9b/L7LrRRVhgEgxkAYn8PCj5J2SGj5AUQePQg6hbYeMkMcABDi9bIw5mrw9qGC5234//OY84IajR3o53ay94wiAGa87S6+50DBZ6lXwhhSTruTVxpQ+hQxXs5cKpZLIJlMUAjJ30VIqPDyW2h/XOzCG+UV26dzmn0VfgA7e5fNOAZlYYygP5yOlAk+CW/PAKidJyYBJicx4NIpZJHzOeAW4m5E8ZgAPrwFHAbim5j3wK3XkdzgTYHU+GIUOmTtItWypntaav2Uu1p9C/Yh/ZRqdRFwobnvRkAYlRinE/RFSrB5IYN6HApTEqUbzIZRc6bQxigefG+xKdSrhTGr6FHJlQe2gpopxdzcmNLzzU7a6ouAvp4LhWPCZU9Jt6YPnSTq4YhDLAZbCp1EmhD3xlCqtSp1RSHBkyGpwil4eRL8Cnw36mkT9rKvEn759d7w8J2vnD9F6IJOTb16KtR6aS8P3B68lFwS/SeSj0FvWKgD7/+v6XEcXqKUiVdDUMYIFdkDFqKqimnAZPxIH7Er+ctTMQTS/qi7Xuop0ZSOI12Dy1sp4fxMzrqqtK+ZduWAF71Hc+j6HewpY8Q1zLu99KPfpDV0IsBGqFE6TPZ1f+J37eHCGWAyQA6VCqpXErwcGg4pYQA2nreTn55L6Ndp/cPbXRgsV70PhafugzdyjYF3K+jzy5GKSF1qzrQoSDoVqL7vPATcBnDUA19GUClj3tPgvdAwF7V2Ac0YBJUJsWXbfDFDn33whJSwOlR7OxQ923ge6x/88xjsOfzJKWrw1dAXAiAT78JI5USbAs+lUtV0JcB9HiNXrJG3zytCvOAygxeoU9Vql9kgoXrHcDrluHWkeAAxv2q9AfP/SqTUFwskPaZCnC9mXZxu7sVtFR5Tou3LwMoaRt6leAkkG/uM5DaNgzcI5PyR1r+7ML99K6L/PpFAu6c8T2B6Nj5I549ht+jIDb4jD5vbsCX+1N4EnAFqoK+DKCuOvrtfRzku1ZhrqzMgLWhewQ6jOLvCbSr36FN4KpE0Vm9kcBd+W4WKuu8qlyQ+xM8BZqO7+y0Z4WWLeCq4Ku2FvZigOZrUAZIAZt60G7Xh4Cu8TNQLYwqe5Sc83At8e4JXrWRVdAIssktS3e0Igsb7ZS2VXTNmzuFwtvQp2FjowM0KITKdGkLvAhcuSq+CO8QBjDYwheT4EkQ4b40KjBYfeUe3tKp52mVKNohqoF+1cWrkxdeQT9GBhUBbVUAeRzMQ8hs/xXKvehvIZ7FImjZboqPv/kAqxkA5C7/u1FUA0fHRo+FerFYTmcCorWraGLbKoHPrSY3jyqIyXDmBOgF9Gt84e83jb9OX8b1FQPtrS8dcTtwi3o9fS3Mta3ZCt2GEu3S/EHKGykfA3dVPEMxAzTClwN0CWzj/Dh5LqceUw7t+4WmzsCrRu0Pm78/zU9DqhzwIKDfMXwCz4OIpJHTpn8laCvWhEKDGsGbUxRov1six9AmV37FeXDLOY3yqtJ572QAEF6fDv+EEr/20slXMWQkrLHxxROzgZP+X/VpSNVP6eNTpYi76g1lgEYgVA2tE4fwFehLTq5z0Tfyh8dmFVHRluKqeRD9zDSm0dYsKSUfgK7nCqJ6P8+EuQwAss20fB1lXpIEpWA1gWrWZiVzWKhE3PWy256PwAB3o9+Ya+CdTPYju2hpXr42FDWHs+BF9PXyWQ/pw+QV4vLkMS+BhtvB/vT1Z7P6mskAIHkhjQxZyuu41yuYGef2CTpfD+CkjZ4uGjfk7sjZr6bec7omZ8rnIzCAEURbAs1FBhnwPok2XcdDt9DdS0439Kc6XnW4K7RMkauE7UslWat/RisD0GlucnSccpPL+XFdgkYjKOonoJpUXz+l4lGEwrGYZAgD0FYvHfd/j6iCcQ3aQjq9c2irsiZaHrXsadNwb49bSLUiqZl3hXNXiFxwfjb0vSafv60YgE506tSenQZnG4WvR5UIKREBfcmNP6PdVtk0xnqRffvpywC0U2hzD47+jwpd6Ug5kyTaelaPe/Jn+PtOykfNy/NkooudYJzAVXhWpJ/I5t0Tgg66tw//V0BUa7khRc4GBmiOGLorRa2Wdv49aFitZer7cqZoV8sA1FdS9+vS0znKRCpkNP12ZgKjD7/wqK9/E+2enMbL84/y+27N3wrNV+R5ryMlfUmjhqu7hPnUY+kW9LmuoMoZwPi0GN92AX/rrzZKooYpXmwpjowBlOaVyGVyJ8eTh9K9+6vxgy75TmSe6sWXc8/8q5pFAzh1IRNHcgjReucK8B2e+bX6daZwsWInlTn49EDSTuJJLsGTwacdYQ1yBojKEZ+rZi2OdplFyCr+P2OAPiSqoDKa2MRVxQDe3IzrUq93koqlqF95LX3rCDoIwJfrDUxwta68WmeAZm9Th52g2L1qEIVLajyQAfwonsVEVlvfwHtH2vqlR4NWPgvGCLqtDPb7t2NwKsNFeeBmSSiPDCC3RSnRAarvvkxCJQMoxLp/evQ9iXkxrU1vALfuZ3r3xrxEqT9PEspcCoijAPieTUfHhs6eSf+v9e/IALpTPytUujOVehlaRqF6wZ1kDKBNQSk+vhAVXB7vXJ7V8o2awQP87sv6D8SYCvdmYyo6j5M10wMu5ReF+QQGsnrU38AAHhuiJuu6VFqYRatmAIuoW3sKWBANaujWXMoauBFzLsONCoxVQTbGXr4DPOYvnMsAKjai39+oRC27sxVhgLg3azfx2De6Y22L/uHt4NGDaQMDuCc8PbyYnaj0d8t+UYvCv2wGAH8eI/AZ5vsOixgvuIxhUOOYwAzma9t9lAF0ctCmnGCuQWJsQiHyyhA1am7AeTSuAAPk6vaFpY9lrHk42rpxLjJAHrKs04FJDHuZcUsYBMJ0styXkvTgevreD5xVTg0luPI6y2QAcKe8CNFgdjvGrdJmVACXSidD1pzrBDcB15pTb64IkoDoy24+3ZmmxL6UQpRLnQkitWDl9ogt4Dyxb9+l7ZbFAOB1vKaki25uG/IDlI6hpB74NDvH+fws86tmcw1yBlAijS9cPbfHwQtKkHXVgRhVoZol3W5ytWpqrmp1UILmLjp8vgwGAKeaPk3B0Yys0He3RRy5wbeJvrVaxrsXNpitcwbQAujZ3yTKCTRe3AUCBxmDIMYYfn3ookYq4VDRIqEGmMTkkSXvsledqRkAfH51Os2uf30N4YaluUePCo2Q6YcUl36VS77L9ZNGmznYtC5/T4lf6KCoG4jRdKqlK4/A1YLm6UOrmF5Fk8EUDNB88W5zJsR8ICWfbxVBmxn7qOZy8JpeRl/KlAjTeRWHcobywDq0MUCbM0hvBoAYHRPUQkVOlADz9XpxQ2dixUVwxSIYgD695MoPyIzk+lVYtMi1gSeuZ4z18sGtqVnPID2yZIA22CqBRr4FyKWGW8fc/S7N7su9jmgQdiLto/+bpwqPIaPHENQwSsYArj6eRnJwFUzBF75IDTj64Glr96fOG25tBsj4tbXp9vM+NQHrpzdKWlzGYb4CV9eSvAjOvRZebRprEI+BHklcHmLMnRcc3b/v/g9x6rl1d4qMVpzGpeaF1tbNGKC2eZ/6vni3O828vT6mNqSMI4+SjtX0PnKbjXKHdo9bQ8NaJHFkgLfz95p+uAF9+Ay47GWYgDC/HhMfxRy4r6E/LVNLh4kYwJVFQcy5NfxsEWpetxtltrhq+3L15pbhXK10p3elSnAytKzFWqwxAJPh2d9OEkNo+VIV3FsxQZ95Wli5URv3oNPEWJwzMgP4ojWcaTvRqUZzsRL3lxlvtU9f7RgZi2n2TTv7HYqnOIN11wVLnuuDoCo4+XlKkwLh5xIDqJiI+fOP5mF+g1cVXSDNc+I/hj79ElYCMgYwwtjgF7/QNi2k3j+6illPNzCXcIsv/fuMq5ff3pQTwXh19Ysp6dcsgtvwQM9dB5LSnjgB5s7v7QdIn8oRfhVpWbL/TfS5kGjZPhO5iFNAHzqmasN4FVhV/yaHVlf5bWWAXPs3ONsHfepXoH9Bgqro25pJAZfeNWunFxisJt3a4NjAGjpXoS5zZUTS5kDLvjJAHuY9WBVLn7lpWX90jyqjAnjUWLrXupV5xDEmv+jW8F+1FcCJZ8x5ipsTZACFBoUEwT3QYIRB7k/0mXu+ehuI++eoAB4lWTVeCYrCs5rJmGwFgE63V2MJv8E8zA3WTANptlGFc51zR5k7+szd0s+TATwXprN/dZx82xulT/UHydftQgawadQ333QGntzZ0TS17yrBNdUKAB7loHOa+TCb5+7QONfRhjYqlTyBqVm8gOLKNhYT6Gmcoo8ulgH82pOL8rkgqrnEoHWu6dMjiQGkWr8MRDix5KXU1gGP6mSvgUtQ7MU0IQPk4WCdJ6yWlW206/ToO7qh/UIG8DiT8t2O5pbULDdm8F7IuZ/+ZS6X08TNHsXcavTk7YQJGcCzt3oBdfXKKb7MmGtwK1qhzSxsamVdslXE6cffOxtKREDfykxJM/hzGSDuhWapiBqjzolcVgXoznPuV907NBUDOD/g0o6gYszLsYr8/WljgKdyg84iKnhGAfqNW8D5MoCWuhRAqBB4dRAu3CVryGig2Xv3PGbGUCrvG143cnT1PyUDdNEy1XPGrGHLFSWZ+s+VAYwGijFo3to9Wb7/msFDq6Zlo5U2U6KBqU8s/WSngJoxLrIu86epOArJx8oAefDgev7bRRLTp+8Woc9ufJF3h2lj4ENn97+iK4DeVl7Zm2BPGcCvyslLdm/VtQodo0eodL6VjgrQauIKE0Yl0PCiUCUTVEHGAAqQboWzVNWqxX3m1qiQ6XHO39dsAc38fQ86ellOqwjvWbkRLM1hmAxCHiu3T8agPC5wJVcBBmGGLLlYZwyTNL+USe91U0bGAD2ndatmModmdKV+rasfgb6YVHssPNX9MN489G8tq0liADOCmBkkhiwv7UbreaNjIAowHi8HWeAWxABtpLtKqBM5EZo3+ONVv8WeDRiry350tlX3c1PouTA6hBzOPw8JOFzidFcu0q33pG1pzSZkgDhGA1+M/lVTOgkwzh1BJN6YNMoEnsZlbPAIUl+t+tEkSAlMneIeq/boMgUlQiB1nJOkJJvnE6g7nepbtX7OX7xRJJ83nTG0zT+37/ZV+iKgXxuPfhnXCG1089cZZG0FzZ1CTVMit8QGOkOoztVp5DIDJQzQZ7D0q5BlCpbdKN4wolt4G0PoLncf5rXzqpqedLjs6+QSv3z9A13VFZ7XoM0tXCOOqsrcw9V9zFxzo6Qt6TOoMdssigFyGsFjHKBWS9PdRz99q7q97s6cjnIPsB2CTw9lhfo8w7oCqvkaY5Rwe857OpEJTDocPYTtX4nbDJlmmKjOjzPmCxza11QMkOgEn3p9M6+qdIsOnGZWT7eX9R5Wc8wzG6sp/PMVRzuCqfU3vHyRbbUCBII1SBjKlQd0pCouYXrgvJmOL3WJJKZmgDCvemDpmRMjr4r9GCKHMAZXFKOOzOCud3AbuMr48lv1OjMZwJ4aIcicwTqIzhJsPC2YfLBKE9eb1UdquCwGaObVyymOCkNxT745c1gcig/9CpwKdLOumveoZ8Lpo+YdmecyQOBahUOJNq1IW3qzldQZzOOVJTOAW4C++jFg44G8qOKcg9Cf+12m4friPfP74tdyAMyDIgYIjKCAoYbL1PAJVJOacGAUe3UXwWM9XyYDOAbw54aZ45nD6LY9d6i0N+RbrWO6vNP6emJ7xCtO7lXLADnXuWQ9GISXumyiK8AACoVK//4Uzmce80uxuphA1birRpQnqlbjYgZopFj3qugwYnSvly9d6mDZDNCsAjE5tAoiHXJNHVsMjCOXJ5TFXJGLPKNqGGAzHSu9JlCvbSLpYsGleFQTVFwRBjBbiBdIJKi+/ZNxKE/oZdQrtU8NA+jJ6q2dCUzmVHJ3zQSvsx5FxgAqt9LFVHamp5HmUpfoHzPOzlTwNRSA23l3O/UkEO8dUOVuLgbN3sVAfzrhxm242Lm3iAFA4LIf/dK+CpHRZlBMbG1FcG+mjZGuJpLYC7xFPnVdeDIG6KquoKvU7n77rqHaUHCbt3dWlLRbwVPB0XWtzAaa6VOB0ExvCYoSfZYygMe/eC/uwnLa5W+Cgfn1JdvEu5kY/QEHQyUDRHwaUXw5h/dR4YLXEPyuIFmZwOtwPXEVAf0eTUXVzQm84aXTflPKAH6B+4fOd6VzEz8sHBiYMkai86PgjR5BvfEPYICEU5f0h9auSOBVeRPvBvIlmz7e+MaYQ+k0+jbusQjodzcqxvC7ovsGShnAdCaRmB2m0vxlDHAOeB3oYMgYwP3eeMaYuUMXOc/Y6j5U2MS9OuHXUmowSrxnYSZt4NSkHN3G9BzyS/8lz8TlKctoIOFi/h/1LXPH3GgGY9jZqbRX1zAXShnA0CYTHgl+kZeX6K7Ox3jOwFRupDx3G267GNJ/7SmA+jpWmEt5CyVeqKVRzNNQpys9fZgtJTrY5HcGmU1k9zCuK9BvUZwmfUuTxrqkEyj6WEoZ4HQ6NrBBGO0llLxABhZDmaqif+b1X8sAqS/a+SFoKTWvQoJDeFFHdI2HtsoyakzTvGtEcwX4QcNgnrSSA8oP+X9M8Di3++Zk4fwk5vROR7OGzYVSBnDP0gys4cEMV6OHes+ikoHlmS10AR/sUtWXAaSTtjp6nBVepFuI22LJKuB+b8RPArcRvXW15kUfjLfSX4x77GIAt5CYcs98CVoJhzNAVyeLfM5k5wksioSbLpqGMEDDBKfyM55I9mbCO1O/NSuIS/2sVLl2L1MYEVzs7k6/+nDED6Mo0UfRCtA1mYt8zsB0SlG9mczRKmf82opUnbNoG4EBTMb4odD/SdC0uWQuwK3Thu5abbewu5rITLHvzm7pU7N9vG/YDKQndTVceQZovjbDmaJE+xIGd2jX4OY9H4EBNIsr0afLm78ITQqKRQB+M4qqx/dY614vk6vN04xbHQxKfwqXMSXfekr4eQRdWhjASYrqUSVjzZ5Fx6+2CRjKAA1jxlDr3le9FnHMnEqMxZNDzLD+aeYmZX2Z2301A4BM86XCxbdBogfxJABe7Q6aPxN4jZsCYS8n1aEM0GxNOs9GI0xxhpKxJq2R/j09xFSx+zEv8QbYmej6MEDK/6O68ukg8pbwKoBoBSDtCxfRvihTNm02UV8LZHSB0s9Nf7fq4JUhDEDbvcCrZdTrZXP4WEPTKClduiYWWlRSRfuI24dRP0UyUhUDgMx9LyomVAZpFSwWWJqzsEcoCdexdBfaF2URoa3es4auR69alR/qwV9JP8U5ePsyAO12BZf0z7v505XR1WnhpvLmw3A1TKeKIuEvMVYVA9gIhGfwQ711AifdDNSduoGGgdzLUwIp+9iHth6pioA+1MSZaTw/Run/dkf6Kvry+jBAs9yaVS2/3cuPInea9V7hmCuxaHx9KkGXW7IZ2c8qXfqHMIC6arVzUTeuBsrrSD3azAQINfbw8FDBFcSLqaqEOfqRAU+kxAimKmbqyQD5xVoXgnQPiurgAylHhrGdwbjMvbDSUL0COBomz+OGX3weOKK93Jg3bdMbgDb6sLtURW2XWsVqGaKhwf7MbqIyxnH4Fe5If52esE376gwhDeO5AiZ4Pvi8A2kNeB7tFqOk3IuTSP/qDS4B52h2mF4M0AxW1aU5ebSWRXDfM4zMu3A0fabJOYZfvI0kQZG1Kut7qz+ZFKVfdd5ng684/LrnCmCcn8GWCY4D537NfLgaeZZPDG5CqHgu7xrKzOfQapCOFz26zDu/Jt4exRG3NwM0g/YrVP0ZXcXW3zm/6EVj9JAqylMoybzpIAwm2Wql6D1LlQ17MoAv2a88yR+eYMxZJKPLCLcPZJzA+IzaqQZo86SjUknDk9uISbziuzJ7aMkNIZ24BzFAwwRan1RDHkQpuTLFZu9nAPqxLQ36MEAzXtWr0X+wbQwyuIoq7f3FAE26ifmlt/kexH5GWT3tcDADJKog/vr8rklUZ8c2HXccgPqD1xfPzAIqDmAAzcAGWRotNQuqL9mCHr2BlJHmvRPP9rrm2f8o+YhGY4DACCp4dHVWd2+cfBt4XFtq0om+DOBgGl2Gwqsh2HEO3R4OZGwn1/IsfZr5fJYPoOZiL/Q0EHe0UHJpHJ0B4sAZlMcmz/wGl5r5MsFkLmWzXsQQBsiY3fFpEPJUoRNGr9xF0JN7XnuacUU1U2hxqFct4y2UAcJEeSqICQuuzaCWGks4BgPUTva8+tCjRTBennkKc5QneRgT5VpfUzGAmrsnBurNQ7i0E4B0rCADGGcRFWIu9zFqaPSXPyUDHNwsZ2kQBniYfGJpsIIMoNd19Cg6mDkyo8hCYaoVIE9Hu/T7A1eQAfJrdh4EA0St40IYYSoG0GHRPT95rOq/fkMGWGQKHnvkvHzv2dOqmPQWWhRdlZYS6wg9zotCZIq8Ni3tNaFH38CFwiQM0Oy5Ok/oTZugyIly7NEz2cbgq6BJrlwJhVZNDVPFya+aF6d6W69pnTC9Z7ka6Mc7G2MY15n0pdp54TAlA2i0iWZfU9N6h+2kdwky2fmFlnGSvd7V1aEI6Ev1bzJm6ZK9He2rchc3al9Vyeb8SWDImbEHC4cpGUD9ucaaGBc3WZCpM8lk5zlzkwNJXA2K7fj0pxeuavC17ikeb6tCyekjj7uUGVyJJtkeJ2OA5gXkcezqzLcwWLVcCwUmWieOcygp8kZ8XjvjHMQsJzp36qXUGZlLn361rigqvPTmjbmWO8dDe51bvLcxvodJ8y5MygANE/iyDfZIIKf71RVd99Y5qy0VmGjdz/RVSBdMWcsXnKyYevmoik3g7du+CF3WOkFZgLpVNnraaDNRrx89m8woLlNMBstgAKNu9ZmLtnInTz9/r1Qbdeljoo1pNG1adCY1P69RvWvJExvB0AsjUmSu/zbMyxj74tRtJW8NXL5wtw3HG4NM3R53Bl9neFkJntI6kzNAM+FaDvURiIKPj4yb06mxWBKfNVAm2lBsL5XIvygtal5lu+HyRurvxP/1V0xZu9ZIpej9ewD1Y9xd6fxuqAcOHTtOpMTYQOvoWua2Ux0Q0ouQ0GgpDNAwwaZmwmNSBB+5Gngk8sLpPu7e6tTNx/s0Su62rSXNtHat8Qy8IA07aihzX0NTxGi+Ni6x2oZBv0YBmb3D41786h2vJmCTOMsEk8PSGKBhAidaz9l7t4zcr89ztfoD3c7PY5K2ipVncvU9cGQgZcsAAAFTSURBVDtxP1edunvLJNu9JlVf/lyfQfrTzq8XU5u9X+Y0AscjmrQZDrbVMZY+9BDWi0e9h2PTe6dtro2xUP4Zxbbfh3uWygANE+jjb+IFj1RRQm8bj8uwFjO/ZOu6zOuTOM9H35dmUiZvySg6o/MC3QYOp5h9e14Ur6ZfTbXS5elBhtbtTbrmgXEQygEqjxYeOzCPkKUzQCKOSde/UMFIx8d5L7RjbtcfO7EaV7xYqthZNHYOTTq+ashyZYnBKKU05PVkGPMsGNzaK6StL+JZ7VaGAQIjeP2KZlCzac1zu5o1JvdSNY46ZaptHAwwgqZazdl7U7r89drwuf241Wni9Yi5MrByDJB9gbqUGYrl/q5HkQKjWjuFOyOAXHoVyryazfuOPMp5Abbyw+gAIzhfKpTc39UbKHt4dHTJTzSpXfQUY8In5YRzoGf9ipbRiRrY4f8BdQzFPBDrZ2EAAAAASUVORK5CYII="
+              alt=""
+          /></span>
+          <h5 class="u-align-left u-text u-text-default u-text-2">
+            Future-Ready AI Agency
+          </h5>
+          <p class="u-align-left u-text u-text-3">
+            At vero eos et accusam et justo duo dolores et ea rebum. Stet clita
+            kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit
+            amet.
+          </p>
+        </div>
+      </div>
+      <div
+        class="u-container-style u-list-item u-radius u-repeater-item u-shape-round u-white u-list-item-2 animated flipInX-played"
+        appScrollAnimatesection4
+        [animationName]="'flipInX'"
+        [animationDuration]="1000"
+        [animationDelay]="0"
+      >
+        <div
+          class="u-container-layout u-similar-container u-container-layout-2"
+        >
+          <span
+            class="u-align-left u-file-icon u-icon u-icon-rounded u-palette-1-base u-radius u-text-white u-icon-2"
+            ><img
+              src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAfK0lEQVR4Xu2dCdx3RVXHedsXzSQlFKUH9w1QIRVI4VUUV0RFkTR6CdxSExU0zeWlNLdcU1yJ1w1zSVPTzCwfzIXcUiNJKnoposWyxfYNf98/c57PuXPn3pm7/p//+zzn85nPs9y5Z2bOnDtz5myzY78tBldfffW1NOTHq5yscusw/K/q57tVztuxY8e/bSWS7NhKg9XkH6bxfkDlRxrG/ef6/4ligku2Cl22DANo8m+sSf2cyg9nJvev9fxIMcFVW4EJthIDXKgJPdVN6tX6/bLw9y3009PibWKAn9hmgH2EAvr6r6uh/K3Kd4Yh/bd+PkiT/GH+1vP76cf73PP/0e8H6Pk/7SMkaBzGUleAMDG3Ue++R+VyEZw9eHRQO8cL6W87xK9TW4/zDanO6/X3o93/jled3xm9M9cw3E304xCV/1D56jIZbSkMIAKw5L5Q5f7uq4PWf6TyXBHk18YkvNpD4kfKNzhbbbw0YoCz9fdL3P9OnqAfDxX+3SowvQGrDYLpM9Ten4w57hJcszOAJuPu6tivq1y7pYMvEzGeWjKAkjpq82jV+5Sr+1HhPyFigI/q73u6/x2lOheX4C+poz68XPXOaqn7z3p2ktpcL8E3Vp1ZGUBEWFPHv6RynYIBPEbEeENBvWwVtfvdqoRUv7+r/Dr9zqQAT1F5jHv2D/r9hmofWWEwqP3HCslrCxD9o+ocrnb/sqDuKFXmZoBfUa9Pdz1H6fI2lW+oPESFrcGASbixiME+ORg0Cc8Wkp8vRPQstfv8wrqt1dTu96rClSqe+f5YfyN08j9OG9/nkJyvts8co+0SHLMxgAiBBP73Kj8QOvaf+nkXDfbL/K3nCILrKnd2HYdQbZq5K/QceeFXhef/2wYs/N+l5yzzx2YI87t6fp/c1y9836Z6HCth3INbcH6/nt3KPWdb2Sn8jJ9x314/+B+rFMBWcD09/99MP0d5PCcDrKnHXsp/rwYJ8TZAxDiFyewxMqR19s9/bXtX+PnSXq2ySyUeO3oBVqgn5lYd4UF+eT8T2aOvpwj/u6Jxv1d/P8j9b011YO7JYU4GuKlG86duRO/UIB8eEQIiQIw+UKy80QQihX9C5YdCQ2w3d1N/sAlkQe+/XZV+PFsxXQH9A0LwBgjfO/XHw9y/bqo6l/fE3+m1ORmAJY693va7f9HvCDx76XFYUn9Tv97LjeCb+r1pKWRJZ3k14Au+hfB5JmskhtpjNVoLFfbqPc7lWQhHWLYmTzu2qSaB8Tv0zJ94fkt/39e2LOGjXbZBqwOu/XNbULajhRVmY4AwyTGn/53+/8sqMAZf1DHR5N9IhIBRaiDC0fdXqTzBPTxD9VnGszCAARDQ3ugaoP9PUrswYKqfyDx/pYIV0uCT+uUdKqxA9P8A9wx5xquss2MZUmFuBsD8+kUVBL4c/KwI8aK2SkGF+xuuztP0jlfmNL4+gAHOEdIXO8T3V5sfyvTzGXr+i7kB6/m/q9xB+MxGUfDKsCqzMgBdFeHRhnH0YwlvAvbY0wok+/uqnif+0/WOn5wpGOBpQuoZ835qc2FTaIKwvTGmiswT1f8v/f0I4RpVC5pjj9kZIDDBXfTzFSr+yMcjDDZ8Ka/OTX7AsxIMEPrKsfGJKs9U8Us+jzkG/ozGjLl6VlgKA9gIg0DFORjBEKn34i7Cj95fGQZwY2bl4wPAIMSS/6U5l/yYu5bKAENZfRUZYOiYx35/mwGuoWiXY2BnGWDsSRsT31ZmAJQ+5hR6qZZhb6JtpLFWnW0GGJMDh+AauAV4+/9TxQAvK+nLNgOUUGmmOkMYgC4GlfB+pSrg8M72CjDT/GabGcoA2QYSFbZXgD5Um+gdTcY9hPpjDv1Z+ppfOVFzC7Rq80n6gQ7DYDLfwSnHYbiLhUANHHv+DVUwblwpQqO5WioEsyxBHNjjMQXfUf2a1K8u6C5QZ2OIwmR7qNrEaLVUUL8wtt1IBePZVeoTvoZZyDKAEK8Jy3NUsN2bMwcKDHTwu9XQpdlWJqyg/uFVczeVL6gvs7hSqU0Y7o4qF6lN3LiWBurLbZkHFVzb8T4CcCpBpXyu+vcXbZ1rZQAhx4ET+3yTDx9eLejsvcft0oiRa1jjwSfhSBW0j9dX+cHwDv7/WCbxV4SR/iyHazM813hwoHmzinkTxd1iXA/WeD7e1N9GBghL3ef1Ypv3Lnixgx+rRkbzoB2TuMHe/lPCiRHqloW4sffD1BdoXJPEKhT2o7GaxoXpnIm1YJemupjTj9A4kn4SbQwQuynxtWP1Yo+5t4ptBzT8+2oA/famAREIXfuzVB5ZQKSmfrOPYrl8nsY3i4dOKQE1PgxHrGYGLPsfUcHWgI3ErwrvUf/5AGqQZAAhj0Op8FI5RkjMgXONSVfxVq1b6fnXSgcwVT31HeEMm/3TVUr8Dkq6AiPg1v1sjTHpoFKCZKw6GiMaTO++hhX1zurbwo9Qz9niiIMw7yv6f309h0kq0MQAcSDF6/Uyvu0boEb4un7B/avm7DjWgEvwqD+YW09TwZx8g8Q7eA1DFNzOvqDCPo8nEjSA4U0+uI9+Z/zgi4HIYRxV3lLSp6nqhL3fO8/W3NhVJw51O1r9/kzcpyYGiM/XL9TLeLV4Bvhp/fEa96/TVWfPVINuw6vBMmGczX80UY+4AgJMXlp6SghSPpFJj1IxydqjfrRwebewWYet/u1Sgxe4Rh+v/pwXzc8LYFb3v6S+ookB2D+9JMzSfns1Yr7sfB141XofPrxqf29OSogQnHuJMcSfMOXmjd8dXkIEZnSGFvx7hPP0zghHekH9IrZh3aGD7sepT4vYCD2Hadmub+7qHKLne+MutAmBKFg4Yxqw5xNKhdTPduC9d9mDDlYDo4RS5egUBogxh33eewbbqwhIaAU/ncNV8lztHaV6aBhZYVCA4dVLAMlSICh90HlwlDXA25hlHyGQULc7uWdfUX8PT3W2jQFQ/LyncIR4xeKhOzlo8EizOH6m0rywR+Ny9Rb7GsbqkNqFVoeqfF24aacCQQa51lxCotoj0NRiG3PDRBdAKFoNcoqgX9IbuSjdIgfOXA9zz4Nky1eI1i8GvkpkgOdroI1qWeH4dtVBY/ZgFTR5BwVEuG0jGHL0/VBX5hHe6+k9zuS3Cz+fIhwolSaDwHA5R1Paf4n6ggUzCSWqYJImIFlbFI0hgtAEUNJAa1zeECpooBw1OW2cocIExkCUDfH+rdo74SHqCMEopwxCCfTMpi8mNRbhxref+AAD6HG+CtI5GsZJIDAB2yCrno87oD3iMMk58Ka2xrMMwMtqiPP0H6rcLCDjLEzk7mRn4rDkImswaSlVNDIK+3xrFg/hITATZw+Od12ALxr8X8m9pDZi51R7hXM3pycykiQDR3K4S56rfZRyyASmnMMgdpgJ7YMZIDABUiVp1oBvCHm8IpT0taiOBkRGrz0q2CJiII4P49Qb1IfGCFrhoH+Eg7OCYcGMgW1jrwofAfJESp8Ofo6Qz1FbtNsIag91MzEJKbrApLv6nkZKiKb26Z+FoDcKfTGuohWAl9TALAygdthHUTnDBB6YDMK+WFa/3kQUvc9kk/9ntyOIr84ST2AHIVh2rGWFI2iD5dSHctt7KIzA99oM06FQAseTVeLAFwRHTg+TyAb7BANoEOi2+Vq8nYFJWFdB2dEavav3WTEQBpHWY8Ayhs7gFcKT9GUIzMOXjGyDYBcD+hAEvFwkEA6mKMmOixCwJdxD7yNwjgorzwAawCGiCOf2Ax1l+EI5hfDlNe6hehfZBEE1ZfBAIENaRlAsEsiEj6X0uSqklE0JnnghcfRtZMggw6AtJRmV315YCcg/tNDbjwUrzQDqPCbNz6pgxDBg2SXpQ6N2Ue+Z4QeVZ2oPX9f/EeQWRqyuIPwYXThrVxJKBTxmIEI+qBlZrC3hQGvHGZztwQCPIrKjFHntlPR71RlgtwbJF2eA/p6lsma8oEL4usitw17uVwx7H4kYY9Vbx5C+1d4DhIutBRV5DAhfHFOJZ/y/1GTpfTSI6yo+FxCM441pJfPcWGcOBmDfQnkCYB6+9kjEXRMu9lYvND1cuMklUAMNFPsDCqEjEo/xC+TYSJq5hYA3FoSjMCpWjnXxmZtmoA/bgk9Ht9G83scv4a2uP8ghJLRoddkq6b9wY5vhSG5q8S8Kb4o+NXRdTgGxgwi5dj6oUqIEQoLH1aqmpVPnY7NlLXUMvVY9lnjO80j4KcMPjhuYaidN8qx+4BiLMMmEpvqB8EegSc0uonfxMiJppQHp6ZEzKqB6CMF8bKnja1ydyX+gCvKGQS3/Um3mwz+6MAAWN4SpvgCnk/yAvX0BGijGDCx19vXzVdwsPi+rHtYt8gDsTDSOkYovj5+zgfpEaDsrURziTh84yZA4orIK6R2Otrhm+fEepHobOgbVQY+AjNCWeSw3zlOFsyjZVhcGgNNIs4avQF+oGCU0WJIzkrDRAGnfc/Li/6rHYHCA9MCXznI8yj7fZ0BOFmHbYWXwkExalVjxKr4Feo6dYkiSCE4oJ4iOJStzbQlrpYM6x96Ha9QjVIqZJyBlf76NOrbhui18JHAmkbPBnfS8kiShgSAs949T3da0cH0mtc87gS4wMnTxwCmGdHIbEFYO70BbSVur53z5HC9TZu627nFMRsZAX1JMl66TuOiAOsm5G6uct0e3dY6lHSvbRtBGEFw4PplAlQzRVr3YLyG5b/aZuLHfUV/xyvFZyL+sMfujrZ1g9qqeLfEIb9f1X6zwkDE1duxs6y6a0YuEo7M7ey8GGINwGiTOJv5qlndoAJXce6qDZtCvCDAQkTidopLCVoMPAUoYvsriYBa9S1oXlEwQlxx/jW7iQVDFaOY9cYhW+gNPM9WLs6XdWnVQUc8Oy2QA7PI+wxemS6TrDRCh4oxcnWP/hAMFDPZ+8+37oNo5sYTSQfhklTLf+9foXZ+WroZG72AH8KHmqdT0mG99LuJsoqmS/vaps0wGQJHjvWvPFHGxoXsGwJaNH4ABd/l00qNrQmLnVY6kuK/VvHpiAupd7hf6G/f/5BE16nO8ar1RbWGR9OPC2dRnQn+k6gw5YfWZ+8U7y2SAeGIeJiJUQsw0AeTU9fr9A1UH/8NiEI44gIJ3i/IJ9mSAmGnerT77NLCWKs/nC6559RYPcGDFZTJA7EXzUBGq4oOoCYgVJwQ34OlSBAk5w977mvCkzL4VvD0ZACuiN1fXonKEN77BhATVKNZmhxoDhD2TZYzASZQ0qBU7CV0lo1A7czAAljjUtynAGNOqPFp1BghCKRpF3OeJYkYbW4lm3mAAVUZLhXGFJderINHcYQh5kV4eze17agYQfsaAziFlLIIhatFOMZesKgOEicdCSjILb4XE+sjWQ6wEgvE1MoBewNULLV/bpYoX6TkeLeQGGAwzMAD6cZ+WnUAWfOUtXhDp/gYaT+ONJD0ZgJXTf2WptPiTbQHqMwokwt/u2jJJCLb31Ngv2aEXUMRwHm+6TtXjIVwaj5nBMAMDMPkwgQFxDqxuPl8vuXkvbBpMHwYAl97zltNHqY2KZ+6UMoBw71EXfrJggoh2PhQGwIfNn79Z5vG9w2hB9I+PAELdiCKG690GwZQMINy4kiO/2PkdYwsxADhnEEFj8DGNxd8UVhnTAAbAowil1hXCj8U0xjvJCqD+4k+JF7OX7QgZxz6AcoqP1+cTOAcGIAmE2Y6ZYKxYGz5veo7u30cGI+HmcuIgNHL5EUJYEiZmAAQ/3/Yr1Zez1CYGLTR5poZlvNzOkdTu9WWApjHb/7uuAKpPGByT15QJxFCTzMOr5ytqc+FB+QZDGoN8DgZgMk0fXzse6Tl66b5x/7drWi0mZgDvwQxxMEMvvHHV7vP04+fcJDV65mwGBghfNerlPoDDSSVplvAxl8wp8E0YAGOEpYG5TC9UImcGMsBthS/pODkVAwhvrImreMfoOc6n6PXtK+DrZxWoOZ1uEgaIbSZdGKGIAbymDCI8QMTYuIRBRMDMid3eoGQLwBGCLaAx/eqEDIBHjvcpqClZ1DYnAi8lE1rNKacCm4EBwqqFZzRbQC7jSbwFVPwrNB58Gz/gBvlZVoDY4MJZ0QuBXkiCQVjWi27XamPVKRhAOCEQjiL+7Mt5N1Zk4XXjw82IJq5Jzn0ZQO8hBOIbgBDoCb4gSVcZoPSTF15WC7YLLwRyvMfvAiHwdBUvBJ4NA3Bu5CWWxhy8SQPCkDEYJmIAjngkhegKOLlyVWwl1nEAA+DSdYfQiVo2kakYIDAXHy8TnQNOeYeZIojjA5ySyq1jiEiIwAlhrKtcR1cFi7Ac8fyxNUcE/zxljexjDVy2IgjXc7bw41oGzyp5LwR0rwrGpw1VML53fpngDE1wBGHgm1YVrMlH371XxSJ5YNQ2ky/1vPLrUxrfj3mi9VkB9M7SjUHqA06n5ATAN8ECRhka84d/Jd7TC9qkjEFwMHoB9lEzBo028UbgsbcA4eNoxxHPoJbYKppcxn6ZioW887jimbOqDOBoDCN4Y9DnNfGVKKZ9xhysycKlyh9hs25WeidOdfcCEQhvnQWsOgN4hm/6fZkMMJpDSFj+faLoT2sifQaz5Pj1HhbQvSqWE7DyXmI5v1B4Y8/fCu4E02w7hKSoL0LFoVIpo0mRS5hwIbOg8bI9veZc0vQF6F3vdfRyTXDFf0DP0a1buHlNUIzxqj5xgAS6GqRcwnARIyLKoNUoVfIl962zzBUgdgolLw8BFhuQ0FE8WXX8ZQ2+LsaeU1UuUR0MIEWgNnAW3aWC0Ph2vVuJ2NVzdOv4L16uZ5Vbv1MNqH5sh9h2Cm0gVJzvtnZpsoiJMIqxyqCXW3gRJ4xQSf3FWINp3QuWKbfw2NfxlmIuBNLZodcKoIFiTCAwpDRPEJq4D/tBCgf7Llk7zA5xhX4/JNbJqx5KKvQUBiRc8sEXsxOtqUH1NVabcyuoKYQWr6kONGeslgJnjMAQjuoXqa3Ot6V0YgB1nsli70Lj1uld1UfbRmjYRji08KF88qpmMl77/ROCkd6NyGQPuFA/VnWLQ6Cm5BL1EWsqdKkEtujvB8aqYNUlrb7PexCHhiHH4G/RJzQM55ZOdCmeRHUcxQk65Z0DiBkHh8bCUNJPT20z4TFxN3twaJN9gSTTZzoaVoRfjXVocCiRyWj5xg0OVcc4/hCU2RdY9tgPfXg4WjOUTebo0BYejiNDKjJ5M4aH86GcqLHG4eE4orBM+/BwbBCeJmjusCWUuOg1zUXxqaLLCkCem5Nci2TGJLSrhNOIxkELVVuyxVixx9H7Vc+3s2hS9SAaXj4kVIj7jZVysySIgC7npNTmGgNxD/gmGiRDzcJWiwBcmiACM68PWXuf2mclyUIXBpgqRQycjgTsU8Q0crCIs6opYrjM4s1uRsZMEcM84tk1aYqYyRJFalLJ/HmuIw5LJ0miSBtXgyBJtyWJYlvBNjBK8gi1NzRJFEYmtgXv0FG75SP7ubZUUB9XN1OoOo8mj6QJloSKoXJEJBx7vWnces/SxDXdD4SXD+ljlpkmjuSV8dV76DbIFdiY6rYrM6w0AzBYDYCtgOOR90lgmcQjlr1yaKJI9uWiwFL1ZaxEkeQWIC+B3944vTD5g7ODeSZZeQYITIDgwzEmzg7OKjBHqlhWIrxppkoVy6p2d01+JWFE1689VX+fYIDABPi1EZcQZ8kaO1k0IVsL7yYRD3sAyi2cKKZKFs2XTyKI7WTROY7XhODds0clde5H2BkjXTxOLugmALYfv0xbF4vSxau/HNdQapGePqUeJzKHdPGLgMwpYNIVIHwhmEW3L4yIZk+0gUmxUHp7hdVa1oUR1zh8FvhvZvUAGiBhYeyJ3reMAaLUIXkSYeMlyqBejF8gkKGMIndQyZUx9DeXGKLoyhj1C2MOdOE4GoNlKC8WPPsQJ6jnCQMnX2JsO2ClxMTuU9HUmmllADWAMyi3U7UBToYobiZjAhpXX0i3xpdGgGcMlrm79WpX4cACiR8CWjIETkvuyNKMoovjGlbLxrEUHD1nUU2HsUD75J3AjkBcmMlJKgmNDKAGQOzz2LQxQefsXRmmanwclDKkaE3FMZA+BsfQxszdA9qFVrMpn3L9FB1ix5O2Vx4iJogtqov6bQyASZKbLwxQ1LAi8LUh8NzbPeMiBi6RGt17ODUqDR6BDZ8A0q2bP4GvijEFBdAnc4Qsea72cPOC6Y5K1CdhBmd9tsJRYiZyfVJ/MJ6h7fS3mpAUguUe2sAcPocxXlLm1lZBn2QANcBFyggSBuyLRNj6q2PX9T8fX3esnhNzNxuonyzh3DOAedUcO337yAdPUL9M2u/Ut4C/LTM4xh32+V74O3XGVVa/jtOfH3f/gu47besKQjvHTYsCpupN9LwWBt/EAPHl0RV3abCpkVW6PBrnUvbCoonS2NZUn68IxkpdHk1A7WhX03ZlBPVvl965wL03+uXRRwu5v/hgX7g+HlUyxqWm6+M54mKLIEcvS33q4yCahriB0a+m7cIEYgCit3w6+NGvjyc6iH3dQsTY544xLZY6gACGTEAqFoOlOTZ64hVI6V1obXWLThl9EPd5R2PkKOvzHWPjIO3dXvDpOYzMXUt2RQ2y2QF6XrvbqE0IjJ0XFo6dKhCDWzi98PUZIWfV2DQgInC/D5E/xB/4WMcufWSspGDnTmKSKm0a0Pg4bvobwvEHYHVDCGR+fDqZWnCKDaSNAYgnZ69LXdvqCQFj3FUEquT53yyUCvs5Bh7SteaUQNZthF6OwGRF27tZxuL7oXGxTa2HCW/rIgaoI5oYOKcIwgGU2yt8wgXfGFvDaUI+5IaL2egbTjcsj4erEPpt4yKvH8sofgOklOmcd3+2QbiGgq6GhNtNmUPwNcQRF7+IJJSoglF5ctQitZmtBkw8N2HsFvKlBDTYaEQEjC/EKJAGdVQbexPR1CbGIxjpE2pz476fJTEBq9puFbyWbM/nq2cLP1f9Q1/QCFkGcIRmH8VZA8vXlXMpfdo6r4ngdi0CRzAdE3eA1/GkDKk2iUBGbYzuHYYjZU4ubd7kvBGUQ4THYcG8Sn0q8jYqZoDJR9CjAQ061ldMrpJWm+Tf9fGJx4vYrVfY9xjabK+sOgNwZt/IaKbfSYLMFe6TgRgApxEyqRgs7baPMQa5pRlAk4n30X5imuLUt9sMMAbbjYRDk9F7BdC7Pj1eLYS7qYvbDDDS5I2BZiADkOuQEHXgUq0C3vLZ2L1tBhhj5kbCMZABsIytha4k7yxMdXObAUaavDHQbDPAcCouVQgMRg1cvdBk8UVerKW4+H6iVWSAcF5HjYtBDYUaSST6ZmMfzAFLYQARgQBPztJk9vZAImocN19lzg1tI1wlBlBfcVjBvxIHTu/JwxBJioEOwyeOGDy5JQhmZwARggAM9NdtFroiR9NVYQD1k+Qa5DBuc+DEZMsFkpW7E0smcUidWRkgnLsJjMylPWdMtaxh8UCFL840VnQhJHj0bl8hMM6uTv5kr4yqzYfairOYNs0ZPoWos2e7R3huBoizY2GBI6ECVitSvHkfQ+IODhIxKhm8jXIiKn3nskV/N8AZqk+27CwMYACusvWXQHE/AXcSJINXg72CsDDvt48PH6scsRYEkPrb2rLX02YH16HCbAwQhB/MruZjx8QSvbLw0wt7JA4nJ7j+Y2RpMmrg+OCJygTcvNSUO4AB8JNAaPO0wxDV5BGN8cw7z+C0gfp4wTDqx5p+EHVldRAM9+8iDHeY71rVORkg9jRO3aeXyghWOr5kUqbUy2ErwkZucXyYdPFqLlIJ633S0bSmjG3pNDkPKgknhS++Tp4rbGbxQJqTAeB075Zcy2MjQsTOjqWTT/AlhG1NGyf8rBgs2aRricfOF4mnLct56+WYwkNaOCYxFbya6/Mpwl8JuBG+OP/Smq2MOWRDn8/JAEj9HPPMqYTzPo6MdpsXWwNfJUEYBghDLK/JD1n/xB6P1Pyu3LExbEHkJcR5pA3W9fCEnL9D2LI40ZD0CX+EJlrCdN4VDV++ncJvoek4luCtbD58OHNwSXaRPT8zluzj2RiAnoho5+uHv3mUL43lFCEQQrK/GhDmdbARKjuSTAW1jVfT7kI8xBj6uwcKX6tXU7swNpnMfdg4Tiu40aEPwGnVxx7Ukkv3brzgxbkZgC8FvzvcznNQyx6ee6Hpefj68en3vo3n6W9z7OBmDZ9+FobkXuFRQt3UfpwQs6mrtHu42m114+pLh9R7szIAHRAxcDRl/8Sdqwm4ngbHi1EgaB59nOBHhB/X6Q1Qnfi+oaPH1MwJPzkOK6noo8Flk2KNQowIyewMEJiAKBxSw3O5s9cIchzC0RShaDQQ8eO7elMp3AmhJsjT4GT1Y1RvZ/WDsPRzVXwyCVYZHGy5x2cWyd8TdikMYB0QQRAI8cpBM0g+/r2jzXr16z5ef5KnzyAV6kayZ5Zqg8l8/cLZn8AVgm2J3E0qu6agRYxzqQwwxwBpQwRn70fraKsNET8cGxcqXD3HpZqv3Z43hlLN1ee52tkSDBAmOVbecO63/Po+jJrqxUqluSZqqna2EgPgM48h6sAMMdHbH6nVoe3OwanmY3a8W4YBwiqA8IXAxf6bApJinFSqEp59tiZocEsxQGACwqewIGKbN0dQbABoFM8bS/E0wVxNgvJbIyH0nR7e4uIAAAAASUVORK5CYII="
+              alt=""
+          /></span>
+          <h5 class="u-align-left u-text u-text-default u-text-4">
+            AI-Powered Agencies
+          </h5>
+          <p class="u-align-left u-text u-text-5">
+            At vero eos et accusam et justo duo dolores et ea rebum. Stet clita
+            kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit
+            amet.
+          </p>
+        </div>
+      </div>
+      <div
+        class="u-container-style u-list-item u-radius u-repeater-item u-shape-round u-white u-list-item-3 animated flipInX-played"
+        appScrollAnimatesection4
+        [animationName]="'flipInX'"
+        [animationDuration]="1000"
+        [animationDelay]="0"
+        style="will-change: transform; animation-duration: 1000ms"
+      >
+        <div
+          class="u-container-layout u-similar-container u-container-layout-3"
+        >
+          <span
+            class="u-align-left u-file-icon u-icon u-icon-rounded u-palette-1-base u-radius u-text-white u-icon-3"
+            ><img
+              src="data:image/png;base64,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"
+              alt=""
+          /></span>
+          <h5 class="u-align-left u-text u-text-default u-text-6">
+            AI Agency Solutions
+          </h5>
+          <p class="u-align-left u-text u-text-7">
+            At vero eos et accusam et justo duo dolores et ea rebum. Stet clita
+            kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit
+            amet.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section> -->
+
+<!-- <section class="u-clearfix u-valign-middle u-section-4" id="sec-0cc5">
+  <div
+    class="data-layout-selected u-clearfix u-expanded-width u-gutter-30 u-layout-wrap u-layout-wrap-1"
+  >
+    <div class="u-layout">
+      <div class="u-layout-row">
+        <div
+          class="u-container-style u-grey-5 u-layout-cell u-radius u-shape-round u-size-30 u-layout-cell-1 animated flipInX-played"
+          appScrollAnimatesection4
+          [animationName]="'flipInX'"
+          [animationDuration]="1000"
+          [animationDelay]="0"
+          scrollAnimate="animate-on-scroll"
+        >
+          <div class="u-container-layout u-valign-bottom u-container-layout-1">
+            <h2 class="u-text u-text-default u-text-1">Neuro Vision</h2>
+            <h4 class="u-text u-text-2">
+              AI-based Image Recognition and Analysis System
+            </h4>
+            <p class="u-text u-text-3">
+              At vero eos et accusam et justo duo dolores et ea rebum. Stet
+              clita kasd gubergren, no sea takimata sanctus est Lorem ipsum
+              dolor sit amet.
+            </p>
+            <h6 class="u-text u-text-default u-text-4">
+              creative portfolio<br />May 2024<br />
+            </h6>
+          </div>
+        </div>
+        <div
+          class="u-container-style u-gradient u-image u-layout-cell u-radius u-shape-round u-size-30 u-image-1"
+          data-image-width="860"
+          data-image-height="1290"
+        >
+          <div class="u-container-layout u-container-layout-2"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section> -->
+
+<section
+  class="skrollable u-clearfix u-container-align-center u-valign-top-md u-valign-top-sm u-valign-top-xs u-section-7"
+  id="sec-644e"
+>
+  <div
+    class="data-layout-selected u-clearfix u-expanded-width u-layout-wrap u-layout-wrap-1"
+  >
+    <div class="u-layout">
+      <div class="u-layout-row">
+        <div
+          class="u-container-align-left u-container-style u-layout-cell u-size-30 u-layout-cell-1"
+        >
+          <div class="u-container-layout u-valign-top u-container-layout-1">
+            <h2 class="u-align-left u-text u-text-1">Digital AI Assistants</h2>
+            <h4 class="u-align-left u-text u-text-2">
+              Improve your chances of getting shortlisted.
+            </h4>
+          </div>
+        </div>
+        <div class="u-container-style u-layout-cell u-size-30 u-layout-cell-2">
+          <div class="u-container-layout u-valign-bottom u-container-layout-2">
+            <p class="u-align-left u-text u-text-4">
+              🧠 AI Resume – Create Your Perfect Resume in Seconds Build
+              <br />
+              Your professional resume instantly with the power of AI. Get smart
+              suggestions for career objectives, skills, and achievements — all
+              tailored to your dream job.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="skrollable u-container-style u-expanded-width u-gradient u-group u-image u-parallax u-radius u-shape-round u-image-1 skrollable-after"
+    data-image-width="2902"
+    data-image-height="1632"
+    data-bottom-top="background-position: 50% 0vh;"
+    data-top-bottom="background-position: 50% -20vh"
+    style="background-attachment: fixed; background-position: 50% -20vh"
+  >
+    <div class="u-container-layout u-container-layout-3"></div>
+  </div>
+</section>
+<!-- <section
+  class="u-align-center u-clearfix u-container-align-center u-valign-bottom-sm u-valign-bottom-xs u-section-8"
+  id="sec-9278"
+>
+  <h3 class="u-align-center u-text u-text-1">
+    5 millions of companies are using ai to power up their systemworld wide
+  </h3>
+  <div class="u-expanded-width u-list u-list-1">
+    <div class="u-repeater u-repeater-1">
+      <div
+        class="u-container-align-center u-container-style u-grey-5 u-list-item u-radius u-repeater-item u-shape-round u-list-item-1 animated flipInX-played"
+        appScrollAnimatesection4
+        [animationName]="'flipInX'"
+        [animationDuration]="1000"
+        [animationDelay]="0"
+        style="will-change: transform; animation-duration: 3000ms"
+      >
+        <div
+          class="u-container-layout u-similar-container u-valign-middle u-container-layout-1"
+        >
+          <img
+            class="u-image u-image-contain u-image-default u-image-1"
+            src="./logo4.png"
+            alt=""
+            data-image-width="274"
+            data-image-height="131"
+          />
+          <h5 class="u-align-center u-text u-text-default u-text-2">Ogie</h5>
+          <p class="u-align-center u-text u-text-default u-text-3">
+            Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum
+            dolor sit amet.
+          </p>
+        </div>
+      </div>
+      <div
+        class="u-container-align-center u-container-style u-grey-5 u-list-item u-radius u-repeater-item u-shape-round u-list-item-2 animated flipInX-played"
+        appScrollAnimatesection4
+        [animationName]="'flipInX'"
+        [animationDuration]="1500"
+        [animationDelay]="500"
+        style="will-change: transform; animation-duration: 3000ms"
+      >
+        <div
+          class="u-container-layout u-similar-container u-valign-middle u-container-layout-2"
+        >
+          <img
+            class="u-image u-image-contain u-image-default u-image-2"
+            src="./logo5.png"
+            alt=""
+            data-image-width="153"
+            data-image-height="124"
+          />
+          <h5 class="u-align-center u-text u-text-default u-text-4">
+            Elements
+          </h5>
+          <p class="u-align-center u-text u-text-default u-text-5">
+            Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum
+            dolor sit amet.
+          </p>
+        </div>
+      </div>
+      <div
+        class="u-container-align-center u-container-style u-grey-5 u-list-item u-radius u-repeater-item u-shape-round u-list-item-3 animated flipInX-played"
+        appScrollAnimatesection4
+        [animationName]="'flipInX'"
+        [animationDuration]="2000"
+        [animationDelay]="1000"
+      >
+        <div
+          class="u-container-layout u-similar-container u-valign-middle u-container-layout-3"
+        >
+          <img
+            class="u-image u-image-contain u-image-default u-image-3"
+            src="./logo8.png"
+            alt=""
+            data-image-width="401"
+            data-image-height="152"
+          />
+          <h5 class="u-align-center u-text u-text-default u-text-6">
+            Holistic Lifes<br />
+          </h5>
+          <p class="u-align-center u-text u-text-default u-text-7">
+            Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum
+            dolor sit amet.
+          </p>
+        </div>
+      </div>
+      <div
+        class="u-container-align-center u-container-style u-grey-5 u-list-item u-radius u-repeater-item u-shape-round u-list-item-4 animated flipInX-played"
+        appScrollAnimatesection4
+        [animationName]="'flipInX'"
+        [animationDuration]="2500"
+        [animationDelay]="1500"
+      >
+        <div
+          class="u-container-layout u-similar-container u-valign-middle u-container-layout-4"
+        >
+          <img
+            class="u-image u-image-contain u-image-default u-image-4"
+            src="./logo6.png"
+            alt=""
+            data-image-width="144"
+            data-image-height="184"
+          />
+          <h5 class="u-align-center u-text u-text-default u-text-8">Brighto</h5>
+          <p class="u-align-center u-text u-text-default u-text-9">
+            Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum
+            dolor sit amet.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section> -->
+<!-- <section
+  class="skrollable u-clearfix u-image u-parallax u-section-9 skrollable-between"
+  id="sec-76ff"
+  data-image-width="2700"
+  data-image-height="1736"
+  data-bottom-top="background-position: 50% 0vh;"
+  data-top-bottom="background-position: 50% -20vh"
+  style="background-attachment: fixed; background-position: 50% -5.30447vh"
+>
+  <div class="u-clearfix u-sheet u-sheet-1">
+    <div
+      class="u-container-style u-group u-radius u-shape-round u-white u-group-1 animated customAnimationIn-played"
+      appScrollAnimatesection4
+      [animationName]="'flipInX'"
+      [animationDuration]="1000"
+      [animationDelay]="0"
+      style="will-change: transform; animation-duration: 3000ms"
+    >
+      <div class="u-container-layout u-valign-top u-container-layout-1">
+        <h3 class="u-text u-text-default u-text-1">Future of AI Ethics</h3>
+        <p class="u-text u-text-default u-text-2">
+          At vero eos et accusam et justo duo dolores et ea rebum. Stet clita
+          kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit
+          amet.
+        </p>
+        <span class="u-file-icon u-icon u-icon-1" data-href="/Portfolio.html"
+          ><img src="assets/images/20959.png" alt=""
+        /></span>
+      </div>
+    </div>
+  </div>
+</section> -->
+<!-- <section
+  class="u-clearfix u-container-align-center u-valign-middle-lg u-valign-middle-md u-valign-middle-sm u-valign-middle-xl u-section-10"
+  id="sec-76fd"
+>
+  <h2 class="u-align-center u-text u-text-default u-text-1">Testimonials</h2>
+  <div class="u-expanded-width u-list u-list-1">
+    <div class="u-repeater u-repeater-1">
+      <div
+        class="u-align-center u-container-align-center u-container-style u-grey-5 u-list-item u-radius u-repeater-item u-shape-round u-list-item-1 backstage u-backstage-hidden animated"
+        appScrollAnimatesection4
+        [animationName]="'flipInX'"
+        [animationDuration]="1000"
+        [animationDelay]="0"
+      >
+        <div
+          class="u-container-layout u-similar-container u-valign-middle u-container-layout-1"
+        >
+          <p class="u-align-center u-text u-text-2">
+            "Aenean pulvinar dui ornare, feugiat lorem non, ultrices justo.
+            Mauris efficitur, mauris in auctor euismod, quam elit ultrices urna,
+            eget eleifend arcu risus id metus. Maecenas ex enim, mattis eu velit
+            vitae."
+          </p>
+          <div
+            alt=""
+            class="u-image u-image-circle u-image-1"
+            src=""
+            data-image-width="206"
+            data-image-height="206"
+          ></div>
+          <h5 class="u-align-center u-text u-text-3">Mattie Smith</h5>
+          <h6 class="u-align-center u-text u-text-4">Chief Accountant</h6>
+        </div>
+      </div>
+      <div
+        class="u-align-center u-container-align-center u-container-style u-grey-5 u-list-item u-radius u-repeater-item u-shape-round u-list-item-2 backstage u-backstage-hidden animated"
+        appScrollAnimatesection4
+        [animationName]="'flipInX'"
+        [animationDuration]="1000"
+        [animationDelay]="0"
+      >
+        <div
+          class="u-container-layout u-similar-container u-valign-middle u-container-layout-2"
+        >
+          <p class="u-align-center u-text u-text-5">
+            "Aenean pulvinar dui ornare, feugiat lorem non, ultrices justo.
+            Mauris efficitur, mauris in auctor euismod, quam elit ultrices urna,
+            eget eleifend arcu risus id metus. Maecenas ex enim, mattis eu velit
+            vitae."
+          </p>
+          <div
+            alt=""
+            class="u-image u-image-circle u-image-2"
+            src=""
+            data-image-width="206"
+            data-image-height="206"
+          ></div>
+          <h5 class="u-align-center u-text u-text-6">Nat Reynolds</h5>
+          <h6 class="u-align-center u-text u-text-7">Accountant-auditor</h6>
+        </div>
+      </div>
+    </div>
+  </div>
+</section> -->
+<!-- <section
+  class="u-align-center u-clearfix u-container-align-center u-image u-shading u-valign-middle-lg u-valign-middle-xl u-section-11"
+  id="sec-3a1b"
+>
+  <div class="u-expanded-width u-list u-list-1">
+    <div class="u-repeater u-repeater-1">
+      <div
+        class="u-align-center u-container-align-center u-container-style u-list-item u-repeater-item"
+      >
+        <div
+          class="u-container-layout u-similar-container u-valign-top u-container-layout-1"
+        >
+          <h3
+            class="u-align-center u-text u-text-body-alt-color u-text-default u-text-1"
+            data-animation-name="counter"
+            data-animation-event="scroll"
+            data-animation-duration="3000"
+            style="will-change: contents"
+          >
+            0
+          </h3>
+          <p class="u-align-center u-text u-text-body-alt-color u-text-2">
+            Lorem ipsum dolor sit amet
+          </p>
+        </div>
+      </div>
+      <div
+        class="u-align-center u-container-align-center u-container-style u-list-item u-repeater-item"
+      >
+        <div
+          class="u-container-layout u-similar-container u-valign-top u-container-layout-2"
+        >
+          <h3
+            class="u-align-center u-text u-text-body-alt-color u-text-default u-text-3"
+            data-animation-name="counter"
+            data-animation-event="scroll"
+            data-animation-duration="3000"
+            style="will-change: contents"
+          >
+            0
+          </h3>
+          <p class="u-align-center u-text u-text-body-alt-color u-text-4">
+            Lorem ipsum dolor sit amet
+          </p>
+        </div>
+      </div>
+      <div
+        class="u-align-center u-container-align-center u-container-style u-list-item u-repeater-item"
+      >
+        <div
+          class="u-container-layout u-similar-container u-valign-top u-container-layout-3"
+        >
+          <h3
+            class="u-align-center u-text u-text-body-alt-color u-text-default u-text-5"
+            data-animation-name="counter"
+            data-animation-event="scroll"
+            data-animation-duration="3000"
+            style="will-change: contents"
+          >
+            0
+          </h3>
+          <p class="u-align-center u-text u-text-body-alt-color u-text-6">
+            Lorem ipsum dolor sit amet
+          </p>
+        </div>
+      </div>
+      <div
+        class="u-align-center u-container-align-center u-container-style u-list-item u-repeater-item"
+      >
+        <div
+          class="u-container-layout u-similar-container u-valign-top u-container-layout-4"
+        >
+          <h3
+            class="u-align-center u-text u-text-body-alt-color u-text-default u-text-7"
+            data-animation-name="counter"
+            data-animation-event="scroll"
+            data-animation-duration="3000"
+            style="will-change: contents"
+          >
+            0
+          </h3>
+          <p class="u-align-center u-text u-text-body-alt-color u-text-8">
+            Lorem ipsum dolor sit amet
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section> -->
+
+<!-- <section
+  class="u-align-center u-clearfix u-container-align-center u-valign-middle-lg u-valign-middle-md u-valign-middle-sm u-valign-middle-xl u-section-13"
+  id="sec-11c2"
+>
+  <div class="u-expanded-width u-form u-grey-5 u-radius u-form-1">
+    <form
+      action="https://forms.nicepagesrv.com/v2/form/process"
+      class="u-clearfix u-form-spacing-30 u-form-vertical u-inner-form"
+      source="email"
+      name="form"
+      style="padding: 50px"
+    >
+      <input type="hidden" id="siteId" name="siteId" value="6361490" />
+      <input type="hidden" id="pageId" name="pageId" value="165586534" />
+      <div
+        class="u-form-group u-form-name u-form-partition-factor-2 u-form-group-1"
+      >
+        <label for="name-ebb6" class="u-label">First Name</label>
+        <input
+          type="text"
+          placeholder="Enter your First Name"
+          id="name-ebb6"
+          name="name-1"
+          class="u-border-none u-input u-input-rectangle u-radius u-input-1"
+          required=""
+          fdprocessedid="nm6gu"
+        />
+      </div>
+      <div
+        class="u-form-group u-form-name u-form-partition-factor-2 u-form-group-2"
+      >
+        <label for="name-ebb6" class="u-label">Last Name</label>
+        <input
+          type="text"
+          placeholder="Enter your Last Name"
+          id="name-ebb6"
+          name="name-2"
+          class="u-border-none u-input u-input-rectangle u-radius u-input-2"
+          required=""
+          fdprocessedid="a6kcb"
+        />
+      </div>
+      <div class="u-form-email u-form-group">
+        <label for="email-9807" class="u-label">Email</label>
+        <input
+          type="email"
+          placeholder="Enter a valid email address"
+          id="email-9807"
+          name="email"
+          class="u-border-none u-input u-input-rectangle u-radius u-input-3"
+          required=""
+          fdprocessedid="4m3h5"
+        />
+      </div>
+      <div class="u-form-group u-form-message">
+        <label for="message-9807" class="u-label">Message</label>
+        <textarea
+          placeholder="Enter your message"
+          rows="4"
+          cols="50"
+          id="message-9807"
+          name="message"
+          class="u-border-none u-input u-input-rectangle u-radius u-input-4"
+          required=""
+        ></textarea>
+      </div>
+      <div class="u-align-left u-form-group u-form-submit">
+        <a
+          href="https://website6361490.nicepage.io/Landing.html?version=96860be1-b51e-410b-9f45-813d17359d2f#"
+          class="u-btn u-btn-submit u-button-style"
+          >Submit</a
+        >
+        <input type="submit" value="submit" class="u-form-control-hidden" />
+      </div>
+      <div class="u-form-send-message u-form-send-success">
+        Thank you! Your message has been sent.
+      </div>
+      <div class="u-form-send-error u-form-send-message">
+        Unable to send your message. Please fix errors then try again.
+      </div>
+      <input type="hidden" value="" name="recaptchaResponse" />
+      <input
+        type="hidden"
+        name="formServices"
+        value="4d5c690c-3075-cf97-86b3-f33c35a2caf3"
+      />
+      <input
+        type="hidden"
+        name="siteKey"
+        value="6LetPRgiAAAAAGX121nVdkYGTN-RfCXh4wAlbDFh"
+      />
+    </form>
+  </div>
+  <div
+    class="data-layout-selected u-clearfix u-expanded-width u-layout-wrap u-layout-wrap-1"
+  >
+    <div class="u-layout">
+      <div class="u-layout-row">
+        <div class="u-container-style u-layout-cell u-size-30 u-layout-cell-1">
+          <div class="u-container-layout u-valign-top u-container-layout-1">
+            <h2 class="u-text u-text-default u-text-1">Get started now!</h2>
+            <h4 class="u-text u-text-default u-text-2">
+              If you would like to work with us or just want to get in touch,
+              we’d love to hear from you!
+            </h4>
+          </div>
+        </div>
+        <div class="u-container-style u-layout-cell u-size-30 u-layout-cell-2">
+          <div class="u-container-layout u-valign-top-xs u-container-layout-2">
+            <p class="u-text u-text-3">
+              At vero eos et accusam et justo duo dolores et ea rebum. Stet
+              clita kasd gubergren, no sea takimata sanctus est Lorem ipsum
+              dolor sit amet.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section> -->
+
+<section class="ai-impact-section u-clearfix" id="refer-earn">
+  <div
+    class="ai-cards-row"
+    style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap"
+  >
+    <div
+      class="ai-card animated"
+      appScrollFade
+      [animationDuration]="1000"
+      [animationDelay]="0"
+      [translateY]="'100px'"
+    >
+      <span class="ai-icon"> </span>
+      <h5></h5>
+      <p>
+        Graceful Technologies Private Limited <br />
+        Greeta Towers, Wingspace, 1st floor,<br />
+        Perungudi. Chennai- 600096, Tamil Nadu, India
+      </p>
+    </div>
+
+    <!-- <div
+      class="ai-card animated"
+      appScrollFade
+      [animationDuration]="1500"
+      [animationDelay]="500"
+      [translateY]="'100px'"
+    >
+      <span class="ai-icon"> </span>
+      <h5>🚀 5 to 10 Referrals</h5>
+      <p>
+        Boost your rewards! Get <strong>₹7</strong> for each referral between
+        your 6th and 10th invites.
+      </p>
+    </div> -->
+
+    <!-- <div
+      class="ai-card animated"
+      appScrollFade
+      [animationDuration]="2000"
+      [animationDelay]="1000"
+      [translateY]="'100px'"
+    >
+      <span class="ai-icon"> </span>
+      <h5>💎 More than 10 Referrals</h5>
+      <p>
+        Keep referring and keep earning! Get a premium reward of
+        <strong>₹10</strong> for every referral after your first 10.
+      </p>
+    </div> -->
+  </div>
+</section>
+
+<!-- <section class="ai-impact-section" id="team-section">
+  <h2 class="u-align-center u-text u-text-default">Our Team</h2>
+
+  <div class="ai-cards-row">
+    <div
+      class="ai-card animated"
+      appScrollAnimate
+      [animationName]="'flipInX'"
+      [animationDuration]="1000"
+      [animationDelay]="0"
+    >
+      <h5>Samuel Schick</h5>
+      <p>Sales Manager</p>
+    </div>
+
+    <div
+      class="ai-card animated"
+      appScrollAnimate
+      [animationName]="'flipInX'"
+      [animationDuration]="1500"
+      [animationDelay]="500"
+    >
+      <h5>Phoebe Nelson</h5>
+      <p>Advertising Manager</p>
+    </div>
+
+    <div
+      class="ai-card animated"
+      appScrollAnimate
+      [animationName]="'flipInX'"
+      [animationDuration]="2000"
+      [animationDelay]="1000"
+    >
+      <h5>Adriana Scold</h5>
+      <p>Financial Director</p>
+    </div>
+  </div>
+</section> -->
+
+<footer class="u-align-center u-clearfix u-footer" id="sec-footer">
+  <div class="u-clearfix u-sheet u-sheet-1">
+    <p>© 2025 Makeprofiles</p>
+  </div>
+</footer>

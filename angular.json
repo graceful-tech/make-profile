@@ -35,8 +35,8 @@
               "node_modules/quill/dist/quill.snow.css",
               "src/styles.css",
               "node_modules/primeng/resources/themes/saga-blue/theme.css",
-              "node_modules/primeicons/primeicons.css"
-              
+              "node_modules/primeicons/primeicons.css",
+              "node_modules/swiper/swiper-bundle.min.css"
             ],
             "scripts": [
               "node_modules/chart.js/dist/chart.js"

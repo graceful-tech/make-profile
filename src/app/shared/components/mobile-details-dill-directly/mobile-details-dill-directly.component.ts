@@ -247,6 +247,6 @@ export class MobileDetailsDillDirectlyComponent {
   }
 
   goToHome() {
-    this.router.navigate(['resume-templates']);
+    this.router.navigate(['']);
   }
 }

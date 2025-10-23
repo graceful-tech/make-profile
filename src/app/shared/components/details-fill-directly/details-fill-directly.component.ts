@@ -239,7 +239,7 @@ export class DetailsFillDirectlyComponent {
   }
 
   goBack() {
-    this.router.navigate(['select-template']);
+    this.router.navigate(['']);
   }
 
   getCharacterCount(text: string): number {

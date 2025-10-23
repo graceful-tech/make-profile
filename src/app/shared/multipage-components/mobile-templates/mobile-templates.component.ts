@@ -75,17 +75,13 @@ export class MobileTemplatesComponent {
   private gradientIndex = 0;
 
   constructor(
-    
     private gs: GlobalService,
-    
+
     private router: Router,
-    public ref: DynamicDialogRef,
-     
+    public ref: DynamicDialogRef
   ) {}
 
-  ngOnInit() {
-    
-  }
+  ngOnInit() {}
 
   prevResume() {
     this.changeBackground();
@@ -112,20 +108,16 @@ export class MobileTemplatesComponent {
     this.resumeName = this.resumePaths[this.currentIndex].name;
   }
 
-  
-
   openNickNameField(templateName: any) {
     localStorage.setItem('templateName', templateName);
-    
+
     this.gs.setResumeName(templateName);
 
     this.router.navigate(['get-details-using-ai']);
   }
 
- 
   backToCandidates() {
-    
-    this.router.navigate(['mob-landing']);
+    this.router.navigate(['']);
   }
 
   onTouchStart(event: TouchEvent) {

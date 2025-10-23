@@ -37,6 +37,7 @@ import { ToastModule } from 'primeng/toast';
 import { SidebarModule } from 'primeng/sidebar';
 import { SkeletonModule } from 'primeng/skeleton';
 import { AccordionModule } from 'primeng/accordion';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // import { DialogModule } from 'primeng/dialog';
 
@@ -46,7 +47,8 @@ import { AccordionModule } from 'primeng/accordion';
     CommonModule,
     InputTextModule,
     DropdownModule,
-    KeyFilterModule
+    KeyFilterModule,
+    DragDropModule,
   ],
   exports: [
     InputTextModule,
@@ -88,6 +90,7 @@ import { AccordionModule } from 'primeng/accordion';
     AccordionModule,
     // DialogModule,
     // BrowserAnimationsModule
-  ]
+    DragDropModule,
+  ],
 })
-export class PrimengModule { }
+export class PrimengModule {}

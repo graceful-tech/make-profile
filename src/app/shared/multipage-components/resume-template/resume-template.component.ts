@@ -76,6 +76,12 @@ export class ResumeTemplateComponent {
   }
 
   ngOnInit() {
+
+     if (this.isMobileDevice()) {
+      // redirect to mobile login if mobile
+      this.router.navigate(['/resume-templates']);
+    }
+
     localStorage.removeItem('resumeName');
 
     this.gs.candidateDetails$.subscribe((response) => {
@@ -153,4 +159,10 @@ export class ResumeTemplateComponent {
     this.backgroundStyle = this.gradients[this.gradientIndex];
     this.gradientIndex = (this.gradientIndex + 1) % this.gradients.length;
   }
+
+   private isMobileDevice(): boolean {
+    const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
+    return /android|iphone|ipad|ipod/i.test(userAgent);
+  }
+
 }
