@@ -30,6 +30,9 @@ export class MobileDetailsDillDirectlyComponent {
   errorMessage: any;
   errorStatus: any;
   templateName: any;
+   isNotFillByUser: boolean = true;
+  isFillByUser:boolean = true;
+
 
   constructor(
     private api: ApiService,
@@ -248,5 +251,9 @@ export class MobileDetailsDillDirectlyComponent {
 
   goToHome() {
     this.router.navigate(['']);
+  }
+
+  closeUploadResume(event:any){
+    this.isNotFillByUser = false;
   }
 }

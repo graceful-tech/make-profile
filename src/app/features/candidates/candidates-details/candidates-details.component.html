@@ -952,6 +952,8 @@
                           [separatorKeyCodes]="[13, 188]"
                           [theme]="'modern'"
                           placeholder="Type and press Enter or Comma"
+                          [addOnBlur]="true"
+                          [trimTags]="true"
                         >
                         </tag-input>
                       </div>
@@ -1009,6 +1011,8 @@
                               [separatorKeyCodes]="[13, 188]"
                               [theme]="'modern'"
                               placeholder="Type and press Enter or Comma"
+                              [addOnBlur]="true"
+                              [trimTags]="true"
                             >
                             </tag-input>
                           </div>
@@ -1084,87 +1088,88 @@
             Please select Fresher OR add at least one Experience.
           </div>
           <ng-container *ngIf="candidateForm.get('fresher')?.value">
-              <div formArrayName="collegeProject">
-                <div
-                  *ngFor="
-                    let collegeProject of collegeProjectControls.controls;
-                    let i = index
-                  "
-                  [formGroupName]="i"
-                  class="college-project-box"
-                >
-                  <div class="grid">
-                    <!-- Project Name -->
-                    <div class="col-12 md:col-6">
-                      <div class="field-wrapper">
-                        <label>Project Name</label>
-                        <div class="input-wrapper">
-                          <input
-                            type="text"
-                            pInputText
-                            formControlName="collegeProjectName"
-                          />
-                        </div>
+            <div formArrayName="collegeProject">
+              <div
+                *ngFor="
+                  let collegeProject of collegeProjectControls.controls;
+                  let i = index
+                "
+                [formGroupName]="i"
+                class="college-project-box"
+              >
+                <div class="grid">
+                  <!-- Project Name -->
+                  <div class="col-12 md:col-6">
+                    <div class="field-wrapper">
+                      <label>Project Name</label>
+                      <div class="input-wrapper">
+                        <input
+                          type="text"
+                          pInputText
+                          formControlName="collegeProjectName"
+                        />
                       </div>
-                    </div>
-
-                    <!-- Project Skills -->
-                    <div class="col-12 md:col-6">
-                      <div class="field-wrapper">
-                        <label>Project Skills</label>
-                        <div class="input-wrapper">
-                          <tag-input
-                            formControlName="collegeProjectSkills"
-                            [separatorKeyCodes]="[13, 188]"
-                            [theme]="'modern'"
-                            placeholder="Type and press Enter or Comma"
-                          >
-                          </tag-input>
-                        </div>
-                      </div>
-                    </div>
-
-                    <!-- Project Description -->
-                    <div class="col-12">
-                      <div class="field-wrapper">
-                        <label>Project Description</label>
-                        <div class="input-wrapper">
-                          <textarea
-                            rows="2"
-                            type="text"
-                            pInputText
-                            formControlName="collegeProjectDescription"
-                          ></textarea>
-                        </div>
-                      </div>
-                    </div>
-
-                    <!-- Remove Project -->
-                    <div class="col-12 md:col-6 lg:col-3" *ngIf="i >= 0">
-                      <button
-                        type="button"
-                        class="remove-btn"
-                        (click)="removeCollegeProject(i)"
-                      >
-                        Remove Project
-                      </button>
                     </div>
                   </div>
-                </div>
 
-                <!-- Add Project Button -->
-                <div class="col-12 md:col-6 lg:col-3 mt-3">
-                  <button
-                    type="button"
-                    class="custom-btn"
-                    (click)="addCollegeProject()"
-                  >
-                    + Add Project
-                  </button>
+                  <!-- Project Skills -->
+                  <div class="col-12 md:col-6">
+                    <div class="field-wrapper">
+                      <label>Project Skills</label>
+                      <div class="input-wrapper">
+                        <tag-input
+                          formControlName="collegeProjectSkills"
+                          [separatorKeyCodes]="[13, 188]"
+                          [theme]="'modern'"
+                          placeholder="Type and press Enter or Comma"
+                          [addOnBlur]="true"
+                          [trimTags]="true"
+                        >
+                        </tag-input>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Project Description -->
+                  <div class="col-12">
+                    <div class="field-wrapper">
+                      <label>Project Description</label>
+                      <div class="input-wrapper">
+                        <textarea
+                          rows="2"
+                          type="text"
+                          pInputText
+                          formControlName="collegeProjectDescription"
+                        ></textarea>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Remove Project -->
+                  <div class="col-12 md:col-6 lg:col-3" *ngIf="i >= 0">
+                    <button
+                      type="button"
+                      class="remove-btn"
+                      (click)="removeCollegeProject(i)"
+                    >
+                      Remove Project
+                    </button>
+                  </div>
                 </div>
               </div>
-            </ng-container>
 
+              <!-- Add Project Button -->
+              <div class="col-12 md:col-6 lg:col-3 mt-3">
+                <button
+                  type="button"
+                  class="custom-btn"
+                  (click)="addCollegeProject()"
+                >
+                  + Add Project
+                </button>
+              </div>
+            </div>
+          </ng-container>
 
           <app-make-profile-divider></app-make-profile-divider>
           <div class="section-heading mt-3">
@@ -1172,211 +1177,211 @@
           </div>
 
           <div formArrayName="qualification">
-              <div
-                *ngFor="
-                  let qualifications of qualificationControls.controls;
-                  let i = index
-                "
-                [formGroupName]="i"
-                class="qualification-box"
-              >
-                <div class="grid">
-                  <!-- Institution Name -->
-                  <div class="col-12 md:col-6 lg:col-3">
-                    <div class="field-wrapper">
-                      <label>Institution Name</label>
-                      <div class="input-wrapper">
-                        <input
-                          type="text"
-                          pInputText
-                          formControlName="institutionName"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Qualification -->
-                  <div class="col-12 md:col-6 lg:col-3">
-                    <div class="field-wrapper">
-                      <label>Qualification</label>
-                      <div class="input-wrapper">
-                        <p-dropdown
-                          [options]="fieldOfStudy"
-                          optionLabel="displayValue"
-                          optionValue="dataValue"
-                          placeholder="Select Qualification"
-                          formControlName="department"
-                          [filter]="true"
-                          styleClass="narrow-dropdown"
-                        >
-                        </p-dropdown>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Department -->
-                  <div class="col-12 md:col-6 lg:col-3">
-                    <div class="field-wrapper">
-                      <label>Department</label>
-                      <div class="input-wrapper">
-                        <input
-                          type="text"
-                          pInputText
-                          formControlName="fieldOfStudy"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Start Year -->
-                  <div class="col-12 md:col-6 lg:col-3">
-                    <div class="field-wrapper">
-                      <label>Start Year</label>
-                      <div class="input-wrapper">
-                        <p-calendar
-                          formControlName="qualificationStartYear"
-                          placeholder="Select Year"
-                        ></p-calendar>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- End Year -->
-                  <div class="col-12 md:col-6 lg:col-3">
-                    <div class="field-wrapper">
-                      <label>End Year</label>
-                      <div class="input-wrapper">
-                        <p-calendar
-                          formControlName="qualificationEndYear"
-                          placeholder="Select Year"
-                        ></p-calendar>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Percentage -->
-                  <div class="col-12 md:col-6 lg:col-3">
-                    <div class="field-wrapper">
-                      <label>Percentage</label>
-                      <div class="input-wrapper">
-                        <input
-                          placeholder="Ex: 88.8"
-                          pKeyFilter="num"
-                          [maxLength]="4"
-                          type="number"
-                          [min]="0.0"
-                          [max]="99.99"
-                          pInputText
-                          formControlName="percentage"
-                        />
-                      </div>
+            <div
+              *ngFor="
+                let qualifications of qualificationControls.controls;
+                let i = index
+              "
+              [formGroupName]="i"
+              class="qualification-box"
+            >
+              <div class="grid">
+                <!-- Institution Name -->
+                <div class="col-12 md:col-6 lg:col-3">
+                  <div class="field-wrapper">
+                    <label>Institution Name</label>
+                    <div class="input-wrapper">
+                      <input
+                        type="text"
+                        pInputText
+                        formControlName="institutionName"
+                      />
                     </div>
                   </div>
                 </div>
 
-                <!-- Remove Qualification -->
-                <div class="col-12 md:col-6 lg:col-3 mt-2">
-                  <button
-                    type="button"
-                    class="remove-btn"
-                    (click)="removeQualification(i)"
-                  >
-                    Remove Qualification
-                  </button>
+                <!-- Qualification -->
+                <div class="col-12 md:col-6 lg:col-3">
+                  <div class="field-wrapper">
+                    <label>Qualification</label>
+                    <div class="input-wrapper">
+                      <p-dropdown
+                        [options]="fieldOfStudy"
+                        optionLabel="displayValue"
+                        optionValue="dataValue"
+                        placeholder="Select Qualification"
+                        formControlName="department"
+                        [filter]="true"
+                        styleClass="narrow-dropdown"
+                      >
+                      </p-dropdown>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Department -->
+                <div class="col-12 md:col-6 lg:col-3">
+                  <div class="field-wrapper">
+                    <label>Department</label>
+                    <div class="input-wrapper">
+                      <input
+                        type="text"
+                        pInputText
+                        formControlName="fieldOfStudy"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Start Year -->
+                <div class="col-12 md:col-6 lg:col-3">
+                  <div class="field-wrapper">
+                    <label>Start Year</label>
+                    <div class="input-wrapper">
+                      <p-calendar
+                        formControlName="qualificationStartYear"
+                        placeholder="Select Year"
+                      ></p-calendar>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- End Year -->
+                <div class="col-12 md:col-6 lg:col-3">
+                  <div class="field-wrapper">
+                    <label>End Year</label>
+                    <div class="input-wrapper">
+                      <p-calendar
+                        formControlName="qualificationEndYear"
+                        placeholder="Select Year"
+                      ></p-calendar>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Percentage -->
+                <div class="col-12 md:col-6 lg:col-3">
+                  <div class="field-wrapper">
+                    <label>Percentage</label>
+                    <div class="input-wrapper">
+                      <input
+                        placeholder="Ex: 88.8"
+                        pKeyFilter="num"
+                        [maxLength]="4"
+                        type="number"
+                        [min]="0.0"
+                        [max]="99.99"
+                        pInputText
+                        formControlName="percentage"
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              <!-- Add Qualification -->
-              <div class="col-12 md:col-6 lg:col-3 mt-3">
+              <!-- Remove Qualification -->
+              <div class="col-12 md:col-6 lg:col-3 mt-2">
                 <button
                   type="button"
-                  class="custom-btn"
-                  (click)="addQualication()"
+                  class="remove-btn"
+                  (click)="removeQualification(i)"
                 >
-                  + Add Qualification
+                  Remove Qualification
                 </button>
               </div>
             </div>
+
+            <!-- Add Qualification -->
+            <div class="col-12 md:col-6 lg:col-3 mt-3">
+              <button
+                type="button"
+                class="custom-btn"
+                (click)="addQualication()"
+              >
+                + Add Qualification
+              </button>
+            </div>
+          </div>
 
           <app-make-profile-divider></app-make-profile-divider>
           <div class="section-heading mt-3">
             <div>Course & Certificates</div>
           </div>
 
-           <div formArrayName="certificates">
-              <div
-                *ngFor="
-                  let certificate of certificateControls.controls;
-                  let i = index
-                "
-                [formGroupName]="i"
-                class="certificate-box"
-              >
-                <div class="grid">
-                  <!-- Course Name -->
-                  <div class="col-12 md:col-6 lg:col-3">
-                    <div class="field-wrapper">
-                      <label>Course Name</label>
-                      <div class="input-wrapper">
-                        <input
-                          type="text"
-                          pInputText
-                          formControlName="courseName"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Course Start Year -->
-                  <div class="col-12 md:col-6 lg:col-3">
-                    <div class="field-wrapper">
-                      <label>Course Start Year</label>
-                      <div class="input-wrapper">
-                        <p-calendar
-                          formControlName="courseStartDate"
-                          placeholder="Select From Date"
-                        ></p-calendar>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Course End Year -->
-                  <div class="col-12 md:col-6 lg:col-3">
-                    <div class="field-wrapper">
-                      <label>Course End Year</label>
-                      <div class="input-wrapper">
-                        <p-calendar
-                          formControlName="courseEndDate"
-                          placeholder="Select To Date"
-                        ></p-calendar>
-                      </div>
+          <div formArrayName="certificates">
+            <div
+              *ngFor="
+                let certificate of certificateControls.controls;
+                let i = index
+              "
+              [formGroupName]="i"
+              class="certificate-box"
+            >
+              <div class="grid">
+                <!-- Course Name -->
+                <div class="col-12 md:col-6 lg:col-3">
+                  <div class="field-wrapper">
+                    <label>Course Name</label>
+                    <div class="input-wrapper">
+                      <input
+                        type="text"
+                        pInputText
+                        formControlName="courseName"
+                      />
                     </div>
                   </div>
                 </div>
 
-                <!-- Remove Button -->
-                <div class="col-12 md:col-6 lg:col-3 mt-2">
-                  <button
-                    type="button"
-                    class="remove-btn"
-                    (click)="removeCertificates(i)"
-                  >
-                    Remove Course
-                  </button>
+                <!-- Course Start Year -->
+                <div class="col-12 md:col-6 lg:col-3">
+                  <div class="field-wrapper">
+                    <label>Course Start Year</label>
+                    <div class="input-wrapper">
+                      <p-calendar
+                        formControlName="courseStartDate"
+                        placeholder="Select From Date"
+                      ></p-calendar>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Course End Year -->
+                <div class="col-12 md:col-6 lg:col-3">
+                  <div class="field-wrapper">
+                    <label>Course End Year</label>
+                    <div class="input-wrapper">
+                      <p-calendar
+                        formControlName="courseEndDate"
+                        placeholder="Select To Date"
+                      ></p-calendar>
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              <!-- Add Certificate -->
-              <div class="col-12 md:col-6 lg:col-3 mt-3">
+              <!-- Remove Button -->
+              <div class="col-12 md:col-6 lg:col-3 mt-2">
                 <button
                   type="button"
-                  class="custom-btn"
-                  (click)="addCertificates()"
+                  class="remove-btn"
+                  (click)="removeCertificates(i)"
                 >
-                  + Add Course
+                  Remove Course
                 </button>
               </div>
             </div>
+
+            <!-- Add Certificate -->
+            <div class="col-12 md:col-6 lg:col-3 mt-3">
+              <button
+                type="button"
+                class="custom-btn"
+                (click)="addCertificates()"
+              >
+                + Add Course
+              </button>
+            </div>
+          </div>
 
           <app-make-profile-divider></app-make-profile-divider>
           <div class="section-heading mt-3">
@@ -1384,66 +1389,66 @@
           </div>
 
           <div formArrayName="achievements">
-              <div
-                *ngFor="
-                  let achievement of achievementsControls.controls;
-                  let i = index
-                "
-                [formGroupName]="i"
-                class="achievement-box"
-              >
-                <div class="grid">
-                  <!-- Award Name -->
-                  <div class="col-12 md:col-6 lg:col-3">
-                    <div class="field-wrapper">
-                      <label>Award Name</label>
-                      <div class="input-wrapper">
-                        <input
-                          type="text"
-                          pInputText
-                          formControlName="achievementsName"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Awarded Year -->
-                  <div class="col-12 md:col-6 lg:col-3">
-                    <div class="field-wrapper">
-                      <label>Awarded Year</label>
-                      <div class="input-wrapper">
-                        <p-calendar
-                          formControlName="achievementsDate"
-                          placeholder="Select Year"
-                        ></p-calendar>
-                      </div>
+            <div
+              *ngFor="
+                let achievement of achievementsControls.controls;
+                let i = index
+              "
+              [formGroupName]="i"
+              class="achievement-box"
+            >
+              <div class="grid">
+                <!-- Award Name -->
+                <div class="col-12 md:col-6 lg:col-3">
+                  <div class="field-wrapper">
+                    <label>Award Name</label>
+                    <div class="input-wrapper">
+                      <input
+                        type="text"
+                        pInputText
+                        formControlName="achievementsName"
+                      />
                     </div>
                   </div>
                 </div>
 
-                <!-- Remove Button -->
-                <div class="col-12 md:col-6 lg:col-3 mt-2">
-                  <button
-                    type="button"
-                    class="remove-btn"
-                    (click)="removeaddAchievements(i)"
-                  >
-                    Remove Achievement
-                  </button>
+                <!-- Awarded Year -->
+                <div class="col-12 md:col-6 lg:col-3">
+                  <div class="field-wrapper">
+                    <label>Awarded Year</label>
+                    <div class="input-wrapper">
+                      <p-calendar
+                        formControlName="achievementsDate"
+                        placeholder="Select Year"
+                      ></p-calendar>
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              <!-- Add Button -->
-              <div class="col-12 md:col-6 lg:col-3 mt-3">
+              <!-- Remove Button -->
+              <div class="col-12 md:col-6 lg:col-3 mt-2">
                 <button
                   type="button"
-                  class="custom-btn"
-                  (click)="addAchievements()"
+                  class="remove-btn"
+                  (click)="removeaddAchievements(i)"
                 >
-                  + Add Achievement
+                  Remove Achievement
                 </button>
               </div>
             </div>
+
+            <!-- Add Button -->
+            <div class="col-12 md:col-6 lg:col-3 mt-3">
+              <button
+                type="button"
+                class="custom-btn"
+                (click)="addAchievements()"
+              >
+                + Add Achievement
+              </button>
+            </div>
+          </div>
 
           <app-make-profile-divider></app-make-profile-divider>
 

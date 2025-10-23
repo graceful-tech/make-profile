@@ -31,6 +31,8 @@ export class DetailsFillDirectlyComponent {
   errorStatus: any;
   analysisText: string = '';
   templateName: any;
+  isNotFillByUser: boolean = true;
+  isFillByUser:boolean = true;
 
   constructor(
     private api: ApiService,
@@ -266,5 +268,9 @@ export class DetailsFillDirectlyComponent {
   }
   toLogin() {
     this.router.navigate(['/login']);
+  }
+
+  closeUploadResume(event:any){
+    this.isNotFillByUser = false;
   }
 }

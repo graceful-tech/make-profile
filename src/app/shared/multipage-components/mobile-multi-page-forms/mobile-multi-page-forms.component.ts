@@ -18,7 +18,7 @@ import { LoaderService } from 'src/app/services/loader.service';
 import { ToastService } from 'src/app/services/toast.service';
 import { Project } from 'src/app/models/candidates/project';
 import { LoginPopupComponent } from '../../popup/login-popup/login-popup.component';
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import {
   AbstractControl,
   FormArray,
@@ -36,6 +36,8 @@ import { ModelLoginPopupComponent } from '../../popup/model-login-popup/model-lo
   styleUrl: './mobile-multi-page-forms.component.css',
 })
 export class MobileMultiPageFormsComponent {
+  @Output() closeUploadResume = new EventEmitter<any>();
+
   step = 1; // current step tracker
   candidateForm!: FormGroup;
   genderList: Array<ValueSet> = [];
@@ -629,7 +631,6 @@ export class MobileMultiPageFormsComponent {
       this.api.retrieve(route, postData).subscribe({
         next: (response) => {
           if (response) {
-          
             this.gs.navigate.next(false);
             sessionStorage.setItem('authType', 'custom');
             sessionStorage.setItem('token', response.token);
@@ -678,7 +679,7 @@ export class MobileMultiPageFormsComponent {
           this.loader.stop();
           if (response) {
             this.loader.stop();
-            
+
             this.gs.navigate.next(false);
             sessionStorage.setItem('authType', 'custom');
             sessionStorage.setItem('token', response.token);
@@ -1302,6 +1303,7 @@ export class MobileMultiPageFormsComponent {
     ref.onClose.subscribe(async (response) => {
       const saveCandidate = await this.saveCandidate();
 
+      this.closeUploadResume.emit(true);
       this.step++;
     });
   }

@@ -298,7 +298,7 @@
         </div>
       </div>
 
-           <ng-container *ngIf="!candidateForm.get('fresher')?.value">
+      <ng-container *ngIf="!candidateForm.get('fresher')?.value">
         <div formArrayName="experiences">
           <div
             *ngFor="
@@ -389,6 +389,8 @@
                       [separatorKeyCodes]="[13, 188]"
                       [theme]="'modern'"
                       placeholder="Type and press Enter or Comma"
+                      [addOnBlur]="true"
+                      [trimTags]="true"
                     >
                     </tag-input>
                   </div>
@@ -443,6 +445,8 @@
                           [separatorKeyCodes]="[13, 188]"
                           [theme]="'modern'"
                           placeholder="Type and press Enter or Comma"
+                          [addOnBlur]="true"
+                          [trimTags]="true"
                         >
                         </tag-input>
                       </div>
@@ -503,101 +507,102 @@
         </div>
       </ng-container>
 
-
       <div
         *ngIf="candidateForm.errors?.['fresherOrExperienceRequired'] && candidateForm.touched"
         style="color: red; margin-top: 5px"
       >
         Please select Fresher OR add at least one Experience.
       </div>
-   <ng-container *ngIf="candidateForm.get('fresher')?.value">
-              <div formArrayName="collegeProject">
-                <div
-                  *ngFor="
-                    let collegeProject of collegeProjectControls.controls;
-                    let i = index
-                  "
-                  [formGroupName]="i"
-                  class="college-project-box"
-                >
-                  <div class="grid">
-                    <!-- Project Name -->
-                    <div class="col-12 md:col-6">
-                      <div class="field-wrapper">
-                        <label>Project Name</label>
-                        <div class="input-wrapper">
-                          <input
-                            type="text"
-                            pInputText
-                            formControlName="collegeProjectName"
-                          />
-                        </div>
-                      </div>
-                    </div>
-
-                    <!-- Project Skills -->
-                    <div class="col-12 md:col-6">
-                      <div class="field-wrapper">
-                        <label>Project Skills</label>
-                        <div class="input-wrapper">
-                          <tag-input
-                            formControlName="collegeProjectSkills"
-                            [separatorKeyCodes]="[13, 188]"
-                            [theme]="'modern'"
-                            placeholder="Type and press Enter or Comma"
-                          >
-                          </tag-input>
-                        </div>
-                      </div>
-                    </div>
-
-                    <!-- Project Description -->
-                    <div class="col-12">
-                      <div class="field-wrapper">
-                        <label>Project Description</label>
-                        <div class="input-wrapper">
-                          <textarea
-                            rows="2"
-                            type="text"
-                            pInputText
-                            formControlName="collegeProjectDescription"
-                          ></textarea>
-                        </div>
-                      </div>
-                    </div>
-
-                    <!-- Remove Project -->
-                    <div class="col-12 md:col-6 lg:col-3" *ngIf="i >= 0">
-                      <button
-                        type="button"
-                        class="remove-btn"
-                        (click)="removeCollegeProject(i)"
-                      >
-                        Remove Project
-                      </button>
-                    </div>
+      <ng-container *ngIf="candidateForm.get('fresher')?.value">
+        <div formArrayName="collegeProject">
+          <div
+            *ngFor="
+              let collegeProject of collegeProjectControls.controls;
+              let i = index
+            "
+            [formGroupName]="i"
+            class="college-project-box"
+          >
+            <div class="grid">
+              <!-- Project Name -->
+              <div class="col-12 md:col-6">
+                <div class="field-wrapper">
+                  <label>Project Name</label>
+                  <div class="input-wrapper">
+                    <input
+                      type="text"
+                      pInputText
+                      formControlName="collegeProjectName"
+                    />
                   </div>
                 </div>
+              </div>
 
-                <!-- Add Project Button -->
-                <div class="col-12 md:col-6 lg:col-3 mt-3">
-                  <button
-                    type="button"
-                    class="custom-btn"
-                    (click)="addCollegeProject()"
-                  >
-                    + Add Project
-                  </button>
+              <!-- Project Skills -->
+              <div class="col-12 md:col-6">
+                <div class="field-wrapper">
+                  <label>Project Skills</label>
+                  <div class="input-wrapper">
+                    <tag-input
+                      formControlName="collegeProjectSkills"
+                      [separatorKeyCodes]="[13, 188]"
+                      [theme]="'modern'"
+                      placeholder="Type and press Enter or Comma"
+                      [addOnBlur]="true"
+                      [trimTags]="true"
+                    >
+                    </tag-input>
+                  </div>
                 </div>
               </div>
-            </ng-container>
+
+              <!-- Project Description -->
+              <div class="col-12">
+                <div class="field-wrapper">
+                  <label>Project Description</label>
+                  <div class="input-wrapper">
+                    <textarea
+                      rows="2"
+                      type="text"
+                      pInputText
+                      formControlName="collegeProjectDescription"
+                    ></textarea>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Remove Project -->
+              <div class="col-12 md:col-6 lg:col-3" *ngIf="i >= 0">
+                <button
+                  type="button"
+                  class="remove-btn"
+                  (click)="removeCollegeProject(i)"
+                >
+                  Remove Project
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Add Project Button -->
+          <div class="col-12 md:col-6 lg:col-3 mt-3">
+            <button
+              type="button"
+              class="custom-btn"
+              (click)="addCollegeProject()"
+            >
+              + Add Project
+            </button>
+          </div>
+        </div>
+      </ng-container>
 
       <app-make-profile-divider></app-make-profile-divider>
       <div class="section-heading mt-3">
         <div>Qualification Details</div>
       </div>
 
-        <div formArrayName="qualification">
+      <div formArrayName="qualification">
         <div
           *ngFor="
             let qualifications of qualificationControls.controls;
@@ -741,7 +746,7 @@
         </div> -->
       </div>
 
-          <div formArrayName="certificates">
+      <div formArrayName="certificates">
         <div
           *ngFor="
             let certificate of certificateControls.controls;
@@ -883,7 +888,6 @@
             "
           >
             <Span>Soft Skills</Span>
-          
           </div>
           <div class="input-wrapper">
             <p-chips
@@ -906,7 +910,6 @@
             "
           >
             <Span>Core Competencies</Span>
-     
           </div>
           <div class="input-wrapper">
             <p-chips

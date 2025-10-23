@@ -226,223 +226,222 @@
         </div>
 
         <!-- <section *ngIf="experience"> -->
-           <ng-container *ngIf="!candidateForm.get('fresher')?.value">
-            <div formArrayName="experiences">
-              <div
-                *ngFor="
-                  let experience of experienceControls.controls;
-                  let i = index
-                "
-                [formGroupName]="i"
-                class="experience-box"
-              >
-                <!-- Experience Details -->
+        <ng-container *ngIf="!candidateForm.get('fresher')?.value">
+          <div formArrayName="experiences">
+            <div
+              *ngFor="
+                let experience of experienceControls.controls;
+                let i = index
+              "
+              [formGroupName]="i"
+              class="experience-box"
+            >
+              <!-- Experience Details -->
+              <div class="grid">
+                <div class="col-12 md:col-6 lg:col-3">
+                  <div class="field-wrapper">
+                    <label>Company Name</label>
+                    <div class="input-wrapper">
+                      <input
+                        type="text"
+                        pInputText
+                        formControlName="companyName"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-12 md:col-6 lg:col-3">
+                  <div class="field-wrapper">
+                    <label>Role Name</label>
+                    <div class="input-wrapper">
+                      <input type="text" pInputText formControlName="role" />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-12 md:col-6 lg:col-3">
+                  <div class="field-wrapper">
+                    <label>Year Started</label>
+                    <div class="input-wrapper">
+                      <p-calendar
+                        formControlName="experienceYearStartDate"
+                        placeholder="Select From Date"
+                      ></p-calendar>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-12 md:col-6 lg:col-3">
+                  <div class="field-wrapper">
+                    <label>Year Ended</label>
+                    <div class="input-wrapper">
+                      <p-calendar
+                        formControlName="experienceYearEndDate"
+                        [disabled]="experience.get('currentlyWorking')?.value"
+                        placeholder="Select To Date"
+                      ></p-calendar>
+                    </div>
+                  </div>
+                </div>
+
                 <div class="grid">
                   <div class="col-12 md:col-6 lg:col-3">
-                    <div class="field-wrapper">
-                      <label>Company Name</label>
-                      <div class="input-wrapper">
-                        <input
-                          type="text"
-                          pInputText
-                          formControlName="companyName"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="col-12 md:col-6 lg:col-3">
-                    <div class="field-wrapper">
-                      <label>Role Name</label>
-                      <div class="input-wrapper">
-                        <input type="text" pInputText formControlName="role" />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="col-12 md:col-6 lg:col-3">
-                    <div class="field-wrapper">
-                      <label>Year Started</label>
-                      <div class="input-wrapper">
-                        <p-calendar
-                          formControlName="experienceYearStartDate"
-                          placeholder="Select From Date"
-                        ></p-calendar>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="col-12 md:col-6 lg:col-3">
-                    <div class="field-wrapper">
-                      <label>Year Ended</label>
-                      <div class="input-wrapper">
-                        <p-calendar
-                          formControlName="experienceYearEndDate"
-                          [disabled]="experience.get('currentlyWorking')?.value"
-                          placeholder="Select To Date"
-                        ></p-calendar>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="grid">
-                    <div class="col-12 md:col-6 lg:col-3">
-                      <div
-                        class="fresher-checkbox pb-3"
-                        style="
-                          display: flex;
-                          align-items: center;
-                          gap: 5px;
-                          margin-left: 15px;
+                    <div
+                      class="fresher-checkbox pb-3"
+                      style="
+                        display: flex;
+                        align-items: center;
+                        gap: 5px;
+                        margin-left: 15px;
+                      "
+                    >
+                      <p-checkbox
+                        [binary]="true"
+                        [disabled]="
+                          experience.get('experienceYearEndDate')?.value
                         "
+                        formControlName="currentlyWorking"
+                      ></p-checkbox>
+                      <label style="padding-left: 5px">Currently Working</label>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-12">
+                  <div class="field-wrapper">
+                    <label>Responsibilities</label>
+                    <div class="input-wrapper">
+                      <tag-input
+                        formControlName="responsibilities"
+                        [separatorKeyCodes]="[13, 188]"
+                        [theme]="'modern'"
+                        placeholder="Type and press Enter or Comma"
+                        [addOnBlur]="true"
+                        [trimTags]="true"
                       >
-                        <p-checkbox
-                          [binary]="true"
-                          [disabled]="
-                            experience.get('experienceYearEndDate')?.value
-                          "
-                          formControlName="currentlyWorking"
-                        ></p-checkbox>
-                        <label style="padding-left: 5px"
-                          >Currently Working</label
-                        >
-                      </div>
+                      </tag-input>
                     </div>
                   </div>
-
-                  <div class="col-12">
-                    <div class="field-wrapper">
-                      <label>Responsibilities</label>
-                      <div class="input-wrapper">
-                        <tag-input
-                          formControlName="responsibilities"
-                          [separatorKeyCodes]="[13, 188]"
-                          [theme]="'modern'"
-                          placeholder="Type and press Enter or Comma"
-                        >
-                        </tag-input>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Project Details -->
-                <div formArrayName="projects">
-                  <div class="bysection-heading mt-4">
-                    <div>Project Details</div>
-                  </div>
-
-                  <div
-                    *ngFor="
-                      let project of getProjects(i).controls;
-                      let j = index
-                    "
-                    [formGroupName]="j"
-                    class="project-box"
-                  >
-                    <div class="grid">
-                      <div class="col-12 md:col-6">
-                        <div class="field-wrapper">
-                          <label>Project Name</label>
-                          <div class="input-wrapper">
-                            <input
-                              type="text"
-                              pInputText
-                              formControlName="projectName"
-                            />
-                          </div>
-                        </div>
-                      </div>
-
-                      <div class="col-12 md:col-6">
-                        <div class="field-wrapper">
-                          <label>Project Role</label>
-                          <div class="input-wrapper">
-                            <input
-                              type="text"
-                              pInputText
-                              formControlName="projectRole"
-                            />
-                          </div>
-                        </div>
-                      </div>
-
-                      <div class="col-12 md:col-6">
-                        <div class="field-wrapper">
-                          <label>Project Skills</label>
-                          <div class="input-wrapper">
-                            <tag-input
-                              formControlName="projectSkills"
-                              [separatorKeyCodes]="[13, 188]"
-                              [theme]="'modern'"
-                              placeholder="Type and press Enter or Comma"
-                            >
-                            </tag-input>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div class="col-12 md:col-6">
-                        <div class="field-wrapper">
-                          <label>Project Description</label>
-                          <div class="input-wrapper">
-                            <textarea
-                              rows="2"
-                              type="text"
-                              pInputText
-                              formControlName="projectDescription"
-                            ></textarea>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div class="col-12 md:col-6 lg:col-3" *ngIf="j >= 0">
-                        <button
-                          type="button"
-                          class="remove-btn"
-                          (click)="removeProject(i, j)"
-                        >
-                          Remove Project
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Buttons for Experience -->
-                <div class="col-12 md:col-6 lg:col-3 mt-3">
-                  <button
-                    type="button"
-                    class="custom-btn"
-                    (click)="addProject(i)"
-                  >
-                    + Add Project
-                  </button>
-                </div>
-
-                <div class="col-12 md:col-6 lg:col-3 mt-3">
-                  <button
-                    type="button"
-                    class="remove-btn"
-                    (click)="removeExperience(i)"
-                  >
-                    Remove Experience
-                  </button>
                 </div>
               </div>
 
-              <!-- Add Experience -->
-              <div class="col-12 md:col-6 lg:col-3 mt-4">
+              <!-- Project Details -->
+              <div formArrayName="projects">
+                <div class="bysection-heading mt-4">
+                  <div>Project Details</div>
+                </div>
+
+                <div
+                  *ngFor="let project of getProjects(i).controls; let j = index"
+                  [formGroupName]="j"
+                  class="project-box"
+                >
+                  <div class="grid">
+                    <div class="col-12 md:col-6">
+                      <div class="field-wrapper">
+                        <label>Project Name</label>
+                        <div class="input-wrapper">
+                          <input
+                            type="text"
+                            pInputText
+                            formControlName="projectName"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-12 md:col-6">
+                      <div class="field-wrapper">
+                        <label>Project Role</label>
+                        <div class="input-wrapper">
+                          <input
+                            type="text"
+                            pInputText
+                            formControlName="projectRole"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-12 md:col-6">
+                      <div class="field-wrapper">
+                        <label>Project Skills</label>
+                        <div class="input-wrapper">
+                          <tag-input
+                            formControlName="projectSkills"
+                            [separatorKeyCodes]="[13, 188]"
+                            [theme]="'modern'"
+                            placeholder="Type and press Enter or Comma"
+                            [addOnBlur]="true"
+                            [trimTags]="true" 
+                          >
+                          </tag-input>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-12 md:col-6">
+                      <div class="field-wrapper">
+                        <label>Project Description</label>
+                        <div class="input-wrapper">
+                          <textarea
+                            rows="2"
+                            type="text"
+                            pInputText
+                            formControlName="projectDescription"
+                          ></textarea>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-12 md:col-6 lg:col-3" *ngIf="j >= 0">
+                      <button
+                        type="button"
+                        class="remove-btn"
+                        (click)="removeProject(i, j)"
+                      >
+                        Remove Project
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Buttons for Experience -->
+              <div class="col-12 md:col-6 lg:col-3 mt-3">
                 <button
                   type="button"
                   class="custom-btn"
-                  (click)="addExperience()"
+                  (click)="addProject(i)"
                 >
-                  + Add Experience
+                  + Add Project
+                </button>
+              </div>
+
+              <div class="col-12 md:col-6 lg:col-3 mt-3">
+                <button
+                  type="button"
+                  class="remove-btn"
+                  (click)="removeExperience(i)"
+                >
+                  Remove Experience
                 </button>
               </div>
             </div>
-          </ng-container>
+
+            <!-- Add Experience -->
+            <div class="col-12 md:col-6 lg:col-3 mt-4">
+              <button
+                type="button"
+                class="custom-btn"
+                (click)="addExperience()"
+              >
+                + Add Experience
+              </button>
+            </div>
+          </div>
+        </ng-container>
       </section>
 
       <section *ngIf="collegeProject">

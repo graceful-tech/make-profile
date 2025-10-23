@@ -5,7 +5,9 @@
           (click)="goHome()"
          
         > <i class="fa fa-home"></i> Go Back</button> -->
-       
+
+  <span style="text-align: center"> <h4>Fill Details Yourself</h4> </span>
+
   <div class="wizard-container">
     <div class="step-tracker">
       <!-- Step 1: Personal Details -->
@@ -19,7 +21,7 @@
       </div>
       <div class="line" [class.completed]="step > 1"></div>
 
-       <div
+      <div
         class="step"
         [class.active]="step === 2"
         [class.completed]="step > 2"
@@ -680,8 +682,8 @@
           <!-- Certificates Section (Left) -->
           <div class="col-12 md:col-6">
             <div class="section-heading mt-3">
-          <div>Course & Certificates</div>
-        </div>
+              <div>Course & Certificates</div>
+            </div>
             <div formArrayName="certificates">
               <div
                 *ngFor="
@@ -765,10 +767,9 @@
 
           <!-- Achievements Section (Right) -->
           <div class="col-12 md:col-5">
-           
             <div class="section-heading mt-3">
-          <div>Achievements</div>
-          </div>
+              <div>Achievements</div>
+            </div>
             <div formArrayName="achievements">
               <div
                 *ngFor="
@@ -863,5 +864,4 @@
       </div>
     </form>
   </div>
-  
 </div>

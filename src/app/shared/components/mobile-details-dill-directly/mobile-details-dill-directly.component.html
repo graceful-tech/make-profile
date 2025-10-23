@@ -26,14 +26,15 @@
   </div>
 </div>
 
-<div class="profile-wrapper">
-  <span style="display: flex; justify-content: space-between">
-    <button class="home-btn" (click)="goToHome()">
-      <i class="fa fa-arrow-left"></i> Go Back
-    </button>
-  </span>
+<ng-container *ngIf="isNotFillByUser">
+  <div class="profile-wrapper">
+    <span style="display: flex; justify-content: space-between">
+      <button class="home-btn" (click)="goToHome()">
+        <i class="fa fa-arrow-left"></i> Go Back
+      </button>
+    </span>
 
-  <!-- 
+    <!-- 
   <div class="col-12 md:col-6" style="margin: 0 auto">
     <div class="inside-label-textarea">
       <span class="btn-position">
@@ -74,13 +75,13 @@
     </div>
   </div> -->
 
-  <!-- <div>
+    <!-- <div>
       <span style="color: rgb(236, 10, 10); font-weight: bold; font-size: 18px"
         >Just change the content according to your details and click
         Submit.</span
       >
     </div> -->
-  <!-- <div
+    <!-- <div
     style="
       display: flex;
       align-items: center;
@@ -93,11 +94,11 @@
     </button>
   </div> -->
 
-  <!-- <div class="divider">
+    <!-- <div class="divider">
     <span>or</span>
   </div> -->
 
-  <!-- <div id="examplePopup" class="popup-box">
+    <!-- <div id="examplePopup" class="popup-box">
     <h4>Example Self Introduction</h4>
     <p>
       Hello, my name is Abc.My gender is Male/Female I have completed my B.Tech
@@ -134,7 +135,7 @@
     </span>
   </div> -->
 
-  <!-- <div id="hintPopup" class="hint-popup-box">
+    <!-- <div id="hintPopup" class="hint-popup-box">
     <h4>Sample Intro</h4>
     <ul>
       <li>You can add your <b>Name & Address</b></li>
@@ -158,34 +159,34 @@
     <button class="close-btn" (click)="hintPopup()">Close</button>
   </div> -->
 
-  <div class="full-page-center">
-    <div class="upload-container">
-      <div class="upload-title">Upload Your Existing/Old Resume</div>
-      <input
-        type="file"
-        #attachment
-        style="display: none"
-        (change)="addAttachment($event)"
-        accept=".doc, .docx, .pdf"
-      />
-      <div class="upload-box">
-        <p *ngIf="!resume?.fileName">Upload Your Old Resume Here</p>
-        <button class="browse-btn" (click)="attachment.click()">
-          Upload Resume
-        </button>
-        <div *ngIf="resume?.fileName" class="uploaded-file mt-3">
-          <i class="pi pi-paperclip mr-2"></i>
-          <span>{{ resume?.fileName }}</span>
+    <div class="full-page-center">
+      <div class="upload-container">
+        <div class="upload-title">Upload Your Existing/Old Resume</div>
+        <input
+          type="file"
+          #attachment
+          style="display: none"
+          (change)="addAttachment($event)"
+          accept=".doc, .docx, .pdf"
+        />
+        <div class="upload-box">
+          <p *ngIf="!resume?.fileName">Upload Your Old Resume Here</p>
+          <button class="browse-btn" (click)="attachment.click()">
+            Upload Resume
+          </button>
+          <div *ngIf="resume?.fileName" class="uploaded-file mt-3">
+            <i class="pi pi-paperclip mr-2"></i>
+            <span>{{ resume?.fileName }}</span>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <div class="divider">
-    <span>or</span>
-  </div>
+    <div class="divider">
+      <span>or</span>
+    </div>
 
-  <!-- <div style="display: flex; align-items: center; justify-content: center">
+    <!-- <div style="display: flex; align-items: center; justify-content: center">
     <button
       class="enter-details"
       style="margin-top: 10px"
@@ -194,12 +195,15 @@
       Fill Details Yourself
     </button>
   </div> -->
+  </div>
+</ng-container>
+<!-- 
+<span style="text-align: center; background-color: white;">
+  <br><h4>Fill Details Yourself</h4></span> -->
 
-</div>
-
-  <app-mobile-multi-page-forms></app-mobile-multi-page-forms>
-
-
+<ng-container *ngIf="isFillByUser">
+  <app-mobile-multi-page-forms (closeUploadResume)="closeUploadResume($event)"></app-mobile-multi-page-forms>
+</ng-container>
 
 <ng-container *ngIf="showErrorPopup">
   <app-mobile-error-login-popup
