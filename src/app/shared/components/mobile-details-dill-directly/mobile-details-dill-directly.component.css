@@ -86,8 +86,6 @@
   color: #333;
 }
 
-
-
 .add-details {
   text-decoration: underline;
   font-size: 1.2rem;
@@ -105,6 +103,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 10px;
 }
 
 .upload-container {
@@ -190,7 +189,7 @@
 }
 
 .enter-details {
-    background: linear-gradient(to right, #3439c8, #141aca);
+  background: linear-gradient(to right, #3439c8, #141aca);
   color: rgb(249, 249, 249);
   border: none;
   padding: 10px 30px;
@@ -269,12 +268,12 @@
 }
 
 .profile-wrapper {
-  min-height: 100vh;  
- 
+  min-height: 100vh;
+
   background: linear-gradient(to bottom, skyblue 0%, white 50%, #c2e4ef 100%);
   padding: 20px;
   border-radius: 12px;
- 
+
   animation: gradientBG 15s ease infinite;
   padding: 20px;
   border-radius: 12px;
@@ -308,8 +307,6 @@
 .new-button {
   margin: 0 auto;
 }
-
- 
 
 .left-side {
   justify-content: flex-start;
@@ -345,7 +342,6 @@
   animation: arrowGradient 3s infinite;
 }
 
- 
 .tooltip-bubble .star {
   position: absolute;
   font-size: 15px;
@@ -434,8 +430,6 @@
   }
 }
 
- 
- 
 @keyframes twinkle {
   from {
     opacity: 0.2;
@@ -480,8 +474,6 @@
   font-size: 14px;
   color: #333;
 }
- 
- 
 
 .close-btn {
   margin-top: 10px;
@@ -519,8 +511,6 @@
   margin-left: 0.75em;
 }
 
- 
-
 .copy-btn:hover {
   background: #281289;
 }
@@ -533,35 +523,32 @@
   color: rgb(255, 0, 38);
 }
 
-.bottom-btn{
-   margin-top: 20px; 
-   display: flex; 
-   justify-content: space-between
+.bottom-btn {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
 }
 
+.Copy-btn {
+  margin-top: 10px;
+  background: #4480ef;
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 15px;
+}
 
-  .Copy-btn {
-    margin-top: 10px;
-    background: #4480ef;
-    color: #fff;
-    border: none;
-    padding: 8px 14px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 15px;
-  }
-
-  .copyandpaste-btn {
-    font-size: 10px;
-    font-weight: bold;
-    font-style: italic;
-    margin-right: 10px;
-    color: rgb(255, 0, 38);
-    font-size: 15px;
-  }
-
-
+.copyandpaste-btn {
+  font-size: 10px;
+  font-weight: bold;
+  font-style: italic;
+  margin-right: 10px;
+  color: rgb(255, 0, 38);
+  font-size: 15px;
+}
 
 @media screen and (max-width: 330px) {
   .popup-box {
@@ -609,23 +596,22 @@
     color: rgb(255, 0, 38);
   }
 
-   .bottom-btn{
-   margin-top: 5px; 
-   display: flex; 
-   justify-content: space-between
-}
+  .bottom-btn {
+    margin-top: 5px;
+    display: flex;
+    justify-content: space-between;
+  }
 
-.close-btn {
-  margin-top: 10px;
-  background: #ef4444;
-  color: #fff;
-  border: none;
-  padding: 4px 8px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 10px;
-}
-
+  .close-btn {
+    margin-top: 10px;
+    background: #ef4444;
+    color: #fff;
+    border: none;
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 10px;
+  }
 }
 
 @media screen and (max-width: 390px) {
@@ -665,7 +651,7 @@
     font-size: 10px;
   }
 
-    .copyandpaste-btn {
+  .copyandpaste-btn {
     font-size: 10px;
     font-weight: bold;
     font-style: italic;
@@ -673,22 +659,21 @@
     color: rgb(255, 0, 38);
   }
 
-  .bottom-btn{
-   margin-top: 5px; 
-   display: flex; 
-   justify-content: space-between
-}
-.close-btn {
-  margin-top: 10px;
-  background: #ef4444;
-  color: #fff;
-  border: none;
-  padding: 4px 8px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 10px;
-}
-
+  .bottom-btn {
+    margin-top: 5px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .close-btn {
+    margin-top: 10px;
+    background: #ef4444;
+    color: #fff;
+    border: none;
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 10px;
+  }
 }
 
 .instruction {
@@ -706,13 +691,17 @@
 .instruction::after {
   content: "";
   position: absolute;
-  top: -6px;        /* sits above the box */
-  right: 10px;      /* near right corner */
+  top: -6px; /* sits above the box */
+  right: 10px; /* near right corner */
   width: 12px;
   height: 12px;
-  background: #713881;  /* same as box background */
+  background: #713881; /* same as box background */
   border-left: 1px solid #999;
   border-top: 1px solid #999;
   transform: rotate(45deg);
   border-top-left-radius: 2px;
+}
+
+.profile-wrapper {
+  min-height: 0vh;
 }

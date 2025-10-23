@@ -33,18 +33,10 @@ export class NewLandingPageComponent implements AfterViewInit {
     { path: './assets/img/Venus.png', name: 'Venus', type: 'Multiple Page' },
     { path: './assets/img/Earth.png', name: 'Earth', type: 'Single Page' },
     { path: './assets/img/Mars.png', name: 'Mars', type: 'Single Page' },
-    {
-      path: './assets/img/Jupiter.png',
-      name: 'Jupiter',
-      type: 'Multiple Page',
-    },
+    {path: './assets/img/Jupiter.png', name: 'Jupiter',  type: 'Multiple Page',},
     { path: './assets/img/Saturn.png', name: 'Saturn', type: 'Multiple Page' },
     { path: './assets/img/Uranus.png', name: 'Uranus', type: 'Multiple Page' },
-    {
-      path: './assets/img/Neptune.png',
-      name: 'Neptune',
-      type: 'Multiple Page',
-    },
+    {  path: './assets/img/Neptune.png', name: 'Neptune', type: 'Multiple Page', },
   ];
 
   observer!: IntersectionObserver;
@@ -57,6 +49,10 @@ export class NewLandingPageComponent implements AfterViewInit {
     private router: Router,
     private gs: GlobalService
   ) {}
+
+  ngOnInit(){
+    localStorage.clear();
+  }
 
   ngAfterViewInit(): void {}
 

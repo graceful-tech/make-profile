@@ -587,3 +587,31 @@
   transform: rotate(45deg);
   border-top-left-radius: 2px;
 }
+
+
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  margin: 10px 0;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 0.2;
+  border-bottom: 1px solid #2c2929;
+}
+
+.divider:not(:empty)::before {
+  margin-right: 0.75em;
+}
+
+.divider:not(:empty)::after {
+  margin-left: 0.75em;
+}
+
+.profile-wrapper{
+  min-height: 0vh;
+}

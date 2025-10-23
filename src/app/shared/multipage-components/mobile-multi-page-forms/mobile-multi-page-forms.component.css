@@ -85,14 +85,13 @@
   display: none;
 }
 
- 
 .section-heading {
   font-size: 1.2rem;
   font-weight: 600;
   margin-bottom: 1rem;
   color: #178be9;
 }
- 
+
 .field-wrapper input:focus,
 .field-wrapper textarea:focus {
   outline: none;
@@ -200,7 +199,6 @@
   background-color: #28a745;
 }
 
- 
 @media (max-width: 480px) {
   .step span {
     width: 28px;
@@ -209,6 +207,7 @@
   }
   .step p {
     font-size: 0.65rem;
+    text-wrap: auto;
   }
 }
 
@@ -246,42 +245,40 @@
   background-color: #f40808;
 }
 
-
 @media (max-width: 390px) {
-  
-  .p-inputtext{
+  .p-inputtext {
     padding: 0.2rem 0.6rem;
     width: 100%;
-   }
+  }
 
-   .step-tracker{
-     padding: 0 0rem;
-     margin: 1rem 0;
-   }
+  .step-tracker {
+    padding: 0 0rem;
+    margin: 1rem 0;
+  }
 
-   .step{
+  .step {
     max-width: none;
     min-width: 0px;
-     word-wrap: break-word;
-   }
+    word-wrap: break-word;
+  }
 
-   .tag-input {
-     padding: 0px !important;;
-   }
+  .tag-input {
+    padding: 0px !important;
+  }
 
-   .ng2-tag-input[_ngcontent-ng-c3392130527] {
-     
-      padding: 0rem 0 !important;;  
-     
-   }
+  .ng2-tag-input[_ngcontent-ng-c3392130527] {
+    padding: 0rem 0 !important;
+  }
 
-   .field-wrapper{
-    padding:0.2rem;
-   }
+  .field-wrapper {
+    padding: 0.2rem;
+  }
 
-   .home{
+  .home {
     margin-bottom: 0.1rem;
-   }
+  }
+}
 
-
+.profile-wrapper {
+  min-height: 0vh;
 }

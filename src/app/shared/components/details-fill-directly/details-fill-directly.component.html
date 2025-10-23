@@ -39,7 +39,7 @@
       alt=""
     />
   </div>
-  <div class="col-12  md:col-6" style="margin: 0 auto;">
+ <!--  <div class="col-12  md:col-6" style="margin: 0 auto;">
     <div class="inside-label-textarea">
       <span class="btn-position">
         <span class="left-side">
@@ -65,9 +65,9 @@
         </span>
       </span>
 
-       <!-- <div class="instruction">
+       <div class="instruction">
   Don’t worry about writing. Just copy the sample, paste it, and edit as needed.
-  </div> -->
+  </div>
   <br>
       <textarea
         id="analysis"
@@ -87,12 +87,12 @@
            
           "
         >
-          <!-- <div>
+          <div>
       <span style="color: rgb(222, 23, 23); font-weight: bold; font-size: 17px"
         >Just change the content according to your details and click
         Submit.</span
       >
-    </div> -->
+    </div>
         </div>
         <span class="hint-btn" (click)="hintPopup()">Hints/Tips</span>
       </span>
@@ -108,15 +108,15 @@
   >
     <button class="analysis" (click)="analyseWithAi(analysisBox.value)">
       Submit
-      <!-- &#10024; -->
+      
     </button>
-  </div>
+  </div> -->
 
   <!-- <div class="divider">
     <span>or</span>
   </div> -->
 
-  <span
+  <!-- <span
     style="
       display: flex;
       align-items: center;
@@ -124,9 +124,9 @@
       text-align: center;
     "
     >— or —</span
-  >
+  > -->
 
-  <div id="examplePopup" class="popup-box">
+  <!-- <div id="examplePopup" class="popup-box">
     <h4>Example Self Introduction</h4>
     <p>
       Hello, my name is Abc.my gender is Male/Female I have completed my B.Tech
@@ -192,7 +192,7 @@
       <li>Always add <b>duration</b> for Education / Work details</li>
     </ul>
     <button class="close-btn" (click)="hintPopup()">Close</button>
-  </div>
+  </div> -->
 
   <div class="full-page-center">
     <div class="upload-container">
@@ -217,16 +217,16 @@
     </div>
   </div>
 
-  <span
+  <span class="divider"
     style="
       display: flex;
       align-items: center;
       justify-content: center;
       text-align: center;
     "
-    >— or —</span
+    >or </span
   >
-  <div style="display: flex; align-items: center; justify-content: center">
+  <!-- <div style="display: flex; align-items: center; justify-content: center">
     <button
       class="enter-details"
       style="margin-top: 10px"
@@ -234,8 +234,14 @@
     >
       Fill Details Yourself
     </button>
-  </div>
+  </div> -->
+
+
 </div>
+
+  <app-multi-page-forms></app-multi-page-forms>
+
+
 
 <ng-container *ngIf="showErrorPopup">
   <app-error-login-popup
