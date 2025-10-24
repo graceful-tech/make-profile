@@ -107,6 +107,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 50%     ;
 }
 
 .upload-container {
@@ -193,8 +194,8 @@
 
 .enter-details {
   /* background: #060965; */
-  background:  #0e3fe0;
-  color: rgb(249, 249, 249);
+  background: #2196f3;
+   color: rgb(249, 249, 249);
   border: none;
   padding: 10px 30px;
   font-size: 14px;

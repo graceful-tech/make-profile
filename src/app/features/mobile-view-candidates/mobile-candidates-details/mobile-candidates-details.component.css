@@ -793,7 +793,7 @@ ngx-ui-loader .ngx-ui-loader__fg {
 }
 
 .browse-btn {
-  background: linear-gradient(to right, #5577e6, #1043e9);
+  background: #2196f3;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -805,7 +805,7 @@ ngx-ui-loader .ngx-ui-loader__fg {
 }
 
 .browse-btn:hover {
-  background-color: #1e40af;
+  background: #2196f3;
 }
 
 .or-divider {
@@ -1083,7 +1083,7 @@ footer {
 }
 
 .refer-btn {
-  background: linear-gradient(to right, #6884de, #0e3fe0);
+  background: #2196f3;
   color: white;
   border: none;
   /* padding: 10px 20px; */
@@ -1099,7 +1099,7 @@ footer {
 }
 
 .refer-btn:hover {
-  background-color: #1e40af;
+  background: #2196f3;
 }
 
 .refer-credit {
@@ -1233,12 +1233,11 @@ p {
   background-color: #fff;
 }
 
- 
 .achievement-box {
- border: 2px solid #007ad9; 
+  border: 2px solid #007ad9;
   border-radius: 10px;
   padding: 20px;
   margin-bottom: 20px;
-  background-color: #f9fbff;     
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  background-color: #f9fbff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }

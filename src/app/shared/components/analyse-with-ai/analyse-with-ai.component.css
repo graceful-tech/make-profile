@@ -55,7 +55,6 @@
   color: #453ecf;
   font-style: italic;
   text-decoration: underline;
-
 }
 
 .example-content:hover {
@@ -210,10 +209,12 @@
   border-radius: 8px;
   cursor: pointer;
   transition: background 0.3s;
-}
+
+  background: #2196f3;
+ }
 
 .enter-details:hover {
-  background: #084925;
+  background: #0483eb;
   color: white;
 }
 
@@ -365,7 +366,7 @@
   animation: arrowGradient 3s infinite;
 }
 
- /* .tooltip-bubble::after {
+/* .tooltip-bubble::after {
   content: "⭐";
   position: absolute;
   font-size: 14px;
@@ -381,7 +382,6 @@
   opacity: 0.9;
   animation: twinkle 0.5s infinite alternate;
 }
-
 
 /* Top-left */
 .tooltip-bubble .star:nth-child(1) {
@@ -450,13 +450,17 @@
   animation-delay: 0.6s;
 }
 
-
-
 /* Gradient animation */
 @keyframes gradientShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 /* Sparkle inside */
@@ -470,11 +474,17 @@
 
 /* Twinkling outside */
 @keyframes twinkle {
-  from { opacity: 0.2; transform: scale(0.8) rotate(0deg); }
-  to   { opacity: 1; transform: scale(1.2) rotate(180deg); }
+  from {
+    opacity: 0.2;
+    transform: scale(0.8) rotate(0deg);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1.2) rotate(180deg);
+  }
 }
 
-.hint-btn{
+.hint-btn {
   color: #3504f7;
   text-decoration: underline;
   cursor: pointer;
@@ -483,10 +493,9 @@
   font-style: italic;
 }
 
-.hint-btn:hover{
+.hint-btn:hover {
   color: darkblue;
 }
-
 
 .hint-popup-box {
   display: none;
@@ -526,7 +535,7 @@
   background: #dc2626;
 }
 
-.Copy-btn{
+.Copy-btn {
   margin-top: 10px;
   background: #4480ef;
   color: #fff;
@@ -540,4 +549,28 @@
 
 .copy-btn:hover {
   background: #281289;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  margin: 10px 0;
+  justify-content: center;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 0.2;
+  border-bottom: 1px solid #2c2929;
+}
+
+.divider:not(:empty)::before {
+  margin-right: 0.75em;
+}
+
+.divider:not(:empty)::after {
+  margin-left: 0.75em;
 }

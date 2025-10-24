@@ -7,7 +7,7 @@
   <span style="text-align: center"> <h4>Fill Details Yourself</h4> </span>
 
   <!-- Step Tracker -->
-  <div class="step-tracker">
+  <div class="step-tracker" *ngIf="step>1">
     <div class="step" [class.active]="step === 1" [class.completed]="step > 1">
       <span (click)="moveTo(1)">1</span>
       <p>Personal Details</p>

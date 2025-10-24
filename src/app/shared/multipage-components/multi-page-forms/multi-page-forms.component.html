@@ -9,7 +9,9 @@
   <span style="text-align: center"> <h4>Fill Details Yourself</h4> </span>
 
   <div class="wizard-container">
-    <div class="step-tracker">
+
+
+    <div class="step-tracker" *ngIf="step>1">
       <!-- Step 1: Personal Details -->
       <div
         class="step"
