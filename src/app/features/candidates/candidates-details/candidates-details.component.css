@@ -647,7 +647,7 @@ img {
 }
 
 .details-btn:hover {
-  background-color: #c2410c;
+  background:  #542401
 }
 
 .uploaded-file {
@@ -820,6 +820,11 @@ img {
   border-radius: 8px;
   cursor: pointer;
   transition: background 0.3s;
+}
+
+.newDeatils-btn:hover{
+    background:  #034417
+
 }
 
 .images {
