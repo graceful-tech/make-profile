@@ -17,7 +17,6 @@ import { MobileMultiPageFormsComponent } from './shared/multipage-components/mob
 import { MobileTemplatesComponent } from './shared/multipage-components/mobile-templates/mobile-templates.component';
 import { ResumeTemplateComponent } from './shared/multipage-components/resume-template/resume-template.component';
 import { NewLandingPageComponent } from './layout/new-landing-page/new-landing-page.component';
-import { DrapAndDropSectionComponent } from './shared/components/drap-and-drop-section/drap-and-drop-section.component';
 
 const routes: Routes = [
   { path: '', component: NewLandingPageComponent },
@@ -56,8 +55,6 @@ const routes: Routes = [
   { path: 'resume-templates', component: MobileTemplatesComponent },
 
   { path: 'select-template', component: ResumeTemplateComponent },
-
-  { path: 'drag-and-drop', component: DrapAndDropSectionComponent },
 
   {
     path: 'candidate',

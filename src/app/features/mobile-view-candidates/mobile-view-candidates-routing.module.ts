@@ -14,6 +14,8 @@ import { MobileCommonDetailsComponent } from 'src/app/shared/components/mobile-c
 import { CashbackRenewComponent } from 'src/app/shared/components/cashback-renew/cashback-renew.component';
 import { MobileAnalyseAiComponent } from 'src/app/shared/components/mobile-analyse-ai/mobile-analyse-ai.component';
 import { MobileCreditHistoryComponent } from './mobile-credit-history/mobile-credit-history.component';
+import { NewCreateResumeComponent } from './new-create-resume/new-create-resume.component';
+import { MobileChangeTemplateComponent } from './mobile-change-template/mobile-change-template.component';
 
 const routes: Routes = [
   { path: '', component: MobileCandidatesDetailsComponent },
@@ -43,6 +45,12 @@ const routes: Routes = [
   { path: 'analyse-ai', component: MobileAnalyseAiComponent },
 
   { path: 'mob-credit-history', component: MobileCreditHistoryComponent },
+
+  { path: 'create-resume', component: NewCreateResumeComponent },
+
+  { path: 'change-template', component: MobileChangeTemplateComponent },
+
+  
 ];
 
 @NgModule({

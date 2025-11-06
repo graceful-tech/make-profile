@@ -18,6 +18,8 @@ import { ChooseTemplateWayComponent } from './choose-template-way/choose-templat
 import { ExistingResumeComponent } from './existing-resume/existing-resume.component';
  import { ResumePreviewComponent } from './resume-preview/resume-preview.component';
 import { CreditHistoryComponent } from './credit-history/credit-history.component';
+import { PreviewAndCreateResumeComponent } from './preview-and-create-resume/preview-and-create-resume.component';
+import { ChangeTemplateComponent } from './change-template/change-template.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +38,9 @@ import { CreditHistoryComponent } from './credit-history/credit-history.componen
     ChooseTemplateWayComponent,
     ExistingResumeComponent,
     ResumePreviewComponent,
-    CreditHistoryComponent
+    CreditHistoryComponent,
+    PreviewAndCreateResumeComponent,
+    ChangeTemplateComponent
   ],
   imports: [CommonModule, CandidatesRoutingModule, SharedModule],
 })

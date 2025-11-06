@@ -11,11 +11,14 @@ import {
   selector: '[appScrollFade]'
 })
 export class ScrollFadeDirectiveFade implements AfterViewInit {
-  @Input() animationDuration: number = 800; // ms
+  @Input() animationDuration: number = 1000; // ms
   @Input() animationDelay: number = 0; // ms
   @Input() translateY: string = '40px'; // how far to slide
 
   constructor(private el: ElementRef, private renderer: Renderer2, private ngZone: NgZone) {}
+
+ 
+
 
   ngAfterViewInit(): void {
     // initial styles
@@ -32,7 +35,7 @@ export class ScrollFadeDirectiveFade implements AfterViewInit {
         const rect = this.el.nativeElement.getBoundingClientRect();
         const windowHeight = window.innerHeight || document.documentElement.clientHeight;
 
-        if (rect.top <= windowHeight - 50 && rect.bottom >= 0) {
+        if (rect.top <= windowHeight - 10 && rect.bottom >= 0) {
           // in view → fade + slide in
           setTimeout(() => {
             this.renderer.setStyle(this.el.nativeElement, 'opacity', '1');

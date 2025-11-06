@@ -18,7 +18,9 @@ import { NickNameMobileComponent } from './nick-name-mobile/nick-name-mobile.com
 import { ChooseNewTemplateComponent } from './choose-new-template/choose-new-template.component';
 import { UseExistingTemplateComponent } from './use-existing-template/use-existing-template.component';
 import { MobileCreditHistoryComponent } from './mobile-credit-history/mobile-credit-history.component';
-
+import { NewCreateResumeComponent } from './new-create-resume/new-create-resume.component';
+import { MobileChangeTemplateComponent } from './mobile-change-template/mobile-change-template.component';
+   
 @NgModule({
   declarations: [
     MobileCreateCandidatesComponent,
@@ -35,8 +37,11 @@ import { MobileCreditHistoryComponent } from './mobile-credit-history/mobile-cre
     NickNameMobileComponent,
     ChooseNewTemplateComponent,
     UseExistingTemplateComponent,
-    MobileCreditHistoryComponent
-  ],
+    MobileCreditHistoryComponent,
+    NewCreateResumeComponent,
+    MobileChangeTemplateComponent
+    
+   ],
   imports: [CommonModule, MobileViewCandidatesRoutingModule, SharedModule],
 })
 export class MobileViewCandidatesModule {}

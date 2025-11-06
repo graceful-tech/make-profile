@@ -1,5 +1,53 @@
+ 
+ 
+
+<header id="header" class="header fixed-top d-flex align-items-center">
+  <a href="#login" class="herologin-btn">Login</a>
+  <a href="#create-resume-directly" class="herologin-btn">Create Account</a>
+
+  <!-- <nav id="navbar" class="navbar"> -->
+  <!-- <ul>
+          <li><a class="nav-link scrollto" href="#hero">Home</a></li>
+          <li>
+            <a class="nav-link scrollto" href="#about-us">About</a>
+          </li>
+          <li>
+            <a class="nav-link scrollto" href="#features">Features</a>
+          </li>
+         
+          <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
+        </ul>
+        <span>
+          <div class="ml-4">
+            <p-button
+              class="mx-2"
+              label="Register"
+              routerLink="/create-account"
+            ></p-button>
+            <p-button label="Login" routerLink="/login"></p-button>
+          </div>
+        </span> -->
+
+  <!-- </nav> -->
+</header>
+
+ 
+
 <section class="hero-section">
-   <h2 class="herosection-h2headding">Welcome to Make Profiles</h2>
+  <!-- <h2 class="herosection-h2headding">Welcome to Make Profiles</h2> -->
+    <div
+      class="make-profile-image"
+      appScrollFade
+      [animationDuration]="1000"
+      [animationDelay]="500"
+      [translateY]="'100px'"
+    >
+      <img
+        src="assets/images/logo.png"
+        alt="AI Resume Builder Illustration"
+        (click)="toCreateResume()"
+      />
+    </div>
   <div class="container">
     <div
       class="hero-content"
@@ -8,10 +56,8 @@
       [animationDuration]="1200"
       [animationDelay]="200"
     >
-    <h5 class="u-text u-text-default u-text-1">
-                 
-                </h5>
-                <br>
+      <h5 class="u-text u-text-default u-text-1"></h5>
+      <br />
       <h5>🚀 Create Your Dream Resume in Minutes</h5>
 
       <h1>Let AI craft your <span>perfect resume</span></h1>
@@ -23,7 +69,7 @@
         <span style="color: #ff5e38; font-weight: 700">₹10</span>.
       </p>
 
-      <a href="#login" class="hero-btn">Build My Resume Now →</a>
+      <a href="#select-template" class="hero-btn">Create Resume →</a>
 
       <p>
         <small
@@ -41,9 +87,8 @@
       [animationDelay]="200"
     >
       <img
-        src="assets/images/generated-image.png"
+        src="assets/images/newRobot2.png"
         alt="AI Resume Builder Illustration"
-
         (click)="toCreateResume()"
       />
     </div>
@@ -74,7 +119,11 @@
       <swiper-slide *ngFor="let template of resumePaths">
         <div class="template-card">
           <h4>{{ template.name }}</h4>
-          <img [src]="template.path" [alt]="template.name"  (click)="selectTemplate(template.name)" />
+          <img
+            [src]="template.path"
+            [alt]="template.name"
+            (click)="selectTemplate(template.name)"
+          />
           <button class="select-btn" (click)="selectTemplate(template.name)">
             Select
           </button>
@@ -1053,12 +1102,13 @@
     >
       <span class="ai-icon"> </span>
       <h5>Contact</h5>
-      <p>
-       <i class="bi bi-envelope"></i>&nbsp;<strong> Email Us:</strong>  contact&#64;gracefultechnologies.com<br />
-          <br />
-        <i class="bi bi-phone"></i>&nbsp; <strong>Call Us :</strong>  +91 44 2496 5109
+      <p style="text-align: left">
+        <i class="bi bi-envelope"></i>&nbsp;<strong> Email Us:</strong>
+        contact&#64;gracefultechnologies.com<br />
+        <br />
+        <i class="bi bi-phone"></i>&nbsp; <strong>Call Us :</strong> +91 44 2496
+        5109
       </p>
-       
     </div>
 
     <!-- <div

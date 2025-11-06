@@ -1,0 +1,122 @@
+.resume-gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  padding: 30px;
+  justify-items: center;
+  background: #ffffff;
+}
+
+.resume-card {
+  background: linear-gradient(90deg, #52acac, #d4afd2);
+
+  border-radius: 12px;
+  overflow: hidden;
+  max-width: 360px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  text-align: center;
+}
+
+.resume-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.4);
+}
+
+/* 🖼️ Image shows full height automatically */
+.resume-card img {
+  width: 100%;
+  height: auto; /* ✅ allows full image */
+  object-fit: contain; /* ✅ shows full image (no crop) */
+  background: #000; /* optional backdrop */
+  display: block;
+}
+
+/* Text below image */
+.resume-info {
+  padding: 12px;
+  color: #000000;
+}
+
+.resume-info h3 {
+  margin: 6px 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.resume-info p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #000000;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .resume-gallery {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .resume-gallery {
+    grid-template-columns: 1fr;
+  }
+}
+
+.resume-header {
+  text-align: center;
+  color: #040404;
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: capitalize;
+  font-family: "Montserrat", sans-serif;
+  background: #ffffff;
+}
+
+/* .resume-header {
+  text-align: center;
+  color: #ffffff;
+  font-family: 'Poppins', sans-serif;
+  font-size: 2rem;
+  font-weight: 600;
+  margin: 0;
+  text-transform: capitalize;
+} */
+
+.profile-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  /* margin-bottom: 20px; */
+}
+
+.back-btn {
+  position: absolute;
+  left: 30px;
+  top: 50%;
+  transform: translateY(-50%);
+ 
+
+  background: linear-gradient(90deg, #0078ff, #00c6ff);
+  color: #fff;
+  font-size: 1.15rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 50px;
+  padding: 5px 15px;
+  box-shadow: 0 6px 20px rgba(0, 120, 255, 0.25);
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.25s ease;
+}
+
+.back-btn:hover {
+  transform: scale(1.05);
+  background: #00b4db;
+  color: #fff;
+  border-color: #00b4db;
+  box-shadow: 0 0 10px rgba(0, 180, 219, 0.6);
+}

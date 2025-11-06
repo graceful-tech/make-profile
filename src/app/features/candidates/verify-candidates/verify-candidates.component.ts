@@ -1199,6 +1199,9 @@ export class VerifyCandidatesComponent {
   }
 
   openCreateResumeDialog(candidate: any) {
+
+    localStorage.removeItem('skillsData');
+
     if (this.templateName === null || this.templateName === undefined) {
       this.templateName = localStorage.getItem('templateName');
     }
@@ -1206,7 +1209,11 @@ export class VerifyCandidatesComponent {
     this.gs.setCandidateDetails(candidate);
     this.gs.setResumeName(this.templateName);
 
-    this.router.navigate(['candidate/generate-resume']);
+    // this.router.navigate(['candidate/generate-resume']);
+
+    localStorage.removeItem('skillsData');
+
+    this.router.navigate(['candidate/create-resume']);
   }
 
   backBtn() {

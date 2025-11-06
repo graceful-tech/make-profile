@@ -19,10 +19,10 @@ import { DeviceDetectorService } from 'ngx-device-detector';
   selector: 'app-create-resume-directly',
   standalone: false,
   templateUrl: './create-resume-directly.component.html',
-  styleUrl: './create-resume-directly.component.css'
+  styleUrl: './create-resume-directly.component.css',
 })
 export class CreateResumeDirectlyComponent {
-createAccountForm!: FormGroup;
+  createAccountForm!: FormGroup;
   showError = false;
   loadingFlag: boolean = false;
   countries: Array<Lookup> = [];
@@ -54,6 +54,10 @@ createAccountForm!: FormGroup;
       this.isReference = true;
     }
     // this.getCountries();
+
+    if (this.isMobileDevice()) {
+      this.router.navigate(['/mob-login/create-account-directly']);
+    }
   }
 
   createRegisterForm() {
@@ -127,13 +131,17 @@ createAccountForm!: FormGroup;
     this.router.navigate(['/login']);
   }
 
-    togglePassword() {
+  togglePassword() {
     this.showPassword = !this.showPassword;
   }
 
-
-  createResume(){
+  createResume() {
     this.router.navigate(['/enter-details']);
   }
- 
+
+  isMobileDevice(): boolean {
+    const userAgent =
+      navigator.userAgent || navigator.vendor || (window as any).opera;
+    return /android|iphone|ipad|ipod/i.test(userAgent);
+  }
 }

@@ -1,0 +1,17 @@
+ 
+<div class="profile-wrapper">
+  <button class="back-btn" (click)="goBack()">← Back</button>
+  <h2 class="resume-header">Choose Template</h2>
+</div>
+
+
+ 
+<div class="resume-gallery">
+  <div class="resume-card" *ngFor="let resume of resumePaths">
+    <img [src]="resume.path" (click)="selectTemplate(resume.name)" [alt]="resume.name"  />
+    <div class="resume-info">
+      <h3>{{ resume.name }}</h3>
+      <p>{{ resume.type }}</p>
+    </div>
+  </div>
+</div>

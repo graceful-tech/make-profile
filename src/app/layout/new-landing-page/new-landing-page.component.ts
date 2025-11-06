@@ -41,6 +41,7 @@ export class NewLandingPageComponent implements AfterViewInit {
 
   observer!: IntersectionObserver;
   private swiper: any;
+   showTour = false;
 
   constructor(
     private ngZone: NgZone,
@@ -48,10 +49,13 @@ export class NewLandingPageComponent implements AfterViewInit {
     private el: ElementRef,
     private router: Router,
     private gs: GlobalService
-  ) {}
+  ) {
+    
+  }
 
   ngOnInit(){
     localStorage.clear();
+    
   }
 
   ngAfterViewInit(): void {}
@@ -92,4 +96,6 @@ export class NewLandingPageComponent implements AfterViewInit {
       navigator.userAgent || navigator.vendor || (window as any).opera;
     return /android|iphone|ipad|ipod/i.test(userAgent);
   }
+
+  
 }

@@ -1,0 +1,43 @@
+<!-- 🧭 Header Section -->
+<div class="profile-wrapper">
+  <button class="back-btn" (click)="goBack()">← Back</button>
+  <h2 class="resume-header">Choose Template</h2>
+</div>
+
+ 
+<div class="resume-gallery">
+  <div class="resume-card" *ngFor="let resume of resumePaths">
+     <div class="image-wrapper">
+    <img
+      [src]="resume.path"
+      [alt]="resume.name"
+      (click)="openPreview(resume)"
+      draggable="false"
+    />
+
+     <button
+        class="eye-overlay"
+        title="Preview Template"
+        (click)="openPreview(resume)"
+      >
+        <i class="fas fa-eye"></i>
+      </button>
+</div>
+      
+    <div class="resume-info">
+      <h3>{{ resume.name }}</h3>
+      <button class="Select-template" (click)="changeTemplate(resume.name)">Select Template</button> 
+    </div>
+  </div>
+
+   
+</div>
+
+ 
+<div class="overlay" *ngIf="selectedResume" (click)="closePreview()">
+  <img
+    [src]="selectedResume.path"
+    [alt]="selectedResume.name"
+    class="overlay-img"
+  />
+</div>

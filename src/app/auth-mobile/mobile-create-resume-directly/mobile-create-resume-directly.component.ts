@@ -59,7 +59,7 @@ export class MobileCreateResumeDirectlyComponent {
   }
 
   goBack() {
-    this.router.navigate(['mob-landing']);
+    this.router.navigate(['']);
   }
 
   onGoogleSignup() {

@@ -6,9 +6,12 @@
          
         > <i class="fa fa-home"></i> Go Back</button> -->
 
-  <span style="text-align: center"> <h4>Fill Details Yourself</h4> </span>
+  <!-- <span style="text-align: center"> <h4>Fill Details Yourself</h4> </span> -->
 
   <div class="wizard-container">
+
+      <span style="text-align: center"> <h4>Fill Details Yourself</h4> </span>
+
 
 
     <div class="step-tracker" *ngIf="step>1">
@@ -184,7 +187,7 @@
           </div>
         </div>
 
-        <h3 class="section-heading">Additional Info</h3>
+        <!-- <h3 class="section-heading">Additional Info</h3>
         <div class="grid">
           <div class="col-12 md:col-6 lg:col-3">
             <div class="field-wrapper">
@@ -233,7 +236,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
 
       <div *ngIf="step === 3">
@@ -680,6 +683,58 @@
 
       <!-- Step 4 -->
       <div *ngIf="step === 4">
+
+          <h3 class="section-heading">Additional Info</h3>
+        <div class="grid">
+          <div class="col-12 md:col-6 lg:col-3">
+            <div class="field-wrapper">
+              <label>LinkedIn</label>
+              <div class="input-wrapper">
+                <input type="text" pInputText formControlName="linkedIn" />
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 md:col-6 lg:col-3">
+            <div class="field-wrapper">
+              <label>Languages Known</label>
+              <div class="input-wrapper">
+                <p-multiSelect
+                  [options]="languages"
+                  defaultLabel="Select Languages"
+                  [showHeader]="false"
+                  optionLabel="displayValue"
+                  optionValue="dataValue"
+                  formControlName="languagesKnown"
+                >
+                </p-multiSelect>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 md:col-6 lg:col-3">
+            <div class="field-wrapper">
+              <label>DOB</label>
+              <div class="input-wrapper">
+                <p-calendar
+                  appendTo="body"
+                  formControlName="dob"
+                  placeholder="Select From Date"
+                ></p-calendar>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 md:col-6 lg:col-3">
+            <div class="field-wrapper">
+              <label>Father Name</label>
+              <div class="input-wrapper">
+                <input type="text" pInputText formControlName="fatherName" />
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="grid">
           <!-- Certificates Section (Left) -->
           <div class="col-12 md:col-6">

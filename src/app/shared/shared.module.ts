@@ -48,8 +48,10 @@ import { ScrollAnimateDirective } from '../services/scroll-animate.directive';
 import { ScrollAnimateDirectiveSection4 } from '../services/scroll-animated-section4';
 import { ScrollAnimateDirectiveSection1 } from '../services/scroll-section-part1';
 import { ScrollFadeDirectiveFade } from '../services/scoll-section-upward';
+import { ScrollingModule } from '@angular/cdk/scrolling';
+import { MobileResumePreviewComponent } from './components/mobile-resume-preview/mobile-resume-preview.component';
 import { DrapAndDropSectionComponent } from './components/drap-and-drop-section/drap-and-drop-section.component';
-
+   
 @NgModule({
   declarations: [
     MakeProfileDividerComponent,
@@ -89,7 +91,8 @@ import { DrapAndDropSectionComponent } from './components/drap-and-drop-section/
     ScrollAnimateDirectiveSection4,
     ScrollAnimateDirectiveSection1,
     ScrollFadeDirectiveFade,
-    DrapAndDropSectionComponent,
+    MobileResumePreviewComponent,
+    DrapAndDropSectionComponent
   ],
   imports: [
     CommonModule,
@@ -103,6 +106,8 @@ import { DrapAndDropSectionComponent } from './components/drap-and-drop-section/
     MatDialogModule,
     DragDropModule,
     TagInputModule,
+    ScrollingModule
+     
    
   ],
   exports: [
@@ -154,7 +159,9 @@ import { DrapAndDropSectionComponent } from './components/drap-and-drop-section/
     ScrollAnimateDirectiveSection4,
     ScrollAnimateDirectiveSection1,
     ScrollFadeDirectiveFade,
-    DrapAndDropSectionComponent,
+    ScrollingModule,
+    MobileResumePreviewComponent,
+    DrapAndDropSectionComponent
   ],
 })
 export class SharedModule {}
