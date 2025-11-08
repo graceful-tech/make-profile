@@ -11,6 +11,7 @@ import { PaymentService } from 'src/app/services/payment.service';
 
 import { LoaderService } from 'src/app/services/loader.service';
 import { ToastService } from 'src/app/services/toast.service';
+import { MobileMessageComponent } from '../../mobile-message/mobile-message.component';
 
 @Component({
   selector: 'app-mobile-details-dill-directly',
@@ -25,14 +26,13 @@ export class MobileDetailsDillDirectlyComponent {
   candidates: any;
   isUploading: boolean = false;
   isAnalysing: boolean = false;
-  analysisText: string ='';
+  analysisText: string = '';
   showErrorPopup: boolean = false;
   errorMessage: any;
   errorStatus: any;
   templateName: any;
-   isNotFillByUser: boolean = true;
-  isFillByUser:boolean = true;
-
+  isNotFillByUser: boolean = true;
+  isFillByUser: boolean = true;
 
   constructor(
     private api: ApiService,
@@ -48,12 +48,9 @@ export class MobileDetailsDillDirectlyComponent {
     private ps: PaymentService,
     private loader: LoaderService,
     private toast: ToastService
-  ) {
-    
-  }
+  ) {}
 
-
-  ngOnInit(){
+  ngOnInit() {
     this.gs.resumeName$.subscribe((response) => {
       if (response !== null) {
         this.templateName = response;
@@ -112,13 +109,21 @@ export class MobileDetailsDillDirectlyComponent {
     formData.append('resume', this.multipartFile);
 
     this.api.upload(route, formData).subscribe({
-      next: (response) => {
+      next: async (response) => {
         if (response !== null) {
           this.ngxLoaderStop();
-          this.candidates = response;
-          this.gs.setCandidateDetails(this.candidates);
 
-           
+          const mobile = response?.mobileNumber;
+
+          let valid = true;
+          if (mobile !== null && mobile !== undefined) {
+            valid = await this.checkIfDetailsExists(mobile);
+          }
+
+          if (valid) {
+            this.candidates = response;
+            this.gs.setCandidateDetails(this.candidates);
+
             if (this.templateName === null || this.templateName === undefined) {
               const templateName = localStorage.getItem('templateName');
               this.gs.setResumeName(templateName);
@@ -126,7 +131,11 @@ export class MobileDetailsDillDirectlyComponent {
               this.gs.setResumeName(this.templateName);
             }
 
-          this.router.navigate(['resume-details']);
+            this.router.navigate(['resume-details']);
+          } else {
+              this.gs.showMessage('Note', 'Your Mobile Number Already Have an Account');
+               this.multipartFile.remove;
+          }
         } else {
           this.ngxLoaderStop();
           this.gs.showMessage(
@@ -148,14 +157,15 @@ export class MobileDetailsDillDirectlyComponent {
     });
   }
 
+ 
+
   enterDetails() {
-     
-            if (this.templateName === null || this.templateName === undefined) {
-              const templateName = localStorage.getItem('templateName');
-              this.gs.setResumeName(templateName);
-            } else {
-              this.gs.setResumeName(this.templateName);
-            }
+    if (this.templateName === null || this.templateName === undefined) {
+      const templateName = localStorage.getItem('templateName');
+      this.gs.setResumeName(templateName);
+    } else {
+      this.gs.setResumeName(this.templateName);
+    }
     this.router.navigate(['mobile-multi']);
   }
 
@@ -167,16 +177,15 @@ export class MobileDetailsDillDirectlyComponent {
     ) {
       this.isAnalysing = true;
 
-       const route = 'open-ai/get-details-login';
+      const route = 'open-ai/get-details-login';
 
       const username = sessionStorage.getItem('userName');
 
-      let userNamePresent:string;
-      if(username !== null && username !== undefined){
-         userNamePresent = 'true'
-      }
-      else{
-        userNamePresent = 'false'
+      let userNamePresent: string;
+      if (username !== null && username !== undefined) {
+        userNamePresent = 'true';
+      } else {
+        userNamePresent = 'false';
       }
 
       const formData = new FormData();
@@ -194,14 +203,17 @@ export class MobileDetailsDillDirectlyComponent {
               this.errorStatus = 'Correct Your Content';
             } else {
               this.gs.setCandidateDetails(response);
-               
-            if (this.templateName === null || this.templateName === undefined) {
-              const templateName = localStorage.getItem('templateName');
-              this.gs.setResumeName(templateName);
-            } else {
-              this.gs.setResumeName(this.templateName);
-            }
-            
+
+              if (
+                this.templateName === null ||
+                this.templateName === undefined
+              ) {
+                const templateName = localStorage.getItem('templateName');
+                this.gs.setResumeName(templateName);
+              } else {
+                this.gs.setResumeName(this.templateName);
+              }
+
               this.router.navigate(['resume-details']);
             }
           } else {
@@ -253,7 +265,29 @@ export class MobileDetailsDillDirectlyComponent {
     this.router.navigate(['']);
   }
 
-  closeUploadResume(event:any){
+  closeUploadResume(event: any) {
     this.isNotFillByUser = false;
+  }
+
+  async checkIfDetailsExists(mobile: string): Promise<boolean> {
+    return new Promise((resolve) => {
+      const route = 'candidate/check_mobile';
+      const formData = new FormData();
+      formData.append('mobile', mobile);
+
+      this.api.upload(route, formData).subscribe({
+        next: (response) => {
+          if (response === true) {
+            resolve(false);
+          } else if (response === false) {
+            resolve(true);
+          }
+        },
+        error: (err) => {
+          console.error('Error checking mobile number:', err);
+          resolve(false);
+        },
+      });
+    });
   }
 }

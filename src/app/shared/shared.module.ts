@@ -24,7 +24,6 @@ import { RewardsSuccessMessageComponent } from './components/rewards-success-mes
 import { MobileRewardsSuccessComponent } from './components/mobile-rewards-success/mobile-rewards-success.component';
 import { CashbackRenewComponent } from './components/cashback-renew/cashback-renew.component';
 import { MobileReferralComponent } from './components/mobile-referral/mobile-referral.component';
-import { ResumeEditorComponent } from './components/resume-editor/resume-editor.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { AnalyseWithAiComponent } from './components/analyse-with-ai/analyse-with-ai.component';
 import { NewDetailsComponent } from './components/new-details/new-details.component';
@@ -32,7 +31,7 @@ import { MobileAnalyseAiComponent } from './components/mobile-analyse-ai/mobile-
 import { ToastMessageComponent } from './components/toast-message/toast-message.component';
 import { ErrorMessageComponent } from './components/error-message/error-message.component';
 import { ErrorMobilePopupComponent } from './components/error-mobile-popup/error-mobile-popup.component';
-import { TagInputModule} from 'ngx-chips';
+import { TagInputModule } from 'ngx-chips';
 import { DetailsFillDirectlyComponent } from './components/details-fill-directly/details-fill-directly.component';
 import { MobileResumeCommonDetailsComponent } from './components/mobile-resume-common-details/mobile-resume-common-details.component';
 import { MobileDetailsDillDirectlyComponent } from './components/mobile-details-dill-directly/mobile-details-dill-directly.component';
@@ -49,9 +48,7 @@ import { ScrollAnimateDirectiveSection4 } from '../services/scroll-animated-sect
 import { ScrollAnimateDirectiveSection1 } from '../services/scroll-section-part1';
 import { ScrollFadeDirectiveFade } from '../services/scoll-section-upward';
 import { ScrollingModule } from '@angular/cdk/scrolling';
-import { MobileResumePreviewComponent } from './components/mobile-resume-preview/mobile-resume-preview.component';
-import { DrapAndDropSectionComponent } from './components/drap-and-drop-section/drap-and-drop-section.component';
-   
+
 @NgModule({
   declarations: [
     MakeProfileDividerComponent,
@@ -70,7 +67,6 @@ import { DrapAndDropSectionComponent } from './components/drap-and-drop-section/
     MobileRewardsSuccessComponent,
     CashbackRenewComponent,
     MobileReferralComponent,
-    ResumeEditorComponent,
     AnalyseWithAiComponent,
     NewDetailsComponent,
     MobileAnalyseAiComponent,
@@ -91,8 +87,6 @@ import { DrapAndDropSectionComponent } from './components/drap-and-drop-section/
     ScrollAnimateDirectiveSection4,
     ScrollAnimateDirectiveSection1,
     ScrollFadeDirectiveFade,
-    MobileResumePreviewComponent,
-    DrapAndDropSectionComponent
   ],
   imports: [
     CommonModule,
@@ -106,9 +100,7 @@ import { DrapAndDropSectionComponent } from './components/drap-and-drop-section/
     MatDialogModule,
     DragDropModule,
     TagInputModule,
-    ScrollingModule
-     
-   
+    ScrollingModule,
   ],
   exports: [
     CommonModule,
@@ -137,7 +129,6 @@ import { DrapAndDropSectionComponent } from './components/drap-and-drop-section/
     MobileRewardsSuccessComponent,
     CashbackRenewComponent,
     MobileReferralComponent,
-    ResumeEditorComponent,
     DragDropModule,
     AnalyseWithAiComponent,
     NewDetailsComponent,
@@ -160,8 +151,6 @@ import { DrapAndDropSectionComponent } from './components/drap-and-drop-section/
     ScrollAnimateDirectiveSection1,
     ScrollFadeDirectiveFade,
     ScrollingModule,
-    MobileResumePreviewComponent,
-    DrapAndDropSectionComponent
   ],
 })
 export class SharedModule {}

@@ -942,3 +942,25 @@ footer {
   background-color: white;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
+
+
+
+:host ::ng-deep tag {
+  display: block !important;
+   
+  max-width: 100% !important;
+  white-space: normal !important;
+  height: auto !important;
+  overflow: visible !important;
+}
+
+:host ::ng-deep .tag__text {
+  display: inline-block !important;
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: unset !important;
+}
+
+:host ::ng-deep .ng2-tag-input .ng2-tags-container {
+  flex-wrap: wrap !important;
+}

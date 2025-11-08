@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
 import {
   AbstractControl,
   FormArray,
@@ -122,7 +122,8 @@ export class CandidatesDetailsComponent {
     private ngxLoader: NgxUiLoaderService,
     private ps: PaymentService,
     private loader: LoaderService,
-    private toast: ToastService
+    private toast: ToastService,
+    private el: ElementRef
   ) {
     localStorage.removeItem('nickName');
     localStorage.removeItem('templateName');
@@ -550,6 +551,34 @@ export class CandidatesDetailsComponent {
     } else {
       this.showError = true;
       this.candidateForm.markAllAsTouched();
+
+           const firstInvalidControl: HTMLElement =
+          this.el.nativeElement.querySelector(
+            'form .ng-invalid[formcontrolname]'
+          );
+
+        if (firstInvalidControl) {
+          
+          const parentSection = firstInvalidControl.closest(
+            '[id]'
+          ) as HTMLElement;
+
+          if (parentSection) {
+            parentSection.scrollIntoView({
+              behavior: 'smooth',
+              block: 'center',
+            });
+            parentSection.focus({ preventScroll: true });
+          } else {
+            
+            firstInvalidControl.scrollIntoView({
+              behavior: 'smooth',
+              block: 'center',
+            });
+          }
+        }
+
+
       this.toast.showToast('error', 'Enter All Mandatory Fields');
     }
   }

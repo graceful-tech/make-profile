@@ -25,14 +25,14 @@ export class DetailsFillDirectlyComponent {
   candidates: any;
   isUploading: boolean = false;
   isAnalysing: boolean = false;
-   
+
   showErrorPopup: boolean = false;
   errorMessage: any;
   errorStatus: any;
   analysisText: string = '';
   templateName: any;
   isNotFillByUser: boolean = true;
-  isFillByUser:boolean = true;
+  isFillByUser: boolean = true;
 
   constructor(
     private api: ApiService,
@@ -48,13 +48,10 @@ export class DetailsFillDirectlyComponent {
     private ps: PaymentService,
     private loader: LoaderService,
     private toast: ToastService
-  ) {
+  ) {}
 
-    
-  }
-
-  ngOnInit(){
-     this.gs.resumeName$.subscribe((response) => {
+  ngOnInit() {
+    this.gs.resumeName$.subscribe((response) => {
       if (response !== null) {
         this.templateName = response;
       }
@@ -62,7 +59,7 @@ export class DetailsFillDirectlyComponent {
 
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
-        window.scrollTo(0, 0);  
+        window.scrollTo(0, 0);
       }
     });
   }
@@ -112,28 +109,27 @@ export class DetailsFillDirectlyComponent {
   parseResume() {
     this.ngxLoaderStart();
 
-    const route = 'resume-ai/upload-ai-resume';
+    const route = 'resume-ai/upload-resume';
 
     const formData = new FormData();
     formData.append('resume', this.multipartFile);
 
     this.api.upload(route, formData).subscribe({
-      next: (response) => {
+      next: async (response) => {
+        if (response) {
+          this.ngxLoaderStop();
 
-        if (response !== null) {
-           this.ngxLoaderStop();
-         if (Array.isArray(response)) {
-              this.ngxLoaderStop();
-              this.isAnalysing = false;
-              this.showErrorPopup = true;
-              this.errorMessage = response;
-              this.errorStatus = 'Correct Your Content';
-            }
-            else{
-            this.ngxLoaderStop();
+          const mobile = response?.mobileNumber;
+
+          let valid = true;
+          if (mobile !== null && mobile !== undefined) {
+            valid = await this.checkIfDetailsExists(mobile);
+          }
+
+          if (valid) {
             this.candidates = response;
             this.gs.setCandidateDetails(this.candidates);
-            
+
             if (this.templateName === null || this.templateName === undefined) {
               const templateName = localStorage.getItem('templateName');
               this.gs.setResumeName(templateName);
@@ -142,9 +138,13 @@ export class DetailsFillDirectlyComponent {
             }
 
             this.router.navigate(['common-details']);
-
+          } else {
+            this.gs.showMessage(
+              'Note',
+              'Your Mobile Number Already Have an Account'
+            );
+            this.resume = null
           }
-         
         } else {
           this.ngxLoaderStop();
           this.gs.showMessage(
@@ -167,7 +167,6 @@ export class DetailsFillDirectlyComponent {
   }
 
   enterDetails() {
-    
     if (this.templateName === null || this.templateName === undefined) {
       const templateName = localStorage.getItem('templateName');
       this.gs.setResumeName(templateName);
@@ -189,12 +188,11 @@ export class DetailsFillDirectlyComponent {
 
       const username = sessionStorage.getItem('userName');
 
-      let userNamePresent:string;
-      if(username !== null && username !== undefined){
-         userNamePresent = 'true'
-      }
-      else{
-        userNamePresent = 'false'
+      let userNamePresent: string;
+      if (username !== null && username !== undefined) {
+        userNamePresent = 'true';
+      } else {
+        userNamePresent = 'false';
       }
 
       const formData = new FormData();
@@ -212,13 +210,16 @@ export class DetailsFillDirectlyComponent {
               this.errorStatus = 'Correct Your Content';
             } else {
               this.gs.setCandidateDetails(response);
-              
-            if (this.templateName === null || this.templateName === undefined) {
-              const templateName = localStorage.getItem('templateName');
-              this.gs.setResumeName(templateName);
-            } else {
-              this.gs.setResumeName(this.templateName);
-            }
+
+              if (
+                this.templateName === null ||
+                this.templateName === undefined
+              ) {
+                const templateName = localStorage.getItem('templateName');
+                this.gs.setResumeName(templateName);
+              } else {
+                this.gs.setResumeName(this.templateName);
+              }
 
               this.router.navigate(['common-details']);
             }
@@ -270,7 +271,29 @@ export class DetailsFillDirectlyComponent {
     this.router.navigate(['/login']);
   }
 
-  closeUploadResume(event:any){
+  closeUploadResume(event: any) {
     this.isNotFillByUser = false;
+  }
+
+  async checkIfDetailsExists(mobile: string): Promise<boolean> {
+    return new Promise((resolve) => {
+      const route = 'candidate/check_mobile';
+      const formData = new FormData();
+      formData.append('mobile', mobile);
+
+      this.api.upload(route, formData).subscribe({
+        next: (response) => {
+          if (response === true) {
+            resolve(false);
+          } else if (response === false) {
+            resolve(true);
+          }
+        },
+        error: (err) => {
+          console.error('Error checking mobile number:', err);
+          resolve(false);
+        },
+      });
+    });
   }
 }

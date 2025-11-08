@@ -10,7 +10,7 @@
       <app-make-profile-divider></app-make-profile-divider>
       <div class="section-heading">Personal Details</div>
       <div class="grid">
-        <div class="col-12 md:col-6 lg:col-3">
+        <div class="col-12 md:col-6 lg:col-3" id="mobilenumber">
           <div class="field-wrapper">
             <label class="required">Mobile Number</label>
             <div class="input-wrapper">
@@ -31,7 +31,7 @@
           >
         </div>
 
-        <div class="col-12 md:col-6 lg:col-3">
+        <div class="col-12 md:col-6 lg:col-3" id="name">
           <div class="field-wrapper">
             <label class="required">Name</label>
             <div class="input-wrapper">
@@ -46,7 +46,7 @@
           >
         </div>
 
-        <div class="col-12 md:col-6 lg:col-3">
+        <div class="col-12 md:col-6 lg:col-3" id="email">
           <div class="field-wrapper">
             <label class="required">Email</label>
             <div class="input-wrapper">
@@ -61,7 +61,7 @@
           >
         </div>
 
-        <div class="col-12 md:col-6 lg:col-3">
+        <div class="col-12 md:col-6 lg:col-3" id="gender">
           <div class="field-wrapper">
             <label class="required">Gender</label>
             <div class="input-wrapper">
@@ -221,7 +221,7 @@
 
       <app-make-profile-divider></app-make-profile-divider>
 
-      <div class="grid">
+      <div class="grid" id="skills">
         <div class="col-12">
           <div class="field-wrapper">
             <label [ngClass]="{ required: isRequired('skills') }">Skills</label>
@@ -357,6 +357,9 @@
                       [separatorKeyCodes]="[13, 188]"
                       [theme]="'modern'"
                       placeholder="Type and press Enter or Comma"
+                      [addOnBlur]="true"
+                      [trimTags]="true"
+                      [editable]="true"
                     >
                     </tag-input>
                   </div>
@@ -411,6 +414,9 @@
                           [separatorKeyCodes]="[13, 188]"
                           [theme]="'modern'"
                           placeholder="Type and press Enter or Comma"
+                          [addOnBlur]="true"
+                          [trimTags]="true"
+                          [editable]="true"
                         >
                         </tag-input>
                       </div>
@@ -479,86 +485,89 @@
       </div>
 
       <ng-container *ngIf="candidateForm.get('fresher')?.value">
-              <div formArrayName="collegeProject">
-                <div
-                  *ngFor="
-                    let collegeProject of collegeProjectControls.controls;
-                    let i = index
-                  "
-                  [formGroupName]="i"
-                  class="college-project-box"
-                >
-                  <div class="grid">
-                    <!-- Project Name -->
-                    <div class="col-12 md:col-6">
-                      <div class="field-wrapper">
-                        <label>Project Name</label>
-                        <div class="input-wrapper">
-                          <input
-                            type="text"
-                            pInputText
-                            formControlName="collegeProjectName"
-                          />
-                        </div>
-                      </div>
-                    </div>
-
-                    <!-- Project Skills -->
-                    <div class="col-12 md:col-6">
-                      <div class="field-wrapper">
-                        <label>Project Skills</label>
-                        <div class="input-wrapper">
-                          <tag-input
-                            formControlName="collegeProjectSkills"
-                            [separatorKeyCodes]="[13, 188]"
-                            [theme]="'modern'"
-                            placeholder="Type and press Enter or Comma"
-                          >
-                          </tag-input>
-                        </div>
-                      </div>
-                    </div>
-
-                    <!-- Project Description -->
-                    <div class="col-12">
-                      <div class="field-wrapper">
-                        <label>Project Description</label>
-                        <div class="input-wrapper">
-                          <textarea
-                            rows="2"
-                            type="text"
-                            pInputText
-                            formControlName="collegeProjectDescription"
-                          ></textarea>
-                        </div>
-                      </div>
-                    </div>
-
-                    <!-- Remove Project -->
-                    <div class="col-12 md:col-6 lg:col-3" *ngIf="i >= 0">
-                      <button
-                        type="button"
-                        class="remove-btn"
-                        (click)="removeCollegeProject(i)"
-                      >
-                        Remove Project
-                      </button>
-                    </div>
+        <div formArrayName="collegeProject">
+          <div
+            *ngFor="
+              let collegeProject of collegeProjectControls.controls;
+              let i = index
+            "
+            [formGroupName]="i"
+            class="college-project-box"
+          >
+            <div class="grid">
+              <!-- Project Name -->
+              <div class="col-12 md:col-6">
+                <div class="field-wrapper">
+                  <label>Project Name</label>
+                  <div class="input-wrapper">
+                    <input
+                      type="text"
+                      pInputText
+                      formControlName="collegeProjectName"
+                    />
                   </div>
                 </div>
+              </div>
 
-                <!-- Add Project Button -->
-                <div class="col-12 md:col-6 lg:col-3 mt-3">
-                  <button
-                    type="button"
-                    class="custom-btn"
-                    (click)="addCollegeProject()"
-                  >
-                    + Add Project
-                  </button>
+              <!-- Project Skills -->
+              <div class="col-12 md:col-6">
+                <div class="field-wrapper">
+                  <label>Project Skills</label>
+                  <div class="input-wrapper">
+                    <tag-input
+                      formControlName="collegeProjectSkills"
+                      [separatorKeyCodes]="[13, 188]"
+                      [theme]="'modern'"
+                      placeholder="Type and press Enter or Comma"
+                      [addOnBlur]="true"
+                      [trimTags]="true"
+                      [editable]="true"
+                    >
+                    </tag-input>
+                  </div>
                 </div>
               </div>
-            </ng-container>
+
+              <!-- Project Description -->
+              <div class="col-12">
+                <div class="field-wrapper">
+                  <label>Project Description</label>
+                  <div class="input-wrapper">
+                    <textarea
+                      rows="2"
+                      type="text"
+                      pInputText
+                      formControlName="collegeProjectDescription"
+                    ></textarea>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Remove Project -->
+              <div class="col-12 md:col-6 lg:col-3" *ngIf="i >= 0">
+                <button
+                  type="button"
+                  class="remove-btn"
+                  (click)="removeCollegeProject(i)"
+                >
+                  Remove Project
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Add Project Button -->
+          <div class="col-12 md:col-6 lg:col-3 mt-3">
+            <button
+              type="button"
+              class="custom-btn"
+              (click)="addCollegeProject()"
+            >
+              + Add Project
+            </button>
+          </div>
+        </div>
+      </ng-container>
 
       <app-make-profile-divider></app-make-profile-divider>
       <div class="section-heading mt-3">

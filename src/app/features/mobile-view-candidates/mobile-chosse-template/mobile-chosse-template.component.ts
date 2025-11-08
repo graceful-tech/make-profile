@@ -16,8 +16,7 @@ import {
 import { ApiService } from 'src/app/services/api.service';
 import { GlobalService } from 'src/app/services/global.service';
 import { Candidate } from 'src/app/models/candidates/candidate.model';
-import { NickNameMobileComponent } from '../nick-name-mobile/nick-name-mobile.component';
-
+ 
 @Component({
   selector: 'app-mobile-chosse-template',
   standalone: false,

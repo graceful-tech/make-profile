@@ -9,12 +9,9 @@
   <!-- <span style="text-align: center"> <h4>Fill Details Yourself</h4> </span> -->
 
   <div class="wizard-container">
+    <span style="text-align: center"> <h4>Fill Details Yourself</h4> </span>
 
-      <span style="text-align: center"> <h4>Fill Details Yourself</h4> </span>
-
-
-
-    <div class="step-tracker" *ngIf="step>1">
+    <div class="step-tracker" *ngIf="step > 1">
       <!-- Step 1: Personal Details -->
       <div
         class="step"
@@ -352,6 +349,9 @@
                         [separatorKeyCodes]="[13, 188]"
                         [theme]="'modern'"
                         placeholder="Type and press Enter or Comma"
+                        [addOnBlur]="true"
+                        [trimTags]="true"
+                        [editable]="true"
                       ></tag-input>
                     </div>
                   </div>
@@ -405,6 +405,9 @@
                             [separatorKeyCodes]="[13, 188]"
                             [theme]="'modern'"
                             placeholder="Type and press Enter or Comma"
+                            [addOnBlur]="true"
+                            [trimTags]="true"
+                            [editable]="true"
                           ></tag-input>
                         </div>
                       </div>
@@ -510,6 +513,9 @@
                         [separatorKeyCodes]="[13, 188]"
                         [theme]="'modern'"
                         placeholder="Type and press Enter or Comma"
+                        [addOnBlur]="true"
+                        [trimTags]="true"
+                        [editable]="true"
                       >
                       </tag-input>
                     </div>
@@ -683,8 +689,7 @@
 
       <!-- Step 4 -->
       <div *ngIf="step === 4">
-
-          <h3 class="section-heading">Additional Info</h3>
+        <h3 class="section-heading">Additional Info</h3>
         <div class="grid">
           <div class="col-12 md:col-6 lg:col-3">
             <div class="field-wrapper">

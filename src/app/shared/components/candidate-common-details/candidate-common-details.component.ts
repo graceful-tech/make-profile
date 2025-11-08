@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
@@ -96,7 +96,8 @@ export class CandidateCommonDetailsComponent {
     private router: Router,
     public ref: DynamicDialogRef,
     private loader: LoaderService,
-    private toast:ToastService
+    private toast:ToastService,
+    private el:ElementRef
   ) {
     
     this.gs.candidateDetails$.subscribe((response) => {
@@ -479,6 +480,30 @@ export class CandidateCommonDetailsComponent {
       this.loader.stop();
       this.showError = true;
       this.toast.showToast('error','Enter All Mandatory Fields');
+      
+        const firstInvalidControl: HTMLElement =
+        this.el.nativeElement.querySelector(
+          'form .ng-invalid[formcontrolname]'
+        );
+
+      if (firstInvalidControl) {
+        const parentSection = firstInvalidControl.closest(
+          '[id]'
+        ) as HTMLElement;
+
+        if (parentSection) {
+          parentSection.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center',
+          });
+          parentSection.focus({ preventScroll: true });
+        } else {
+          firstInvalidControl.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center',
+          });
+        }
+      }
       this.candidateForm.markAllAsTouched();
     }
   }

@@ -12,7 +12,6 @@ import {
   SafeHtml,
   SafeResourceUrl,
 } from '@angular/platform-browser';
- 
 
 import { DatePipe } from '@angular/common';
 import { ChangeDetectorRef } from '@angular/core';
@@ -46,7 +45,7 @@ import { LoaderService } from 'src/app/services/loader.service';
 import { ToastService } from 'src/app/services/toast.service';
 import { Project } from 'src/app/models/candidates/project';
 
-import * as pdfjsLib from 'pdfjs-dist';
+// import * as pdfjsLib from 'pdfjs-dist';
 
 type ToggleKey =
   | 'reduceSummary'
@@ -157,7 +156,8 @@ export class PreviewAndCreateResumeComponent {
   arrayBuffer: any;
   skills: Array<any> = [];
   softSkills: Array<any> = [];
-  coreCompetencies: Array<any> = [];
+  coreCompentencies: Array<any> = [];
+  addAdditoinalDetail: boolean = false;
 
   constructor(
     private http: HttpClient,
@@ -175,7 +175,8 @@ export class PreviewAndCreateResumeComponent {
     private config: DynamicDialogConfig,
     private ps: PaymentService,
     private loader: LoaderService,
-    private toast: ToastService
+    private toast: ToastService,
+    private el: ElementRef
   ) {
     this.candidates = this.config.data?.candidates;
     this.templateName = this.config.data?.templateName;
@@ -253,7 +254,6 @@ export class PreviewAndCreateResumeComponent {
     if (section === 'summary') {
       if (this.reduceSummary) {
         this.decreaseSummary('summary');
-       
       } else if (this.increaseSummary) {
         this.increaseSummaryContent('summary');
       }
@@ -384,7 +384,7 @@ export class PreviewAndCreateResumeComponent {
 
     const templateName = localStorage.getItem('templateName');
 
-    const route = 'resume/create';
+    const route = `resume/create?additionalDetails=${this.addAdditoinalDetail}`;
 
     const payload = { ...candiateDto, templateName: templateName };
 
@@ -782,6 +782,31 @@ export class PreviewAndCreateResumeComponent {
       this.generating = false;
       this.showError = true;
       this.candidateForm.markAllAsTouched();
+
+      const firstInvalidControl: HTMLElement =
+        this.el.nativeElement.querySelector(
+          'form .ng-invalid[formcontrolname]'
+        );
+
+      if (firstInvalidControl) {
+        const parentSection = firstInvalidControl.closest(
+          '[id]'
+        ) as HTMLElement;
+
+        if (parentSection) {
+          parentSection.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center',
+          });
+          parentSection.focus({ preventScroll: true });
+        } else {
+          firstInvalidControl.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center',
+          });
+        }
+      }
+
       this.toast.showToast('error', 'Enter All Mandatory Fields');
     }
   }
@@ -1655,9 +1680,8 @@ export class PreviewAndCreateResumeComponent {
 
           this.candidateForm.get(key)?.setValue(responseContent.summary);
           this.isGettingContent = false;
-           this.updateDetails();
+          this.updateDetails();
         }
-
       },
       error: (error) => {
         this.isGettingContent = false;
@@ -1795,7 +1819,7 @@ export class PreviewAndCreateResumeComponent {
 
           this.isGettingContent = false;
 
-          this.updateDetails()
+          this.updateDetails();
         }
       },
       error: (error) => {
@@ -1859,10 +1883,10 @@ export class PreviewAndCreateResumeComponent {
       },
     });
   }
-  previewPdf() {
+  async previewPdf() {
     this.isPreview = true;
 
-    const route = 'candidate/get-bytearray';
+    const route = `candidate/get-bytearray?additionalDetails=${this.addAdditoinalDetail}`;
 
     if (this.templateName === null || this.templateName === undefined) {
       this.templateName = localStorage.getItem('templateName');
@@ -1879,16 +1903,27 @@ export class PreviewAndCreateResumeComponent {
     this.api.downloadFile(route, payload).subscribe({
       next: async (pdfBlob: Blob) => {
         try {
+          // ✅ Step 1: Lazy-load pdfjs-dist dynamically
+          const pdfjsLib = await import('pdfjs-dist/build/pdf');
+          const pdfjsWorker = await import('pdfjs-dist/build/pdf.worker.entry');
+
+          // ✅ Step 2: Configure the worker
+          (pdfjsLib as any).GlobalWorkerOptions.workerSrc = pdfjsWorker;
+
+          // ✅ Step 3: Convert blob to array buffer
           this.arrayBuffer = await pdfBlob.arrayBuffer();
+
+          // ✅ Step 4: Load the PDF document
           const pdf = await (pdfjsLib as any).getDocument({
             data: this.arrayBuffer,
           }).promise;
 
+          // ✅ Step 5: Clear the old preview container
           const container = this.pdfContainer.nativeElement;
-          container.innerHTML = ''; // clear any previous content
+          container.innerHTML = '';
 
+          // ✅ Step 6: Render all pages
           const numPages = pdf.numPages;
-
           for (let i = 1; i <= numPages; i++) {
             const page = await pdf.getPage(i);
             const viewport = page.getViewport({ scale: 1.2 });
@@ -1901,23 +1936,25 @@ export class PreviewAndCreateResumeComponent {
             const renderContext = { canvasContext: context, viewport };
             await page.render(renderContext).promise;
 
+            // Styling for neat preview
             canvas.style.display = 'block';
             canvas.style.margin = '10px auto';
             canvas.style.maxWidth = '100%';
             canvas.style.boxShadow = '0 0 8px rgba(0, 0, 0, 0.1)';
 
             container.appendChild(canvas);
-
             this.htmlcontent = canvas;
           }
 
           this.isPreview = false;
         } catch (err) {
+          console.error('PDF Preview Error:', err);
           this.isPreview = false;
         }
       },
       error: (err) => {
-        this.isPreview = true;
+        console.error('API Error:', err);
+        this.isPreview = false;
       },
     });
   }
@@ -2214,7 +2251,7 @@ export class PreviewAndCreateResumeComponent {
 
             this.skills = response?.skills;
             this.softSkills = response?.softSkills;
-            this.coreCompetencies = response?.coreCompetencies;
+            this.coreCompentencies = response?.coreCompentencies;
           }
 
           this.loader.stop();
@@ -2227,7 +2264,7 @@ export class PreviewAndCreateResumeComponent {
     } else {
       this.skills = stored.skills;
       this.softSkills = stored.softSkills;
-      this.coreCompetencies = stored.coreCompetencies;
+      this.coreCompentencies = stored.coreCompentencies;
     }
   }
 
@@ -2248,7 +2285,13 @@ export class PreviewAndCreateResumeComponent {
     if (this[key]) this[opposite] = false;
   }
 
-  changeTemplate(){
+  changeTemplate() {
     this.router.navigate(['candidate/change-template']);
+  }
+
+  onCheckboxChange(event: any) {
+    this.addAdditoinalDetail = event.checked;
+
+    this.previewPdf();
   }
 }

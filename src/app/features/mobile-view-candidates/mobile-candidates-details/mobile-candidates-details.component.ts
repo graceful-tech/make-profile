@@ -1,6 +1,21 @@
 import { DatePipe } from '@angular/common';
-import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  Renderer2,
+  ViewChild,
+} from '@angular/core';
+import {
+  AbstractControl,
+  FormArray,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ApiService } from '../../../services/api.service';
@@ -33,7 +48,6 @@ import { Chips } from 'primeng/chips';
   styleUrl: './mobile-candidates-details.component.css',
 })
 export class MobileCandidatesDetailsComponent {
-
   yourResume: Array<any> = [];
   candidateForm!: FormGroup;
   genderList: Array<ValueSet> = [];
@@ -109,14 +123,12 @@ export class MobileCandidatesDetailsComponent {
     private datePipe: DatePipe,
     private dialog: DialogService,
     private route: ActivatedRoute,
-    private cdr: ChangeDetectorRef,
     private router: Router,
     public ref: DynamicDialogRef,
-    private ngxLoader: NgxUiLoaderService,
     private ps: PaymentService,
     private loader: MobileLoaderService,
     private toast: ToastService,
-    private renderer: Renderer2
+    private el:ElementRef
   ) {
     localStorage.removeItem('nickName');
     localStorage.removeItem('templateName');
@@ -174,64 +186,63 @@ export class MobileCandidatesDetailsComponent {
         this.router.navigate(['mob-candidate/analyse-ai']);
       }
     });
-
-
- 
   }
 
-   
- 
-
-  
   createCandidateForm() {
-    this.candidateForm = this.fb.group({
-      id: [''],
-      name: ['', Validators.required],
-      mobileNumber: [
-        '',
-        Validators.compose([Validators.required, Validators.minLength(10)]),
-      ],
-      email: ['', Validators.compose([Validators.required, Validators.email])],
-      gender: ['', Validators.required],
-      alternateMobileNumber: [''],
-      nationality: [''],
-      languagesKnown: [[]],
-      fresher: [''],
-      skills: ['', Validators.required],
-      linkedIn: [''],
-      dob: [''],
-      address: [''],
-      maritalStatus: [''],
-      experiences: this.fb.array([]),
-      qualification: this.fb.array([]),
-      certificates: this.fb.array([]),
-      achievements: this.fb.array([]),
-      softSkills: [''],
-      coreCompentencies: [''],
-      collegeProject: this.fb.array([]),
-      coreCompentenciesMandatory: [''],
-      softSkillsMandatory: [''],
-      achievementsMandatory: [''],
-      certificatesMandatory: [''],
-      summary: [''],
-      careerObjective: [''],
-      hobbies:[''],
-      fatherName:['']
-    },{ validators: [this.fresherOrExperienceValidator()] });
+    this.candidateForm = this.fb.group(
+      {
+        id: [''],
+        name: ['', Validators.required],
+        mobileNumber: [
+          '',
+          Validators.compose([Validators.required, Validators.minLength(10)]),
+        ],
+        email: [
+          '',
+          Validators.compose([Validators.required, Validators.email]),
+        ],
+        gender: ['', Validators.required],
+        alternateMobileNumber: [''],
+        nationality: [''],
+        languagesKnown: [[]],
+        fresher: [''],
+        skills: ['', Validators.required],
+        linkedIn: [''],
+        dob: [''],
+        address: [''],
+        maritalStatus: [''],
+        experiences: this.fb.array([]),
+        qualification: this.fb.array([]),
+        certificates: this.fb.array([]),
+        achievements: this.fb.array([]),
+        softSkills: [''],
+        coreCompentencies: [''],
+        collegeProject: this.fb.array([]),
+        coreCompentenciesMandatory: [''],
+        softSkillsMandatory: [''],
+        achievementsMandatory: [''],
+        certificatesMandatory: [''],
+        summary: [''],
+        careerObjective: [''],
+        hobbies: [''],
+        fatherName: [''],
+      },
+      { validators: [this.fresherOrExperienceValidator()] }
+    );
   }
 
-   fresherOrExperienceValidator() {
-      return (formGroup: AbstractControl): { [key: string]: any } | null => {
-        const fresher = formGroup.get('fresher')?.value;
-        const experiences = formGroup.get('experiences') as FormArray;
-  
-        if (!fresher && experiences.length === 0) {
-          return { fresherOrExperienceRequired: true };
-        }
-  
-        return null;
-      };
-    }
+  fresherOrExperienceValidator() {
+    return (formGroup: AbstractControl): { [key: string]: any } | null => {
+      const fresher = formGroup.get('fresher')?.value;
+      const experiences = formGroup.get('experiences') as FormArray;
+
+      if (!fresher && experiences.length === 0) {
+        return { fresherOrExperienceRequired: true };
+      }
+
+      return null;
+    };
+  }
 
   createRequirementForm() {
     this.requirementForm = this.fb.group({
@@ -328,9 +339,13 @@ export class MobileCandidatesDetailsComponent {
               'yyyy-MM-dd'
             );
 
-           const responsibilities = Array.isArray(exp.responsibilities)
-           ? exp.responsibilities.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ')
-            : exp.responsibilities;
+            const responsibilities = Array.isArray(exp.responsibilities)
+              ? exp.responsibilities
+                  .map((r: any) =>
+                    typeof r === 'string' ? r : r.task || r.value || ''
+                  )
+                  .join(', ')
+              : exp.responsibilities;
 
             let projects = exp.projects || [];
             const hasEmptyProjectName = projects.some(
@@ -343,8 +358,12 @@ export class MobileCandidatesDetailsComponent {
               projects = projects.map((proj: any) => ({
                 ...proj,
                 projectSkills: Array.isArray(proj.projectSkills)
-           ? proj.projectSkills.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ')
-            : proj.projectSkills,
+                  ? proj.projectSkills
+                      .map((r: any) =>
+                        typeof r === 'string' ? r : r.task || r.value || ''
+                      )
+                      .join(', ')
+                  : proj.projectSkills,
               }));
             }
 
@@ -409,14 +428,17 @@ export class MobileCandidatesDetailsComponent {
         });
       }
 
-       if (Object.is(payload.hobbies, '')) {
+      if (Object.is(payload.hobbies, '')) {
         payload.hobbies = '';
       } else {
         const hobbiesList: string[] = payload.hobbies;
-        const commaSeparatedString: string = hobbiesList.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ');
+        const commaSeparatedString: string = hobbiesList
+          .map((r: any) =>
+            typeof r === 'string' ? r : r.task || r.value || ''
+          )
+          .join(', ');
         payload.hobbies = commaSeparatedString;
       }
-
 
       if (
         payload.languagesKnown.length === 0 ||
@@ -425,16 +447,23 @@ export class MobileCandidatesDetailsComponent {
         payload.languagesKnown = '';
       } else {
         const stringList: string[] = payload.languagesKnown;
-        const commaSeparatedString: string = stringList.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ');
+        const commaSeparatedString: string = stringList
+          .map((r: any) =>
+            typeof r === 'string' ? r : r.task || r.value || ''
+          )
+          .join(', ');
         payload.languagesKnown = commaSeparatedString;
       }
 
       if (Object.is(payload.skills, '')) {
         payload.skills = '';
       } else {
-
         const stringList: string[] = payload.skills;
-        const commaSeparatedString: string = stringList.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ');
+        const commaSeparatedString: string = stringList
+          .map((r: any) =>
+            typeof r === 'string' ? r : r.task || r.value || ''
+          )
+          .join(', ');
         payload.skills = commaSeparatedString;
       }
 
@@ -442,7 +471,11 @@ export class MobileCandidatesDetailsComponent {
         payload.softSkills = '';
       } else {
         const stringList: string[] = payload.softSkills;
-        const commaSeparatedString: string = stringList.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ');
+        const commaSeparatedString: string = stringList
+          .map((r: any) =>
+            typeof r === 'string' ? r : r.task || r.value || ''
+          )
+          .join(', ');
         payload.softSkills = commaSeparatedString;
       }
 
@@ -450,7 +483,11 @@ export class MobileCandidatesDetailsComponent {
         payload.coreCompentencies = '';
       } else {
         const stringList: string[] = payload.coreCompentencies;
-        const commaSeparatedString: string = stringList.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ');
+        const commaSeparatedString: string = stringList
+          .map((r: any) =>
+            typeof r === 'string' ? r : r.task || r.value || ''
+          )
+          .join(', ');
         payload.coreCompentencies = commaSeparatedString;
       }
 
@@ -473,18 +510,22 @@ export class MobileCandidatesDetailsComponent {
             payload.collegeProject = payload.collegeProject.map(
               (project: any) => ({
                 ...project,
-                collegeProjectSkills:  Array.isArray(project.collegeProjectSkills)
-           ? project.collegeProjectSkills.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ')
-            : project.collegeProjectSkills,
+                collegeProjectSkills: Array.isArray(
+                  project.collegeProjectSkills
+                )
+                  ? project.collegeProjectSkills
+                      .map((r: any) =>
+                        typeof r === 'string' ? r : r.task || r.value || ''
+                      )
+                      .join(', ')
+                  : project.collegeProjectSkills,
               })
             );
           }
         }
       }
 
-
-
-       payload.coreCompentenciesMandatory =
+      payload.coreCompentenciesMandatory =
         this.candidates?.coreCompentenciesMandatory !== null
           ? this.candidates?.coreCompentenciesMandatory
           : false;
@@ -544,7 +585,32 @@ export class MobileCandidatesDetailsComponent {
     } else {
       this.loader.stop();
       this.showError = true;
-       this.toast.showToast('error','Enter All Mandatory Fields');
+
+      const firstInvalidControl: HTMLElement =
+        this.el.nativeElement.querySelector(
+          'form .ng-invalid[formcontrolname]'
+        );
+
+      if (firstInvalidControl) {
+        const parentSection = firstInvalidControl.closest(
+          '[id]'
+        ) as HTMLElement;
+
+        if (parentSection) {
+          parentSection.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center',
+          });
+          parentSection.focus({ preventScroll: true });
+        } else {
+          firstInvalidControl.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center',
+          });
+        }
+      }
+
+      this.toast.showToast('error', 'Enter All Mandatory Fields');
       this.candidateForm.markAllAsTouched();
     }
   }
@@ -976,8 +1042,6 @@ export class MobileCandidatesDetailsComponent {
     this.router.navigate(['mob-candidate/create-candidate']);
   }
 
- 
-
   createResume() {
     if (this.candidates !== null && this.candidates !== undefined) {
       this.dialog.open(ChooseNewTemplateComponent, {
@@ -1008,12 +1072,9 @@ export class MobileCandidatesDetailsComponent {
           .map((skill: string) => skill.trim())
       : [];
 
-       candidate.hobbies = candidate?.hobbies
-      ? candidate.hobbies
-          .split(',')
-          .map((skill: string) => skill.trim())
+    candidate.hobbies = candidate?.hobbies
+      ? candidate.hobbies.split(',').map((skill: string) => skill.trim())
       : [];
-
 
     if (candidate.certificates?.length > 0) {
       const certificateFormArray = this.candidateForm.get(
@@ -1093,8 +1154,8 @@ export class MobileCandidatesDetailsComponent {
       certificatesMandatory: candidate?.certificatesMandatory,
       achievementsMandatory: candidate?.achievementsMandatory,
       careerObjective: candidate?.careerObjective,
-       hobbies: candidate?.hobbies ? candidate?.hobbies : [],
-      fatherName:candidate?.fatherName,
+      hobbies: candidate?.hobbies ? candidate?.hobbies : [],
+      fatherName: candidate?.fatherName,
     });
   }
 
@@ -1144,12 +1205,11 @@ export class MobileCandidatesDetailsComponent {
           const projectFormArray = experienceForm.get('projects') as FormArray;
           projectFormArray.clear();
           experience.projects?.forEach((project: any) => {
-
             const projectSkills = project.projectSkills
-          ? project.projectSkills
-              .split(',')
-              .map((res: string) => res.trim())
-          : [];
+              ? project.projectSkills
+                  .split(',')
+                  .map((res: string) => res.trim())
+              : [];
 
             const projectForm = this.createProject();
             projectForm.patchValue({
@@ -1430,7 +1490,7 @@ export class MobileCandidatesDetailsComponent {
 
   signOut() {
     sessionStorage.clear();
-    this.router.navigate(['mob-landing']);
+    this.router.navigate(['']);
   }
 
   addSkill(controlName: string, inputId: string) {
@@ -1499,20 +1559,18 @@ export class MobileCandidatesDetailsComponent {
   }
 
   navigateToVerify(templateName: any) {
-    
-      localStorage.setItem('templateName', templateName);
-      this.gs.setResumeName(templateName);
+    localStorage.setItem('templateName', templateName);
+    this.gs.setResumeName(templateName);
 
-      if (
-        this.candidateImageUrl !== null &&
-        this.candidateImageUrl !== undefined
-      ) {
-        this.gs.setCandidateImage(this.candidateImageUrl);
-      }
-      this.gs.setCandidateDetails(this.candidates);
+    if (
+      this.candidateImageUrl !== null &&
+      this.candidateImageUrl !== undefined
+    ) {
+      this.gs.setCandidateImage(this.candidateImageUrl);
+    }
+    this.gs.setCandidateDetails(this.candidates);
 
-      this.router.navigate(['mob-candidate/edit-candidate']);
-    
+    this.router.navigate(['mob-candidate/edit-candidate']);
   }
 
   payForApplyingJOb() {
@@ -1841,8 +1899,8 @@ export class MobileCandidatesDetailsComponent {
         next: (response) => {
           if (response) {
             credits.nickName = this.editedNickName;
-            
-            this.toast.showToast('success','NickName updated successfully')
+
+            this.toast.showToast('success', 'NickName updated successfully');
           }
         },
         error: (error) => {
@@ -1871,22 +1929,18 @@ export class MobileCandidatesDetailsComponent {
       },
     });
   }
-  
-   goToCreditHistory(){
+
+  goToCreditHistory() {
     this.router.navigate(['mob-candidate/mob-credit-history']);
   }
 
-    getNationalityList() {
+  getNationalityList() {
     const route = 'value-sets/search-by-code';
-     const postData = { valueSetCode: 'NATIONALITY' };
+    const postData = { valueSetCode: 'NATIONALITY' };
     this.api.retrieve(route, postData).subscribe({
       next: (response) => {
         this.nationalityList = response;
       },
     });
   }
-
-
-
- 
 }

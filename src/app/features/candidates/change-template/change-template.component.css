@@ -9,7 +9,6 @@
 
 .resume-card {
   background: linear-gradient(90deg, #52acac, #d4afd2);
-
   border-radius: 12px;
   overflow: hidden;
   max-width: 360px;
@@ -20,20 +19,20 @@
 }
 
 .resume-card:hover {
-  transform: translateY(-8px);
+  transform: translateY(-15px);
   box-shadow: 0 16px 32px rgba(0, 0, 0, 0.4);
 }
 
-/* 🖼️ Image shows full height automatically */
+ 
 .resume-card img {
   width: 100%;
-  height: auto; /* ✅ allows full image */
-  object-fit: contain; /* ✅ shows full image (no crop) */
-  background: #000; /* optional backdrop */
+  height: auto;  
+  object-fit: contain;  
+  background: #000;  
   display: block;
 }
 
-/* Text below image */
+ 
 .resume-info {
   padding: 12px;
   color: #000000;
@@ -75,15 +74,7 @@
   background: #ffffff;
 }
 
-/* .resume-header {
-  text-align: center;
-  color: #ffffff;
-  font-family: 'Poppins', sans-serif;
-  font-size: 2rem;
-  font-weight: 600;
-  margin: 0;
-  text-transform: capitalize;
-} */
+ 
 
 .profile-wrapper {
   display: flex;

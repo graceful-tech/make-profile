@@ -600,7 +600,7 @@
             >
           </div>
           <div class="grid">
-            <div class="col-12 sm:col-6 md:col-3">
+            <div class="col-12 sm:col-6 md:col-3" id="mobilenumber">
               <div class="field-wrapper">
                 <label class="required">Mobile</label>
                 <div class="input-wrapper">
@@ -623,7 +623,7 @@
               >
             </div>
 
-            <div class="col-12 sm:col-6 md:col-3">
+            <div class="col-12 sm:col-6 md:col-3" id="name">
               <div class="field-wrapper">
                 <label class="required">Name</label>
                 <div class="input-wrapper">
@@ -638,7 +638,7 @@
               >
             </div>
 
-            <div class="col-12 sm:col-6 md:col-3">
+            <div class="col-12 sm:col-6 md:col-3" id="email">
               <div class="field-wrapper">
                 <label class="required">Email</label>
                 <div class="input-wrapper">
@@ -659,7 +659,7 @@
               >
             </div>
 
-            <div class="col-12 sm:col-6 md:col-3">
+            <div class="col-12 sm:col-6 md:col-3" id="gender">
               <div class="field-wrapper">
                 <label class="required">Gender</label>
                 <div class="input-wrapper">
@@ -820,7 +820,7 @@
             </div>
           </div>
 
-          <div class="grid">
+          <div class="grid" id="skills">
             <div class="col-12">
               <div class="field-wrapper">
                 <label>Skills</label>
@@ -954,6 +954,7 @@
                           placeholder="Type and press Enter or Comma"
                           [addOnBlur]="true"
                           [trimTags]="true"
+                          [editable]="true"
                         >
                         </tag-input>
                       </div>
@@ -1012,7 +1013,8 @@
                               [theme]="'modern'"
                               placeholder="Type and press Enter or Comma"
                               [addOnBlur]="true"
-                              [trimTags]="true"
+                          [trimTags]="true"
+                          [editable]="true"
                             >
                             </tag-input>
                           </div>
@@ -1124,6 +1126,7 @@
                           placeholder="Type and press Enter or Comma"
                           [addOnBlur]="true"
                           [trimTags]="true"
+                          [editable]="true"
                         >
                         </tag-input>
                       </div>

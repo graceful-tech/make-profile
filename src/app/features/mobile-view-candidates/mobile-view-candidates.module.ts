@@ -14,7 +14,6 @@ import { MobileResumeDetailsComponent } from './mobile-resume-details/mobile-res
 import { ViewMobileHistoryCandidatesComponent } from './view-mobile-history-candidates/view-mobile-history-candidates.component';
 import { ResumeDetailsMobileComponent } from './resume-details-mobile/resume-details-mobile.component';
 import { FinalVerifyComponent } from './final-verify/final-verify.component';
-import { NickNameMobileComponent } from './nick-name-mobile/nick-name-mobile.component';
 import { ChooseNewTemplateComponent } from './choose-new-template/choose-new-template.component';
 import { UseExistingTemplateComponent } from './use-existing-template/use-existing-template.component';
 import { MobileCreditHistoryComponent } from './mobile-credit-history/mobile-credit-history.component';
@@ -34,7 +33,6 @@ import { MobileChangeTemplateComponent } from './mobile-change-template/mobile-c
     ViewMobileHistoryCandidatesComponent,
     ResumeDetailsMobileComponent,
     FinalVerifyComponent,
-    NickNameMobileComponent,
     ChooseNewTemplateComponent,
     UseExistingTemplateComponent,
     MobileCreditHistoryComponent,

@@ -41,8 +41,6 @@ import {
 } from '@angular/platform-browser';
 import { HttpClient } from '@angular/common/http';
 import { PaymentOptionComponent } from 'src/app/features/candidates/payments/payment-option/payment-option.component';
-import * as pdfjsLib from 'pdfjs-dist';
-import pdfjsWorker from 'pdfjs-dist/build/pdf.worker.entry';
 
 @Component({
   selector: 'app-new-create-resume',
@@ -133,11 +131,12 @@ export class NewCreateResumeComponent {
   htmlcontent: any;
   arrayBuffer: any;
   isPreview: boolean = false;
+  addAdditoinalDetail:boolean = false;
 
   isGettingContent: boolean = false;
-   skills: Array<any> = [];
+  skills: Array<any> = [];
   softSkills: Array<any> = [];
-  coreCompetencies: Array<any> = [];
+  coreCompentencies: Array<any> = [];
 
   constructor(
     private api: ApiService,
@@ -201,7 +200,6 @@ export class NewCreateResumeComponent {
       this.previewPdf();
     } else {
       this.getCandidates();
-    
     }
 
     this.gs.candidateImage$.subscribe((response) => {
@@ -213,12 +211,11 @@ export class NewCreateResumeComponent {
     // this.previewPdf();
   }
 
-  previewPdf() {
+  async previewPdf() {
     this.isPreview = true;
+    const route = `candidate/get-bytearray?additionalDetails=${this.addAdditoinalDetail}`;
 
-    const route = 'candidate/get-bytearray';
-
-    if (this.templateName === null || this.templateName === undefined) {
+    if (!this.templateName) {
       this.templateName = localStorage.getItem('templateName');
     }
 
@@ -233,16 +230,27 @@ export class NewCreateResumeComponent {
     this.api.downloadFile(route, payload).subscribe({
       next: async (pdfBlob: Blob) => {
         try {
+          // ✅ Step 1: Lazy-load pdfjs-dist dynamically
+          const pdfjsLib = await import('pdfjs-dist/build/pdf');
+          const pdfjsWorker = await import('pdfjs-dist/build/pdf.worker.entry');
+
+          // ✅ Step 2: Configure the worker
+          (pdfjsLib as any).GlobalWorkerOptions.workerSrc = pdfjsWorker;
+
+          // ✅ Step 3: Convert blob to array buffer
           this.arrayBuffer = await pdfBlob.arrayBuffer();
+
+          // ✅ Step 4: Load the PDF document
           const pdf = await (pdfjsLib as any).getDocument({
             data: this.arrayBuffer,
           }).promise;
 
+          // ✅ Step 5: Clear the old preview container
           const container = this.pdfContainer.nativeElement;
-          container.innerHTML = ''; // clear any previous content
+          container.innerHTML = '';
 
+          // ✅ Step 6: Render all pages
           const numPages = pdf.numPages;
-
           for (let i = 1; i <= numPages; i++) {
             const page = await pdf.getPage(i);
             const viewport = page.getViewport({ scale: 1.2 });
@@ -255,23 +263,25 @@ export class NewCreateResumeComponent {
             const renderContext = { canvasContext: context, viewport };
             await page.render(renderContext).promise;
 
+            // Styling for neat preview
             canvas.style.display = 'block';
             canvas.style.margin = '10px auto';
             canvas.style.maxWidth = '100%';
             canvas.style.boxShadow = '0 0 8px rgba(0, 0, 0, 0.1)';
 
             container.appendChild(canvas);
-
             this.htmlcontent = canvas;
           }
 
           this.isPreview = false;
         } catch (err) {
+          console.error('PDF Preview Error:', err);
           this.isPreview = false;
         }
       },
       error: (err) => {
-        this.isPreview = true;
+        console.error('API Error:', err);
+        this.isPreview = false;
       },
     });
   }
@@ -1014,6 +1024,31 @@ export class NewCreateResumeComponent {
       this.ngxLoaderStop();
       this.showError = true;
       this.toast.showToast('error', 'Enter All Mandatory Fields');
+
+        const firstInvalidControl: HTMLElement =
+        this.elRef.nativeElement.querySelector(
+          'form .ng-invalid[formcontrolname]'
+        );
+
+      if (firstInvalidControl) {
+        const parentSection = firstInvalidControl.closest(
+          '[id]'
+        ) as HTMLElement;
+
+        if (parentSection) {
+          parentSection.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center',
+          });
+          parentSection.focus({ preventScroll: true });
+        } else {
+          firstInvalidControl.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center',
+          });
+        }
+      }
+
       this.candidateForm.markAllAsTouched();
     }
   }
@@ -1641,7 +1676,7 @@ export class NewCreateResumeComponent {
 
   createResume(candidates: any) {
     this.ngxLoaderStart();
-    const route = 'resume/create';
+    const route = `resume/create?additionalDetails=${this.addAdditoinalDetail}`;
 
     const templateName = localStorage.getItem('templateName');
     if (this.templateName === null || this.templateName === undefined) {
@@ -2150,7 +2185,7 @@ export class NewCreateResumeComponent {
 
             this.skills = response?.skills;
             this.softSkills = response?.softSkills;
-            this.coreCompetencies = response?.coreCompetencies;
+            this.coreCompentencies = response?.coreCompentencies;
           }
 
           this.loader.stop();
@@ -2163,11 +2198,16 @@ export class NewCreateResumeComponent {
     } else {
       this.skills = stored.skills;
       this.softSkills = stored.softSkills;
-      this.coreCompetencies = stored.coreCompetencies;
+      this.coreCompentencies = stored.coreCompentencies;
     }
   }
 
-  changeTemplate(){
-    this.router.navigate(['mob-candidate/change-template'])
+  changeTemplate() {
+    this.router.navigate(['mob-candidate/change-template']);
+  }
+
+   onCheckboxChange(event: any) {
+    this.addAdditoinalDetail = event.checked;
+   
   }
 }

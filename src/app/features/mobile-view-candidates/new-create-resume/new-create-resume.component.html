@@ -83,7 +83,7 @@
             </span>
           </div>
 
-          <div class="grid">
+          <div class="grid" id="skills">
             <div class="col-12">
               <div class="field-wrapper">
                 <label [ngClass]="{ required: isRequired('skills') }"
@@ -148,8 +148,8 @@
           <div class="selected-skills">
             <span
               class="skill-chip"
-              *ngFor="let skill of coreCompetencies"
-              (click)="addSkill(skill, 'coreCompetencies')"
+              *ngFor="let skill of coreCompentencies"
+              (click)="addSkill(skill, 'coreCompentencies')"
             >
               {{ skill }} &#43;
             </span>
@@ -170,6 +170,28 @@
                   >
                   </tag-input>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group" style="padding: 10px 20px">
+          <div class="grid">
+            <div class="col-12 md:col-6 lg:col-3">
+              <div
+                class="fresher-checkbox pb-3"
+                style="display: flex; align-items: center; gap: 8px"
+              >
+                <p-checkbox
+                  inputId="fresher"
+                  [binary]="true"
+                  [(ngModel)]="addAdditoinalDetail"
+                  [ngModelOptions]="{ standalone: true }"
+                  (onChange)="onCheckboxChange($event)"
+                ></p-checkbox>
+                <label for="fresher" style="margin: 0"
+                  >Add Additional Details in Resume</label
+                >
               </div>
             </div>
           </div>
@@ -272,7 +294,7 @@
               </div>
             </div>
 
-            <div class="col-12 md:col-6 lg:col-3">
+            <div class="col-12 md:col-6 lg:col-3" id="mobilenumber">
               <div class="field-wrapper">
                 <label class="required">Mobile Number</label>
                 <div class="input-wrapper">
@@ -295,7 +317,7 @@
               >
             </div>
 
-            <div class="col-12 md:col-6 lg:col-3">
+            <div class="col-12 md:col-6 lg:col-3" id="name">
               <div class="field-wrapper">
                 <label class="required">Name</label>
                 <div class="input-wrapper">
@@ -310,7 +332,7 @@
               >
             </div>
 
-            <div class="col-12 md:col-6 lg:col-3">
+            <div class="col-12 md:col-6 lg:col-3" id="email">
               <div class="field-wrapper">
                 <label class="required">Email</label>
                 <div class="input-wrapper">
@@ -325,7 +347,7 @@
               >
             </div>
 
-            <div class="col-12 md:col-6 lg:col-3">
+            <div class="col-12 md:col-6 lg:col-3" id="gender">
               <div class="field-wrapper">
                 <label class="required">Gender</label>
                 <div class="input-wrapper">
@@ -440,7 +462,8 @@
                     [separatorKeyCodes]="[13, 188]"
                     [theme]="'modern'"
                     placeholder="Type and press Enter or Comma"
-                    [trimTags]="false"
+                    [addOnBlur]="true"
+                    [trimTags]="true"
                     [editable]="true"
                   >
                   </tag-input>
@@ -604,7 +627,8 @@
                           formControlName="responsibilities"
                           [separatorKeyCodes]="[13, 188]"
                           [theme]="'modern'"
-                          [trimTags]="false"
+                          [addOnBlur]="true"
+                          [trimTags]="true"
                           [editable]="true"
                           placeholder="Type and press Enter or Comma"
                         >
@@ -664,7 +688,8 @@
                               [separatorKeyCodes]="[13, 188]"
                               [theme]="'modern'"
                               placeholder="Type and press Enter or Comma"
-                              [trimTags]="false"
+                              [addOnBlur]="true"
+                              [trimTags]="true"
                               [editable]="true"
                             >
                             </tag-input>
@@ -802,7 +827,8 @@
                           [separatorKeyCodes]="[13, 188]"
                           [theme]="'modern'"
                           placeholder="Type and press Enter or Comma"
-                          [trimTags]="false"
+                          [addOnBlur]="true"
+                          [trimTags]="true"
                           [editable]="true"
                         >
                         </tag-input>
@@ -1046,12 +1072,9 @@
                 >
                   Remove Course
                 </button>
-
-                <!-- <p-button type="button" label="Remove Course" styleClass="p-buttonFailure" (click)="removeCertificates(i)"></p-button> -->
               </div>
             </div>
             <div class="col-12 md:col-6 lg:col-3">
-              <!-- <p-button type="button" label="+ Add Couse" (click)="addCertificates()"></p-button> -->
               <button
                 type="button"
                 class="custom-btn"
@@ -1115,11 +1138,9 @@
                 >
                   Remove Achievements
                 </button>
-                <!-- <p-button type="button" label="Remove Achievements" styleClass="p-buttonFailure" (click)="removeaddAchievements(i)"></p-button> -->
               </div>
             </div>
             <div class="col-12 md:col-6 lg:col-3">
-              <!-- <p-button type="button" styleClass="p-resumeButton" label="+ Add Achievements" (click)="addAchievements()"></p-button> -->
               <button
                 type="button"
                 class="custom-btn"
@@ -1130,57 +1151,6 @@
             </div>
           </div>
           <app-make-profile-divider></app-make-profile-divider>
-
-          <!-- <div class="grid">
-            <div class="col-12 md:col-6">
-              <div class="field-wrapper">
-                <span style="display: flex; justify-content: space-between">
-                  <span>Soft Skills</span>
-                  <span
-                    class="softSkiilsExample"
-                    (click)="openSoftSkillsExample()"
-                    >Example Soft Skills</span
-                  >
-                </span>
-                <div class="input-wrapper">
-                  <tag-input
-                    formControlName="softSkills"
-                    [separatorKeyCodes]="[13, 188]"
-                    [theme]="'modern'"
-                    placeholder="Type and press Enter or Comma"
-                    [trimTags]="false"
-                    [editable]="true"
-                  >
-                  </tag-input>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-12 md:col-6">
-              <div class="field-wrapper">
-                <span style="display: flex; justify-content: space-between">
-                  <label>Core Competencies</label>
-
-                  <span
-                    class="softSkiilsExample"
-                    (click)="openSoftCoreCompentienciesExample()"
-                    >Example Compentencies</span
-                  >
-                </span>
-                <div class="input-wrapper">
-                  <tag-input
-                    formControlName="coreCompentencies"
-                    [separatorKeyCodes]="[13, 188]"
-                    [theme]="'modern'"
-                    placeholder="Type and press Enter or Comma"
-                    [trimTags]="false"
-                    [editable]="true"
-                  >
-                  </tag-input>
-                </div>
-              </div>
-            </div>
-          </div> -->
 
           <app-make-profile-divider></app-make-profile-divider>
 
@@ -1218,15 +1188,6 @@
   </div>
 
   <div *ngIf="currentTab === 'preview'" class="preview-tab">
-    <!-- <div class="mobile-preview">
-      <iframe
-        *ngIf="previewSrc"
-        [src]="previewSrc"
-        class="preview-iframe"
-        frameborder="0"
-      ></iframe>
-    </div> -->
-
     <div class="mobile-preview">
       <div class="pdf-container" #pdfContainer></div>
     </div>
@@ -1235,7 +1196,7 @@
       <button class="create-btn" (click)="createFinalResume()">
         Create Resume
       </button>
-       <button class="change-template" (click)="changeTemplate()">
+      <button class="change-template" (click)="changeTemplate()">
         Change Template
       </button>
     </div>

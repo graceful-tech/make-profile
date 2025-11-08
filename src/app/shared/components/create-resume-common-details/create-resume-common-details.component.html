@@ -10,28 +10,9 @@
       <app-make-profile-divider></app-make-profile-divider>
       <div class="section-heading">Personal Details</div>
       <div class="grid">
-        <!-- <div class="col-12 md:col-6 lg:col-3">
-          <div class="field-wrapper">
-            <label class="required">Mobile Number</label>
-            <div class="input-wrapper">
-              <input
-                type="text"
-                pKeyFilter="int"
-                [maxlength]="10"
-                pInputText
-                formControlName="mobileNumber"
-              />
-            </div>
-          </div>
-          <small
-            class="error-message"
-            *ngIf="candidateForm.get('mobileNumber')?.invalid && showError"
-          >
-            Mobile Number is required</small
-          >
-        </div> -->
+        
 
-        <div class="col-12 md:col-6 lg:col-3">
+        <div class="col-12 md:col-6 lg:col-3" id="mobilenumber">
           <div class="field-wrapper">
             <label class="required">Mobile Number</label>
             <div class="input-wrapper">
@@ -60,7 +41,6 @@
             Mobile Number is required
           </small>
 
-        
           <small
             class="error-message"
             *ngIf="
@@ -71,7 +51,6 @@
             Mobile Number must be 10 digits
           </small>
 
-         
           <small
             class="error-message"
             *ngIf="candidateForm.get('mobileNumber')?.hasError('mobileExists')"
@@ -80,11 +59,11 @@
           </small>
         </div>
 
-        <div class="col-12 md:col-6 lg:col-3">
+        <div class="col-12 md:col-6 lg:col-3" id="name">
           <div class="field-wrapper">
             <label class="required">Name</label>
             <div class="input-wrapper">
-              <input type="text" pInputText formControlName="name"   />
+              <input type="text" pInputText formControlName="name" />
             </div>
           </div>
           <small
@@ -95,7 +74,7 @@
           >
         </div>
 
-        <div class="col-12 md:col-6 lg:col-3">
+        <div class="col-12 md:col-6 lg:col-3" id="email">
           <div class="field-wrapper">
             <label class="required">Email</label>
             <div class="input-wrapper">
@@ -110,7 +89,7 @@
           >
         </div>
 
-        <div class="col-12 md:col-6 lg:col-3">
+        <div class="col-12 md:col-6 lg:col-3" id="gender">
           <div class="field-wrapper">
             <label class="required">Gender</label>
             <div class="input-wrapper">
@@ -270,7 +249,7 @@
 
       <app-make-profile-divider></app-make-profile-divider>
 
-      <div class="grid">
+      <div class="grid" id="skills">
         <div class="col-12">
           <div class="field-wrapper">
             <label [ngClass]="{ required: isRequired('skills') }">Skills</label>
@@ -406,6 +385,9 @@
                       [separatorKeyCodes]="[13, 188]"
                       [theme]="'modern'"
                       placeholder="Type and press Enter or Comma"
+                      [addOnBlur]="true"
+                      [trimTags]="true"
+                      [editable]="true"
                     >
                     </tag-input>
                   </div>
@@ -460,6 +442,9 @@
                           [separatorKeyCodes]="[13, 188]"
                           [theme]="'modern'"
                           placeholder="Type and press Enter or Comma"
+                          [addOnBlur]="true"
+                          [trimTags]="true"
+                          [editable]="true"
                         >
                         </tag-input>
                       </div>
@@ -562,6 +547,9 @@
                       [separatorKeyCodes]="[13, 188]"
                       [theme]="'modern'"
                       placeholder="Type and press Enter or Comma"
+                      [addOnBlur]="true"
+                      [trimTags]="true"
+                      [editable]="true"
                     >
                     </tag-input>
                   </div>
@@ -740,22 +728,7 @@
       <app-make-profile-divider></app-make-profile-divider>
       <div class="section-heading mt-3">
         <div>Course & Certificates</div>
-
-        <!-- <div
-          style="
-            color: #313133;
-            font-weight: bold;
-            background-color: rgb(235, 235, 235);
-            border-radius: 50px;
-            padding: 5px 5px;
-          "
-        >
-          <p-checkbox
-            [binary]="true"
-            formControlName="certificatesMandatory"
-            label="Is Mandatory"
-          ></p-checkbox>
-        </div> -->
+ 
       </div>
 
       <div formArrayName="certificates">
@@ -941,134 +914,7 @@
 
     <app-make-profile-divider></app-make-profile-divider>
 
-    <!-- <div style="margin-bottom: 20px">
-      <form [formGroup]="additionalDetailsForm">
-        <div style="color: black; font-weight: bold; font-size: 20px">
-          <Span
-            >This information won’t appear on your resume, but it will help us
-            match you with the right job</Span
-          >
-        </div>
-
-        <div class="grid" style="padding-top: 10px">
-          <div class="col-12 md:col-6">
-            <div class="field-wrapper">
-              <label>State</label>
-              <div class="input-wrapper">
-                <p-multiSelect
-                  appendTo="body"
-                  [options]="stateNames"
-                  defaultLabel="Select State"
-                  [showHeader]="false"
-                  optionLabel="stateName"
-                  optionValue="id"
-                  formControlName="stateName"
-                  (onChange)="selectedState($event)"
-                >
-                </p-multiSelect>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-12 md:col-6">
-            <div class="field-wrapper">
-              <label>Preferred Location</label>
-              <div class="input-wrapper">
-                <p-multiSelect
-                  appendTo="body"
-                  [options]="citiesName"
-                  defaultLabel="Select Preffered Location"
-                  [showHeader]="false"
-                  optionLabel="cityName"
-                  optionValue="cityName"
-                  formControlName="preferredLocation"
-                >
-                </p-multiSelect>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-12 md:col-6">
-            <div class="field-wrapper">
-              <label>Current CTC (in Lakhs)</label>
-              <div class="input-wrapper">
-                <input
-                  pKeyFilter="num"
-                  [maxlength]="5"
-                  pInputText
-                  formControlName="currentCostToCompany"
-                />
-              </div>
-            </div>
-          </div>
-
-          <div class="col-12 md:col-6">
-            <div class="field-wrapper">
-              <label>Expected CTC (in Lakhs)</label>
-              <div class="input-wrapper">
-                <input
-                  pKeyFilter="num"
-                  [maxlength]="5"
-                  pInputText
-                  formControlName="expectedCostToCompany"
-                />
-              </div>
-            </div>
-          </div>
-
-          <div class="col-12 md:col-6">
-            <div class="field-wrapper">
-              <label>Total Experience</label>
-              <div class="input-wrapper">
-                <input
-                  pKeyFilter="num"
-                  [maxlength]="5"
-                  pInputText
-                  formControlName="totalWorkExperience"
-                />
-              </div>
-            </div>
-          </div>
-
-          <div class="col-12 md:col-6">
-            <div class="field-wrapper">
-              <label>Relevant Experience</label>
-              <div class="input-wrapper">
-                <input
-                  pKeyFilter="num"
-                  [maxlength]="5"
-                  pInputText
-                  formControlName="relevantExperience"
-                />
-              </div>
-            </div>
-          </div>
-
-          <div class="col-12 md:col-6">
-            <div class="field-wrapper">
-              <label>Company Name</label>
-              <div class="input-wrapper">
-                <input type="text" pInputText formControlName="companyName" />
-              </div>
-            </div>
-          </div>
-
-          <div class="col-12 md:col-6">
-            <div class="field-wrapper">
-              <label>Highest Qualification</label>
-              <div class="input-wrapper">
-                <input
-                  pInputText
-                  type="text"
-                  formControlName="qualification"
-                  placeholder="Company Name"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </form>
-    </div> -->
+    
 
     <div class="button-bar">
       <div class="button-wrapper">

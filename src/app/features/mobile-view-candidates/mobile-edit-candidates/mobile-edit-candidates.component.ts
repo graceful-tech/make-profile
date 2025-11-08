@@ -1,4 +1,9 @@
-import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  ViewChild,
+} from '@angular/core';
 import {
   AbstractControl,
   FormArray,
@@ -25,6 +30,7 @@ import { PaymentService } from 'src/app/services/payment.service';
 import { CollegeProject } from 'src/app/models/candidates/college-project';
 import { DatePipe } from '@angular/common';
 import { MobileLoaderService } from 'src/app/services/mobile.loader.service';
+import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
   selector: 'app-mobile-edit-candidates',
@@ -89,7 +95,9 @@ export class MobileEditCandidatesComponent {
     public ref: DynamicDialogRef,
     private config: DynamicDialogConfig,
     private ps: PaymentService,
-    private loader: MobileLoaderService
+    private loader: MobileLoaderService,
+    private toast: ToastService,
+    private el: ElementRef
   ) {
     this.gs.candidateDetails$.subscribe((response) => {
       if (response !== null) {
@@ -522,7 +530,7 @@ export class MobileEditCandidatesComponent {
     } else {
       this.isUploading = false;
       this.showError = true;
-      window.alert('Enter the mandatory details');
+      this.toast.showToast('error', 'Enter All Mandatory Fields');
     }
   }
 
@@ -564,8 +572,7 @@ export class MobileEditCandidatesComponent {
   }
 
   openCreateResumeDialog(response: any) {
-
-    localStorage.removeItem('skillsData')
+    localStorage.removeItem('skillsData');
 
     if (this.templateName !== null && this.templateName !== undefined) {
       this.gs.setResumeName(this.templateName);
@@ -1468,6 +1475,34 @@ export class MobileEditCandidatesComponent {
         });
         this.dataLoaded = true;
       } else {
+        this.isUploading = false;
+        this.showError = true;
+
+        const firstInvalidControl: HTMLElement =
+          this.el.nativeElement.querySelector(
+            'form .ng-invalid[formcontrolname]'
+          );
+
+        if (firstInvalidControl) {
+          const parentSection = firstInvalidControl.closest(
+            '[id]'
+          ) as HTMLElement;
+
+          if (parentSection) {
+            parentSection.scrollIntoView({
+              behavior: 'smooth',
+              block: 'center',
+            });
+            parentSection.focus({ preventScroll: true });
+          } else {
+            firstInvalidControl.scrollIntoView({
+              behavior: 'smooth',
+              block: 'center',
+            });
+          }
+        }
+
+        this.toast.showToast('error', 'Enter All Mandatory Fields');
       }
     });
   }

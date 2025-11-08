@@ -15,34 +15,11 @@
 <div class="wrapper">
   <div class="profile-wrapper">
     <form [formGroup]="candidateForm">
-      <!-- <div class="grid">
-           <div class="col-12">
-                 <div class="field-wrapper">
-                  <div class="label-wrapper">
-                      <label>Summary</label>
-                     </div>
-                   <div class="input-wrapper">
-                    <textarea rows="5" type="text" placeholder="Enter your summary, or let our AI generate it for you." pInputText formControlName="summary"></textarea>
-                   </div>
-                 </div>
-            </div>
 
-             <div class="col-12">
-                 <div class="field-wrapper">
-                  <div class="label-wrapper">
-                      <label>Career Objective</label>
-                     </div>
-                   <div class="input-wrapper">
-                    <textarea rows="5" type="text" placeholder="Enter your carrer objective or let our AI generate it for you." pInputText formControlName="careerObjective"></textarea>
-                   </div>
-                 </div>
-            </div>
-
-         </div> -->
       <app-make-profile-divider></app-make-profile-divider>
       <div class="section-heading">Personal Details</div>
       <div class="grid">
-        <div class="col-12 md:col-6 lg:col-3">
+        <div class="col-12 md:col-6 lg:col-3" id="mobilenumber">
           <div class="field-wrapper">
             <label class="required">Mobile Number</label>
             <div class="input-wrapper">
@@ -63,7 +40,7 @@
           >
         </div>
 
-        <div class="col-12 md:col-6 lg:col-3">
+        <div class="col-12 md:col-6 lg:col-3" id="name">
           <div class="field-wrapper">
             <label class="required">Name</label>
             <div class="input-wrapper">
@@ -78,7 +55,7 @@
           >
         </div>
 
-        <div class="col-12 md:col-6 lg:col-3">
+        <div class="col-12 md:col-6 lg:col-3" id="email">
           <div class="field-wrapper">
             <label class="required">Email</label>
             <div class="input-wrapper">
@@ -93,7 +70,7 @@
           >
         </div>
 
-        <div class="col-12 md:col-6 lg:col-3">
+        <div class="col-12 md:col-6 lg:col-3" id="gender">
           <div class="field-wrapper">
             <label class="required">Gender</label>
             <div class="input-wrapper">
@@ -253,7 +230,7 @@
 
       <app-make-profile-divider></app-make-profile-divider>
 
-      <div class="grid">
+      <div class="grid" id="skills">
         <div class="col-12">
           <div class="field-wrapper">
             <label [ngClass]="{ required: isRequired('skills') }">Skills</label>
@@ -391,6 +368,7 @@
                       placeholder="Type and press Enter or Comma"
                       [addOnBlur]="true"
                       [trimTags]="true"
+                      [editable]="true"
                     >
                     </tag-input>
                   </div>
@@ -447,6 +425,7 @@
                           placeholder="Type and press Enter or Comma"
                           [addOnBlur]="true"
                           [trimTags]="true"
+                          [editable]="true"
                         >
                         </tag-input>
                       </div>
@@ -550,6 +529,7 @@
                       placeholder="Type and press Enter or Comma"
                       [addOnBlur]="true"
                       [trimTags]="true"
+                      [editable]="true"
                     >
                     </tag-input>
                   </div>

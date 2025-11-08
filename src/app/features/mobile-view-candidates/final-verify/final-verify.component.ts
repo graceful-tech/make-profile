@@ -107,7 +107,8 @@ export class FinalVerifyComponent {
     private router: Router,
     public ref: DynamicDialogRef,
     private loader: MobileLoaderService,
-    private toast: ToastService
+    private toast: ToastService,
+    private el:ElementRef
   ) {
     this.gs.candidateDetails$.subscribe((response) => {
       if (response !== null) {
@@ -521,6 +522,33 @@ export class FinalVerifyComponent {
     } else {
       this.ngxLoaderStop();
       this.showError = true;
+
+         const firstInvalidControl: HTMLElement =
+          this.el.nativeElement.querySelector(
+            'form .ng-invalid[formcontrolname]'
+          );
+
+        if (firstInvalidControl) {
+          
+          const parentSection = firstInvalidControl.closest(
+            '[id]'
+          ) as HTMLElement;
+
+          if (parentSection) {
+            parentSection.scrollIntoView({
+              behavior: 'smooth',
+              block: 'center',
+            });
+            parentSection.focus({ preventScroll: true });
+          } else {
+            
+            firstInvalidControl.scrollIntoView({
+              behavior: 'smooth',
+              block: 'center',
+            });
+          }
+        }
+
       this.toast.showToast('error', 'Enter All Mandatory Fields');
       this.candidateForm.markAllAsTouched();
     }

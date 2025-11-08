@@ -1,5 +1,10 @@
 import { DatePipe } from '@angular/common';
-import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  ViewChild,
+} from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
@@ -20,6 +25,7 @@ import { Achievements } from 'src/app/models/candidates/achievements';
 import { PaymentService } from 'src/app/services/payment.service';
 import { CollegeProject } from 'src/app/models/candidates/college-project';
 import { MobileLoaderComponent } from 'src/app/shared/components/mobile-loader/mobile-loader.component';
+import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
   selector: 'app-resume-details-mobile',
@@ -97,7 +103,9 @@ export class ResumeDetailsMobileComponent {
     private router: Router,
     public ref: DynamicDialogRef,
     private config: DynamicDialogConfig,
-    private ps: PaymentService
+    private ps: PaymentService,
+    private el: ElementRef,
+    private toast: ToastService
   ) {
     this.candidates = this.config.data?.candidates;
   }
@@ -147,7 +155,7 @@ export class ResumeDetailsMobileComponent {
         Validators.compose([Validators.required, Validators.minLength(10)]),
       ],
       email: ['', Validators.compose([Validators.required, Validators.email])],
-      gender: ['',Validators.required],
+      gender: ['', Validators.required],
       nationality: [''],
       languagesKnown: [''],
       fresher: [''],
@@ -205,7 +213,7 @@ export class ResumeDetailsMobileComponent {
 
   createCandidate() {
     if (this.candidateForm.valid) {
-   this.dataLoaded = false;
+      this.dataLoaded = false;
 
       const route = 'candidate/create';
       const payload = this.candidateForm.getRawValue();
@@ -250,9 +258,13 @@ export class ResumeDetailsMobileComponent {
               'yyyy-MM-dd'
             );
 
-           const responsibilities = Array.isArray(exp.responsibilities)
-           ? exp.responsibilities.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ')
-            : exp.responsibilities;
+            const responsibilities = Array.isArray(exp.responsibilities)
+              ? exp.responsibilities
+                  .map((r: any) =>
+                    typeof r === 'string' ? r : r.task || r.value || ''
+                  )
+                  .join(', ')
+              : exp.responsibilities;
 
             let projects = exp.projects || [];
             const hasEmptyProjectName = projects.some(
@@ -265,8 +277,12 @@ export class ResumeDetailsMobileComponent {
               projects = projects.map((proj: any) => ({
                 ...proj,
                 projectSkills: Array.isArray(proj.projectSkills)
-           ? proj.projectSkills.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ')
-            : proj.projectSkills,
+                  ? proj.projectSkills
+                      .map((r: any) =>
+                        typeof r === 'string' ? r : r.task || r.value || ''
+                      )
+                      .join(', ')
+                  : proj.projectSkills,
               }));
             }
 
@@ -331,14 +347,17 @@ export class ResumeDetailsMobileComponent {
         });
       }
 
-       if (Object.is(payload.hobbies, '')) {
+      if (Object.is(payload.hobbies, '')) {
         payload.hobbies = '';
       } else {
         const hobbiesList: string[] = payload.hobbies;
-        const commaSeparatedString: string = hobbiesList.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ');
+        const commaSeparatedString: string = hobbiesList
+          .map((r: any) =>
+            typeof r === 'string' ? r : r.task || r.value || ''
+          )
+          .join(', ');
         payload.hobbies = commaSeparatedString;
       }
-
 
       if (
         payload.languagesKnown.length === 0 ||
@@ -347,16 +366,23 @@ export class ResumeDetailsMobileComponent {
         payload.languagesKnown = '';
       } else {
         const stringList: string[] = payload.languagesKnown;
-        const commaSeparatedString: string = stringList.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ');
+        const commaSeparatedString: string = stringList
+          .map((r: any) =>
+            typeof r === 'string' ? r : r.task || r.value || ''
+          )
+          .join(', ');
         payload.languagesKnown = commaSeparatedString;
       }
 
       if (Object.is(payload.skills, '')) {
         payload.skills = '';
       } else {
-
         const stringList: string[] = payload.skills;
-        const commaSeparatedString: string = stringList.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ');
+        const commaSeparatedString: string = stringList
+          .map((r: any) =>
+            typeof r === 'string' ? r : r.task || r.value || ''
+          )
+          .join(', ');
         payload.skills = commaSeparatedString;
       }
 
@@ -364,7 +390,11 @@ export class ResumeDetailsMobileComponent {
         payload.softSkills = '';
       } else {
         const stringList: string[] = payload.softSkills;
-        const commaSeparatedString: string = stringList.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ');
+        const commaSeparatedString: string = stringList
+          .map((r: any) =>
+            typeof r === 'string' ? r : r.task || r.value || ''
+          )
+          .join(', ');
         payload.softSkills = commaSeparatedString;
       }
 
@@ -372,7 +402,11 @@ export class ResumeDetailsMobileComponent {
         payload.coreCompentencies = '';
       } else {
         const stringList: string[] = payload.coreCompentencies;
-        const commaSeparatedString: string = stringList.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ');
+        const commaSeparatedString: string = stringList
+          .map((r: any) =>
+            typeof r === 'string' ? r : r.task || r.value || ''
+          )
+          .join(', ');
         payload.coreCompentencies = commaSeparatedString;
       }
 
@@ -395,15 +429,20 @@ export class ResumeDetailsMobileComponent {
             payload.collegeProject = payload.collegeProject.map(
               (project: any) => ({
                 ...project,
-                collegeProjectSkills:  Array.isArray(project.collegeProjectSkills)
-           ? project.collegeProjectSkills.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ')
-            : project.collegeProjectSkills,
+                collegeProjectSkills: Array.isArray(
+                  project.collegeProjectSkills
+                )
+                  ? project.collegeProjectSkills
+                      .map((r: any) =>
+                        typeof r === 'string' ? r : r.task || r.value || ''
+                      )
+                      .join(', ')
+                  : project.collegeProjectSkills,
               })
             );
           }
         }
       }
-
 
       payload.coreCompentenciesMandatory =
         this.candidates?.coreCompentenciesMandatory !== null
@@ -448,7 +487,32 @@ export class ResumeDetailsMobileComponent {
       });
       this.dataLoaded = true;
     } else {
-      window.alert('Please fill the mandatory fields');
+      const firstInvalidControl: HTMLElement =
+        this.el.nativeElement.querySelector(
+          'form .ng-invalid[formcontrolname]'
+        );
+
+      if (firstInvalidControl) {
+        const parentSection = firstInvalidControl.closest(
+          '[id]'
+        ) as HTMLElement;
+
+        if (parentSection) {
+          parentSection.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center',
+          });
+          parentSection.focus({ preventScroll: true });
+        } else {
+          firstInvalidControl.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center',
+          });
+        }
+      }
+
+      this.toast.showToast('error', 'Enter All Mandatory Fields');
+
       this.showError = true;
     }
   }

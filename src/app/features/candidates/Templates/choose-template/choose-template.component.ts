@@ -20,8 +20,7 @@ import { Candidate } from 'src/app/models/candidates/candidate.model';
 import { LocalStorage } from '@ng-idle/core';
 import { AddCandidatesComponent } from '../../add-candidates/add-candidates.component';
 import { VerifyCandidatesComponent } from '../../verify-candidates/verify-candidates.component';
-import { NickNameComponent } from '../../nick-name/nick-name.component';
-
+ 
 @Component({
   selector: 'app-choose-template',
   standalone: false,
@@ -146,39 +145,8 @@ export class ChooseTemplateComponent {
 
    }
 
-  // checkSection(resumeName: any) {
-  //   const route = 'template/checker';
-  //   const payload = {
-  //     ...this.candidates,
-  //     resumeFormatName: resumeName,
-  //   };
-  //   localStorage.setItem('templateName', resumeName);
-
-  //   this.api.retrieve(route, payload).subscribe({
-  //     next: (response) => {
-  //       console.log('keerthi');
-  //       const name = response?.name;
-  //       this.createResume(name);
-  //     },
-  //   });
-  // }
-
-  openNickName(resumeName: any) {
-    this.ref.close();
-    localStorage.setItem('templateName', resumeName);
-
-    const ref = this.dialog.open(NickNameComponent, {
-      data: {
-        payments: true,
-        resumeName: resumeName,
-        candidateImage: this.candidateImageUrl,
-        candidates: this.candidates,
-      },
-      closable: true,
-      width: '30%',
-      header: 'Enter the nick name for this resume',
-    });
-  }
+ 
+ 
 
   toVerify(resumeName: any) {
     this.ref.close();

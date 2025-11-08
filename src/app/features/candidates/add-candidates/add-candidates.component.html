@@ -319,6 +319,7 @@
                         placeholder="Type and press Enter or Comma"
                         [addOnBlur]="true"
                         [trimTags]="true"
+                        [editable]="true"
                       >
                       </tag-input>
                     </div>
@@ -374,7 +375,8 @@
                             [theme]="'modern'"
                             placeholder="Type and press Enter or Comma"
                             [addOnBlur]="true"
-                            [trimTags]="true" 
+                            [trimTags]="true"
+                            [editable]="true"
                           >
                           </tag-input>
                         </div>
@@ -650,16 +652,12 @@
               >
                 Remove Qualification
               </button>
-
-              <!-- <p-button type="button" label="Remove Qualification" styleClass="p-buttonFailure" (click)="removeQualification(i)"></p-button> -->
             </div>
           </div>
           <div class="col-12 md:col-6 lg:col-3">
             <button type="button" class="custom-btn" (click)="addQualication()">
               + Add Qualifications
             </button>
-
-            <!-- <p-button type="button" label="+ Add Qualifications" (click)="addQualication()"></p-button> -->
           </div>
         </div>
       </section>
@@ -733,12 +731,9 @@
               >
                 Remove Course
               </button>
-
-              <!-- <p-button type="button" label="Remove Course" styleClass="p-buttonFailure" (click)="removeCertificates(i)"></p-button> -->
             </div>
           </div>
           <div class="col-12 md:col-6 lg:col-3">
-            <!-- <p-button type="button" label="+ Add Couse" (click)="addCertificates()"></p-button> -->
             <button
               type="button"
               class="custom-btn"

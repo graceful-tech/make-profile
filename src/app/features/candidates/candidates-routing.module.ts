@@ -6,7 +6,6 @@ import { CandidatesDetailsComponent } from './candidates-details/candidates-deta
 import { ViewTemplatesComponent } from './Templates/view-templates/view-templates.component';
 import { RewardsSuccessMessageComponent } from 'src/app/shared/components/rewards-success-message/rewards-success-message.component';
 import { CashbackRenewComponent } from 'src/app/shared/components/cashback-renew/cashback-renew.component';
-import { ResumeEditorComponent } from 'src/app/shared/components/resume-editor/resume-editor.component';
 import { ViewAccountComponent } from '../users/view-account/view-account.component';
 import { EditUserComponent } from '../users/edit-user/edit-user.component';
 import { CandidateCommonDetailsComponent } from 'src/app/shared/components/candidate-common-details/candidate-common-details.component';
@@ -30,8 +29,6 @@ const routes: Routes = [
   { path: 'reward-success', component: RewardsSuccessMessageComponent },
 
   { path: 'rewards', component: CashbackRenewComponent },
-
-  { path: 'reorderd', component: ResumeEditorComponent },
 
   { path: 'view-account', component: ViewAccountComponent },
 

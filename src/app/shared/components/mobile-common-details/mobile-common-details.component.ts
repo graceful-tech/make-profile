@@ -1,7 +1,22 @@
-import {ChangeDetectorRef,Component,ElementRef,ViewChild,} from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  ViewChild,
+} from '@angular/core';
+import {
+  AbstractControl,
+  FormArray,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import {DialogService,DynamicDialogConfig,DynamicDialogRef,} from 'primeng/dynamicdialog';
+import {
+  DialogService,
+  DynamicDialogConfig,
+  DynamicDialogRef,
+} from 'primeng/dynamicdialog';
 import { ApiService } from '../../../services/api.service';
 import { GlobalService } from '../../../services/global.service';
 import { ValueSet } from '../../../models/admin/value-set.model';
@@ -77,15 +92,12 @@ export class MobileCommonDetailsComponent {
     private fb: FormBuilder,
     private gs: GlobalService,
     private datePipe: DatePipe,
-    private dialog: DialogService,
-    private route: ActivatedRoute,
-    private cdr: ChangeDetectorRef,
     private router: Router,
     public ref: DynamicDialogRef,
-    private config: DynamicDialogConfig,
     private ps: PaymentService,
     private loader: MobileLoaderService,
-    private toast:ToastService
+    private toast: ToastService,
+    private el: ElementRef
   ) {
     this.gs.candidateDetails$.subscribe((response) => {
       if (response !== null) {
@@ -119,54 +131,60 @@ export class MobileCommonDetailsComponent {
   ngAfterViewInit() {}
 
   createCandidateForm() {
-    this.candidateForm = this.fb.group({
-      id: [''],
-      name: ['', Validators.required],
-      mobileNumber: [
-        '',
-        Validators.compose([Validators.required, Validators.minLength(10)]),
-      ],
-      email: ['', Validators.compose([Validators.required, Validators.email])],
-      gender: ['', Validators.required],
-      nationality: [''],
-      languagesKnown: [[]],
-      fresher: [],
-      skills: ['', Validators.required],
-      linkedIn: [''],
-      dob: [''],
-      address: [''],
-      maritalStatus: [''],
-      experiences: this.fb.array([]),
-      qualification: this.fb.array([]),
-      certificates: this.fb.array([]),
-      achievements: this.fb.array([]),
-      softSkills: [''],
-      coreCompentencies: [''],
-      collegeProject: this.fb.array([]),
-      summary: [''],
-      careerObjective: [''],
-      coreCompentenciesMandatory: [''],
-      softSkillsMandatory: [''],
-      achievementsMandatory: [''],
-      certificatesMandatory: [''],
-      hobbies:[''],
-      fatherName:['']
-    },{ validators: [this.fresherOrExperienceValidator()] });
+    this.candidateForm = this.fb.group(
+      {
+        id: [''],
+        name: ['', Validators.required],
+        mobileNumber: [
+          '',
+          Validators.compose([Validators.required, Validators.minLength(10)]),
+        ],
+        email: [
+          '',
+          Validators.compose([Validators.required, Validators.email]),
+        ],
+        gender: ['', Validators.required],
+        nationality: [''],
+        languagesKnown: [[]],
+        fresher: [],
+        skills: ['', Validators.required],
+        linkedIn: [''],
+        dob: [''],
+        address: [''],
+        maritalStatus: [''],
+        experiences: this.fb.array([]),
+        qualification: this.fb.array([]),
+        certificates: this.fb.array([]),
+        achievements: this.fb.array([]),
+        softSkills: [''],
+        coreCompentencies: [''],
+        collegeProject: this.fb.array([]),
+        summary: [''],
+        careerObjective: [''],
+        coreCompentenciesMandatory: [''],
+        softSkillsMandatory: [''],
+        achievementsMandatory: [''],
+        certificatesMandatory: [''],
+        hobbies: [''],
+        fatherName: [''],
+      },
+      { validators: [this.fresherOrExperienceValidator()] }
+    );
   }
 
-   fresherOrExperienceValidator() {
-      return (formGroup: AbstractControl): { [key: string]: any } | null => {
-        const fresher = formGroup.get('fresher')?.value;
-        const experiences = formGroup.get('experiences') as FormArray;
-    
-         if (!fresher && experiences.length === 0) {
-          return { fresherOrExperienceRequired: true };
-        }
-    
-        return null;
-      };
-    }
-    
+  fresherOrExperienceValidator() {
+    return (formGroup: AbstractControl): { [key: string]: any } | null => {
+      const fresher = formGroup.get('fresher')?.value;
+      const experiences = formGroup.get('experiences') as FormArray;
+
+      if (!fresher && experiences.length === 0) {
+        return { fresherOrExperienceRequired: true };
+      }
+
+      return null;
+    };
+  }
+
   getGenderList() {
     const route = 'value-sets/search-by-code';
     const postData = { valueSetCode: 'GENDER' };
@@ -252,9 +270,13 @@ export class MobileCommonDetailsComponent {
               'yyyy-MM-dd'
             );
 
-           const responsibilities = Array.isArray(exp.responsibilities)
-           ? exp.responsibilities.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ')
-            : exp.responsibilities;
+            const responsibilities = Array.isArray(exp.responsibilities)
+              ? exp.responsibilities
+                  .map((r: any) =>
+                    typeof r === 'string' ? r : r.task || r.value || ''
+                  )
+                  .join(', ')
+              : exp.responsibilities;
 
             let projects = exp.projects || [];
             const hasEmptyProjectName = projects.some(
@@ -267,8 +289,12 @@ export class MobileCommonDetailsComponent {
               projects = projects.map((proj: any) => ({
                 ...proj,
                 projectSkills: Array.isArray(proj.projectSkills)
-           ? proj.projectSkills.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ')
-            : proj.projectSkills,
+                  ? proj.projectSkills
+                      .map((r: any) =>
+                        typeof r === 'string' ? r : r.task || r.value || ''
+                      )
+                      .join(', ')
+                  : proj.projectSkills,
               }));
             }
 
@@ -333,14 +359,17 @@ export class MobileCommonDetailsComponent {
         });
       }
 
-       if (Object.is(payload.hobbies, '')) {
+      if (Object.is(payload.hobbies, '')) {
         payload.hobbies = '';
       } else {
         const hobbiesList: string[] = payload.hobbies;
-        const commaSeparatedString: string = hobbiesList.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ');
+        const commaSeparatedString: string = hobbiesList
+          .map((r: any) =>
+            typeof r === 'string' ? r : r.task || r.value || ''
+          )
+          .join(', ');
         payload.hobbies = commaSeparatedString;
       }
-
 
       if (
         payload.languagesKnown.length === 0 ||
@@ -349,16 +378,23 @@ export class MobileCommonDetailsComponent {
         payload.languagesKnown = '';
       } else {
         const stringList: string[] = payload.languagesKnown;
-        const commaSeparatedString: string = stringList.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ');
+        const commaSeparatedString: string = stringList
+          .map((r: any) =>
+            typeof r === 'string' ? r : r.task || r.value || ''
+          )
+          .join(', ');
         payload.languagesKnown = commaSeparatedString;
       }
 
       if (Object.is(payload.skills, '')) {
         payload.skills = '';
       } else {
-
         const stringList: string[] = payload.skills;
-        const commaSeparatedString: string = stringList.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ');
+        const commaSeparatedString: string = stringList
+          .map((r: any) =>
+            typeof r === 'string' ? r : r.task || r.value || ''
+          )
+          .join(', ');
         payload.skills = commaSeparatedString;
       }
 
@@ -366,7 +402,11 @@ export class MobileCommonDetailsComponent {
         payload.softSkills = '';
       } else {
         const stringList: string[] = payload.softSkills;
-        const commaSeparatedString: string = stringList.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ');
+        const commaSeparatedString: string = stringList
+          .map((r: any) =>
+            typeof r === 'string' ? r : r.task || r.value || ''
+          )
+          .join(', ');
         payload.softSkills = commaSeparatedString;
       }
 
@@ -374,7 +414,11 @@ export class MobileCommonDetailsComponent {
         payload.coreCompentencies = '';
       } else {
         const stringList: string[] = payload.coreCompentencies;
-        const commaSeparatedString: string = stringList.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ');
+        const commaSeparatedString: string = stringList
+          .map((r: any) =>
+            typeof r === 'string' ? r : r.task || r.value || ''
+          )
+          .join(', ');
         payload.coreCompentencies = commaSeparatedString;
       }
 
@@ -397,9 +441,15 @@ export class MobileCommonDetailsComponent {
             payload.collegeProject = payload.collegeProject.map(
               (project: any) => ({
                 ...project,
-                collegeProjectSkills:  Array.isArray(project.collegeProjectSkills)
-           ? project.collegeProjectSkills.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ')
-            : project.collegeProjectSkills,
+                collegeProjectSkills: Array.isArray(
+                  project.collegeProjectSkills
+                )
+                  ? project.collegeProjectSkills
+                      .map((r: any) =>
+                        typeof r === 'string' ? r : r.task || r.value || ''
+                      )
+                      .join(', ')
+                  : project.collegeProjectSkills,
               })
             );
           }
@@ -467,14 +517,37 @@ export class MobileCommonDetailsComponent {
 
           this.dataLoaded = true;
           window.alert('Error in creating please try again');
-          
         },
       });
       this.dataLoaded = true;
     } else {
       this.loader.stop();
       this.showError = true;
-      this.toast.showToast('error','Enter All Mandatory Fields');
+      this.toast.showToast('error', 'Enter All Mandatory Fields');
+
+      const firstInvalidControl: HTMLElement =
+        this.el.nativeElement.querySelector(
+          'form .ng-invalid[formcontrolname]'
+        );
+
+      if (firstInvalidControl) {
+        const parentSection = firstInvalidControl.closest(
+          '[id]'
+        ) as HTMLElement;
+
+        if (parentSection) {
+          parentSection.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center',
+          });
+          parentSection.focus({ preventScroll: true });
+        } else {
+          firstInvalidControl.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center',
+          });
+        }
+      }
       this.candidateForm.markAllAsTouched();
     }
   }
@@ -768,18 +841,11 @@ export class MobileCommonDetailsComponent {
           .map((skill: string) => skill.trim())
       : [];
 
-       candidate.hobbies = candidate?.hobbies
-      ? candidate.hobbies
-          .split(',')
-          .map((skill: string) => skill.trim())
+    candidate.hobbies = candidate?.hobbies
+      ? candidate.hobbies.split(',').map((skill: string) => skill.trim())
       : [];
 
-
-
-    
-    if ( candidate.certificates?.some(c => c && (c.courseName?.trim()))) 
-  
-  {
+    if (candidate.certificates?.some((c) => c && c.courseName?.trim())) {
       const certificateFormArray = this.candidateForm.get(
         'certificates'
       ) as FormArray;
@@ -790,10 +856,12 @@ export class MobileCommonDetailsComponent {
       });
     }
 
-    if (candidate.experiences?.some(e => e && (e.companyName.trim()))) {
+    if (candidate.experiences?.some((e) => e && e.companyName.trim())) {
       this.patchExperiences(candidate.experiences);
     } else {
-      if (candidate?.collegeProject.some(c => c && (c.collegeProjectName.trim()))) {
+      if (
+        candidate?.collegeProject.some((c) => c && c.collegeProjectName.trim())
+      ) {
         const collegeProjectFromArray = this.candidateForm.get(
           'collegeProject'
         ) as FormArray;
@@ -807,7 +875,11 @@ export class MobileCommonDetailsComponent {
       }
     }
 
-    if ( candidate.qualification?.some(q => q && (q.institutionName?.trim() || q.fieldOfStudy?.trim()))) {
+    if (
+      candidate.qualification?.some(
+        (q) => q && (q.institutionName?.trim() || q.fieldOfStudy?.trim())
+      )
+    ) {
       const qualificationFormArray = this.candidateForm.get(
         'qualification'
       ) as FormArray;
@@ -820,7 +892,7 @@ export class MobileCommonDetailsComponent {
       });
     }
 
-    if (candidate.achievements?.some(a => a && (a.achievementsName.trim()))) {
+    if (candidate.achievements?.some((a) => a && a.achievementsName.trim())) {
       const achievementFormArray = this.candidateForm.get(
         'achievements'
       ) as FormArray;
@@ -859,8 +931,8 @@ export class MobileCommonDetailsComponent {
       certificatesMandatory: candidate?.certificatesMandatory,
       achievementsMandatory: candidate?.achievementsMandatory,
       careerObjective: candidate?.careerObjective,
-       hobbies: candidate?.hobbies ? candidate?.hobbies : [],
-      fatherName:candidate?.fatherName,
+      hobbies: candidate?.hobbies ? candidate?.hobbies : [],
+      fatherName: candidate?.fatherName,
     });
   }
 
@@ -869,7 +941,7 @@ export class MobileCommonDetailsComponent {
       id: certificate.id,
       courseName: certificate.courseName,
       courseStartDate: this.isValidDate(certificate.courseStartDate),
-      
+
       courseEndDate: this.isValidDate(certificate.courseEndDate),
     });
   }
@@ -892,24 +964,27 @@ export class MobileCommonDetailsComponent {
           id: experience.id,
           companyName: experience.companyName,
           role: experience.role,
-          experienceYearStartDate: this.isValidDate(experience.experienceYearStartDate),
+          experienceYearStartDate: this.isValidDate(
+            experience.experienceYearStartDate
+          ),
 
-          experienceYearEndDate: this.isValidDate(experience.experienceYearEndDate),
+          experienceYearEndDate: this.isValidDate(
+            experience.experienceYearEndDate
+          ),
 
           currentlyWorking: experience.currentlyWorking,
           responsibilities: responsibilities,
         });
 
-          if (experience?.projects.some((p: Project) =>  p?.projectName?.trim())) {
+        if (experience?.projects.some((p: Project) => p?.projectName?.trim())) {
           const projectFormArray = experienceForm.get('projects') as FormArray;
           projectFormArray.clear();
           experience.projects?.forEach((project: any) => {
-
-              const projectSkills = project.projectSkills
-          ? project.projectSkills
-              .split(',')
-              .map((res: string) => res.trim())
-          : [];
+            const projectSkills = project.projectSkills
+              ? project.projectSkills
+                  .split(',')
+                  .map((res: string) => res.trim())
+              : [];
             const projectForm = this.createProject();
             projectForm.patchValue({
               id: project.id,
@@ -931,10 +1006,14 @@ export class MobileCommonDetailsComponent {
       id: qualification.id,
       institutionName: qualification.institutionName,
       department: qualification.department,
-      qualificationStartYear: this.isValidDate(qualification.qualificationStartYear),
-         
-      qualificationEndYear: this.isValidDate(qualification.qualificationEndYear),
-        
+      qualificationStartYear: this.isValidDate(
+        qualification.qualificationStartYear
+      ),
+
+      qualificationEndYear: this.isValidDate(
+        qualification.qualificationEndYear
+      ),
+
       percentage: qualification.percentage,
       fieldOfStudy: qualification.fieldOfStudy,
     });
@@ -949,7 +1028,6 @@ export class MobileCommonDetailsComponent {
       id: achievement.id,
       achievementsName: achievement.achievementsName,
       achievementsDate: this.isValidDate(achievement.achievementsDate),
-        
     });
   }
 
@@ -1222,36 +1300,33 @@ export class MobileCommonDetailsComponent {
     });
   }
 
- 
-
   isValidDate(value: any): Date | null {
-  if (!value || value === 'NaN/NaN/NaN') return null;
+    if (!value || value === 'NaN/NaN/NaN') return null;
 
-  if (value instanceof Date && !isNaN(value.getTime())) return value;
+    if (value instanceof Date && !isNaN(value.getTime())) return value;
 
-  if (typeof value === "string") {
-    const trimmed = value.trim();
+    if (typeof value === 'string') {
+      const trimmed = value.trim();
 
-    // dd/MM/yyyy format
-    const match = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(trimmed);
-    if (match) {
-      const day = parseInt(match[1], 10);
-      const month = parseInt(match[2], 10) - 1;
-      const year = parseInt(match[3], 10);
-      const date = new Date(year, month, day);
+      // dd/MM/yyyy format
+      const match = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(trimmed);
+      if (match) {
+        const day = parseInt(match[1], 10);
+        const month = parseInt(match[2], 10) - 1;
+        const year = parseInt(match[3], 10);
+        const date = new Date(year, month, day);
+        return !isNaN(date.getTime()) ? date : null;
+      }
+
+      // fallback
+      const date = new Date(trimmed);
       return !isNaN(date.getTime()) ? date : null;
     }
 
-    // fallback
-    const date = new Date(trimmed);
-    return !isNaN(date.getTime()) ? date : null;
+    return null;
   }
 
-  return null;
-}
-
-
- getNationalityList() {
+  getNationalityList() {
     const route = 'value-sets/search-by-code';
     const postData = { valueSetCode: 'NATIONALITY' };
     this.api.retrieve(route, postData).subscribe({
@@ -1286,7 +1361,4 @@ export class MobileCommonDetailsComponent {
       }
     }
   }
-
- 
-
 }

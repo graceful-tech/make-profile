@@ -13,11 +13,9 @@ import { ResumeDetailsComponent } from './resume-details/resume-details.componen
 import { VerifyCandidatesComponent } from './verify-candidates/verify-candidates.component';
 import { ViewHistoryCandidatesComponent } from './view-history-candidates/view-history-candidates.component';
 import { ResumeCreatingComponent } from './resume-creating/resume-creating.component';
-import { NickNameComponent } from './nick-name/nick-name.component';
-import { ChooseTemplateWayComponent } from './choose-template-way/choose-template-way.component';
+ import { ChooseTemplateWayComponent } from './choose-template-way/choose-template-way.component';
 import { ExistingResumeComponent } from './existing-resume/existing-resume.component';
- import { ResumePreviewComponent } from './resume-preview/resume-preview.component';
-import { CreditHistoryComponent } from './credit-history/credit-history.component';
+ import { CreditHistoryComponent } from './credit-history/credit-history.component';
 import { PreviewAndCreateResumeComponent } from './preview-and-create-resume/preview-and-create-resume.component';
 import { ChangeTemplateComponent } from './change-template/change-template.component';
 
@@ -34,10 +32,8 @@ import { ChangeTemplateComponent } from './change-template/change-template.compo
     ResumeDetailsComponent,
     ViewHistoryCandidatesComponent,
     ResumeCreatingComponent,
-    NickNameComponent,
     ChooseTemplateWayComponent,
     ExistingResumeComponent,
-    ResumePreviewComponent,
     CreditHistoryComponent,
     PreviewAndCreateResumeComponent,
     ChangeTemplateComponent

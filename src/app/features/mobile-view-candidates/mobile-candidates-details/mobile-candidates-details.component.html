@@ -362,6 +362,9 @@
                       [separatorKeyCodes]="[13, 188]"
                       [theme]="'modern'"
                       placeholder="Type skills press Enter or Comma"
+                      [addOnBlur]="true"
+                      [trimTags]="true"
+                      [editable]="true"
                     >
                     </tag-input>
                     <div style="display: flex; align-items: left"></div>
@@ -412,22 +415,7 @@
                   {{ requirement.maxExperience }}
                 </td>
                 <td>{{ requirement.maxCostToCompany }}</td>
-                <!-- <td *ngIf="requirement.jobId === this.candidateScore?.jobId; else noScore">
-                              <span [ngClass]="{'green' : this.candidateScore?.score > '59','red': this.candidateScore?.score <= 59}"> 
-                                {{ this.candidateScore?.score !== null ? this.candidateScore?.score : '-' }} </span> 
-                            </td>
-                              
-                            <td *ngIf="requirement.jobId === this.candidateScore?.jobId; else noRelated">
-                                <span [ngClass]="{'green' : this.candidateScore?.related === true,   
-                                'red': this.candidateScore?.related === false }"> {{ this.candidateScore?.score !== null 
-                                   && this.candidateScore?.related === true ? 'MATCHED' : this.candidateScore?.score === null ? '-'  : 'NOT MATCHED' }}</span>
-                            </td>
-                             <ng-template #noScore>
-                              <td>-</td>
-                            </ng-template>
-                            <ng-template #noRelated>
-                              <td>-</td>
-                            </ng-template> -->
+                 
 
                 <td
                   *ngIf="
@@ -629,7 +617,7 @@
                 </div>
               </div>
 
-              <div class="col-12 md:col-6 lg:col-3">
+              <div class="col-12 md:col-6 lg:col-3" id="mobilenumber">
                 <div class="field-wrapper">
                   <label class="required">Mobile</label>
                   <div class="input-wrapper">
@@ -652,7 +640,7 @@
                 >
               </div>
 
-              <div class="col-12 md:col-6 lg:col-3">
+              <div class="col-12 md:col-6 lg:col-3" id="name">
                 <div class="field-wrapper">
                   <label class="required">Name</label>
                   <div class="input-wrapper">
@@ -667,7 +655,7 @@
                 >
               </div>
 
-              <div class="col-12 md:col-6 lg:col-3">
+              <div class="col-12 md:col-6 lg:col-3" id="email">
                 <div class="field-wrapper">
                   <label class="required">Email</label>
                   <div class="input-wrapper">
@@ -688,7 +676,7 @@
                 >
               </div>
 
-              <div class="col-12 md:col-6 lg:col-3">
+              <div class="col-12 md:col-6 lg:col-3" id="gender">
                 <div class="field-wrapper">
                   <label class="required">Gender</label>
                   <div class="input-wrapper">
@@ -806,6 +794,9 @@
                       [separatorKeyCodes]="[13, 188]"
                       [theme]="'modern'"
                       placeholder="Type and press Enter or Comma"
+                      [addOnBlur]="true"
+                      [trimTags]="true"
+                      [editable]="true"
                     >
                     </tag-input>
                   </div>
@@ -827,7 +818,7 @@
               </div>
             </div>
 
-            <div class="grid">
+            <div class="grid" id="skills">
               <div class="col-12">
                 <div class="field-wrapper">
                   <label [ngClass]="{ required: isRequired('skills') }"
@@ -839,6 +830,9 @@
                       [separatorKeyCodes]="[13, 188]"
                       [theme]="'modern'"
                       placeholder="Type and press Enter or Comma"
+                      [addOnBlur]="true"
+                      [trimTags]="true"
+                      [editable]="true"
                     >
                     </tag-input>
                   </div>
@@ -974,6 +968,9 @@
                             [separatorKeyCodes]="[13, 188]"
                             [theme]="'modern'"
                             placeholder="Type and press Enter or Comma"
+                            [addOnBlur]="true"
+                            [trimTags]="true"
+                            [editable]="true"
                           >
                           </tag-input>
                         </div>
@@ -1031,6 +1028,9 @@
                                 [separatorKeyCodes]="[13, 188]"
                                 [theme]="'modern'"
                                 placeholder="Type and press Enter or Comma"
+                                [addOnBlur]="true"
+                                [trimTags]="true"
+                                [editable]="true"
                               >
                               </tag-input>
                             </div>
@@ -1141,6 +1141,9 @@
                             [separatorKeyCodes]="[13, 188]"
                             [theme]="'modern'"
                             placeholder="Type and press Enter or Comma"
+                            [addOnBlur]="true"
+                            [trimTags]="true"
+                            [editable]="true"
                           >
                           </tag-input>
                         </div>
@@ -1480,6 +1483,9 @@
                     [separatorKeyCodes]="[13, 188]"
                     [theme]="'modern'"
                     placeholder="Type and press Enter or Comma"
+                    [addOnBlur]="true"
+                    [trimTags]="true"
+                    [editable]="true"
                   >
                   </tag-input>
                 </div>
@@ -1497,6 +1503,9 @@
                     [separatorKeyCodes]="[13, 188]"
                     [theme]="'modern'"
                     placeholder="Type and press Enter or Comma"
+                    [addOnBlur]="true"
+                    [trimTags]="true"
+                    [editable]="true"
                   >
                   </tag-input>
                 </div>

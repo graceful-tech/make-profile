@@ -13,8 +13,7 @@ import { GlobalService } from 'src/app/services/global.service';
 import { ChooseTemplateComponent } from '../choose-template/choose-template.component';
 import { Candidate } from 'src/app/models/candidates/candidate.model';
 import { VerifyCandidatesComponent } from '../../verify-candidates/verify-candidates.component';
-import { NickNameComponent } from '../../nick-name/nick-name.component';
-
+ 
 @Component({
   selector: 'app-view-templates',
   standalone: false,
@@ -148,22 +147,22 @@ export class ViewTemplatesComponent {
 
   }
 
-  openNickName(resumeName: any) {
-    this.ref.close();
-    localStorage.setItem('templateName', resumeName);
+  // openNickName(resumeName: any) {
+  //   this.ref.close();
+  //   localStorage.setItem('templateName', resumeName);
 
-    const ref = this.dialog.open(NickNameComponent, {
-      data: {
-        payments: true,
-        resumeName: resumeName,
-        candidateImage: this.candidateImageUrl,
-        candidates: this.candidates,
-      },
-      closable: true,
-      width: '30%',
-      header: 'Enter the nick name for this resume',
-    });
-  }
+  //   const ref = this.dialog.open(NickNameComponent, {
+  //     data: {
+  //       payments: true,
+  //       resumeName: resumeName,
+  //       candidateImage: this.candidateImageUrl,
+  //       candidates: this.candidates,
+  //     },
+  //     closable: true,
+  //     width: '30%',
+  //     header: 'Enter the nick name for this resume',
+  //   });
+  // }
   
 
   createResume(resumeName: any) {

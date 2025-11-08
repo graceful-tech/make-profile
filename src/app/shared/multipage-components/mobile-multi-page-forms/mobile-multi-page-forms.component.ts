@@ -1279,7 +1279,7 @@ export class MobileMultiPageFormsComponent {
           },
           error: (err) => {
             console.error('Error checking mobile number:', err);
-            resolve(false); // treat error as "not valid"
+            resolve(false); 
           },
         });
       } else {

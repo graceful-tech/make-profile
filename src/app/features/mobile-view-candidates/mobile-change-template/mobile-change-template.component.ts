@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Route, Router } from '@angular/router';
+import { GlobalService } from 'src/app/services/global.service';
 
 @Component({
   selector: 'app-mobile-change-template',
@@ -21,11 +22,10 @@ export class MobileChangeTemplateComponent {
 
   selectedResume: any = null;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private gs: GlobalService) {}
 
   goBack(): void {
-
-     this.router.navigate(['mob-candidate/create-resume']);
+    this.router.navigate(['mob-candidate/create-resume']);
   }
 
   openPreview(resume: any): void {
@@ -36,8 +36,10 @@ export class MobileChangeTemplateComponent {
     this.selectedResume = null;
   }
 
-  changeTemplate(templateName: any) {
-    localStorage.setItem('templateName', templateName);
+  async changeTemplate(templateName: any) {
+    this.gs.setResumeName(templateName);
+
+    await localStorage.setItem('templateName', templateName);
 
     this.router.navigate(['mob-candidate/create-resume']);
   }

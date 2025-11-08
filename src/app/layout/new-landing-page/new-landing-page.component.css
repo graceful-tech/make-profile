@@ -1200,11 +1200,17 @@
 
 @media (max-width: 575px) {
   .u-section-7 {
-    min-height: 934px;
+    min-height: 234px;
   }
 
   .u-section-7 .u-text-2 {
     margin-right: 29px;
+  }
+
+  .u-section-7 .u-image-1 {
+    margin-top: 0;
+    margin-bottom: 40px;
+    min-height: 224px;
   }
 }
 .u-section-8 {
@@ -2476,9 +2482,7 @@
 .make-profile-image img {
   max-width: 10%;
   border-radius: 16px;
- }
-
-
+}
 
 @media (min-width: 1200px) {
   /* .hero-image img {
@@ -2522,11 +2526,11 @@
     margin-top: 20px;
   }
 
-   .make-profile-image  {
+  .make-profile-image {
     max-width: 100%;
     border-radius: 16px;
     margin-top: 40px;
-   }
+  }
 }
 
 @media (max-width: 700px) {
@@ -2540,8 +2544,7 @@
   .make-profile-image img {
     max-width: 40%;
     border-radius: 16px;
-   }
-
+  }
 }
 /* Mobile devices */
 @media (max-width: 600px) {
