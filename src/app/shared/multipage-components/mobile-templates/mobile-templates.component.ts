@@ -113,7 +113,7 @@ export class MobileTemplatesComponent {
 
     this.gs.setResumeName(templateName);
 
-    this.router.navigate(['get-details-using-ai']);
+    this.router.navigate(['choose-direction']);
   }
 
   backToCandidates() {

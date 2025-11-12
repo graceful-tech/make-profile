@@ -78,7 +78,7 @@ export class ResumeTemplateComponent {
   ngOnInit() {
 
      if (this.isMobileDevice()) {
-      // redirect to mobile login if mobile
+       
       this.router.navigate(['/resume-templates']);
     }
 
@@ -132,7 +132,7 @@ export class ResumeTemplateComponent {
 
     this.gs.setResumeName(resumeName);
 
-    this.router.navigate(['enter-details']);
+    this.router.navigate(['choose-direction']);
   }
 
   getCandidateById(id: any) {

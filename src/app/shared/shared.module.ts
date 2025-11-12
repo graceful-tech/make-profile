@@ -48,6 +48,11 @@ import { ScrollAnimateDirectiveSection4 } from '../services/scroll-animated-sect
 import { ScrollAnimateDirectiveSection1 } from '../services/scroll-section-part1';
 import { ScrollFadeDirectiveFade } from '../services/scoll-section-upward';
 import { ScrollingModule } from '@angular/cdk/scrolling';
+import { LoginReminderPopupComponent } from './popup/login-reminder-popup/login-reminder-popup.component';
+import { MobileLoginReminderPopupComponent } from './popup/mobile-login-reminder-popup/mobile-login-reminder-popup.component';
+import { SelectUserDecisionComponent } from './custom-landing/select-user-decision/select-user-decision.component';
+import { FresherFormPageComponent } from './custom-landing/fresher-form-page/fresher-form-page.component';
+import { MobileFresherFormPageComponent } from './custom-landing/mobile-fresher-form-page/mobile-fresher-form-page.component';
 
 @NgModule({
   declarations: [
@@ -87,6 +92,11 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
     ScrollAnimateDirectiveSection4,
     ScrollAnimateDirectiveSection1,
     ScrollFadeDirectiveFade,
+    LoginReminderPopupComponent,
+    MobileLoginReminderPopupComponent,
+    SelectUserDecisionComponent,
+    FresherFormPageComponent,
+    MobileFresherFormPageComponent
   ],
   imports: [
     CommonModule,
@@ -151,6 +161,11 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
     ScrollAnimateDirectiveSection1,
     ScrollFadeDirectiveFade,
     ScrollingModule,
+    LoginReminderPopupComponent,
+    MobileLoginReminderPopupComponent,
+    SelectUserDecisionComponent,
+    FresherFormPageComponent,
+    MobileFresherFormPageComponent
   ],
 })
 export class SharedModule {}

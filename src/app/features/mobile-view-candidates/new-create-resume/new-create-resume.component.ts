@@ -131,7 +131,7 @@ export class NewCreateResumeComponent {
   htmlcontent: any;
   arrayBuffer: any;
   isPreview: boolean = false;
-  addAdditoinalDetail:boolean = false;
+  addAdditoinalDetail: boolean = false;
 
   isGettingContent: boolean = false;
   skills: Array<any> = [];
@@ -1025,7 +1025,7 @@ export class NewCreateResumeComponent {
       this.showError = true;
       this.toast.showToast('error', 'Enter All Mandatory Fields');
 
-        const firstInvalidControl: HTMLElement =
+      const firstInvalidControl: HTMLElement =
         this.elRef.nativeElement.querySelector(
           'form .ng-invalid[formcontrolname]'
         );
@@ -1357,11 +1357,15 @@ export class NewCreateResumeComponent {
       });
     }
 
-    if (candidate.experiences?.some((e) => e && e.companyName.trim())) {
+    if (candidate.experiences?.some((e) => e && e?.companyName?.trim())) {
       this.patchExperiences(candidate.experiences);
     } else {
+      candidate.fresher = true;
+
       if (
-        candidate?.collegeProject.some((c) => c && c.collegeProjectName.trim())
+        candidate?.collegeProject.some(
+          (c) => c && c?.collegeProjectName?.trim()
+        )
       ) {
         const collegeProjectFromArray = this.candidateForm.get(
           'collegeProject'
@@ -2206,8 +2210,7 @@ export class NewCreateResumeComponent {
     this.router.navigate(['mob-candidate/change-template']);
   }
 
-   onCheckboxChange(event: any) {
+  onCheckboxChange(event: any) {
     this.addAdditoinalDetail = event.checked;
-   
   }
 }

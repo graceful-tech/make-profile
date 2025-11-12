@@ -12,6 +12,7 @@ import { PaymentService } from 'src/app/services/payment.service';
 import { LoaderService } from 'src/app/services/loader.service';
 import { ToastService } from 'src/app/services/toast.service';
 import { MobileMessageComponent } from '../../mobile-message/mobile-message.component';
+import { MobileLoginReminderPopupComponent } from '../../popup/mobile-login-reminder-popup/mobile-login-reminder-popup.component';
 
 @Component({
   selector: 'app-mobile-details-dill-directly',
@@ -114,14 +115,13 @@ export class MobileDetailsDillDirectlyComponent {
           this.ngxLoaderStop();
 
           const mobile = response?.mobileNumber;
-
+          this.candidates = response;
           let valid = true;
           if (mobile !== null && mobile !== undefined) {
             valid = await this.checkIfDetailsExists(mobile);
           }
 
           if (valid) {
-            this.candidates = response;
             this.gs.setCandidateDetails(this.candidates);
 
             if (this.templateName === null || this.templateName === undefined) {
@@ -133,8 +133,8 @@ export class MobileDetailsDillDirectlyComponent {
 
             this.router.navigate(['resume-details']);
           } else {
-              this.gs.showMessage('Note', 'Your Mobile Number Already Have an Account');
-               this.multipartFile.remove;
+            this.openPopupMessage(this.candidates?.name);
+            this.multipartFile.remove;
           }
         } else {
           this.ngxLoaderStop();
@@ -157,7 +157,17 @@ export class MobileDetailsDillDirectlyComponent {
     });
   }
 
- 
+  openPopupMessage(name: any) {
+    this.dialog.open(MobileLoginReminderPopupComponent, {
+      data: {
+        name: name,
+      },
+      header: '',
+      width: '400px',
+      styleClass: 'custom-popup',
+      closable: false,
+    });
+  }
 
   enterDetails() {
     if (this.templateName === null || this.templateName === undefined) {

@@ -1,0 +1,16 @@
+<div class="p-dialog-content">
+  <span class="Heading" style="font-weight: bold">Dear {{ name }}</span>
+
+  <br />
+
+  <p>You have already created account, <b>Please Login</b></p>
+  <p>
+    <b>By Default :</b> Username and Password will be your mobile number until
+    you change password
+  </p>
+</div>
+
+<div class="p-dialog-footer">
+  <button class="close" (click)="closePopup()">Close</button>
+  <button class="login" (click)="Login()">Login</button>
+</div>

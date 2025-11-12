@@ -1,0 +1,49 @@
+.message {
+  padding: 0rem 0rem 1.5rem 0rem;
+}
+
+.button-wrapper {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.Heading {
+  font-weight: bold;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.p-dialog-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.close {
+  border: none;
+  border-radius: 10px;
+  padding: 7px 12px;
+  color: white;
+  background: rgb(44, 113, 224);
+}
+
+.close:hover {
+  transform: scale(1);
+  background: rgb(5, 34, 81);
+  color: blacks;
+}
+
+.login {
+  border: none;
+  border-radius: 10px;
+  padding: 7px 12px;
+  color: rgb(255, 254, 254);
+  background: rgb(3, 178, 155);
+}
+
+.login:hover {
+  transform: scale(1);
+  background: rgb(1, 74, 65);
+}

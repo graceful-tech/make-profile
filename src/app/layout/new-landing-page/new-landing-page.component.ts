@@ -74,7 +74,7 @@ export class NewLandingPageComponent implements AfterViewInit {
   }
 
   selectTemplate(templateName: any) {
-    this.router.navigate(['/select-template']);
+    // this.router.navigate(['/select-template']);
 
     if (this.isMobileDevice()) {
       localStorage.setItem('templateName', templateName);

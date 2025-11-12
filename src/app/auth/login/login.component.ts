@@ -19,7 +19,7 @@ export class LoginComponent {
   loginForm!: FormGroup;
   showError = false;
   loadingFlag: boolean = false;
-  loginType: string | null = null;
+  loginType: string ='mobile'
   error!: String;
   loginError!: String;
   showPassword: boolean = false;

@@ -17,6 +17,9 @@ import { MobileMultiPageFormsComponent } from './shared/multipage-components/mob
 import { MobileTemplatesComponent } from './shared/multipage-components/mobile-templates/mobile-templates.component';
 import { ResumeTemplateComponent } from './shared/multipage-components/resume-template/resume-template.component';
 import { NewLandingPageComponent } from './layout/new-landing-page/new-landing-page.component';
+import { SelectUserDecisionComponent } from './shared/custom-landing/select-user-decision/select-user-decision.component';
+import { FresherFormPageComponent } from './shared/custom-landing/fresher-form-page/fresher-form-page.component';
+import { MobileFresherFormPageComponent } from './shared/custom-landing/mobile-fresher-form-page/mobile-fresher-form-page.component';
 
 const routes: Routes = [
   { path: '', component: NewLandingPageComponent },
@@ -55,6 +58,14 @@ const routes: Routes = [
   { path: 'resume-templates', component: MobileTemplatesComponent },
 
   { path: 'select-template', component: ResumeTemplateComponent },
+
+  { path: 'choose-direction', component: SelectUserDecisionComponent },
+  
+  { path: 'fresher-form', component: FresherFormPageComponent },
+
+  { path: 'mob-fresher-form', component: MobileFresherFormPageComponent },
+
+  
 
   {
     path: 'candidate',

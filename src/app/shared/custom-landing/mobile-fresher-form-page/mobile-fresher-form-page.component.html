@@ -1,4 +1,183 @@
-<div class="profile-wrapper">
+<div class="form-wrapper" [class.shift-up]="showOtherFields"  *ngIf="step === 1">
+  <form
+    class="simple-form"
+    #resumeForm="ngForm"
+    (ngSubmit)="submitForm(resumeForm)"
+  >
+    <div class="form-group">
+      <label>What job are you looking for?</label>
+
+      <div class="input-row">
+        <div class="input-container">
+          <input
+            type="text"
+            placeholder="e.g. Frontend Developer, Nurse, Accountant"
+            [(ngModel)]="jobRole"
+            name="jobRole"
+            required
+            #jobRoleField="ngModel"
+            (input)="onJobInput()"
+            (focus)="showSuggestions = true"
+            (blur)="hideSuggestionsWithDelay()"
+          />
+
+          <ul *ngIf="filteredJobs.length && showSuggestions" class="dropdown">
+            <li *ngFor="let job of filteredJobs" (mousedown)="selectJob(job)">
+              {{ job }}
+            </li>
+          </ul>
+
+          <div
+            *ngIf="jobRoleField.invalid && jobRoleField.touched"
+            class="error"
+          >
+            Job role is required.
+          </div>
+        </div>
+
+        <button
+          *ngIf="!jobRoleEntered && jobRole && jobRole.trim().length > 0"
+          type="button"
+          class="next-btn"
+          (click)="nextStep(jobRoleField)"
+          [disabled]="!jobRole.trim()"
+        >
+          Next
+        </button>
+      </div>
+    </div>
+
+    <div *ngIf="showOtherFields">
+      <div class="form-group">
+        <label>What are your key skills?</label>
+        <div class="input-row">
+          <div class="input-container">
+            <tag-input
+              [separatorKeyCodes]="[13, 188]"
+              [theme]="'modern'"
+              [addOnBlur]="true"
+              [trimTags]="true"
+              [editable]="true"
+              [modelAsStrings]="true"
+              #skillsField="ngModel"
+              [disabled]="jobRole.trim().length > 0 && jobRoleEntered"
+              [(ngModel)]="skills"
+              name="skills"
+              placeholder="e.g. Angular, Java, Excel"
+            ></tag-input>
+
+            <div
+              *ngIf="skillsField.invalid && skillsField.touched"
+              class="error"
+            >
+              Skills are required.
+            </div>
+          </div>
+
+          <button
+            *ngIf="!hideSkillbutton"
+            type="button"
+            class="next-btn"
+            (click)="hideBUtton('skills')"
+            [disabled]="!skills || skills.length === 0"
+          >
+            Next
+          </button>
+        </div>
+
+        <div *ngIf="showAllFields">
+          <div class="form-group">
+            <label>Your Full Name</label>
+            <input
+              type="text"
+              placeholder="e.g. Keerthi Raj"
+              [(ngModel)]="name"
+              name="name"
+              required
+              minlength="3"
+              #nameField="ngModel"
+            />
+            <div *ngIf="nameField.invalid && nameField.touched" class="error">
+              Name is required
+            </div>
+          </div>
+
+          <!-- Mobile Number Field -->
+          <div class="form-group">
+            <label>Mobile Number</label>
+            <input
+              type="tel"
+              placeholder="e.g. 9876543210"
+              [(ngModel)]="mobile"
+              name="mobile"
+              required
+              maxlength="10"
+              pattern="^[0-9]{10}$"
+              #mobileField="ngModel"
+              [ngModelOptions]="{ standalone: true }"
+            />
+            <div
+              *ngIf="mobileField.invalid && mobileField.touched"
+              class="error"
+            >
+              Mobile number is required
+            </div>
+          </div>
+
+          <!-- Email Field -->
+          <div class="form-group">
+            <label>Email</label>
+            <input
+              type="email"
+              placeholder="e.g. keerthi@gmail.com"
+              [(ngModel)]="email"
+              name="email"
+              required
+              email
+              #emailField="ngModel"
+            />
+            <div *ngIf="emailField.invalid && emailField.touched" class="error">
+              Enter a valid email address.
+            </div>
+          </div>
+
+          <!-- Gender Dropdown -->
+          <div class="form-group">
+            <label>Gender</label>
+            <select
+              [(ngModel)]="gender"
+              name="gender"
+              required
+              #genderField="ngModel"
+              placeholder="Select"
+            >
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
+            <div
+              *ngIf="genderField.invalid && genderField.touched"
+              class="error"
+            >
+              Please select your gender.
+            </div>
+          </div>
+
+          <div class="step1btn">
+            <button
+              type="submit"
+              class="step-submit-btn"
+              [disabled]="!resumeForm.valid"
+            >
+              Submit
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="profile-wrapper" *ngIf="step > 1">
   <!-- Back button -->
   <!-- <button class="home" (click)="goHome()">
     <i class="fa fa-home"></i> Go Back
@@ -32,138 +211,7 @@
     </div>
   </div>
 
-  <!-- Form -->
   <form [formGroup]="candidateForm">
-    <!-- Step 1 Example (Personal Details) -->
-    <div *ngIf="step === 1">
-      <h2 class="section-heading">Personal Details</h2>
-      <div class="grid">
-        <div class="col-12 md:col-3">
-          <div class="field-wrapper">
-            <label class="required">Mobile Number</label>
-            <div class="input-wrapper">
-              <input
-                type="text"
-                pKeyFilter="int"
-                [maxlength]="10"
-                pInputText
-                formControlName="mobileNumber"
-                (blur)="checkIfDetailsExists(candidateForm.value.mobileNumber)"
-                (keyup.enter)="
-                  checkIfDetailsExists(candidateForm.value.mobileNumber)
-                "
-              />
-            </div>
-          </div>
-
-          <!-- Required validation -->
-          <small
-            class="error-message"
-            *ngIf="
-              candidateForm.get('mobileNumber')?.hasError('required') &&
-              showError
-            "
-          >
-            Mobile Number is required
-          </small>
-
-          <small
-            class="error-message"
-            *ngIf="
-              candidateForm.get('mobileNumber')?.hasError('minlength') &&
-              showError
-            "
-          >
-            Mobile Number must be 10 digits
-          </small>
-
-          <small
-            class="error-message"
-            *ngIf="candidateForm.get('mobileNumber')?.hasError('mobileExists')"
-          >
-            You have already signed-up ,create resume via sign-in
-          </small>
-        </div>
-
-        <div class="col-12 md:col-3">
-          <div class="field-wrapper">
-            <label class="required">Name</label>
-            <div class="input-wrapper">
-              <input type="text" pInputText formControlName="name" />
-            </div>
-          </div>
-          <small
-            class="error-message"
-            *ngIf="candidateForm.controls['name'].invalid && showError"
-          >
-            Name is required</small
-          >
-        </div>
-
-        <div class="col-12 md:col-3">
-          <div class="field-wrapper">
-            <label class="required">Email</label>
-            <div class="input-wrapper">
-              <input type="text" pInputText formControlName="email" />
-            </div>
-          </div>
-          <small
-            class="error-message"
-            *ngIf="candidateForm.controls['email'].invalid && showError"
-          >
-            Email is required</small
-          >
-        </div>
-
-        <div class="col-12 md:col-3">
-          <div class="field-wrapper">
-            <label class="required">Gender</label>
-            <div class="input-wrapper">
-              <p-dropdown
-                [options]="genderList"
-                optionLabel="displayValue"
-                optionValue="dataValue"
-                placeholder="Select Gender"
-                formControlName="gender"
-              >
-              </p-dropdown>
-            </div>
-          </div>
-          <small
-            class="error-message"
-            *ngIf="candidateForm.controls['gender'].invalid && showError"
-          >
-            Gender is required</small
-          >
-        </div>
-
-        <div class="col-12">
-          <div class="field-wrapper">
-            <label [ngClass]="{ required: isRequired('skills') }">Skills</label>
-            <div class="input-wrapper">
-              <tag-input
-                formControlName="skills"
-                [separatorKeyCodes]="[13, 188]"
-                [theme]="'modern'"
-                placeholder="Type and press Enter or Comma"
-                [addOnBlur]="true"
-                [trimTags]="true"
-                [editable]="true"
-              >
-              </tag-input>
-            </div>
-          </div>
-          <small
-            class="error-message"
-            *ngIf="candidateForm.controls['skills'].invalid && showError"
-          >
-            Skills is required</small
-          >
-        </div>
-      </div>
-    </div>
-
-    <!-- Step 2 Example (Education) -->
     <div *ngIf="step === 2">
       <h2 class="section-heading">Education</h2>
 
