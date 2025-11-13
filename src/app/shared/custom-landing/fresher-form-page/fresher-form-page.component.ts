@@ -99,10 +99,15 @@ export class FresherFormPageComponent {
   additionalDetailsForm: any;
   showExperienceError: boolean = false;
   templateName: any;
-  showOtherFields: boolean = false;
+  showSkillFields: boolean = false;
   hideSkillbutton: boolean = false;
   showAllFields: boolean = false;
+  resume: any;
+  showUploadResume: boolean = false;
+  showSuggestJonFields: boolean = false;
+  selectedResumeOption: 'Yes' | 'No' | null = null;
 
+  existingResume = '';
   jobRole = '';
   skills = '';
   name = '';
@@ -140,7 +145,7 @@ export class FresherFormPageComponent {
     this.getLanguages();
     this.getMaritalStatus();
     this.getFieldOfStudy();
-    this.getStateNames();
+    // this.getStateNames();
     this.getNationalityList();
 
     this.gs.resumeName$.subscribe((response) => {
@@ -174,7 +179,6 @@ export class FresherFormPageComponent {
   }
 
   selectJob(job: string) {
-    localStorage.setItem('userJobInterest',job);
     this.jobRole = job;
     this.showSuggestions = false;
   }
@@ -189,7 +193,7 @@ export class FresherFormPageComponent {
     if (jobRoleField.valid) {
       this.jobRoleEntered = true;
       // this.showSuggestions = false;
-      this.showOtherFields = true;
+      this.showSkillFields = true;
     } else {
       jobRoleField.control.markAsTouched();
     }
@@ -198,22 +202,32 @@ export class FresherFormPageComponent {
   hideBUtton(key: any) {
     if (key === 'skills') {
       this.hideSkillbutton = true;
-      this.showAllFields = true
+      this.showAllFields = true;
     }
-    
   }
 
   submitForm(form: NgForm) {
-    if (!form.valid) {
-      this.toast.showToast('error', 'Enter All Mandatory Fields');
+    const isjobRoleValid = this.jobRole?.trim()?.length === 10;
+    const isMobileValid = this.mobile?.trim()?.length === 10;
+    const isEmailValid = this.email.trim()?.length > 0;
+    const isGender = this.email.trim()?.length > 0;
 
+    if (
+      !form.valid ||
+      !isMobileValid ||
+      !isEmailValid ||
+      !isGender ||
+      isjobRoleValid
+    ) {
+      this.toast.showToast('error', 'Enter All Mandatory Fields');
       Object.values(form.controls).forEach((control) =>
         control.markAsTouched()
       );
       return;
-    } else {
-      this.next();
     }
+
+    localStorage.setItem('userJobInterest', this.jobRole);
+    this.next();
   }
 
   ngAfterViewInit() {}
@@ -282,6 +296,26 @@ export class FresherFormPageComponent {
     });
   }
 
+  allowOnlyNumbers(event: KeyboardEvent) {
+    const pattern = /[0-9]/;
+    if (!pattern.test(event.key)) {
+      event.preventDefault();
+    }
+  }
+
+  havingResume(key: any) {
+    if (key === 'Yes') {
+      this.showUploadResume = true;
+      this.showSuggestJonFields = false;
+      this.selectedResumeOption = 'Yes';
+    }
+    if (key === 'No') {
+      this.showUploadResume = false;
+      this.showSuggestJonFields = true;
+      this.selectedResumeOption = 'No';
+    }
+  }
+
   getGenderList() {
     const route = 'value-sets/search-by-code';
     const postData = { valueSetCode: 'GENDER' };
@@ -293,11 +327,10 @@ export class FresherFormPageComponent {
   }
 
   async next() {
+    console.log(this.step + 'haii');
     if (this.step < 5 && this.step > 1 && this.step !== 3) {
       this.step++;
-    }
-
-    if (this.step === 1) {
+    } else if (this.step === 1) {
       const isActive = sessionStorage.getItem('userName');
 
       if (isActive === undefined || isActive === null) {
@@ -314,9 +347,7 @@ export class FresherFormPageComponent {
       } else {
         this.step++;
       }
-    }
-
-    if (this.step === 3) {
+    } else if (this.step === 3) {
       const fresher = this.candidateForm.get('fresher')?.value;
       const experiences = this.candidateForm.get('experiences') as FormArray;
 
@@ -741,7 +772,7 @@ export class FresherFormPageComponent {
         if (response) {
           this.loader.stop();
 
-          this.gs.navigate.next(false);
+          // this.gs.navigate.next(false);
           sessionStorage.setItem('authType', 'custom');
           sessionStorage.setItem('token', response.token);
           sessionStorage.setItem('userName', response.userName);
@@ -1605,18 +1636,12 @@ export class FresherFormPageComponent {
               if (response === true) {
                 resolve(false);
               } else {
-                if (control.hasError('mobileExists')) {
-                  const errors = { ...control.errors };
-                  delete errors['mobileExists'];
-                  control.setErrors(Object.keys(errors).length ? errors : null);
-                }
                 resolve(true);
               }
             }
           },
           error: (err) => {
-            console.error('Error checking mobile number:', err);
-            resolve(false); // treat error as "not valid"
+            resolve(false);
           },
         });
       } else {
@@ -1929,5 +1954,99 @@ export class FresherFormPageComponent {
     if (step === 1) {
       this.step = 1;
     }
+  }
+
+  addAttachment(event: any) {
+    if (this.candidateId !== null && this.candidateId !== undefined) {
+      const confirmDelete = window.confirm(
+        'Your existing details will be updated based on your uploaded resume.'
+      );
+
+      if (confirmDelete && event.target.files[0]) {
+        this.multipartFile = event.target.files[0];
+        this.resume = { fileName: this.multipartFile?.name };
+        this.parseResume();
+      }
+    } else {
+      if (event.target.files[0]) {
+        this.multipartFile = event.target.files[0];
+        this.resume = { fileName: this.multipartFile?.name };
+        this.parseResume();
+      }
+    }
+  }
+
+  parseResume() {
+    this.ngxLoaderStart();
+
+    const route = 'resume-ai/upload-resume';
+
+    const formData = new FormData();
+    formData.append('resume', this.multipartFile);
+
+    this.api.upload(route, formData).subscribe({
+      next: async (response) => {
+        if (response) {
+          this.candidates = response as any;
+          const mobile = response?.mobileNumber;
+
+          let valid = true;
+          if (mobile !== null && mobile !== undefined) {
+            valid = await this.checkIfDetailsExists(mobile);
+          }
+
+          if (valid) {
+            this.showSuggestJonFields = true;
+            this.gs.setCandidateDetails(response);
+            this.patchResponseCandidate(response);
+            this.ngxLoaderStop();
+          } else {
+            this.ngxLoaderStop();
+            this.openPopupMessage(this.candidates?.name);
+            this.resume = null;
+          }
+        } else {
+          this.ngxLoaderStop();
+          this.gs.showMessage(
+            'Note!..',
+            'Error in uploading resume please reupload it '
+          );
+          window.location.reload();
+        }
+        this.ngxLoaderStop();
+      },
+      error: (error) => {
+        this.ngxLoaderStop();
+        this.gs.showMessage(
+          'error',
+          'Error in uploading resume please reupload it '
+        );
+        window.location.reload();
+      },
+    });
+  }
+
+  openPopupMessage(name: any) {
+    this.dialogeService.open(LoginReminderPopupComponent, {
+      data: {
+        name: name,
+      },
+      header: '',
+      width: '400px',
+      styleClass: 'custom-popup',
+      closable: false,
+    });
+  }
+
+  patchResponseCandidate(candidates: any) {
+    this.ngxLoaderStop();
+
+    this.patchCandidateForm(candidates);
+
+    this.name = candidates?.name;
+    this.mobile = candidates?.mobileNumber;
+    this.skills = candidates?.skills;
+    this.gender = candidates?.gender;
+    this.email = candidates?.email;
   }
 }

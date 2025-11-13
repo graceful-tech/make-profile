@@ -541,7 +541,14 @@ export class MobileEditCandidatesComponent {
   getResumeContentFromOpenAi(response: any) {
     this.isUploading = true;
 
-    const route = 'resume/get-content';
+    let job;
+    if (response?.fresher) {
+      job = localStorage.getItem('userJobInterest');
+    } else {
+      job = 'Experience';
+    }
+
+    const route = `resume/get-content?jobFor=${job}`;
     const payload = { ...this.candidates };
 
     this.api.retrieve(route, payload).subscribe({

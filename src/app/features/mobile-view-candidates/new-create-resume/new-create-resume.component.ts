@@ -61,14 +61,7 @@ export class NewCreateResumeComponent {
       'Passionate developer with hands-on experience in Angular, Spring Boot, and MySQL.',
   };
   newonew = 'hai';
-  suggestedSkills = [
-    'Teamwork',
-    'Communication',
-    'Leadership',
-    'Time Management',
-    'Problem Solving',
-    'Adaptability',
-  ];
+
   resumeSkills: any;
   resumeHTML: any;
   resumeHtml: any;
@@ -144,14 +137,13 @@ export class NewCreateResumeComponent {
     private gs: GlobalService,
     private datePipe: DatePipe,
     private dialog: DialogService,
-    private route: ActivatedRoute,
-    private cdr: ChangeDetectorRef,
+
     private router: Router,
     public ref: DynamicDialogRef,
     private loader: MobileLoaderService,
     private toast: ToastService,
     private http: HttpClient,
-    private sanitizer: DomSanitizer,
+
     private elRef: ElementRef
   ) {
     this.gs.candidateDetails$.subscribe((response) => {
@@ -168,8 +160,6 @@ export class NewCreateResumeComponent {
   }
 
   ngOnInit() {
-    this.resumeSkills = this.suggestedSkills;
-
     this.createCandidateForm();
     this.generateYearList();
     this.getGenderList();

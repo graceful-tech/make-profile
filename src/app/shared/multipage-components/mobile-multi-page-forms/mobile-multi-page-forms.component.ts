@@ -215,9 +215,7 @@ export class MobileMultiPageFormsComponent {
   async next() {
     if (this.step < 5 && this.step > 1 && this.step !== 3) {
       this.step++;
-    }
-
-    if (this.step === 1) {
+    } else if (this.step === 1) {
       const isActive = sessionStorage.getItem('userName');
 
       if (isActive === undefined || isActive === null) {
@@ -233,9 +231,7 @@ export class MobileMultiPageFormsComponent {
       } else {
         this.step++;
       }
-    }
-
-    if (this.step === 3) {
+    } else if (this.step === 3) {
       const fresher = this.candidateForm.get('fresher')?.value;
       const experiences = this.candidateForm.get('experiences') as FormArray;
 
@@ -1279,7 +1275,7 @@ export class MobileMultiPageFormsComponent {
           },
           error: (err) => {
             console.error('Error checking mobile number:', err);
-            resolve(false); 
+            resolve(false);
           },
         });
       } else {

@@ -1170,21 +1170,6 @@
         </div>
       </form>
     </div>
-
-    <ng-container *ngIf="showPopup">
-      <app-custom-mobile-message
-        (valueSent)="createResumeAfterPAy($event)"
-        (closePopup)="closePopup($event)"
-      ></app-custom-mobile-message>
-    </ng-container>
-
-    <ng-container *ngIf="showErrorPopup">
-      <app-error-mobile-popup
-        [message]="errorMessage"
-        (closePopupTap)="closePopupTap($event)"
-        [status]="errorStatus"
-      ></app-error-mobile-popup>
-    </ng-container>
   </div>
 
   <div *ngIf="currentTab === 'preview'" class="preview-tab">
@@ -1194,7 +1179,7 @@
 
     <div class="bottom-button-wrapper">
       <button class="create-btn" (click)="createFinalResume()">
-        Create Resume
+        Download Resume
       </button>
       <button class="change-template" (click)="changeTemplate()">
         Change Template
@@ -1202,3 +1187,18 @@
     </div>
   </div>
 </div>
+
+<ng-container *ngIf="showPopup">
+  <app-custom-mobile-message
+    (valueSent)="createResumeAfterPAy($event)"
+    (closePopup)="closePopup($event)"
+  ></app-custom-mobile-message>
+</ng-container>
+
+<ng-container *ngIf="showErrorPopup">
+  <app-error-mobile-popup
+    [message]="errorMessage"
+    (closePopupTap)="closePopupTap($event)"
+    [status]="errorStatus"
+  ></app-error-mobile-popup>
+</ng-container>

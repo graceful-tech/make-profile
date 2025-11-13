@@ -23,17 +23,7 @@ export class SelectUserDecisionComponent {
     if (sourse) {
       this.router.navigate(['mob-fresher-form']);
     } else {
-       this.router.navigate(['fresher-form']);
-    }
-  }
-
-  goToExperienced() {
-    const sourse = this.isMobileDevice();
-
-    if (sourse) {
-      this.router.navigate(['get-details-using-ai']);
-    } else {
-      this.router.navigate(['enter-details']);
+      this.router.navigate(['fresher-form']);
     }
   }
 }

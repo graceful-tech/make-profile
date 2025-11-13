@@ -37,7 +37,7 @@ import { ModelLoginPopupComponent } from '../../popup/model-login-popup/model-lo
 })
 export class MultiPageFormsComponent {
   @Output() closeUploadResume = new EventEmitter<any>();
- 
+
   step = 1; // current step tracker
   candidateForm!: FormGroup;
   genderList: Array<ValueSet> = [];
@@ -215,9 +215,7 @@ export class MultiPageFormsComponent {
   async next() {
     if (this.step < 5 && this.step > 1 && this.step !== 3) {
       this.step++;
-    }
-
-    if (this.step === 1) {
+    } else if (this.step === 1) {
       const isActive = sessionStorage.getItem('userName');
 
       if (isActive === undefined || isActive === null) {
@@ -233,9 +231,7 @@ export class MultiPageFormsComponent {
       } else {
         this.step++;
       }
-    }
-
-    if (this.step === 3) {
+    } else if (this.step === 3) {
       const fresher = this.candidateForm.get('fresher')?.value;
       const experiences = this.candidateForm.get('experiences') as FormArray;
 
@@ -609,7 +605,6 @@ export class MultiPageFormsComponent {
       this.api.retrieve(route, postData).subscribe({
         next: (response) => {
           if (response) {
-            
             this.gs.navigate.next(false);
             sessionStorage.setItem('authType', 'custom');
             sessionStorage.setItem('token', response.token);
@@ -658,7 +653,7 @@ export class MultiPageFormsComponent {
           this.loader.stop();
           if (response) {
             this.loader.stop();
-            
+
             this.gs.navigate.next(false);
             sessionStorage.setItem('authType', 'custom');
             sessionStorage.setItem('token', response.token);
@@ -1567,7 +1562,7 @@ export class MultiPageFormsComponent {
 
     ref.onClose.subscribe(async (response) => {
       const saveCandidate = await this.saveCandidate();
-      
+
       this.closeUploadResume.emit(true);
 
       this.step++;
@@ -1842,7 +1837,7 @@ export class MultiPageFormsComponent {
   }
 
   goHome() {
-      this.router.navigate(['enter-details']);
+    this.router.navigate(['enter-details']);
   }
 
   moveTo(step: any) {

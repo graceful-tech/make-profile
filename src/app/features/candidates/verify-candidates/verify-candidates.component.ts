@@ -1199,7 +1199,15 @@ export class VerifyCandidatesComponent {
 
     this.isUploading = true;
 
-    const route = 'resume/get-content';
+    let job;
+    if (candidateDetails?.fresher) {
+       job = localStorage.getItem('userJobInterest');
+    }
+    else{
+     job = 'Experience'
+    }
+
+    const route = `resume/get-content?jobFor=${job}`;
     const payload = { ...candidateDetails };
 
     this.api.retrieve(route, payload).subscribe({
@@ -1509,7 +1517,6 @@ export class VerifyCandidatesComponent {
           );
 
         if (firstInvalidControl) {
-          
           const parentSection = firstInvalidControl.closest(
             '[id]'
           ) as HTMLElement;
@@ -1521,7 +1528,6 @@ export class VerifyCandidatesComponent {
             });
             parentSection.focus({ preventScroll: true });
           } else {
-            
             firstInvalidControl.scrollIntoView({
               behavior: 'smooth',
               block: 'center',

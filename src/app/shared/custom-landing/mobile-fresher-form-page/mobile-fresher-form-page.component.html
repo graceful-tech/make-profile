@@ -1,10 +1,72 @@
-<div class="form-wrapper" [class.shift-up]="showOtherFields"  *ngIf="step === 1">
-  <form
-    class="simple-form"
-    #resumeForm="ngForm"
-    (ngSubmit)="submitForm(resumeForm)"
-  >
-    <div class="form-group">
+<div class="form-wrapper" [class.shift-up]="showOtherFields" *ngIf="step === 1">
+  <div class="overlay" *ngIf="isUploading">
+    <div class="spinner-container">
+      <mat-spinner
+        [diameter]="80"
+        strokeWidth="5"
+        class="custom-blue"
+      ></mat-spinner>
+      <p class="loading-text">
+        Analysing Resume<span class="dot dot1">.</span
+        ><span class="dot dot2">.</span><span class="dot dot3">.</span>
+      </p>
+    </div>
+  </div>
+  <form class="simple-form" #resumeForm="ngForm">
+
+     <div class="form-group">
+      <label>Do you have existing resume?</label>
+
+      <div class="input-row">
+        <div
+          class="input-container"
+          style="display: flex; gap: 13px; justify-content: flex-start"
+        >
+          <button
+            class="yesBtn"
+            (click)="havingResume('Yes')"
+            [class.btnactive]="selectedResumeOption === 'Yes'"
+            [class.btninactive]="selectedResumeOption === 'No'"
+          >
+            Yes
+          </button>
+          <button
+            class="noBtn"
+            (click)="havingResume('No')"
+            [class.btnactive]="selectedResumeOption === 'No'"
+            [class.btninactive]="selectedResumeOption === 'Yes'"
+          >
+            No
+          </button>
+        </div>
+      </div>
+    </div>
+
+ <div class="form-group" *ngIf="showUploadResume">
+      <label>Upload your old resume here</label>
+      <div class="upload-container">
+        <input
+          type="file"
+          #attachment
+          style="display: none"
+          (change)="addAttachment($event)"
+          accept=".doc, .docx, .pdf"
+        />
+        <div class="upload-box">
+          <p *ngIf="!resume?.fileName"></p>
+          <button class="browse-btn" (click)="attachment.click()">
+            Upload Resume
+          </button>
+          <div *ngIf="resume?.fileName" class="uploaded-file mt-3">
+            <i class="pi pi-paperclip mr-2"></i>
+            <span>{{ resume?.fileName }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="form-group" *ngIf="showSuggestJonFields">
       <label>What job are you looking for?</label>
 
       <div class="input-row">
@@ -49,7 +111,7 @@
 
     <div *ngIf="showOtherFields">
       <div class="form-group">
-        <label>What are your key skills?</label>
+        <label>Add / Edit Your Skills</label>
         <div class="input-row">
           <div class="input-container">
             <tag-input
@@ -113,8 +175,8 @@
               required
               maxlength="10"
               pattern="^[0-9]{10}$"
+              (keypress)="allowOnlyNumbers($event)"
               #mobileField="ngModel"
-              [ngModelOptions]="{ standalone: true }"
             />
             <div
               *ngIf="mobileField.invalid && mobileField.touched"
@@ -151,6 +213,7 @@
               #genderField="ngModel"
               placeholder="Select"
             >
+             <option value="" disabled selected>Select</option>
               <option value="Male">Male</option>
               <option value="Female">Female</option>
             </select>
@@ -167,8 +230,9 @@
               type="submit"
               class="step-submit-btn"
               [disabled]="!resumeForm.valid"
+              (click)="submitForm(resumeForm)"
             >
-              Submit
+              Next
             </button>
           </div>
         </div>

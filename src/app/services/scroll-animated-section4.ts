@@ -1,40 +1,49 @@
-import { Directive, ElementRef, Input, AfterViewInit, Renderer2, NgZone } from '@angular/core';
+import { Directive, ElementRef, Input, AfterViewInit, Renderer2, NgZone, OnDestroy } from '@angular/core';
 
 @Directive({
   selector: '[appScrollAnimatesection4]'
 })
-export class ScrollAnimateDirectiveSection4 implements AfterViewInit {
-   @Input() animationName: string = 'slideInRight';
-  @Input() animationDuration: number = 1000; // ms
-  @Input() animationDelay: number = 0; // ms
+export class ScrollAnimateDirectiveSection4 implements AfterViewInit, OnDestroy {
+
+  @Input() animationName: string = 'slideInRight';
+  @Input() animationDuration: number = 1000;
+  @Input() animationDelay: number = 0;
+
+  private scrollHandler!: () => void;
 
   constructor(private el: ElementRef, private renderer: Renderer2, private ngZone: NgZone) {}
 
   ngAfterViewInit(): void {
-    this.renderer.setStyle(this.el.nativeElement, 'opacity', '0');
-    this.renderer.setStyle(this.el.nativeElement, 'will-change', 'transform');
+  this.renderer.setStyle(this.el.nativeElement, 'opacity', '0');
 
-    this.ngZone.runOutsideAngular(() => {
-      const handleScroll = () => {
-        const rect = this.el.nativeElement.getBoundingClientRect();
-        const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+  this.ngZone.runOutsideAngular(() => {
+    this.scrollHandler = () => this.checkAndAnimate();
 
-        if (rect.top <= windowHeight - 50 && rect.bottom >= 0) {
-          this.renderer.setStyle(this.el.nativeElement, 'opacity', '1');
-          this.renderer.setStyle(
-            this.el.nativeElement,
-            'animation',
-            `${this.animationName} ${this.animationDuration}ms ease forwards`
-          );
-          this.renderer.setStyle(this.el.nativeElement, 'animation-delay', `${this.animationDelay}ms`);
-        } else {
-          this.renderer.setStyle(this.el.nativeElement, 'opacity', '0');
-          this.renderer.setStyle(this.el.nativeElement, 'animation', 'none');
-        }
-      };
+    window.addEventListener('scroll', this.scrollHandler, { passive: true });
 
-      window.addEventListener('scroll', handleScroll, { passive: true });
-      handleScroll();
-    });
+     setTimeout(() => this.checkAndAnimate(), 200);
+  });
+}
+
+private checkAndAnimate() {
+  const rect = this.el.nativeElement.getBoundingClientRect();
+  const windowHeight = window.innerHeight;
+
+  if (rect.top <= windowHeight - 50 && rect.bottom >= 0) {
+    this.renderer.setStyle(this.el.nativeElement, 'opacity', '1');
+    this.renderer.setStyle(
+      this.el.nativeElement,
+      'animation',
+      `${this.animationName} ${this.animationDuration}ms ease forwards`
+    );
+    this.renderer.setStyle(this.el.nativeElement, 'animation-delay', `${this.animationDelay}ms`);
   }
-}   
+}
+
+
+  ngOnDestroy(): void {
+    if (this.scrollHandler) {
+      window.removeEventListener('scroll', this.scrollHandler);
+    }
+  }
+}

@@ -1139,6 +1139,8 @@ export class PreviewAndCreateResumeComponent {
     if (candidate.experiences?.some((e) => e && e.companyName.trim())) {
       this.patchExperiences(candidate.experiences);
     } else {
+
+      candidate.fresher = true;
       if (
         candidate?.collegeProject.some((c) => c && c.collegeProjectName.trim())
       ) {
