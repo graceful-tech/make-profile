@@ -1,5 +1,10 @@
 import { DatePipe } from '@angular/common';
-import { ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  ViewChild,
+} from '@angular/core';
 import {
   AbstractControl,
   FormArray,
@@ -368,11 +373,13 @@ export class CandidatesDetailsComponent {
               'yyyy-MM-dd'
             );
 
-           const responsibilities = Array.isArray(exp.responsibilities)
-           ? exp.responsibilities.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ')
-            : exp.responsibilities;
-
-
+            const responsibilities = Array.isArray(exp.responsibilities)
+              ? exp.responsibilities
+                  .map((r: any) =>
+                    typeof r === 'string' ? r : r.task || r.value || ''
+                  )
+                  .join(', ')
+              : exp.responsibilities;
 
             let projects = exp.projects || [];
             const hasEmptyProjectName = projects.some(
@@ -385,10 +392,12 @@ export class CandidatesDetailsComponent {
               projects = projects.map((proj: any) => ({
                 ...proj,
                 projectSkills: Array.isArray(proj.projectSkills)
-           ? proj.projectSkills.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ')
-            : proj.projectSkills,
-
-                      
+                  ? proj.projectSkills
+                      .map((r: any) =>
+                        typeof r === 'string' ? r : r.task || r.value || ''
+                      )
+                      .join(', ')
+                  : proj.projectSkills,
               }));
             }
 
@@ -515,9 +524,15 @@ export class CandidatesDetailsComponent {
             payload.collegeProject = payload.collegeProject.map(
               (project: any) => ({
                 ...project,
-               collegeProjectSkills:  Array.isArray(project.collegeProjectSkills)
-           ? project.collegeProjectSkills.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ')
-            : project.collegeProjectSkills,
+                collegeProjectSkills: Array.isArray(
+                  project.collegeProjectSkills
+                )
+                  ? project.collegeProjectSkills
+                      .map((r: any) =>
+                        typeof r === 'string' ? r : r.task || r.value || ''
+                      )
+                      .join(', ')
+                  : project.collegeProjectSkills,
               })
             );
           }
@@ -540,11 +555,11 @@ export class CandidatesDetailsComponent {
             );
           }
 
-         this.toast.showToast('success','Created Successfully')
+          this.toast.showToast('success', 'Created Successfully');
         },
         error: (error) => {
           this.dataLoaded = true;
-           this.toast.showToast('error','Error in Creating ')
+          this.toast.showToast('error', 'Error in Creating ');
         },
       });
       this.dataLoaded = true;
@@ -552,32 +567,29 @@ export class CandidatesDetailsComponent {
       this.showError = true;
       this.candidateForm.markAllAsTouched();
 
-           const firstInvalidControl: HTMLElement =
-          this.el.nativeElement.querySelector(
-            'form .ng-invalid[formcontrolname]'
-          );
+      const firstInvalidControl: HTMLElement =
+        this.el.nativeElement.querySelector(
+          'form .ng-invalid[formcontrolname]'
+        );
 
-        if (firstInvalidControl) {
-          
-          const parentSection = firstInvalidControl.closest(
-            '[id]'
-          ) as HTMLElement;
+      if (firstInvalidControl) {
+        const parentSection = firstInvalidControl.closest(
+          '[id]'
+        ) as HTMLElement;
 
-          if (parentSection) {
-            parentSection.scrollIntoView({
-              behavior: 'smooth',
-              block: 'center',
-            });
-            parentSection.focus({ preventScroll: true });
-          } else {
-            
-            firstInvalidControl.scrollIntoView({
-              behavior: 'smooth',
-              block: 'center',
-            });
-          }
+        if (parentSection) {
+          parentSection.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center',
+          });
+          parentSection.focus({ preventScroll: true });
+        } else {
+          firstInvalidControl.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center',
+          });
         }
-
+      }
 
       this.toast.showToast('error', 'Enter All Mandatory Fields');
     }
@@ -929,16 +941,16 @@ export class CandidatesDetailsComponent {
       this.toast.showToast('error', "you don't have credits, pay to apply");
       this.showPopup = true;
     } else {
-       this.checkScore(jobId, tenant);
+      this.checkScore(jobId, tenant);
     }
   }
 
-  createScoreAfterPay(Event:any){
-    this.toast.showToast('success', "Now you can match with jobs!");
+  createScoreAfterPay(Event: any) {
+    this.toast.showToast('success', 'Now you can match with jobs!');
   }
 
-  closePopup(event:any){
-   this.showPopup = false;
+  closePopup(event: any) {
+    this.showPopup = false;
   }
 
   getAvailableCreditsForDynamic(): Promise<void> {
@@ -1521,7 +1533,6 @@ export class CandidatesDetailsComponent {
   }
 
   ngxLoaderStop() {
-    //this.ngxLoader.stop();
     setTimeout(() => {
       this.isUploading = false;
     }, 2000);
@@ -1529,7 +1540,6 @@ export class CandidatesDetailsComponent {
 
   ngxLoaderStart(message: any) {
     this.isUploading = true;
-    //  this.ngxLoader.start();
     this.customLoaderMessage = message;
   }
 
@@ -2010,5 +2020,3 @@ export class CandidatesDetailsComponent {
     });
   }
 }
-
-

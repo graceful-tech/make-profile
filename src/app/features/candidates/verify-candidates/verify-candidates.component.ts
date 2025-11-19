@@ -37,6 +37,7 @@ import { AddCandidatesComponent } from '../add-candidates/add-candidates.compone
 import { LoaderService } from 'src/app/services/loader.service';
 import { ResumeCreatingComponent } from '../resume-creating/resume-creating.component';
 import { ToastService } from 'src/app/services/toast.service';
+import { LoaderControllerService } from 'src/app/services/loader-controller.service';
 
 @Component({
   selector: 'app-verify-candidates',
@@ -111,9 +112,9 @@ export class VerifyCandidatesComponent {
     private router: Router,
     public ref: DynamicDialogRef,
     private config: DynamicDialogConfig,
-    private loader: LoaderService,
     private toast: ToastService,
-    private el: ElementRef
+    private el: ElementRef,
+    private newLoader: LoaderControllerService
   ) {
     this.candidates = this.config.data?.candidates;
     this.payments = this.config.data?.payments;
@@ -258,7 +259,8 @@ export class VerifyCandidatesComponent {
 
     const isValid = await this.checkCandidateOldDetails();
 
-    this.isUploading = true;
+    // this.isUploading = true;
+    this.startProcess();
 
     if (this.candidateForm.valid) {
       this.dataLoaded = false;
@@ -503,7 +505,8 @@ export class VerifyCandidatesComponent {
           this.candidates = response;
           response.candidateLogo = this.candidateImageUrl;
 
-          this.isUploading = false;
+          // this.isUploading = false;
+          this.stopProcess();
 
           if (isValid) {
             this.getResumeContentFromOpenAi(response);
@@ -514,7 +517,8 @@ export class VerifyCandidatesComponent {
           // this.gs.showMessage('Success', 'Create Successfully');
         },
         error: (error) => {
-          this.isUploading = false;
+          // this.isUploading = false;
+          this.stopProcess();
 
           this.dataLoaded = true;
           this.gs.showMessage(
@@ -525,7 +529,8 @@ export class VerifyCandidatesComponent {
       });
       this.dataLoaded = true;
     } else {
-      this.isUploading = false;
+      // this.isUploading = false;
+      this.stopProcess();
       this.showError = true;
 
       this.candidateForm.markAllAsTouched();
@@ -1153,7 +1158,8 @@ export class VerifyCandidatesComponent {
   }
 
   getCandidates() {
-    this.loader.start();
+   this.newLoader.showLoader(['Please Wait'], 3500);
+
     const route = 'candidate';
     this.api.get(route).subscribe({
       next: (response) => {
@@ -1170,12 +1176,13 @@ export class VerifyCandidatesComponent {
           if (this.candidateId !== null && this.candidateId !== undefined) {
             this.candidateForm.controls['mobileNumber'].disable();
           }
-          this.loader.stop();
+         this.stopProcess();
+          
         }
-        this.loader.stop();
+        this.stopProcess();
       },
       error: (err) => {
-        this.loader.stop();
+          this.stopProcess();
       },
     });
   }
@@ -1197,14 +1204,15 @@ export class VerifyCandidatesComponent {
   getResumeContentFromOpenAi(candidateDetails: any) {
     this.close(this.returnCandidate);
 
-    this.isUploading = true;
+    // this.isUploading = true;
+    this.startProcess();
+    
 
     let job;
     if (candidateDetails?.fresher) {
-       job = localStorage.getItem('userJobInterest');
-    }
-    else{
-     job = 'Experience'
+      job = localStorage.getItem('userJobInterest');
+    } else {
+      job = 'Experience';
     }
 
     const route = `resume/get-content?jobFor=${job}`;
@@ -1213,13 +1221,15 @@ export class VerifyCandidatesComponent {
     this.api.retrieve(route, payload).subscribe({
       next: (response: any) => {
         if (response) {
-          this.isUploading = false;
+          // this.isUploading = false;
+          this.stopProcess();
           const responseCandidate = response as Candidate;
           this.openCreateResumeDialog(responseCandidate);
         }
       },
       error: (error) => {
-        this.isUploading = false;
+        // this.isUploading = false;
+         this.stopProcess();
         this.gs.showMessage('error', error.error?.message);
       },
     });
@@ -1499,14 +1509,16 @@ export class VerifyCandidatesComponent {
             }
           },
           error: (error) => {
-            this.isUploading = false;
+            // this.isUploading = false;
+            this.stopProcess();
 
             this.dataLoaded = true;
           },
         });
         this.dataLoaded = true;
       } else {
-        this.isUploading = false;
+        // this.isUploading = false;
+        this.stopProcess();
         this.showError = true;
 
         this.candidateForm.markAllAsTouched();
@@ -1537,5 +1549,21 @@ export class VerifyCandidatesComponent {
         this.toast.showToast('error', 'Enter All Mandatory Fields');
       }
     });
+  }
+
+  startProcess() {
+    const messages = [
+      'Please wait...',
+      'Verifying Your Details...',
+      'Almost ready...',
+      'Just a moment more...',
+      'Ready to view...',
+    ];
+
+    this.newLoader.showLoader(messages, 3500);
+  }
+
+  stopProcess() {
+    this.newLoader.hideLoader();
   }
 }

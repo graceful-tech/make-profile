@@ -1,0 +1,42 @@
+<!-- Fullscreen blurred overlay -->
+<div class="ul-overlay" *ngIf="show" role="status" aria-live="polite">
+  <div class="ul-panel">
+    <div class="ul-inner" [ngSwitch]="variant">
+
+      <!-- Glass ring spinner -->
+      <div *ngSwitchCase="'glass'" class="glass-wrap" [style.width]="sizePx" [style.height]="sizePx">
+        <div class="glass-ring" [style.borderTopColor]="color" [style.borderRightColor]="color"></div>
+      </div>
+
+      <!-- Neon pulse dot -->
+      <div *ngSwitchCase="'neon'" class="neon-wrap">
+        <div class="neon-dot" [style.width]="sizePx" [style.height]="sizePx" [style.background]="color"></div>
+      </div>
+
+      <!-- Infinity bar -->
+      <div *ngSwitchCase="'infinity'" class="infinity-wrap" [style.width]="widthPx">
+        <div class="inf-shape" [style.borderLeftColor]="color" [style.borderRightColor]="color"></div>
+      </div>
+
+      <!-- Line sweep -->
+      <div *ngSwitchCase="'line'" class="line-wrap" [style.width]="widthPx">
+        <div class="line-sweep" [style.backgroundImage]="'linear-gradient(90deg, transparent, ' + color + ', transparent)'"></div>
+      </div>
+
+      <!-- Bubble dots -->
+      <div *ngSwitchCase="'bubble'" class="bubble-wrap" [style.gap.px]="8">
+        <span class="bubble" [style.width]="(toNumber(size,14)) + 'px'" [style.height]="(toNumber(size,14)) + 'px'" [style.background]="color"></span>
+        <span class="bubble" [style.width]="(toNumber(size,14)) + 'px'" [style.height]="(toNumber(size,14)) + 'px'" [style.background]="color"></span>
+        <span class="bubble" [style.width]="(toNumber(size,14)) + 'px'" [style.height]="(toNumber(size,14)) + 'px'" [style.background]="color"></span>
+      </div>
+
+      <!-- Simple spinner -->
+      <div *ngSwitchCase="'spinner'" class="spinner-wrap" [style.width]="sizePx" [style.height]="sizePx">
+        <div class="spinner-ring" [style.borderTopColor]="color" [style.borderRightColor]="color"></div>
+      </div>
+
+    </div>
+
+    <div class="ul-caption" *ngIf="caption">{{ caption }}</div>
+  </div>
+</div>

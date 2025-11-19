@@ -1,30 +1,4 @@
-<div class="overlay" *ngIf="isPreview">
-  <div class="spinner-container">
-    <mat-spinner
-      [diameter]="80"
-      strokeWidth="5"
-      class="custom-blue"
-    ></mat-spinner>
-    <p class="loading-text">
-      Preview Resume<span class="dot dot1">.</span
-      ><span class="dot dot2">.</span><span class="dot dot3">.</span>
-    </p>
-  </div>
-</div>
-
-<div class="overlay" *ngIf="isGettingContent">
-  <div class="spinner-container">
-    <mat-spinner
-      [diameter]="80"
-      strokeWidth="5"
-      class="custom-blue"
-    ></mat-spinner>
-    <p class="loading-text">
-      Optimizing Content<span class="dot dot1">.</span
-      ><span class="dot dot2">.</span><span class="dot dot3">.</span>
-    </p>
-  </div>
-</div>
+ 
 
 <div class="main-wrapper">
   <div class="resume-preview-wrapper">
@@ -43,58 +17,6 @@
     </div>
 
     <form [formGroup]="candidateForm">
-      <!-- <div class="ai-groups">
-        <div class="form-group" style="padding: 10px 20px">
-          <label><strong>Summary</strong></label>
-          <div class="checkbox-group">
-            <label>
-              <input
-                type="checkbox"
-                [checked]="reduceSummary"
-                (click)="onClick('reduceSummary')"
-              />
-              Reduce Summary
-            </label>
-            <label>
-              <input
-                type="checkbox"
-                [checked]="increaseSummary"
-                (click)="onClick('increaseSummary')"
-              />
-              Increase Summary
-            </label>
-          </div>
-
-          <button class="action-btn" (click)="updateSection('summary')">
-            Get
-          </button>
-        </div>
-        <div class="form-group" style="padding: 10px 20px">
-          <label><strong>Objective</strong></label>
-          <div class="checkbox-group">
-            <label>
-              <input
-                type="checkbox"
-                [checked]="reduceObjective"
-                (click)="onClick('reduceObjective')"
-              />
-              Reduce Objective
-            </label>
-            <label>
-              <input
-                type="checkbox"
-                [checked]="increaseObjective"
-                (click)="onClick('increaseObjective')"
-              />
-              Increase Objective
-            </label>
-          </div>
-          <button class="action-btn" (click)="updateSection('objective')">
-            Get
-          </button>
-        </div>
-      </div> -->
-
       <div class="form-group">
         <label><strong>Add Skills</strong></label>
         <div class="selected-skills">
@@ -221,7 +143,7 @@
         </div>
       </div>
 
-      <div class="overlay" *ngIf="isUploading">
+      <!-- <div class="overlay" *ngIf="isUploading">
         <div class="spinner-container">
           <mat-spinner
             [diameter]="80"
@@ -247,7 +169,7 @@
             ><span class="dot dot2">.</span><span class="dot dot3">.</span>
           </p>
         </div>
-      </div>
+      </div> -->
 
       <div class="wrapper">
         <div class="profile-wrapper">

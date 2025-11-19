@@ -12,6 +12,7 @@ import {
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { GlobalService } from 'src/app/services/global.service';
+import { LoaderControllerService } from 'src/app/services/loader-controller.service';
 
 @Component({
   selector: 'app-new-landing-page',
@@ -33,27 +34,34 @@ export class NewLandingPageComponent implements AfterViewInit {
     { path: './assets/img/Venus.png', name: 'Venus', type: 'Multiple Page' },
     { path: './assets/img/Earth.png', name: 'Earth', type: 'Single Page' },
     { path: './assets/img/Mars.png', name: 'Mars', type: 'Single Page' },
-    {path: './assets/img/Jupiter.png', name: 'Jupiter',  type: 'Multiple Page',},
+    {
+      path: './assets/img/Jupiter.png',
+      name: 'Jupiter',
+      type: 'Multiple Page',
+    },
     { path: './assets/img/Saturn.png', name: 'Saturn', type: 'Multiple Page' },
     { path: './assets/img/Uranus.png', name: 'Uranus', type: 'Multiple Page' },
-    {  path: './assets/img/Neptune.png', name: 'Neptune', type: 'Multiple Page', },
+    {
+      path: './assets/img/Neptune.png',
+      name: 'Neptune',
+      type: 'Multiple Page',
+    },
   ];
 
   observer!: IntersectionObserver;
   private swiper: any;
-   showTour = false;
+  showTour = false;
 
   constructor(
     private ngZone: NgZone,
     private renderer: Renderer2,
     private el: ElementRef,
     private router: Router,
-    private gs: GlobalService
-  ) {
-    
-  }
+    private gs: GlobalService,
+    private loader: LoaderControllerService
+  ) {}
 
-  ngOnInit(){
+  ngOnInit() {
     localStorage.clear();
     
   }
@@ -97,5 +105,35 @@ export class NewLandingPageComponent implements AfterViewInit {
     return /android|iphone|ipad|ipod/i.test(userAgent);
   }
 
-  
+  loading = true;
+
+  messages = [
+    'Please wait…',
+    'Preparing for you…',
+    'Almost ready…',
+    'Just a moment more…',
+    'Ready to view…',
+  ];
+
+  currentMessage = this.messages[0];
+  msgIndex = 0;
+  intervalId: any;
+ 
+
+  startProcess() {
+    const messages = [
+      'Please wait…',
+      'Preparing things for you…',
+      'Almost ready…',
+      'Just a moment more…',
+      'Ready to view…',
+    ];
+
+    this.loader.showLoader(messages, 2000);
+  }
+
+  // manual hide:
+  stopProcess() {
+    this.loader.hideLoader();
+  }
 }

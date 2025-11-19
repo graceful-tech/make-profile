@@ -31,6 +31,7 @@ import { CollegeProject } from 'src/app/models/candidates/college-project';
 import { DatePipe } from '@angular/common';
 import { MobileLoaderService } from 'src/app/services/mobile.loader.service';
 import { ToastService } from 'src/app/services/toast.service';
+import { LoaderControllerService } from 'src/app/services/loader-controller.service';
 
 @Component({
   selector: 'app-mobile-edit-candidates',
@@ -81,23 +82,18 @@ export class MobileEditCandidatesComponent {
   candidatesUpdateData: any;
   resumeName: any;
   nickName: any;
-  isUploading: boolean = false;
+  
 
   constructor(
     private api: ApiService,
     private fb: FormBuilder,
     private gs: GlobalService,
     private datePipe: DatePipe,
-    private dialog: DialogService,
-    private route: ActivatedRoute,
-    private cdr: ChangeDetectorRef,
     private router: Router,
     public ref: DynamicDialogRef,
-    private config: DynamicDialogConfig,
-    private ps: PaymentService,
-    private loader: MobileLoaderService,
     private toast: ToastService,
-    private el: ElementRef
+    private el: ElementRef,
+    private newLoader: LoaderControllerService
   ) {
     this.gs.candidateDetails$.subscribe((response) => {
       if (response !== null) {
@@ -241,7 +237,7 @@ export class MobileEditCandidatesComponent {
   async generatingResume() {
     const isValid = await this.checkCandidateDetailsExistAlready();
 
-    this.isUploading = true;
+    this.startProcess();
     if (this.candidateForm.valid) {
       this.dataLoaded = false;
 
@@ -510,7 +506,7 @@ export class MobileEditCandidatesComponent {
             }
             response.candidateLogo = this.candidateImageUrl;
 
-            this.isUploading = false;
+           this.stopProcess();
 
             if (isValid) {
               this.getResumeContentFromOpenAi(response);
@@ -520,7 +516,7 @@ export class MobileEditCandidatesComponent {
           }
         },
         error: (error) => {
-          this.isUploading = false;
+            this.stopProcess();
           this.dataLoaded = true;
           window.alert('Error in Updating please try again');
           console.log(error);
@@ -528,7 +524,7 @@ export class MobileEditCandidatesComponent {
       });
       this.dataLoaded = true;
     } else {
-      this.isUploading = false;
+        this.stopProcess();
       this.showError = true;
       this.toast.showToast('error', 'Enter All Mandatory Fields');
     }
@@ -539,7 +535,7 @@ export class MobileEditCandidatesComponent {
   }
 
   getResumeContentFromOpenAi(response: any) {
-    this.isUploading = true;
+    this.startProcess();
 
     let job;
     if (response?.fresher) {
@@ -565,14 +561,14 @@ export class MobileEditCandidatesComponent {
           this.candidateId = response.id;
           this.candidates = response;
 
-          this.isUploading = false;
+           this.stopProcess();
 
           this.openCreateResumeDialog(response);
         }
-        this.isUploading = false;
+         this.stopProcess();
       },
       error: (error) => {
-        this.isUploading = false;
+         this.stopProcess();
         this.gs.showMobileMessage('error', error.error?.message);
       },
     });
@@ -1214,7 +1210,7 @@ export class MobileEditCandidatesComponent {
 
   checkCandidateDetailsExistAlready(): Promise<boolean> {
     return new Promise((resolve, reject) => {
-      this.isUploading = true;
+      this.startProcess();
       if (this.candidateForm.valid) {
         this.dataLoaded = false;
 
@@ -1476,13 +1472,13 @@ export class MobileEditCandidatesComponent {
             }
           },
           error: (error) => {
-            this.isUploading = false;
+             this.stopProcess();
             this.dataLoaded = true;
           },
         });
         this.dataLoaded = true;
       } else {
-        this.isUploading = false;
+         this.stopProcess();
         this.showError = true;
 
         const firstInvalidControl: HTMLElement =
@@ -1512,5 +1508,21 @@ export class MobileEditCandidatesComponent {
         this.toast.showToast('error', 'Enter All Mandatory Fields');
       }
     });
+  }
+
+  startProcess() {
+    const messages = [
+      'Please wait...',
+      'Verifying Your Details...',
+      'Almost ready...',
+      'Just a moment more...',
+      'Ready to view...',
+    ];
+
+    this.newLoader.showLoader(messages, 3500);
+  }
+
+  stopProcess() {
+    this.newLoader.hideLoader();
   }
 }

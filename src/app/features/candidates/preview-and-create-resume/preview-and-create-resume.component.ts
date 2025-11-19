@@ -44,6 +44,7 @@ import { CollegeProject } from 'src/app/models/candidates/college-project';
 import { LoaderService } from 'src/app/services/loader.service';
 import { ToastService } from 'src/app/services/toast.service';
 import { Project } from 'src/app/models/candidates/project';
+import { LoaderControllerService } from 'src/app/services/loader-controller.service';
 
 // import * as pdfjsLib from 'pdfjs-dist';
 
@@ -174,9 +175,9 @@ export class PreviewAndCreateResumeComponent {
     public ref: DynamicDialogRef,
     private config: DynamicDialogConfig,
     private ps: PaymentService,
-    private loader: LoaderService,
     private toast: ToastService,
-    private el: ElementRef
+    private el: ElementRef,
+    private newLoader: LoaderControllerService
   ) {
     this.candidates = this.config.data?.candidates;
     this.templateName = this.config.data?.templateName;
@@ -1139,7 +1140,6 @@ export class PreviewAndCreateResumeComponent {
     if (candidate.experiences?.some((e) => e && e.companyName.trim())) {
       this.patchExperiences(candidate.experiences);
     } else {
-
       candidate.fresher = true;
       if (
         candidate?.collegeProject.some((c) => c && c.collegeProjectName.trim())
@@ -1380,7 +1380,7 @@ export class PreviewAndCreateResumeComponent {
   }
 
   async getCandidates(): Promise<void> {
-    this.loader.start();
+    this.startProcess();
 
     return new Promise((resolve, reject) => {
       const route = 'candidate';
@@ -1394,14 +1394,14 @@ export class PreviewAndCreateResumeComponent {
             const candidateClone = JSON.parse(JSON.stringify(candidate));
 
             this.patchCandidateForm(candidateClone);
-            this.loader.stop();
+            this.stopProcess();
             if (
               this.candidates?.summary === null ||
               this.candidates?.careerObjective == null
             ) {
               this.getSummaryAndObjectiveContent();
             } else {
-              this.loader.stop();
+              this.stopProcess();
             }
 
             resolve();
@@ -1493,7 +1493,7 @@ export class PreviewAndCreateResumeComponent {
   }
 
   getResumeContent(content: any) {
-    this.loader.start();
+    this.startProcess();
     const route = `content/openai?content=${content}`;
     this.api.get(route).subscribe({
       next: (response) => {
@@ -1502,12 +1502,12 @@ export class PreviewAndCreateResumeComponent {
           this.candidateForm
             .get('summary')
             ?.setValue(responseContent?.resumeContent);
-          this.loader.stop();
+          this.stopProcess();
           this.getResumeContentObjective('Career Objective');
         }
       },
       error: (error) => {
-        this.loader.stop();
+        this.stopProcess();
         this.dataLoaded = true;
         this.gs.showMobileMessage('Error', 'Please try after some time');
       },
@@ -1515,7 +1515,7 @@ export class PreviewAndCreateResumeComponent {
   }
 
   getResumeContentObjective(content: any) {
-    this.loader.start();
+    this.startProcess();
     const route = `content/openai?content=${content}`;
     this.api.get(route).subscribe({
       next: (response) => {
@@ -1524,11 +1524,11 @@ export class PreviewAndCreateResumeComponent {
           this.candidateForm
             .get('careerObjective')
             ?.setValue(responseContent?.resumeContent);
-          this.loader.stop();
+          this.stopProcess();
         }
       },
       error: (error) => {
-        this.loader.stop();
+        this.stopProcess();
         this.dataLoaded = true;
         this.gs.showMobileMessage('Error', 'Please try after some time');
       },
@@ -1572,12 +1572,12 @@ export class PreviewAndCreateResumeComponent {
   }
 
   getSummaryAndObjectiveContent() {
-    this.loader.start();
+    this.startProcess();
     const route = 'content/get-content';
 
     this.api.get(route).subscribe({
       next: (response) => {
-        this.loader.stop();
+        this.stopProcess();
         if (response) {
           this.summaryObjectiveContent = response;
 
@@ -1590,10 +1590,10 @@ export class PreviewAndCreateResumeComponent {
             ?.setValue(this.summaryObjectiveContent?.careerObjective);
         }
 
-        this.loader.stop();
+        this.stopProcess();
       },
       error: (error) => {
-        this.loader.stop();
+        this.stopProcess();
         this.dataLoaded = true;
       },
     });
@@ -1630,7 +1630,7 @@ export class PreviewAndCreateResumeComponent {
   }
 
   increaseSummaryContent(key: any) {
-    this.isGettingContent = true;
+    this.startLoaderForGettingContent();
     let content = this.candidateForm.get(key)?.value;
 
     if (content == null || content == '') {
@@ -1650,19 +1650,19 @@ export class PreviewAndCreateResumeComponent {
 
           this.candidateForm.get(key)?.setValue(responseContent.summary);
 
-          this.isGettingContent = false;
+          this.stopProcess();
 
           this.updateDetails();
         }
       },
       error: (error) => {
-        this.isGettingContent = false;
+        this.stopProcess();
       },
     });
   }
 
   decreaseSummary(key: any) {
-    this.isGettingContent = true;
+    this.startLoaderForGettingContent();
     let content = this.candidateForm.get(key)?.value;
 
     if (content == null || content == '') {
@@ -1678,21 +1678,22 @@ export class PreviewAndCreateResumeComponent {
     this.api.retrieve(route, payload).subscribe({
       next: (response) => {
         if (response) {
+          this.stopProcess();
           const responseContent = response as any;
 
           this.candidateForm.get(key)?.setValue(responseContent.summary);
-          this.isGettingContent = false;
+
           this.updateDetails();
         }
       },
       error: (error) => {
-        this.isGettingContent = false;
+        this.stopProcess();
       },
     });
   }
 
   increaseProject(experienceIndex: number, projectIndex: number) {
-    this.isGettingContent = true;
+    this.startLoaderForGettingContent();
 
     const projectArray = this.getProjects(experienceIndex);
 
@@ -1714,7 +1715,7 @@ export class PreviewAndCreateResumeComponent {
     this.api.retrieve(route, payload).subscribe({
       next: (response) => {
         if (response) {
-          this.isGettingContent = false;
+          this.stopProcess();
 
           const content = response as any;
 
@@ -1723,19 +1724,19 @@ export class PreviewAndCreateResumeComponent {
             .get('projectDescription')
             ?.setValue(content.summary);
 
-          this.isGettingContent = false;
+          this.stopProcess();
 
           this.updateDetails();
         }
       },
       error: (error) => {
-        this.isGettingContent = false;
+        this.stopProcess();
       },
     });
   }
 
   decreaseProject(experienceIndex: number, projectIndex: number) {
-    this.isGettingContent = true;
+    this.startLoaderForGettingContent();
 
     const projectArray = this.getProjects(experienceIndex);
 
@@ -1763,19 +1764,19 @@ export class PreviewAndCreateResumeComponent {
             .get('projectDescription')
             ?.setValue(content.summary);
 
-          this.isGettingContent = false;
+          this.stopProcess();
 
           this.updateDetails();
         }
       },
       error: (error) => {
-        this.isGettingContent = false;
+        this.stopProcess();
       },
     });
   }
 
   increaseResponsibilities(experienceIndex: number) {
-    this.isGettingContent = true;
+    this.startLoaderForGettingContent();
 
     const res = this.experienceControls
       .at(experienceIndex)
@@ -1819,19 +1820,19 @@ export class PreviewAndCreateResumeComponent {
             control.setValue(updated);
           }
 
-          this.isGettingContent = false;
+          this.stopProcess();
 
           this.updateDetails();
         }
       },
       error: (error) => {
-        this.isGettingContent = false;
+        this.stopProcess();
       },
     });
   }
 
   decreaseResponsibilities(experienceIndex: number) {
-    this.isGettingContent = true;
+    this.startLoaderForGettingContent();
 
     const res = this.experienceControls
       .at(experienceIndex)
@@ -1875,18 +1876,19 @@ export class PreviewAndCreateResumeComponent {
             control.setValue(responsibilities);
           }
 
-          this.isGettingContent = false;
+          this.stopProcess();
 
           this.updateDetails();
         }
       },
       error: (error) => {
-        this.isGettingContent = false;
+        this.stopProcess();
       },
     });
   }
   async previewPdf() {
-    this.isPreview = true;
+    // this.isPreview = true;
+    this.startProcess();
 
     const route = `candidate/get-bytearray?additionalDetails=${this.addAdditoinalDetail}`;
 
@@ -1948,15 +1950,15 @@ export class PreviewAndCreateResumeComponent {
             this.htmlcontent = canvas;
           }
 
-          this.isPreview = false;
+          // this.isPreview = false;
+          this.stopProcess();
         } catch (err) {
-          console.error('PDF Preview Error:', err);
-          this.isPreview = false;
+          this.stopProcess();
         }
       },
       error: (err) => {
         console.error('API Error:', err);
-        this.isPreview = false;
+        this.stopProcess();
       },
     });
   }
@@ -2238,7 +2240,7 @@ export class PreviewAndCreateResumeComponent {
     const stored = JSON.parse(localStorage.getItem('skillsData') || '{}');
 
     if (stored.skills === null || stored.skills === undefined) {
-      this.loader.start();
+      this.startProcess();
       const route = 'content/get-skills-from-ai';
 
       const payload = {
@@ -2247,7 +2249,7 @@ export class PreviewAndCreateResumeComponent {
 
       this.api.retrieve(route, payload).subscribe({
         next: (response) => {
-          this.loader.stop();
+          this.stopProcess();
           if (response) {
             localStorage.setItem('skillsData', JSON.stringify(response));
 
@@ -2256,10 +2258,10 @@ export class PreviewAndCreateResumeComponent {
             this.coreCompentencies = response?.coreCompentencies;
           }
 
-          this.loader.stop();
+          this.stopProcess();
         },
         error: (error) => {
-          this.loader.stop();
+          this.stopProcess();
           this.dataLoaded = true;
         },
       });
@@ -2295,5 +2297,32 @@ export class PreviewAndCreateResumeComponent {
     this.addAdditoinalDetail = event.checked;
 
     this.previewPdf();
+  }
+
+  startLoaderForGettingContent() {
+    const messages = [
+      'Optimizing Content for you...',
+      'Please wait...',
+      'Almost ready...',
+      'Just a moment more...',
+    ];
+
+    this.newLoader.showLoader(messages, 3500);
+  }
+
+  startProcess() {
+    const messages = [
+      'Please wait...',
+      'Preparing things for you...',
+      'Almost ready...',
+      'Just a moment more...',
+      'Ready to view...',
+    ];
+
+    this.newLoader.showLoader(messages, 3500);
+  }
+
+  stopProcess() {
+    this.newLoader.hideLoader();
   }
 }

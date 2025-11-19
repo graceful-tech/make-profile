@@ -53,7 +53,9 @@ import { MobileLoginReminderPopupComponent } from './popup/mobile-login-reminder
 import { SelectUserDecisionComponent } from './custom-landing/select-user-decision/select-user-decision.component';
 import { FresherFormPageComponent } from './custom-landing/fresher-form-page/fresher-form-page.component';
 import { MobileFresherFormPageComponent } from './custom-landing/mobile-fresher-form-page/mobile-fresher-form-page.component';
-
+import { SpinnerLoaderComponent } from './components/spinner-loader/spinner-loader.component';
+import { GlobalLoaderComponent } from './components/global-loader/global-loader.component';
+ 
 @NgModule({
   declarations: [
     MakeProfileDividerComponent,
@@ -96,7 +98,9 @@ import { MobileFresherFormPageComponent } from './custom-landing/mobile-fresher-
     MobileLoginReminderPopupComponent,
     SelectUserDecisionComponent,
     FresherFormPageComponent,
-    MobileFresherFormPageComponent
+    MobileFresherFormPageComponent,
+    SpinnerLoaderComponent,
+    GlobalLoaderComponent
   ],
   imports: [
     CommonModule,
@@ -165,7 +169,9 @@ import { MobileFresherFormPageComponent } from './custom-landing/mobile-fresher-
     MobileLoginReminderPopupComponent,
     SelectUserDecisionComponent,
     FresherFormPageComponent,
-    MobileFresherFormPageComponent
+    MobileFresherFormPageComponent,
+    SpinnerLoaderComponent,
+    GlobalLoaderComponent
   ],
 })
 export class SharedModule {}

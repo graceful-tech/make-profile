@@ -41,6 +41,7 @@ import {
 } from '@angular/platform-browser';
 import { HttpClient } from '@angular/common/http';
 import { PaymentOptionComponent } from 'src/app/features/candidates/payments/payment-option/payment-option.component';
+import { LoaderControllerService } from 'src/app/services/loader-controller.service';
 
 @Component({
   selector: 'app-new-create-resume',
@@ -137,14 +138,12 @@ export class NewCreateResumeComponent {
     private gs: GlobalService,
     private datePipe: DatePipe,
     private dialog: DialogService,
-
     private router: Router,
     public ref: DynamicDialogRef,
     private loader: MobileLoaderService,
     private toast: ToastService,
-    private http: HttpClient,
-
-    private elRef: ElementRef
+    private elRef: ElementRef,
+    private newLoader: LoaderControllerService
   ) {
     this.gs.candidateDetails$.subscribe((response) => {
       if (response !== null) {
@@ -202,7 +201,7 @@ export class NewCreateResumeComponent {
   }
 
   async previewPdf() {
-    this.isPreview = true;
+    this.startProcess();
     const route = `candidate/get-bytearray?additionalDetails=${this.addAdditoinalDetail}`;
 
     if (!this.templateName) {
@@ -263,15 +262,15 @@ export class NewCreateResumeComponent {
             this.htmlcontent = canvas;
           }
 
-          this.isPreview = false;
+          this.stopProcess();
         } catch (err) {
           console.error('PDF Preview Error:', err);
-          this.isPreview = false;
+          this.stopProcess();
         }
       },
       error: (err) => {
         console.error('API Error:', err);
-        this.isPreview = false;
+        this.stopProcess();
       },
     });
   }
@@ -462,7 +461,7 @@ export class NewCreateResumeComponent {
   }
 
   updateCandidate() {
-    this.isPreview = true;
+    this.startProcess();
 
     if (this.candidateForm.valid) {
       this.dataLoaded = false;
@@ -719,13 +718,13 @@ export class NewCreateResumeComponent {
             this.dataLoaded = true;
             this.candidates = response as Candidate;
 
-            this.ngxLoaderStop();
-            this.isPreview = false;
+            this.stopProcess();
+
             this.previewPdf();
           }
         },
         error: (error) => {
-          this.isPreview = false;
+            this.stopProcess();
           this.dataLoaded = true;
           window.alert('Error in creating please try again');
           console.log(error);
@@ -733,7 +732,7 @@ export class NewCreateResumeComponent {
       });
       this.dataLoaded = true;
     } else {
-      this.isPreview = false;
+      this.stopProcess();
       this.showError = true;
       this.toast.showToast('error', 'Enter All Mandatory Fields');
       this.candidateForm.markAllAsTouched();
@@ -741,7 +740,7 @@ export class NewCreateResumeComponent {
   }
 
   createCandidate() {
-    this.ngxLoaderStart();
+    this.startProcess();
 
     if (this.candidateForm.valid) {
       this.dataLoaded = false;
@@ -998,12 +997,12 @@ export class NewCreateResumeComponent {
             this.dataLoaded = true;
             this.candidates = response as Candidate;
 
-            this.ngxLoaderStop();
+            this.stopProcess();
             this.createResume(this.candidates);
           }
         },
         error: (error) => {
-          this.ngxLoaderStop();
+          this.stopProcess();
           this.dataLoaded = true;
           window.alert('Error in creating please try again');
           console.log(error);
@@ -1011,7 +1010,7 @@ export class NewCreateResumeComponent {
       });
       this.dataLoaded = true;
     } else {
-      this.ngxLoaderStop();
+      this.stopProcess();
       this.showError = true;
       this.toast.showToast('error', 'Enter All Mandatory Fields');
 
@@ -1601,7 +1600,7 @@ export class NewCreateResumeComponent {
   }
 
   getCandidates() {
-    this.loader.start();
+    this.startProcess();
 
     const route = 'candidate';
     this.api.get(route).subscribe({
@@ -1621,7 +1620,7 @@ export class NewCreateResumeComponent {
           ) {
             this.getSummaryAndObjectiveContent();
           } else {
-            this.loader.stop();
+            this.stopProcess();
           }
 
           this.previewPdf();
@@ -1629,7 +1628,7 @@ export class NewCreateResumeComponent {
         }
       },
       error: (err) => {
-        this.loader.stop();
+        this.stopProcess();
       },
     });
   }
@@ -1669,7 +1668,7 @@ export class NewCreateResumeComponent {
   }
 
   createResume(candidates: any) {
-    this.ngxLoaderStart();
+    this.startProcess();
     const route = `resume/create?additionalDetails=${this.addAdditoinalDetail}`;
 
     const templateName = localStorage.getItem('templateName');
@@ -1681,7 +1680,7 @@ export class NewCreateResumeComponent {
 
     this.api.retrieve(route, payload).subscribe({
       next: (response) => {
-        this.ngxLoaderStop();
+        this.stopProcess();
         if (response.resumePdf) {
           const base64String = response.resumePdf.trim();
           const byteCharacters = atob(base64String);
@@ -1719,26 +1718,18 @@ export class NewCreateResumeComponent {
 
             this.toast.showToast('success', 'Resume Downloaded Successfully');
           }
-          this.ngxLoaderStop();
+          this.stopProcess();
           this.router.navigate(['/mob-candidate']);
         }
-        this.ngxLoaderStop();
+         this.stopProcess();
       },
       error: (error) => {
-        this.ngxLoaderStop();
+         this.stopProcess();
         this.showErrorPopup = true;
         this.errorMessage = error.error?.message;
         this.errorStatus = error.error?.status;
       },
     });
-  }
-
-  ngxLoaderStart() {
-    this.isUploading = true;
-  }
-
-  ngxLoaderStop() {
-    this.isUploading = false;
   }
 
   getProjectContentCount(experienceIndex: number): boolean {
@@ -1750,7 +1741,7 @@ export class NewCreateResumeComponent {
   }
 
   goToOpenAi() {
-    this.isVerifying = true;
+    this.startLoaderForGettingContent();
 
     const route = 'resume/get-content';
     const payload = { ...this.candidates };
@@ -1769,14 +1760,14 @@ export class NewCreateResumeComponent {
           this.candidateId = response.id;
           this.candidates = response;
 
-          this.isVerifying = false;
+          this.stopProcess();
           const candidateClone = JSON.parse(JSON.stringify(this.candidates));
           this.patchCandidateForm(candidateClone);
         }
-        this.isVerifying = false;
+        this.stopProcess();
       },
       error: (error) => {
-        this.isVerifying = false;
+        this.stopProcess();
         this.gs.showMobileMessage('error', error.error?.message);
       },
     });
@@ -1862,7 +1853,7 @@ export class NewCreateResumeComponent {
 
     this.api.get(route).subscribe({
       next: (response) => {
-        this.loader.stop();
+        this.stopProcess();
         if (response) {
           this.summaryObjectiveContent = response;
 
@@ -1876,7 +1867,7 @@ export class NewCreateResumeComponent {
         }
       },
       error: (error) => {
-        this.loader.stop();
+        this.stopProcess();
         this.dataLoaded = true;
       },
     });
@@ -1915,7 +1906,7 @@ export class NewCreateResumeComponent {
   newCreateResume() {}
 
   increaseSummary(key: any) {
-    this.isGettingContent = true;
+    this.startLoaderForGettingContent();
     let content = this.candidateForm.get(key)?.value;
 
     if (content == null || content == '') {
@@ -1935,17 +1926,17 @@ export class NewCreateResumeComponent {
 
           this.candidateForm.get(key)?.setValue(responseContent.summary);
 
-          this.isGettingContent = false;
+          this.stopProcess();
         }
       },
       error: (error) => {
-        this.isGettingContent = false;
+        this.stopProcess();
       },
     });
   }
 
   decreaseSummary(key: any) {
-    this.isGettingContent = true;
+    this.startLoaderForGettingContent();
     let content = this.candidateForm.get(key)?.value;
 
     if (content == null || content == '') {
@@ -1964,17 +1955,17 @@ export class NewCreateResumeComponent {
           const responseContent = response as any;
 
           this.candidateForm.get(key)?.setValue(responseContent.summary);
-          this.isGettingContent = false;
+          this.stopProcess();
         }
       },
       error: (error) => {
-        this.isGettingContent = false;
+        this.stopProcess();
       },
     });
   }
 
   increaseProject(experienceIndex: number, projectIndex: number) {
-    this.isGettingContent = true;
+    this.startLoaderForGettingContent();
 
     const projectArray = this.getProjects(experienceIndex);
 
@@ -1996,7 +1987,7 @@ export class NewCreateResumeComponent {
     this.api.retrieve(route, payload).subscribe({
       next: (response) => {
         if (response) {
-          this.isGettingContent = false;
+          this.stopProcess();
 
           const content = response as any;
 
@@ -2005,17 +1996,17 @@ export class NewCreateResumeComponent {
             .get('projectDescription')
             ?.setValue(content.summary);
 
-          this.isGettingContent = false;
+          this.stopProcess();
         }
       },
       error: (error) => {
-        this.isGettingContent = false;
+        this.stopProcess();
       },
     });
   }
 
   decreaseProject(experienceIndex: number, projectIndex: number) {
-    this.isGettingContent = true;
+    this.startLoaderForGettingContent();
 
     const projectArray = this.getProjects(experienceIndex);
 
@@ -2043,17 +2034,17 @@ export class NewCreateResumeComponent {
             .get('projectDescription')
             ?.setValue(content.summary);
 
-          this.isGettingContent = false;
+          this.stopProcess();
         }
       },
       error: (error) => {
-        this.isGettingContent = false;
+        this.stopProcess();
       },
     });
   }
 
   increaseResponsibilities(experienceIndex: number) {
-    this.isGettingContent = true;
+    this.startLoaderForGettingContent();
 
     const res = this.experienceControls
       .at(experienceIndex)
@@ -2097,17 +2088,17 @@ export class NewCreateResumeComponent {
             control.setValue(updated);
           }
 
-          this.isGettingContent = false;
+          this.stopProcess();
         }
       },
       error: (error) => {
-        this.isGettingContent = false;
+        this.stopProcess();
       },
     });
   }
 
   decreaseResponsibilities(experienceIndex: number) {
-    this.isGettingContent = true;
+    this.startLoaderForGettingContent();
 
     const res = this.experienceControls
       .at(experienceIndex)
@@ -2151,11 +2142,11 @@ export class NewCreateResumeComponent {
             control.setValue(updated);
           }
 
-          this.isGettingContent = false;
+          this.stopProcess();
         }
       },
       error: (error) => {
-        this.isGettingContent = false;
+        this.stopProcess();
       },
     });
   }
@@ -2164,7 +2155,7 @@ export class NewCreateResumeComponent {
     const stored = JSON.parse(localStorage.getItem('skillsData') || '{}');
 
     if (stored.skills === null || stored.skills === undefined) {
-      this.loader.start();
+      this.startProcess();
       const route = 'content/get-skills-from-ai';
 
       const payload = {
@@ -2173,7 +2164,7 @@ export class NewCreateResumeComponent {
 
       this.api.retrieve(route, payload).subscribe({
         next: (response) => {
-          this.loader.stop();
+          this.stopProcess();
           if (response) {
             localStorage.setItem('skillsData', JSON.stringify(response));
 
@@ -2182,10 +2173,10 @@ export class NewCreateResumeComponent {
             this.coreCompentencies = response?.coreCompentencies;
           }
 
-          this.loader.stop();
+          this.stopProcess();
         },
         error: (error) => {
-          this.loader.stop();
+          this.stopProcess();
           this.dataLoaded = true;
         },
       });
@@ -2202,5 +2193,32 @@ export class NewCreateResumeComponent {
 
   onCheckboxChange(event: any) {
     this.addAdditoinalDetail = event.checked;
+  }
+
+  startLoaderForGettingContent() {
+    const messages = [
+      'Optimizing Content for you...',
+      'Please wait...',
+      'Almost ready...',
+      'Just a moment more...',
+    ];
+
+    this.newLoader.showLoader(messages, 3500);
+  }
+
+  startProcess() {
+    const messages = [
+      'Please wait...',
+      'Preparing things for you...',
+      'Almost ready...',
+      'Just a moment more...',
+      'Ready to view...',
+    ];
+
+    this.newLoader.showLoader(messages, 3500);
+  }
+
+  stopProcess() {
+    this.newLoader.hideLoader();
   }
 }
