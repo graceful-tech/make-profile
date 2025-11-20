@@ -45,6 +45,10 @@ import { LoaderService } from 'src/app/services/loader.service';
 import { ToastService } from 'src/app/services/toast.service';
 import { Project } from 'src/app/models/candidates/project';
 import { LoaderControllerService } from 'src/app/services/loader-controller.service';
+import templatesData from 'src/assets/resume-types/templatesData.json';
+import { ConfirmationPopupComponent } from 'src/app/shared/components/confirmation-popup/confirmation-popup.component';
+
+
 
 // import * as pdfjsLib from 'pdfjs-dist';
 
@@ -69,16 +73,10 @@ export class PreviewAndCreateResumeComponent {
   increaseSummary: boolean = false;
   reduceObjective: boolean = false;
   increaseObjective: boolean = false;
+  templatesTypes = templatesData.templates;
+  showConfirmationPopup: boolean = false;
 
   newonew = 'hai';
-  suggestedSkills = [
-    'Teamwork',
-    'Communication',
-    'Leadership',
-    'Time Management',
-    'Problem Solving',
-    'Adaptability',
-  ];
 
   resumeSkills: any;
   resumeHtml!: string;
@@ -159,6 +157,7 @@ export class PreviewAndCreateResumeComponent {
   softSkills: Array<any> = [];
   coreCompentencies: Array<any> = [];
   addAdditoinalDetail: boolean = false;
+  totalPdfPages: any;
 
   constructor(
     private http: HttpClient,
@@ -218,7 +217,7 @@ export class PreviewAndCreateResumeComponent {
     this.getSkillsFromApi();
   }
 
-  ngAfterViewInit() {}
+  ngAfterViewInit() { }
   onResumeEdit(event: Event) {
     const element = event.target as HTMLElement;
     this.editedHtml = element.innerHTML;
@@ -569,10 +568,10 @@ export class PreviewAndCreateResumeComponent {
 
             const responsibilities = Array.isArray(exp.responsibilities)
               ? exp.responsibilities
-                  .map((r: any) =>
-                    typeof r === 'string' ? r : r.task || r.value || ''
-                  )
-                  .join(', ')
+                .map((r: any) =>
+                  typeof r === 'string' ? r : r.task || r.value || ''
+                )
+                .join(', ')
               : exp.responsibilities;
 
             let projects = exp.projects || [];
@@ -587,10 +586,10 @@ export class PreviewAndCreateResumeComponent {
                 ...proj,
                 projectSkills: Array.isArray(proj.projectSkills)
                   ? proj.projectSkills
-                      .map((r: any) =>
-                        typeof r === 'string' ? r : r.task || r.value || ''
-                      )
-                      .join(', ')
+                    .map((r: any) =>
+                      typeof r === 'string' ? r : r.task || r.value || ''
+                    )
+                    .join(', ')
                   : proj.projectSkills,
               }));
             }
@@ -722,10 +721,10 @@ export class PreviewAndCreateResumeComponent {
                   project.collegeProjectSkills
                 )
                   ? project.collegeProjectSkills
-                      .map((r: any) =>
-                        typeof r === 'string' ? r : r.task || r.value || ''
-                      )
-                      .join(', ')
+                    .map((r: any) =>
+                      typeof r === 'string' ? r : r.task || r.value || ''
+                    )
+                    .join(', ')
                   : project.collegeProjectSkills,
               })
             );
@@ -1118,8 +1117,8 @@ export class PreviewAndCreateResumeComponent {
       : [];
     candidate.coreCompentencies = candidate?.coreCompentencies
       ? candidate.coreCompentencies
-          .split(',')
-          .map((skill: string) => skill.trim())
+        .split(',')
+        .map((skill: string) => skill.trim())
       : [];
 
     candidate.hobbies = candidate?.hobbies
@@ -1237,8 +1236,8 @@ export class PreviewAndCreateResumeComponent {
       experiences?.forEach((experience) => {
         const responsibilities = experience?.responsibilities
           ? experience.responsibilities
-              .split(',')
-              .map((res: string) => res.trim())
+            .split(',')
+            .map((res: string) => res.trim())
           : [];
 
         const experienceForm = this.createExperience();
@@ -1263,8 +1262,8 @@ export class PreviewAndCreateResumeComponent {
           experience.projects?.forEach((project: any) => {
             const projectSkills = project?.projectSkills
               ? project.projectSkills
-                  .split(',')
-                  .map((skill: string) => skill.trim())
+                .split(',')
+                .map((skill: string) => skill.trim())
               : [];
             const projectForm = this.createProject();
             projectForm.patchValue({
@@ -1314,8 +1313,8 @@ export class PreviewAndCreateResumeComponent {
     const skillsArray =
       typeof collegeProject.collegeProjectSkills === 'string'
         ? collegeProject.collegeProjectSkills
-            .split(',')
-            .map((skill) => skill.trim())
+          .split(',')
+          .map((skill) => skill.trim())
         : collegeProject.collegeProjectSkills;
 
     return this.fb.group({
@@ -1458,8 +1457,27 @@ export class PreviewAndCreateResumeComponent {
     ) {
       this.showPopup = true;
     } else {
-      this.createCandidate();
+
+      const templateName = localStorage.getItem('templateName');
+
+      const pageType: any = this.templatesTypes.find(template => template.templateName === templateName)?.pages
+     console.log('page size'+pageType);
+     console.log(templateName);
+
+      if (pageType > 1) {
+        this.createCandidate();
+      }
+      else {
+        if (this.totalPdfPages > 1) {
+          this.showConfirmationPopup = !this.showConfirmationPopup;
+        }
+        else {
+          this.createCandidate();
+        }
+      }
+
     }
+
   }
 
   createResumeAfterPAy(event: any) {
@@ -1788,10 +1806,10 @@ export class PreviewAndCreateResumeComponent {
     } else {
       responsibilities = Array.isArray(res)
         ? res
-            .map((r: any) =>
-              typeof r === 'string' ? r : r.task || r.value || ''
-            )
-            .join(', ')
+          .map((r: any) =>
+            typeof r === 'string' ? r : r.task || r.value || ''
+          )
+          .join(', ')
         : res;
     }
 
@@ -1844,10 +1862,10 @@ export class PreviewAndCreateResumeComponent {
     } else {
       responsibilities = Array.isArray(res)
         ? res
-            .map((r: any) =>
-              typeof r === 'string' ? r : r.task || r.value || ''
-            )
-            .join(', ')
+          .map((r: any) =>
+            typeof r === 'string' ? r : r.task || r.value || ''
+          )
+          .join(', ')
         : res;
     }
 
@@ -1907,26 +1925,27 @@ export class PreviewAndCreateResumeComponent {
     this.api.downloadFile(route, payload).subscribe({
       next: async (pdfBlob: Blob) => {
         try {
-          // ✅ Step 1: Lazy-load pdfjs-dist dynamically
+          //  Step 1: Lazy-load pdfjs-dist dynamically
           const pdfjsLib = await import('pdfjs-dist/build/pdf');
           const pdfjsWorker = await import('pdfjs-dist/build/pdf.worker.entry');
 
-          // ✅ Step 2: Configure the worker
+          //  Step 2: Configure the worker
           (pdfjsLib as any).GlobalWorkerOptions.workerSrc = pdfjsWorker;
 
-          // ✅ Step 3: Convert blob to array buffer
+          // Step 3: Convert blob to array buffer
           this.arrayBuffer = await pdfBlob.arrayBuffer();
 
-          // ✅ Step 4: Load the PDF document
+          //  Step 4: Load the PDF document
           const pdf = await (pdfjsLib as any).getDocument({
             data: this.arrayBuffer,
           }).promise;
 
-          // ✅ Step 5: Clear the old preview container
+
           const container = this.pdfContainer.nativeElement;
           container.innerHTML = '';
 
-          // ✅ Step 6: Render all pages
+          this.totalPdfPages = pdf.numPages
+
           const numPages = pdf.numPages;
           for (let i = 1; i <= numPages; i++) {
             const page = await pdf.getPage(i);
@@ -1940,13 +1959,19 @@ export class PreviewAndCreateResumeComponent {
             const renderContext = { canvasContext: context, viewport };
             await page.render(renderContext).promise;
 
-            // Styling for neat preview
+
             canvas.style.display = 'block';
             canvas.style.margin = '10px auto';
             canvas.style.maxWidth = '100%';
             canvas.style.boxShadow = '0 0 8px rgba(0, 0, 0, 0.1)';
 
+            const separator = document.createElement('div');
+            separator.className = 'page-separator';
+            separator.innerHTML = `<span style="font-size: 15px; font-weight:500;">Page ${i}</span>`;
+            container.appendChild(separator);
+
             container.appendChild(canvas);
+
             this.htmlcontent = canvas;
           }
 
@@ -2014,10 +2039,10 @@ export class PreviewAndCreateResumeComponent {
 
               const responsibilities = Array.isArray(exp.responsibilities)
                 ? exp.responsibilities
-                    .map((r: any) =>
-                      typeof r === 'string' ? r : r.task || r.value || ''
-                    )
-                    .join(', ')
+                  .map((r: any) =>
+                    typeof r === 'string' ? r : r.task || r.value || ''
+                  )
+                  .join(', ')
                 : exp.responsibilities;
 
               let projects = exp.projects || [];
@@ -2032,10 +2057,10 @@ export class PreviewAndCreateResumeComponent {
                   ...proj,
                   projectSkills: Array.isArray(proj.projectSkills)
                     ? proj.projectSkills
-                        .map((r: any) =>
-                          typeof r === 'string' ? r : r.task || r.value || ''
-                        )
-                        .join(', ')
+                      .map((r: any) =>
+                        typeof r === 'string' ? r : r.task || r.value || ''
+                      )
+                      .join(', ')
                     : proj.projectSkills,
                 }));
               }
@@ -2167,10 +2192,10 @@ export class PreviewAndCreateResumeComponent {
                     project.collegeProjectSkills
                   )
                     ? project.collegeProjectSkills
-                        .map((r: any) =>
-                          typeof r === 'string' ? r : r.task || r.value || ''
-                        )
-                        .join(', ')
+                      .map((r: any) =>
+                        typeof r === 'string' ? r : r.task || r.value || ''
+                      )
+                      .join(', ')
                     : project.collegeProjectSkills,
                 })
               );
@@ -2325,4 +2350,15 @@ export class PreviewAndCreateResumeComponent {
   stopProcess() {
     this.newLoader.hideLoader();
   }
+
+  proceedToDownload(event: any) {
+    this.showConfirmationPopup = false
+    this.createCandidate();
+  }
+
+  editContent(event: any) {
+    this.showConfirmationPopup = false
+  }
+
+
 }

@@ -55,7 +55,9 @@ import { FresherFormPageComponent } from './custom-landing/fresher-form-page/fre
 import { MobileFresherFormPageComponent } from './custom-landing/mobile-fresher-form-page/mobile-fresher-form-page.component';
 import { SpinnerLoaderComponent } from './components/spinner-loader/spinner-loader.component';
 import { GlobalLoaderComponent } from './components/global-loader/global-loader.component';
- 
+import { ConfirmationPopupComponent } from './components/confirmation-popup/confirmation-popup.component';
+import { MobileConfirmationPopupComponent } from './components/mobile-confirmation-popup/mobile-confirmation-popup.component';
+  
 @NgModule({
   declarations: [
     MakeProfileDividerComponent,
@@ -100,7 +102,10 @@ import { GlobalLoaderComponent } from './components/global-loader/global-loader.
     FresherFormPageComponent,
     MobileFresherFormPageComponent,
     SpinnerLoaderComponent,
-    GlobalLoaderComponent
+    GlobalLoaderComponent,
+    ConfirmationPopupComponent,
+    MobileConfirmationPopupComponent
+    
   ],
   imports: [
     CommonModule,
@@ -171,7 +176,10 @@ import { GlobalLoaderComponent } from './components/global-loader/global-loader.
     FresherFormPageComponent,
     MobileFresherFormPageComponent,
     SpinnerLoaderComponent,
-    GlobalLoaderComponent
+    GlobalLoaderComponent,
+    ConfirmationPopupComponent,
+    MobileConfirmationPopupComponent
+    
   ],
 })
 export class SharedModule {}

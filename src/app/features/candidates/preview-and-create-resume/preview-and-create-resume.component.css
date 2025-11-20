@@ -911,3 +911,38 @@ img {
 .updtateclass{
 display: flex;
 }
+
+.page-separator {
+  width: 100%;
+  position: relative;
+  text-align: center;
+  margin: 20px 0;
+   
+}
+
+.page-separator::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: #ccc;
+  z-index: 1;
+}
+
+.page-separator span {
+  position: relative;
+  background: #fff;
+  padding: 0 10px;
+  z-index: 2;
+  color: #555;
+}
+
+.blur-overlay {
+  position: fixed;
+  inset: 0;  
+  backdrop-filter: blur(6px);
+  background: rgba(0, 0, 0, 0.25);
+  z-index: 998;
+}

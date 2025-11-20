@@ -1202,3 +1202,13 @@
     [status]="errorStatus"
   ></app-error-mobile-popup>
 </ng-container>
+
+
+
+ <ng-container *ngIf="showConfirmationPopup">
+    <div class="blur-overlay"></div>
+        <app-mobile-confirmation-popup
+           (proceedToDownload)="proceedToDownload($event)"
+             (editContent)="editContent($event)"
+        ></app-mobile-confirmation-popup>
+      </ng-container>

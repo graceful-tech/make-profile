@@ -42,6 +42,9 @@ import {
 import { HttpClient } from '@angular/common/http';
 import { PaymentOptionComponent } from 'src/app/features/candidates/payments/payment-option/payment-option.component';
 import { LoaderControllerService } from 'src/app/services/loader-controller.service';
+import templatesData from 'src/assets/resume-types/templatesData.json';
+import { MobileConfirmationPopupComponent } from 'src/app/shared/components/mobile-confirmation-popup/mobile-confirmation-popup.component';
+
 
 @Component({
   selector: 'app-new-create-resume',
@@ -131,6 +134,9 @@ export class NewCreateResumeComponent {
   skills: Array<any> = [];
   softSkills: Array<any> = [];
   coreCompentencies: Array<any> = [];
+  totalPdfPages: any;
+  templatesTypes = templatesData.templates;
+  showConfirmationPopup:boolean = false;
 
   constructor(
     private api: ApiService,
@@ -238,7 +244,7 @@ export class NewCreateResumeComponent {
           const container = this.pdfContainer.nativeElement;
           container.innerHTML = '';
 
-          // ✅ Step 6: Render all pages
+          this.totalPdfPages = pdf.numPages;
           const numPages = pdf.numPages;
           for (let i = 1; i <= numPages; i++) {
             const page = await pdf.getPage(i);
@@ -257,6 +263,12 @@ export class NewCreateResumeComponent {
             canvas.style.margin = '10px auto';
             canvas.style.maxWidth = '100%';
             canvas.style.boxShadow = '0 0 8px rgba(0, 0, 0, 0.1)';
+
+            const separator = document.createElement('div');
+            separator.className = 'page-separator';
+            separator.innerHTML = `<span style="font-size: 15px; font-weight:500;">Page ${i}</span>`;
+            container.appendChild(separator);
+
 
             container.appendChild(canvas);
             this.htmlcontent = canvas;
@@ -284,7 +296,7 @@ export class NewCreateResumeComponent {
     }
   }
 
-  fitPreviewToMobile() {}
+  fitPreviewToMobile() { }
 
   @HostListener('window:resize')
   onResize() {
@@ -511,10 +523,10 @@ export class NewCreateResumeComponent {
 
             const responsibilities = Array.isArray(exp.responsibilities)
               ? exp.responsibilities
-                  .map((r: any) =>
-                    typeof r === 'string' ? r : r.task || r.value || ''
-                  )
-                  .join(', ')
+                .map((r: any) =>
+                  typeof r === 'string' ? r : r.task || r.value || ''
+                )
+                .join(', ')
               : exp.responsibilities;
 
             let projects = exp.projects || [];
@@ -529,10 +541,10 @@ export class NewCreateResumeComponent {
                 ...proj,
                 projectSkills: Array.isArray(proj.projectSkills)
                   ? proj.projectSkills
-                      .map((r: any) =>
-                        typeof r === 'string' ? r : r.task || r.value || ''
-                      )
-                      .join(', ')
+                    .map((r: any) =>
+                      typeof r === 'string' ? r : r.task || r.value || ''
+                    )
+                    .join(', ')
                   : proj.projectSkills,
               }));
             }
@@ -680,10 +692,10 @@ export class NewCreateResumeComponent {
                   project.collegeProjectSkills
                 )
                   ? project.collegeProjectSkills
-                      .map((r: any) =>
-                        typeof r === 'string' ? r : r.task || r.value || ''
-                      )
-                      .join(', ')
+                    .map((r: any) =>
+                      typeof r === 'string' ? r : r.task || r.value || ''
+                    )
+                    .join(', ')
                   : project.collegeProjectSkills,
               })
             );
@@ -724,7 +736,7 @@ export class NewCreateResumeComponent {
           }
         },
         error: (error) => {
-            this.stopProcess();
+          this.stopProcess();
           this.dataLoaded = true;
           window.alert('Error in creating please try again');
           console.log(error);
@@ -790,10 +802,10 @@ export class NewCreateResumeComponent {
 
             const responsibilities = Array.isArray(exp.responsibilities)
               ? exp.responsibilities
-                  .map((r: any) =>
-                    typeof r === 'string' ? r : r.task || r.value || ''
-                  )
-                  .join(', ')
+                .map((r: any) =>
+                  typeof r === 'string' ? r : r.task || r.value || ''
+                )
+                .join(', ')
               : exp.responsibilities;
 
             let projects = exp.projects || [];
@@ -808,10 +820,10 @@ export class NewCreateResumeComponent {
                 ...proj,
                 projectSkills: Array.isArray(proj.projectSkills)
                   ? proj.projectSkills
-                      .map((r: any) =>
-                        typeof r === 'string' ? r : r.task || r.value || ''
-                      )
-                      .join(', ')
+                    .map((r: any) =>
+                      typeof r === 'string' ? r : r.task || r.value || ''
+                    )
+                    .join(', ')
                   : proj.projectSkills,
               }));
             }
@@ -959,10 +971,10 @@ export class NewCreateResumeComponent {
                   project.collegeProjectSkills
                 )
                   ? project.collegeProjectSkills
-                      .map((r: any) =>
-                        typeof r === 'string' ? r : r.task || r.value || ''
-                      )
-                      .join(', ')
+                    .map((r: any) =>
+                      typeof r === 'string' ? r : r.task || r.value || ''
+                    )
+                    .join(', ')
                   : project.collegeProjectSkills,
               })
             );
@@ -1327,8 +1339,8 @@ export class NewCreateResumeComponent {
       : [];
     candidate.coreCompentencies = candidate?.coreCompentencies
       ? candidate.coreCompentencies
-          .split(',')
-          .map((skill: string) => skill.trim())
+        .split(',')
+        .map((skill: string) => skill.trim())
       : [];
 
     candidate.hobbies = candidate?.hobbies
@@ -1450,8 +1462,8 @@ export class NewCreateResumeComponent {
 
         const responsibilities = experience.responsibilities
           ? experience.responsibilities
-              .split(',')
-              .map((skill: string) => skill.trim())
+            .split(',')
+            .map((skill: string) => skill.trim())
           : [];
 
         experienceForm.patchValue({
@@ -1474,8 +1486,8 @@ export class NewCreateResumeComponent {
           experience.projects?.forEach((project: any) => {
             const projectSkills = project.projectSkills
               ? project.projectSkills
-                  .split(',')
-                  .map((res: string) => res.trim())
+                .split(',')
+                .map((res: string) => res.trim())
               : [];
 
             const projectForm = this.createProject();
@@ -1526,8 +1538,8 @@ export class NewCreateResumeComponent {
     const skillsArray =
       typeof collegeProject.collegeProjectSkills === 'string'
         ? collegeProject.collegeProjectSkills
-            .split(',')
-            .map((skill) => skill.trim())
+          .split(',')
+          .map((skill) => skill.trim())
         : collegeProject.collegeProjectSkills;
 
     return this.fb.group({
@@ -1721,10 +1733,10 @@ export class NewCreateResumeComponent {
           this.stopProcess();
           this.router.navigate(['/mob-candidate']);
         }
-         this.stopProcess();
+        this.stopProcess();
       },
       error: (error) => {
-         this.stopProcess();
+        this.stopProcess();
         this.showErrorPopup = true;
         this.errorMessage = error.error?.message;
         this.errorStatus = error.error?.status;
@@ -1799,7 +1811,43 @@ export class NewCreateResumeComponent {
     ) {
       this.showPopup = true;
     } else {
-      this.createCandidate();
+      const templateName = localStorage.getItem('templateName');
+
+      const pageType: any = this.templatesTypes.find(template => template.templateName === templateName)?.pages
+
+      if (pageType > 1) {
+        this.createCandidate();
+      }
+      else {
+
+        if (this.totalPdfPages > 1) {
+          // const ref = this.dialog.open(MobileConfirmationPopupComponent, {
+          //   data: {
+          //   },
+          //   closable: false,
+          //   height: '30%',
+          //   width:'90%',
+          //   styleClass: 'payment-dialog-header-mobile',
+
+          // });
+
+          // ref.onClose.subscribe((response) => {
+          //   if (response === 'download') {
+          //     this.createCandidate();
+          //   }
+          //   else {
+          //     this.currentTab = 'edit'
+
+          //   }
+
+          // });
+
+          this.showConfirmationPopup = !this.showConfirmationPopup;
+        }
+        else {
+          this.createCandidate();
+        }
+      }
     }
   }
 
@@ -1903,7 +1951,7 @@ export class NewCreateResumeComponent {
     return null;
   }
 
-  newCreateResume() {}
+  newCreateResume() { }
 
   increaseSummary(key: any) {
     this.startLoaderForGettingContent();
@@ -2056,10 +2104,10 @@ export class NewCreateResumeComponent {
     } else {
       responsibilities = Array.isArray(res)
         ? res
-            .map((r: any) =>
-              typeof r === 'string' ? r : r.task || r.value || ''
-            )
-            .join(', ')
+          .map((r: any) =>
+            typeof r === 'string' ? r : r.task || r.value || ''
+          )
+          .join(', ')
         : res;
     }
 
@@ -2110,10 +2158,10 @@ export class NewCreateResumeComponent {
     } else {
       responsibilities = Array.isArray(res)
         ? res
-            .map((r: any) =>
-              typeof r === 'string' ? r : r.task || r.value || ''
-            )
-            .join(', ')
+          .map((r: any) =>
+            typeof r === 'string' ? r : r.task || r.value || ''
+          )
+          .join(', ')
         : res;
     }
 
@@ -2220,5 +2268,14 @@ export class NewCreateResumeComponent {
 
   stopProcess() {
     this.newLoader.hideLoader();
+  }
+    proceedToDownload(event: any) {
+    this.showConfirmationPopup = false
+    this.createCandidate();
+  }
+
+  editContent(event: any) {
+    this.showConfirmationPopup = false
+    this.currentTab ='edit';
   }
 }

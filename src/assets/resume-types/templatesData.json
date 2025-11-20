@@ -1,0 +1,19 @@
+{
+  "templates": [
+    { "templateName": "Saturn", "pages": "2" },
+
+    { "templateName": "Venus", "pages": "2" },
+
+    { "templateName": "Earth", "pages": "1" },
+
+    { "templateName": "Mars", "pages": "1" },
+
+    { "templateName": "Mercury", "pages": "1" },
+
+    { "templateName": "Jupiter", "pages": "2" },
+
+    { "templateName": "Uranus", "pages": "2" },
+
+    { "templateName": "Neptune", "pages": "2" }
+  ]
+}

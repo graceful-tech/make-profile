@@ -1145,3 +1145,12 @@
     </button>
   </div>
 </footer>
+
+
+ <ng-container *ngIf="showConfirmationPopup">
+    <div class="blur-overlay"></div>
+        <app-confirmation-popup
+           (proceedToDownload)="proceedToDownload($event)"
+             (editContent)="editContent($event)"
+        ></app-confirmation-popup>
+      </ng-container>

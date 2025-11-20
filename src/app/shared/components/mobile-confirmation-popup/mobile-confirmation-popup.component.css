@@ -1,0 +1,187 @@
+/* -----------------------------
+   Popup Wrapper
+------------------------------ */
+.refer-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 999;
+    width: 630px;
+    padding: 25px;
+    background: linear-gradient(135deg, #7e99d3, #73a1d2, #b5f5f5, #a18cd1, #7e91d7, #79c4d3);
+    background-size: 300% 300%;
+    animation: rainbowMove 1.8s ease forwards;
+    border-radius: 18px;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25);
+    color: #333;
+}
+
+/* -----------------------------
+   Popup Zoom Animation
+------------------------------ */
+@keyframes rainbowMove {
+    0% {
+        transform: translate(-50%, -50%) scale(0.5);
+        opacity: 0;
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+        transform: translate(-50%, -50%) scale(1.05);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+        background-position: 0% 50%;
+        opacity: 1;
+    }
+}
+
+/* -----------------------------
+   Popup Inner Card
+------------------------------ */
+.refer-content {
+    background: white;
+    border: 1px solid #dfe6f5;
+    border-radius: 12px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* -----------------------------
+   Heading (FIRST SPAN)
+------------------------------ */
+.popup-title {
+    display: block;
+    font-size: 20px;
+    font-weight: 700;
+
+    color: black;
+    margin-bottom: 5px;
+    line-height: 26px;
+}
+
+.popup-subtitle {
+    display: block;
+    font-size: 25px;
+    font-weight: 700;
+    font-style: italic;
+    background: linear-gradient(90deg, rgb(120, 94, 1), rgb(78, 2, 255), rgb(25, 0, 191));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 5px;
+   
+    
+}
+
+
+.popup-message {
+    display: block;
+    margin-top: 10px;
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 23px;
+    color: #333;
+}
+
+
+.button-types {
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    margin-top: 15px;
+}
+
+.common-btn {
+    border: none;
+    border-radius: 25px;
+    padding: 10px 15px;
+    font-size: 15px;
+    font-weight: 600;
+    color: white;
+    transition: all 0.25s ease;
+    width: 100%;
+}
+
+.common-btn:hover {
+    transform: scale(1.08) translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    filter: brightness(1.05);
+}
+
+.proceed-btn {
+    background: linear-gradient(135deg, #4A90E2, #007AFF);
+}
+
+.edit-btn {
+    background: linear-gradient(135deg, #3BAA84, #0B8F6A);
+}
+
+
+@media (max-width: 768px) {
+
+    .refer-popup {
+        width: 90% !important;
+        max-width: 90% !important;
+        padding: 15px !important;
+        border-radius: 16px;
+    }
+
+    .refer-content {
+        padding: 20px !important;
+    }
+
+    /* Mobile Heading */
+    .popup-title {
+        font-size: 18px !important;
+        line-height: 24px !important;
+        /* margin-bottom: 8px !important; */
+    }
+
+    .popup-subtitle {
+        font-size: 27px !important;
+        
+        margin-bottom: 8px !important;
+    }
+
+    /* Mobile Message */
+    .popup-message {
+        font-size: 15px !important;
+        line-height: 22px !important;
+        color: #222 !important;
+        -webkit-text-fill-color: #222 !important;
+    }
+
+    /* Buttons Stack */
+    .button-types {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .common-btn {
+        font-size: 16px;
+        padding: 12px;
+        border-radius: 20px;
+    }
+}
+
+/* Extra small phones */
+@media (max-width: 380px) {
+
+    .popup-title {
+        font-size: 17px !important;
+    }
+
+    .popup-subtitle {
+        font-size: 24px !important;
+    }
+
+    .popup-message {
+        font-size: 14px !important;
+        line-height: 20px !important;
+    }
+}

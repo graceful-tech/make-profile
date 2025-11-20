@@ -12,7 +12,7 @@ import { GlobalService } from 'src/app/services/global.service';
 export class ChangeTemplateComponent {
   resumePaths: { path: string; name: string; type: string }[] = [];
 
-  constructor(private router: Router,private gs:GlobalService) {}
+  constructor(private router: Router, private gs: GlobalService) { }
 
   ngOnInit(): void {
     this.resumePaths = [
@@ -40,10 +40,10 @@ export class ChangeTemplateComponent {
     console.log('Previewing resume:', resume);
   }
 
-  async selectTemplate(templateName: any) {
+  selectTemplate(templateName: string) {
     this.gs.setResumeName(templateName);
 
-    await localStorage.setItem('templateName', templateName);
+    localStorage.setItem('templateName', templateName);
 
     this.router.navigate(['candidate/create-resume']);
   }
