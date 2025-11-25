@@ -20,6 +20,7 @@ import { NewLandingPageComponent } from './layout/new-landing-page/new-landing-p
 import { SelectUserDecisionComponent } from './shared/custom-landing/select-user-decision/select-user-decision.component';
 import { FresherFormPageComponent } from './shared/custom-landing/fresher-form-page/fresher-form-page.component';
 import { MobileFresherFormPageComponent } from './shared/custom-landing/mobile-fresher-form-page/mobile-fresher-form-page.component';
+import { CommonDecisionComponent } from './shared/components/common-decision/common-decision.component';
 
 const routes: Routes = [
   { path: '', component: NewLandingPageComponent },
@@ -60,12 +61,13 @@ const routes: Routes = [
   { path: 'select-template', component: ResumeTemplateComponent },
 
   { path: 'choose-direction', component: SelectUserDecisionComponent },
-  
+
   { path: 'fresher-form', component: FresherFormPageComponent },
 
   { path: 'mob-fresher-form', component: MobileFresherFormPageComponent },
 
-  
+  { path: 'user-decision', component: CommonDecisionComponent },
+
 
   {
     path: 'candidate',
@@ -101,4 +103,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

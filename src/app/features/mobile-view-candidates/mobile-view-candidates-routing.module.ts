@@ -16,6 +16,7 @@ import { MobileAnalyseAiComponent } from 'src/app/shared/components/mobile-analy
 import { MobileCreditHistoryComponent } from './mobile-credit-history/mobile-credit-history.component';
 import { NewCreateResumeComponent } from './new-create-resume/new-create-resume.component';
 import { MobileChangeTemplateComponent } from './mobile-change-template/mobile-change-template.component';
+import { MobileCandidateMultipleResumeFormComponent } from './mobile-candidate-multiple-resume-form/mobile-candidate-multiple-resume-form.component';
 
 const routes: Routes = [
   { path: '', component: MobileCandidatesDetailsComponent },
@@ -50,11 +51,17 @@ const routes: Routes = [
 
   { path: 'change-template', component: MobileChangeTemplateComponent },
 
-  
+  {
+    path: 'resume-form', component: MobileCandidateMultipleResumeFormComponent
+  },
+
+
+
+
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class MobileViewCandidatesRoutingModule {}
+export class MobileViewCandidatesRoutingModule { }

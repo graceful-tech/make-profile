@@ -1,17 +1,5 @@
 <div class="form-wrapper" *ngIf="step === 1">
-  <div class="overlay" *ngIf="isUploading">
-    <div class="spinner-container">
-      <mat-spinner
-        [diameter]="80"
-        strokeWidth="5"
-        class="custom-blue"
-      ></mat-spinner>
-      <p class="loading-text">
-        Analysing Resume<span class="dot dot1">.</span
-        ><span class="dot dot2">.</span><span class="dot dot3">.</span>
-      </p>
-    </div>
-  </div>
+  
   <form class="simple-form" #resumeForm="ngForm">
     <div class="form-group">
       <label>Do you have existing resume?</label>

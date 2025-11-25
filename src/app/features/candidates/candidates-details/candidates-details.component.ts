@@ -1905,7 +1905,7 @@ export class CandidatesDetailsComponent {
       this.gs.setCandidateDetails(null);
       this.gs.setResumeDetails(null);
       this.gs.setCandidateImage(null);
-      this.router.navigate(['candidate/analyse-ai']);
+      this.router.navigate(['user-decision']);
     }
   }
 

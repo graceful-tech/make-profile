@@ -59,14 +59,14 @@ export class NewLandingPageComponent implements AfterViewInit {
     private router: Router,
     private gs: GlobalService,
     private loader: LoaderControllerService
-  ) {}
+  ) { }
 
   ngOnInit() {
     localStorage.clear();
-    
+
   }
 
-  ngAfterViewInit(): void {}
+  ngAfterViewInit(): void { }
 
   screenWidth = window.innerWidth;
 
@@ -87,11 +87,11 @@ export class NewLandingPageComponent implements AfterViewInit {
     if (this.isMobileDevice()) {
       localStorage.setItem('templateName', templateName);
       this.gs.setResumeName(templateName);
-      this.router.navigate(['get-details-using-ai']);
+      this.router.navigate(['choose-direction']);
     } else {
       localStorage.setItem('templateName', templateName);
       this.gs.setResumeName(templateName);
-      this.router.navigate(['enter-details']);
+      this.router.navigate(['choose-direction']);
     }
   }
 
@@ -118,7 +118,7 @@ export class NewLandingPageComponent implements AfterViewInit {
   currentMessage = this.messages[0];
   msgIndex = 0;
   intervalId: any;
- 
+
 
   startProcess() {
     const messages = [

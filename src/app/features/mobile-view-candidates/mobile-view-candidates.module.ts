@@ -19,6 +19,7 @@ import { UseExistingTemplateComponent } from './use-existing-template/use-existi
 import { MobileCreditHistoryComponent } from './mobile-credit-history/mobile-credit-history.component';
 import { NewCreateResumeComponent } from './new-create-resume/new-create-resume.component';
 import { MobileChangeTemplateComponent } from './mobile-change-template/mobile-change-template.component';
+import { MobileCandidateMultipleResumeFormComponent } from './mobile-candidate-multiple-resume-form/mobile-candidate-multiple-resume-form.component';
    
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { MobileChangeTemplateComponent } from './mobile-change-template/mobile-c
     UseExistingTemplateComponent,
     MobileCreditHistoryComponent,
     NewCreateResumeComponent,
-    MobileChangeTemplateComponent
+    MobileChangeTemplateComponent,
+    MobileCandidateMultipleResumeFormComponent
     
    ],
   imports: [CommonModule, MobileViewCandidatesRoutingModule, SharedModule],

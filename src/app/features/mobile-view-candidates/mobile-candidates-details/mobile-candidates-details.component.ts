@@ -1814,7 +1814,7 @@ export class MobileCandidatesDetailsComponent {
 
     if (confirmDelete) {
       this.gs.setCandidateDetails(null);
-      this.router.navigate(['mob-candidate/analyse-ai']);
+      this.router.navigate(['user-decision']);
     }
   }
 

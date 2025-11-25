@@ -16,6 +16,7 @@ import { ResumeCreatingComponent } from './resume-creating/resume-creating.compo
 import { CreditHistoryComponent } from './credit-history/credit-history.component';
 import { PreviewAndCreateResumeComponent } from './preview-and-create-resume/preview-and-create-resume.component';
 import { ChangeTemplateComponent } from './change-template/change-template.component';
+import { CandidateMultipleResumeFormComponent } from './candidate-multiple-resume-form/candidate-multiple-resume-form.component';
 
 const routes: Routes = [
   { path: '', component: CandidatesDetailsComponent },
@@ -49,10 +50,18 @@ const routes: Routes = [
   { path: 'create-resume', component: PreviewAndCreateResumeComponent },
 
   { path: 'change-template', component: ChangeTemplateComponent },
+
+  { path: 'fill-form', component: CandidateMultipleResumeFormComponent },
+
+
+
+
+
+
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class CandidatesRoutingModule {}
+export class CandidatesRoutingModule { }
