@@ -771,15 +771,22 @@ export class MobileCommonDetailsComponent {
     });
   }
 
-  getFieldOfStudy() {
-    const route = 'value-sets/search-by-code';
-    const postData = { valueSetCode: 'QUALIFICATION' };
-    this.api.retrieve(route, postData).subscribe({
-      next: (response) => {
-        this.fieldOfStudy = response;
-      },
-    });
-  }
+getFieldOfStudy() {
+  const route = 'value-sets/search-by-code';
+  const postData = { valueSetCode: 'QUALIFICATION' };
+
+  this.api.retrieve(route, postData).subscribe({
+    next: (response: any[]) => {
+      this.fieldOfStudy = response.map(item => ({
+        ...item,
+       
+        filterText: item.displayValue
+          ? item.displayValue.replace(/\./g, '').toLowerCase()
+          : ''
+      }));
+    },
+  });
+}
 
   addCandidateImage(event: any) {
     this.candidateImageAttachments = [];

@@ -31,6 +31,7 @@ import { DatePipe } from '@angular/common';
 import { ModelLoginPopupComponent } from 'src/app/shared/popup/model-login-popup/model-login-popup.component';
 import { LoginReminderPopupComponent } from 'src/app/shared/popup/login-reminder-popup/login-reminder-popup.component';
 import { LoaderControllerService } from 'src/app/services/loader-controller.service';
+import { ConfirmationService } from 'primeng/api';
 
 @Component({
   selector: 'app-candidate-multiple-resume-form',
@@ -117,6 +118,15 @@ export class CandidateMultipleResumeFormComponent {
   jobRoleEntered = false;
   showSuggestions = false;
   filteredJobs: any;
+  qualificationlength: number = 0;
+  schoolEducationlength: number = 0;
+  showSchoolError: boolean = false;
+  showCollegeError: boolean = false;
+  showSoftSkillsError: boolean = false;
+  showCoreCompentenciesError: boolean = false;
+  showHobbiesError: boolean = false;
+  schoolEducation: Array<ValueSet> = [];
+
 
   constructor(
     private api: ApiService,
@@ -142,6 +152,8 @@ export class CandidateMultipleResumeFormComponent {
     this.getFieldOfStudy();
     // this.getStateNames();
     this.getNationalityList();
+    this.getSchoolEducationFields();
+
 
   }
 
@@ -259,6 +271,7 @@ export class CandidateMultipleResumeFormComponent {
         careerObjective: [''],
         fatherName: [''],
         hobbies: [''],
+        schoolEducation: this.fb.array([this.createSchoolEducation()]),
       }
       // { validators: [this.fresherOrExperienceValidator()] }
     );
@@ -316,43 +329,133 @@ export class CandidateMultipleResumeFormComponent {
     });
   }
 
+  // async next() {
+
+  //   if (this.step < 5 && this.step > 1 && this.step !== 3) {
+  //     this.step++;
+  //   } else if (this.step === 1) {
+
+  //     this.step++;
+
+  //   } else if (this.step === 3) {
+  //     const fresher = this.candidateForm.get('fresher')?.value;
+  //     const experiences = this.candidateForm.get('experiences') as FormArray;
+
+  //     if (!fresher && experiences.length === 0) {
+  //       this.showExperienceError = true;
+
+  //       this.candidateForm.get('fresher')?.valueChanges.subscribe(() => {
+  //         this.hideExperienceErrorIfValid('fresher');
+  //       });
+
+  //       (
+  //         this.candidateForm.get('experiences') as FormArray
+  //       ).valueChanges.subscribe(() => {
+  //         this.hideExperienceErrorIfValid('exp');
+  //       });
+  //     } else {
+  //       const payload = this.candidateForm.getRawValue();
+
+  //       if (
+  //         (payload.experiences.length > 0 &&
+  //           payload.experiences?.[0]?.companyName !== '') ||
+  //         fresher
+  //       ) {
+  //         this.step++;
+  //       } else {
+  //         this.toast.showToast('info', 'Enter your Experience Details');
+  //       }
+  //     }
+  //   }
+  // }
+
+
   async next() {
+    console.log(this.step + 'haii');
 
-    if (this.step < 5 && this.step > 1 && this.step !== 3) {
-      this.step++;
-    } else if (this.step === 1) {
+    switch (this.step) {
 
-      this.step++;
+      case 1:
+        this.step++;
+        break;
 
-    } else if (this.step === 3) {
-      const fresher = this.candidateForm.get('fresher')?.value;
-      const experiences = this.candidateForm.get('experiences') as FormArray;
+      case 2:
+        this.showSchoolError = false;
+        this.showCollegeError = false;
+        const isFresher = localStorage.getItem('isFresher');
+        if (isFresher === 'true') {
 
-      if (!fresher && experiences.length === 0) {
-        this.showExperienceError = true;
+          const schoolEducation = this.candidateForm.get('schoolEducation') as FormArray;
+          const qualification = this.candidateForm.get('qualification') as FormArray;
 
-        this.candidateForm.get('fresher')?.valueChanges.subscribe(() => {
-          this.hideExperienceErrorIfValid('fresher');
-        });
+          if (schoolEducation.length > 0) {
+            const firstGroup = schoolEducation.at(0) as FormGroup;
+            const schoolName = firstGroup.get('schoolName')?.value;
 
-        (
-          this.candidateForm.get('experiences') as FormArray
-        ).valueChanges.subscribe(() => {
-          this.hideExperienceErrorIfValid('exp');
-        });
-      } else {
-        const payload = this.candidateForm.getRawValue();
+            if (!schoolName || schoolName.trim() === '') {
+              this.showSchoolError = true;
+              this.toast.showToast('error', 'Please enter atleast one Schooling Details');
+              break;
+            }
 
-        if (
-          (payload.experiences.length > 0 &&
-            payload.experiences?.[0]?.companyName !== '') ||
-          fresher
-        ) {
+          }
+
+          if (qualification.length > 0) {
+            const firstGroup = qualification.at(0) as FormGroup;
+            const institutionName = firstGroup.get('institutionName')?.value;
+
+            if (!institutionName || institutionName.trim() === '') {
+              this.showCollegeError = true;
+              this.toast.showToast('error', 'Please enter one  College Details');
+              break;
+            }
+
+          }
+
           this.step++;
-        } else {
-          this.toast.showToast('info', 'Enter your Experience Details');
+
         }
-      }
+        else {
+          this.step++;
+        }
+        break;
+
+      case 3:
+        const fresher = this.candidateForm.get('fresher')?.value;
+        const experiences = this.candidateForm.get('experiences') as FormArray;
+
+        if (!fresher && experiences.length === 0) {
+          this.showExperienceError = true;
+
+          this.candidateForm.get('fresher')?.valueChanges.subscribe(() => {
+            this.hideExperienceErrorIfValid('fresher');
+          });
+
+          (this.candidateForm.get('experiences') as FormArray).valueChanges.subscribe(() => {
+            this.hideExperienceErrorIfValid('exp');
+          });
+
+        } else {
+          const payload = this.candidateForm.getRawValue();
+
+          if (
+            (payload.experiences.length > 0 &&
+              payload.experiences?.[0]?.companyName !== '') ||
+            fresher
+          ) {
+            this.step++;
+          } else {
+            this.toast.showToast('info', 'Enter your Experience Details');
+          }
+        }
+        break;
+
+
+      default:
+        if (this.step < 5 && this.step > 1 && this.step !== 3) {
+          this.step++;
+        }
+        break;
     }
   }
 
@@ -371,7 +474,38 @@ export class CandidateMultipleResumeFormComponent {
 
   submit() {
 
-    this.createCandidateAfterLogin();
+    this.showSoftSkillsError = false;
+    this.showCoreCompentenciesError = false;
+    this.showHobbiesError = false;
+
+    const isFresher = localStorage.getItem('isFresher');
+
+    if (isFresher === 'true') {
+      const softSkills: string[] = this.candidateForm.get('softSkills')?.value;
+      const coreCompentencies: string[] = this.candidateForm.get('coreCompentencies')?.value;
+      const hobbies: string[] = this.candidateForm.get('hobbies')?.value;
+
+      if (softSkills?.length < 3) {
+        this.showSoftSkillsError = true;
+      }
+      if (coreCompentencies?.length < 3) {
+        this.showCoreCompentenciesError = true;
+      }
+      if (hobbies?.length < 3) {
+        this.showHobbiesError = true;
+        this.toast.showToast('error', 'Please enter atleast 3 hobbies');
+      }
+
+      if (hobbies?.length > 2 && coreCompentencies?.length > 2 && softSkills?.length > 2) {
+        this.createCandidateAfterLogin();
+      }
+      else {
+        this.toast.showToast('error', 'Please enter atleast 3 details');
+      }
+    }
+    else {
+      this.createCandidateAfterLogin();
+    }
 
   }
 
@@ -508,6 +642,24 @@ export class CandidateMultipleResumeFormComponent {
         );
         q.qualificationEndYear = this.datePipe.transform(
           q.qualificationEndYear,
+          'yyyy-MM-dd'
+        );
+      });
+    }
+
+    if (
+      payload.schoolEducation.length === 0 ||
+      Object.is(payload.schoolEducation[0].schoolName, '')
+    ) {
+      payload.schoolEducation = [];
+    } else {
+      payload.schoolEducation.forEach((q: any) => {
+        q.schoolStartYear = this.datePipe.transform(
+          q.schoolStartYear,
+          'yyyy-MM-dd'
+        );
+        q.schoolEndYear = this.datePipe.transform(
+          q.schoolEndYear,
           'yyyy-MM-dd'
         );
       });
@@ -656,7 +808,7 @@ export class CandidateMultipleResumeFormComponent {
         }
       },
       error: (error) => {
-       this.stopProcess();
+        this.stopProcess();
         this.dataLoaded = true;
         this.gs.showMessage('Error', 'Error in Creaing Details');
       },
@@ -697,7 +849,7 @@ export class CandidateMultipleResumeFormComponent {
       this.api.retrieve(route, postData).subscribe({
         next: (response) => {
           if (response) {
-          this.stopProcess();
+            this.stopProcess();
             this.gs.navigate.next(false);
             sessionStorage.setItem('authType', 'custom');
             sessionStorage.setItem('token', response.token);
@@ -841,6 +993,10 @@ export class CandidateMultipleResumeFormComponent {
 
   addQualication() {
     this.qualificationControls.push(this.createQualification());
+
+    this.qualificationlength = this.qualificationlength + 1;
+
+
   }
 
   removeQualification(index: number) {
@@ -850,13 +1006,18 @@ export class CandidateMultipleResumeFormComponent {
     if (confirmDelete && this.qualificationControls.length >= 1) {
       const removedQualification = this.qualificationControls.at(index).value;
       if (removedQualification.id) {
-        removedQualification.isDeleted = true;
-        this.qualificationDeletedArray.push(removedQualification);
+        this.qualificationlength = this.qualificationlength - 1;
         this.qualificationControls.removeAt(index);
       } else {
+        this.qualificationlength = this.qualificationlength - 1;
         this.qualificationControls.removeAt(index);
       }
     }
+
+
+
+
+
   }
 
   generateYearList() {
@@ -957,15 +1118,22 @@ export class CandidateMultipleResumeFormComponent {
     });
   }
 
-  getFieldOfStudy() {
-    const route = 'value-sets/search-by-code';
-    const postData = { valueSetCode: 'QUALIFICATION' };
-    this.api.retrieve(route, postData).subscribe({
-      next: (response) => {
-        this.fieldOfStudy = response;
-      },
-    });
-  }
+getFieldOfStudy() {
+  const route = 'value-sets/search-by-code';
+  const postData = { valueSetCode: 'QUALIFICATION' };
+
+  this.api.retrieve(route, postData).subscribe({
+    next: (response: any[]) => {
+      this.fieldOfStudy = response.map(item => ({
+        ...item,
+       
+        filterText: item.displayValue
+          ? item.displayValue.replace(/\./g, '').toLowerCase()
+          : ''
+      }));
+    },
+  });
+}
 
   addCandidateImage(event: any) {
     this.candidateImageAttachments = [];
@@ -1912,5 +2080,48 @@ export class CandidateMultipleResumeFormComponent {
   stopProcess() {
     this.newLoader.hideLoader();
   }
+
+
+  createSchoolEducation(): FormGroup {
+    return this.fb.group({
+      id: [''],
+      schoolName: [''],
+      educationLevel: [''],
+      schoolStartYear: [''],
+      schoolEndYear: [''],
+      percentage: ['']
+    });
+  }
+
+  get schoolControls() {
+    return this.candidateForm.get('schoolEducation') as FormArray;
+  }
+
+  addSchoolEducation() {
+    this.schoolControls.push(this.createSchoolEducation());
+    this.schoolEducationlength = this.schoolEducationlength + 1;
+  }
+
+  removeSchoolEducation(index: number) {
+    const confirmDelete = window.confirm(
+      'Are you sure you want to remove this school education?'
+    );
+    if (confirmDelete && this.schoolControls.length >= 1) {
+      this.schoolControls.removeAt(index);
+      this.schoolEducationlength = this.schoolEducationlength - 1;
+    }
+
+  }
+
+   getSchoolEducationFields() {
+    const route = 'value-sets/search-by-code';
+    const postData = { valueSetCode: 'SCHOOL_QUALIFICATION' };
+    this.api.retrieve(route, postData).subscribe({
+      next: (response) => {
+        this.schoolEducation = response;
+      },
+    });
+  }
+
 }
 

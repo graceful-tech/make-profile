@@ -47,6 +47,7 @@ import { Project } from 'src/app/models/candidates/project';
 import { LoaderControllerService } from 'src/app/services/loader-controller.service';
 import templatesData from 'src/assets/resume-types/templatesData.json';
 import { ConfirmationPopupComponent } from 'src/app/shared/components/confirmation-popup/confirmation-popup.component';
+import { SchoolEducation } from 'src/app/models/candidates/schoolEducation';
 
 
 
@@ -158,6 +159,9 @@ export class PreviewAndCreateResumeComponent {
   coreCompentencies: Array<any> = [];
   addAdditoinalDetail: boolean = false;
   totalPdfPages: any;
+  schoolEducationlength: any;
+  schoolEducation: Array<ValueSet> = [];
+
 
   constructor(
     private http: HttpClient,
@@ -203,6 +207,8 @@ export class PreviewAndCreateResumeComponent {
     this.getFieldOfStudy();
     this.getNationalityList();
     // this.getAvailableCredits();
+    this.getSchoolEducationFields();
+
 
     if (this.candidates !== null && this.candidates !== undefined) {
       this.candidateId = this.candidates.id;
@@ -318,6 +324,7 @@ export class PreviewAndCreateResumeComponent {
         careerObjective: [''],
         fatherName: [''],
         hobbies: [''],
+        schoolEducation: this.fb.array([]),
       },
       { validators: [this.fresherOrExperienceValidator()] }
     );
@@ -618,6 +625,24 @@ export class PreviewAndCreateResumeComponent {
           );
           q.qualificationEndYear = this.datePipe.transform(
             q.qualificationEndYear,
+            'yyyy-MM-dd'
+          );
+        });
+      }
+
+      if (
+        payload.schoolEducation.length === 0 ||
+        Object.is(payload.schoolEducation[0].schoolName, '')
+      ) {
+        payload.schoolEducation = [];
+      } else {
+        payload.schoolEducation.forEach((q: any) => {
+          q.schoolStartYear = this.datePipe.transform(
+            q.schoolStartYear,
+            'yyyy-MM-dd'
+          );
+          q.schoolEndYear = this.datePipe.transform(
+            q.schoolEndYear,
             'yyyy-MM-dd'
           );
         });
@@ -1052,15 +1077,22 @@ export class PreviewAndCreateResumeComponent {
     });
   }
 
-  getFieldOfStudy() {
-    const route = 'value-sets/search-by-code';
-    const postData = { valueSetCode: 'QUALIFICATION' };
-    this.api.retrieve(route, postData).subscribe({
-      next: (response) => {
-        this.fieldOfStudy = response;
-      },
-    });
-  }
+getFieldOfStudy() {
+  const route = 'value-sets/search-by-code';
+  const postData = { valueSetCode: 'QUALIFICATION' };
+
+  this.api.retrieve(route, postData).subscribe({
+    next: (response: any[]) => {
+      this.fieldOfStudy = response.map(item => ({
+        ...item,
+       
+        filterText: item.displayValue
+          ? item.displayValue.replace(/\./g, '').toLowerCase()
+          : ''
+      }));
+    },
+  });
+}
 
   addCandidateImage(event: any) {
     this.candidateImageAttachments = [];
@@ -1172,6 +1204,22 @@ export class PreviewAndCreateResumeComponent {
         );
       });
     }
+
+
+    if (candidate.schoolEducation?.length > 0) {
+      const schoolFormArray = this.candidateForm.get(
+        'schoolEducation'
+      ) as FormArray;
+      schoolFormArray.clear();
+
+      candidate.schoolEducation?.forEach((qualification) => {
+        schoolFormArray.push(
+          this.createSchoolEducationFormGroup(qualification)
+        );
+      });
+    }
+
+
 
     if (candidate.achievements?.some((a) => a && a.achievementsName.trim())) {
       const achievementFormArray = this.candidateForm.get(
@@ -1461,8 +1509,8 @@ export class PreviewAndCreateResumeComponent {
       const templateName = localStorage.getItem('templateName');
 
       const pageType: any = this.templatesTypes.find(template => template.templateName === templateName)?.pages
-     console.log('page size'+pageType);
-     console.log(templateName);
+      console.log('page size' + pageType);
+      console.log(templateName);
 
       if (pageType > 1) {
         this.createCandidate();
@@ -2360,5 +2408,61 @@ export class PreviewAndCreateResumeComponent {
     this.showConfirmationPopup = false
   }
 
+  createSchoolEducationFormGroup(qualification: SchoolEducation) {
+    return this.fb.group({
+      id: qualification.id,
+      schoolName: qualification.schoolName,
+      educationLevel: qualification.educationLevel,
+      schoolStartYear: qualification.schoolStartYear
+        ? new Date(qualification.schoolStartYear)
+        : null,
+      schoolEndYear: qualification.schoolEndYear
+        ? new Date(qualification.schoolEndYear)
+        : null,
+      percentage: qualification.percentage,
+    });
+  }
+
+
+  createSchoolEducation(): FormGroup {
+    return this.fb.group({
+      id: [''],
+      schoolName: [''],
+      educationLevel: [''],
+      schoolStartYear: [''],
+      schoolEndYear: [''],
+      percentage: ['']
+    });
+  }
+
+  get schoolControls() {
+    return this.candidateForm.get('schoolEducation') as FormArray;
+  }
+
+  addSchoolEducation() {
+    this.schoolControls.push(this.createSchoolEducation());
+    this.schoolEducationlength = this.schoolEducationlength + 1;
+  }
+
+  removeSchoolEducation(index: number) {
+    const confirmDelete = window.confirm(
+      'Are you sure you want to remove this school education?'
+    );
+    if (confirmDelete && this.schoolControls.length >= 1) {
+      this.schoolControls.removeAt(index);
+      this.schoolEducationlength = this.schoolEducationlength - 1;
+    }
+
+  }
+
+getSchoolEducationFields() {
+    const route = 'value-sets/search-by-code';
+    const postData = { valueSetCode: 'SCHOOL_QUALIFICATION' };
+    this.api.retrieve(route, postData).subscribe({
+      next: (response) => {
+        this.schoolEducation = response;
+      },
+    });
+  }
 
 }

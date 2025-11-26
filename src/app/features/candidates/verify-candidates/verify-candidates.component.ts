@@ -38,6 +38,7 @@ import { LoaderService } from 'src/app/services/loader.service';
 import { ResumeCreatingComponent } from '../resume-creating/resume-creating.component';
 import { ToastService } from 'src/app/services/toast.service';
 import { LoaderControllerService } from 'src/app/services/loader-controller.service';
+import { SchoolEducation } from 'src/app/models/candidates/schoolEducation';
 
 @Component({
   selector: 'app-verify-candidates',
@@ -102,6 +103,10 @@ export class VerifyCandidatesComponent {
   nickName: any;
   templateName: any;
   isUploading: boolean = false;
+  qualificationlength: number = -1;
+  schoolEducationlength: number = -1;
+  schoolEducation: Array<ValueSet> = [];
+
 
   constructor(
     private api: ApiService,
@@ -149,6 +154,8 @@ export class VerifyCandidatesComponent {
     this.getFieldOfStudy();
     //this.getCandidates();
     this.getNationalityList();
+    this.getSchoolEducationFields();
+
 
     if (this.candidates !== null && this.candidates !== undefined) {
       this.candidateId = this.candidates.id;
@@ -199,6 +206,7 @@ export class VerifyCandidatesComponent {
         collegeProject: this.fb.array([]),
         hobbies: [''],
         fatherName: [''],
+        schoolEducation: this.fb.array([]),
       },
       { validators: [this.fresherOrExperienceValidator()] }
     );
@@ -310,10 +318,10 @@ export class VerifyCandidatesComponent {
 
             const responsibilities = Array.isArray(exp.responsibilities)
               ? exp.responsibilities
-                  .map((r: any) =>
-                    typeof r === 'string' ? r : r.task || r.value || ''
-                  )
-                  .join(', ')
+                .map((r: any) =>
+                  typeof r === 'string' ? r : r.task || r.value || ''
+                )
+                .join(', ')
               : exp.responsibilities;
 
             let projects = exp.projects || [];
@@ -328,10 +336,10 @@ export class VerifyCandidatesComponent {
                 ...proj,
                 projectSkills: Array.isArray(proj.projectSkills)
                   ? proj.projectSkills
-                      .map((r: any) =>
-                        typeof r === 'string' ? r : r.task || r.value || ''
-                      )
-                      .join(', ')
+                    .map((r: any) =>
+                      typeof r === 'string' ? r : r.task || r.value || ''
+                    )
+                    .join(', ')
                   : proj.projectSkills,
               }));
             }
@@ -364,6 +372,25 @@ export class VerifyCandidatesComponent {
           );
         });
       }
+
+      if (
+        payload.schoolEducation.length === 0 ||
+        Object.is(payload.schoolEducation[0].schoolName, '')
+      ) {
+        payload.schoolEducation = [];
+      } else {
+        payload.schoolEducation.forEach((q: any) => {
+          q.schoolStartYear = this.datePipe.transform(
+            q.schoolStartYear,
+            'yyyy-MM-dd'
+          );
+          q.schoolEndYear = this.datePipe.transform(
+            q.schoolEndYear,
+            'yyyy-MM-dd'
+          );
+        });
+      }
+
 
       if (
         payload.achievements.length === 0 ||
@@ -463,10 +490,10 @@ export class VerifyCandidatesComponent {
                   project.collegeProjectSkills
                 )
                   ? project.collegeProjectSkills
-                      .map((r: any) =>
-                        typeof r === 'string' ? r : r.task || r.value || ''
-                      )
-                      .join(', ')
+                    .map((r: any) =>
+                      typeof r === 'string' ? r : r.task || r.value || ''
+                    )
+                    .join(', ')
                   : project.collegeProjectSkills,
               })
             );
@@ -662,6 +689,8 @@ export class VerifyCandidatesComponent {
 
   addQualication() {
     this.qualificationControls.push(this.createQualification());
+
+    this.qualificationlength = this.qualificationlength + 1;
   }
 
   removeQualification(index: number) {
@@ -671,10 +700,10 @@ export class VerifyCandidatesComponent {
     if (confirmDelete && this.qualificationControls.length >= 1) {
       const removedQualification = this.qualificationControls.at(index).value;
       if (removedQualification.id) {
-        removedQualification.isDeleted = true;
-        this.qualificationDeletedArray.push(removedQualification);
         this.qualificationControls.removeAt(index);
+        this.qualificationlength = this.qualificationlength - 1;
       } else {
+        this.qualificationlength = this.qualificationlength - 1;
         this.qualificationControls.removeAt(index);
       }
     }
@@ -778,15 +807,22 @@ export class VerifyCandidatesComponent {
     });
   }
 
-  getFieldOfStudy() {
-    const route = 'value-sets/search-by-code';
-    const postData = { valueSetCode: 'QUALIFICATION' };
-    this.api.retrieve(route, postData).subscribe({
-      next: (response) => {
-        this.fieldOfStudy = response;
-      },
-    });
-  }
+getFieldOfStudy() {
+  const route = 'value-sets/search-by-code';
+  const postData = { valueSetCode: 'QUALIFICATION' };
+
+  this.api.retrieve(route, postData).subscribe({
+    next: (response: any[]) => {
+      this.fieldOfStudy = response.map(item => ({
+        ...item,
+       
+        filterText: item.displayValue
+          ? item.displayValue.replace(/\./g, '').toLowerCase()
+          : ''
+      }));
+    },
+  });
+}
 
   addCandidateImage(event: any) {
     this.candidateImageAttachments = [];
@@ -843,8 +879,8 @@ export class VerifyCandidatesComponent {
       : [];
     candidate.coreCompentencies = candidate?.coreCompentencies
       ? candidate.coreCompentencies
-          .split(',')
-          .map((skill: string) => skill.trim())
+        .split(',')
+        .map((skill: string) => skill.trim())
       : [];
 
     candidate.hobbies = candidate?.hobbies
@@ -890,6 +926,21 @@ export class VerifyCandidatesComponent {
         );
       });
     }
+
+
+    if (candidate.schoolEducation?.length > 0) {
+      const schoolFormArray = this.candidateForm.get(
+        'schoolEducation'
+      ) as FormArray;
+      schoolFormArray.clear();
+
+      candidate.schoolEducation?.forEach((qualification) => {
+        schoolFormArray.push(
+          this.createSchoolEducationFormGroup(qualification)
+        );
+      });
+    }
+
 
     if (candidate.achievements?.length > 0) {
       const achievementFormArray = this.candidateForm.get(
@@ -956,8 +1007,8 @@ export class VerifyCandidatesComponent {
       experiences?.forEach((experience) => {
         const responsibilities = experience?.responsibilities
           ? experience.responsibilities
-              .split(',')
-              .map((res: string) => res.trim())
+            .split(',')
+            .map((res: string) => res.trim())
           : [];
 
         const experienceForm = this.createExperience();
@@ -982,8 +1033,8 @@ export class VerifyCandidatesComponent {
           experience.projects?.forEach((project: any) => {
             const projectSkills = project?.projectSkills
               ? project.projectSkills
-                  .split(',')
-                  .map((skill: string) => skill.trim())
+                .split(',')
+                .map((skill: string) => skill.trim())
               : [];
             const projectForm = this.createProject();
             projectForm.patchValue({
@@ -1019,6 +1070,21 @@ export class VerifyCandidatesComponent {
     });
   }
 
+  createSchoolEducationFormGroup(qualification: SchoolEducation) {
+    return this.fb.group({
+      id: qualification.id,
+      schoolName: qualification.schoolName,
+      educationLevel: qualification.educationLevel,
+      schoolStartYear: qualification.schoolStartYear
+        ? new Date(qualification.schoolStartYear)
+        : null,
+      schoolEndYear: qualification.schoolEndYear
+        ? new Date(qualification.schoolEndYear)
+        : null,
+      percentage: qualification.percentage,
+    });
+  }
+
   createAchievementsFormGroup(achievement: Achievements) {
     const formattedStartDate = this.datePipe.transform(
       achievement.achievementsDate,
@@ -1038,8 +1104,8 @@ export class VerifyCandidatesComponent {
     const skillsArray =
       typeof collegeProject.collegeProjectSkills === 'string'
         ? collegeProject.collegeProjectSkills
-            .split(',')
-            .map((skill) => skill.trim())
+          .split(',')
+          .map((skill) => skill.trim())
         : collegeProject.collegeProjectSkills;
 
     return this.fb.group({
@@ -1158,7 +1224,7 @@ export class VerifyCandidatesComponent {
   }
 
   getCandidates() {
-   this.newLoader.showLoader(['Please Wait'], 3500);
+    this.newLoader.showLoader(['Please Wait'], 3500);
 
     const route = 'candidate';
     this.api.get(route).subscribe({
@@ -1176,13 +1242,13 @@ export class VerifyCandidatesComponent {
           if (this.candidateId !== null && this.candidateId !== undefined) {
             this.candidateForm.controls['mobileNumber'].disable();
           }
-         this.stopProcess();
-          
+          this.stopProcess();
+
         }
         this.stopProcess();
       },
       error: (err) => {
-          this.stopProcess();
+        this.stopProcess();
       },
     });
   }
@@ -1206,7 +1272,7 @@ export class VerifyCandidatesComponent {
 
     // this.isUploading = true;
     this.startProcess();
-    
+
 
     let job;
     if (candidateDetails?.fresher) {
@@ -1229,7 +1295,7 @@ export class VerifyCandidatesComponent {
       },
       error: (error) => {
         // this.isUploading = false;
-         this.stopProcess();
+        this.stopProcess();
         this.gs.showMessage('error', error.error?.message);
       },
     });
@@ -1316,10 +1382,10 @@ export class VerifyCandidatesComponent {
 
               const responsibilities = Array.isArray(exp.responsibilities)
                 ? exp.responsibilities
-                    .map((r: any) =>
-                      typeof r === 'string' ? r : r.task || r.value || ''
-                    )
-                    .join(', ')
+                  .map((r: any) =>
+                    typeof r === 'string' ? r : r.task || r.value || ''
+                  )
+                  .join(', ')
                 : exp.responsibilities;
 
               let projects = exp.projects || [];
@@ -1334,10 +1400,10 @@ export class VerifyCandidatesComponent {
                   ...proj,
                   projectSkills: Array.isArray(proj.projectSkills)
                     ? proj.projectSkills
-                        .map((r: any) =>
-                          typeof r === 'string' ? r : r.task || r.value || ''
-                        )
-                        .join(', ')
+                      .map((r: any) =>
+                        typeof r === 'string' ? r : r.task || r.value || ''
+                      )
+                      .join(', ')
                     : proj.projectSkills,
                 }));
               }
@@ -1469,10 +1535,10 @@ export class VerifyCandidatesComponent {
                     project.collegeProjectSkills
                   )
                     ? project.collegeProjectSkills
-                        .map((r: any) =>
-                          typeof r === 'string' ? r : r.task || r.value || ''
-                        )
-                        .join(', ')
+                      .map((r: any) =>
+                        typeof r === 'string' ? r : r.task || r.value || ''
+                      )
+                      .join(', ')
                     : project.collegeProjectSkills,
                 })
               );
@@ -1566,4 +1632,48 @@ export class VerifyCandidatesComponent {
   stopProcess() {
     this.newLoader.hideLoader();
   }
+
+
+  createSchoolEducation(): FormGroup {
+    return this.fb.group({
+      id: [''],
+      schoolName: [''],
+      educationLevel: [''],
+      schoolStartYear: [''],
+      schoolEndYear: [''],
+      percentage: ['']
+    });
+  }
+
+  get schoolControls() {
+    return this.candidateForm.get('schoolEducation') as FormArray;
+  }
+
+  addSchoolEducation() {
+    this.schoolControls.push(this.createSchoolEducation());
+    this.schoolEducationlength = this.schoolEducationlength + 1;
+  }
+
+  removeSchoolEducation(index: number) {
+    const confirmDelete = window.confirm(
+      'Are you sure you want to remove this school education?'
+    );
+    if (confirmDelete && this.schoolControls.length >= 1) {
+      this.schoolControls.removeAt(index);
+      this.schoolEducationlength = this.schoolEducationlength - 1;
+    }
+
+  }
+
+   getSchoolEducationFields() {
+    const route = 'value-sets/search-by-code';
+    const postData = { valueSetCode: 'SCHOOL_QUALIFICATION' };
+    this.api.retrieve(route, postData).subscribe({
+      next: (response) => {
+        this.schoolEducation = response;
+      },
+    });
+  }
+
+
 }

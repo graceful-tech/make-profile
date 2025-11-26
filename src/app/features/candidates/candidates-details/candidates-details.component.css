@@ -964,3 +964,16 @@ footer {
 :host ::ng-deep .ng2-tag-input .ng2-tags-container {
   flex-wrap: wrap !important;
 }
+
+.subdivider {
+  width: 100%;
+  height: 1px;
+  background-color: #9ea9bf; 
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+ 
+.menu-link:hover span {
+  color: white !important;
+}

@@ -131,7 +131,7 @@ export class MobileResumeCommonDetailsComponent {
     }
   }
 
-  ngAfterViewInit() {}
+  ngAfterViewInit() { }
 
   createCandidateForm() {
     this.candidateForm = this.fb.group(
@@ -275,10 +275,10 @@ export class MobileResumeCommonDetailsComponent {
 
             const responsibilities = Array.isArray(exp.responsibilities)
               ? exp.responsibilities
-                  .map((r: any) =>
-                    typeof r === 'string' ? r : r.task || r.value || ''
-                  )
-                  .join(', ')
+                .map((r: any) =>
+                  typeof r === 'string' ? r : r.task || r.value || ''
+                )
+                .join(', ')
               : exp.responsibilities;
 
             let projects = exp.projects || [];
@@ -293,10 +293,10 @@ export class MobileResumeCommonDetailsComponent {
                 ...proj,
                 projectSkills: Array.isArray(proj.projectSkills)
                   ? proj.projectSkills
-                      .map((r: any) =>
-                        typeof r === 'string' ? r : r.task || r.value || ''
-                      )
-                      .join(', ')
+                    .map((r: any) =>
+                      typeof r === 'string' ? r : r.task || r.value || ''
+                    )
+                    .join(', ')
                   : proj.projectSkills,
               }));
             }
@@ -448,10 +448,10 @@ export class MobileResumeCommonDetailsComponent {
                   project.collegeProjectSkills
                 )
                   ? project.collegeProjectSkills
-                      .map((r: any) =>
-                        typeof r === 'string' ? r : r.task || r.value || ''
-                      )
-                      .join(', ')
+                    .map((r: any) =>
+                      typeof r === 'string' ? r : r.task || r.value || ''
+                    )
+                    .join(', ')
                   : project.collegeProjectSkills,
               })
             );
@@ -517,17 +517,17 @@ export class MobileResumeCommonDetailsComponent {
           const password = sessionStorage.getItem('password');
 
           this.dialogeService.open(MobilePopupComponent, {
-                      data: {
-                        userName,
-                        password,
-                      },
-                      header: '',
-                      width: '400px',
-                      styleClass: 'custom-popup',
-                      closable: false,
-                    });
+            data: {
+              userName,
+              password,
+            },
+            header: '',
+            width: '400px',
+            styleClass: 'custom-popup',
+            closable: false,
+          });
 
-          
+
         },
         error: (error) => {
           this.loader.stop();
@@ -763,13 +763,19 @@ export class MobileResumeCommonDetailsComponent {
       },
     });
   }
-
   getFieldOfStudy() {
     const route = 'value-sets/search-by-code';
     const postData = { valueSetCode: 'QUALIFICATION' };
+
     this.api.retrieve(route, postData).subscribe({
-      next: (response) => {
-        this.fieldOfStudy = response;
+      next: (response: any[]) => {
+        this.fieldOfStudy = response.map(item => ({
+          ...item,
+
+          filterText: item.displayValue
+            ? item.displayValue.replace(/\./g, '').toLowerCase()
+            : ''
+        }));
       },
     });
   }
@@ -830,8 +836,8 @@ export class MobileResumeCommonDetailsComponent {
       : [];
     candidate.coreCompentencies = candidate?.coreCompentencies
       ? candidate.coreCompentencies
-          .split(',')
-          .map((skill: string) => skill.trim())
+        .split(',')
+        .map((skill: string) => skill.trim())
       : [];
 
     candidate.hobbies = candidate?.hobbies
@@ -948,8 +954,8 @@ export class MobileResumeCommonDetailsComponent {
       experiences?.forEach((experience) => {
         const responsibilities = experience?.responsibilities
           ? experience.responsibilities
-              .split(',')
-              .map((res: string) => res.trim())
+            .split(',')
+            .map((res: string) => res.trim())
           : [];
 
         const experienceForm = this.createExperience();
@@ -975,8 +981,8 @@ export class MobileResumeCommonDetailsComponent {
           experience.projects?.forEach((project: any) => {
             const projectSkills = project.projectSkills
               ? project.projectSkills
-                  .split(',')
-                  .map((res: string) => res.trim())
+                .split(',')
+                .map((res: string) => res.trim())
               : [];
             const projectForm = this.createProject();
             projectForm.patchValue({
@@ -1028,8 +1034,8 @@ export class MobileResumeCommonDetailsComponent {
     const skillsArray =
       typeof collegeProject.collegeProjectSkills === 'string'
         ? collegeProject.collegeProjectSkills
-            .split(',')
-            .map((skill) => skill.trim())
+          .split(',')
+          .map((skill) => skill.trim())
         : collegeProject.collegeProjectSkills;
 
     return this.fb.group({
@@ -1215,7 +1221,7 @@ export class MobileResumeCommonDetailsComponent {
       payload['mobileNumber'] = number;
 
       this.api.retrieve(route, payload).subscribe({
-        next: (response: any) => {},
+        next: (response: any) => { },
       });
     }
   }
@@ -1223,8 +1229,8 @@ export class MobileResumeCommonDetailsComponent {
   patchAdditionalDetails(additonalDetails: any) {
     const stateNameArray = additonalDetails?.stateName
       ? additonalDetails.stateName
-          .split(',')
-          .map((state: string) => state.trim())
+        .split(',')
+        .map((state: string) => state.trim())
       : [];
 
     const matchedStateIds = stateNameArray
@@ -1236,12 +1242,12 @@ export class MobileResumeCommonDetailsComponent {
 
     const preferredLocationArray = additonalDetails?.preferredLocation
       ? additonalDetails.preferredLocation
-          .split(',')
-          .map((city: string) => city.trim())
-          .filter(
-            (city: string) =>
-              city && this.citiesName.some((c: any) => c.cityName === city)
-          )
+        .split(',')
+        .map((city: string) => city.trim())
+        .filter(
+          (city: string) =>
+            city && this.citiesName.some((c: any) => c.cityName === city)
+        )
       : [];
 
     this.additionalDetailsForm.patchValue({
@@ -1264,15 +1270,15 @@ export class MobileResumeCommonDetailsComponent {
           this.getPrefferedLocationByStateId(response);
         }
       },
-      error: (error) => {},
+      error: (error) => { },
     });
   }
 
   getPrefferedLocationByStateId(additonalDetails: any) {
     const stateNameArray = additonalDetails?.stateName
       ? additonalDetails.stateName
-          .split(',')
-          .map((state: string) => state.trim())
+        .split(',')
+        .map((state: string) => state.trim())
       : [];
 
     const matchedStateIds = stateNameArray

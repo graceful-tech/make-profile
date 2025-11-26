@@ -117,6 +117,15 @@ export class MobileFresherFormPageComponent {
   showSuggestJonFields: boolean = false;
   selectedResumeOption: 'Yes' | 'No' | null = null;
   resume: any;
+  isSchoolEducationOpen = true;
+  isCollegeEducationOpen = false;
+  schoolEducationlength: number = 0;
+  showSchoolError: boolean = false;
+  showCollegeError: boolean = false;
+  showSoftSkillsError: boolean = false;
+  showCoreCompentenciesError: boolean = false;
+  showHobbiesError: boolean = false;
+  schoolEducation: Array<ValueSet> = [];
 
   constructor(
     private api: ApiService,
@@ -147,6 +156,7 @@ export class MobileFresherFormPageComponent {
     this.getFieldOfStudy();
     // this.getStateNames();
     this.getNationalityList();
+    this.getSchoolEducationFields();
 
     this.gs.resumeName$.subscribe((response) => {
       if (response !== null) {
@@ -155,7 +165,7 @@ export class MobileFresherFormPageComponent {
     });
   }
 
-  ngAfterViewInit() {}
+  ngAfterViewInit() { }
 
   createCandidateForm() {
     this.candidateForm = this.fb.group(
@@ -194,6 +204,7 @@ export class MobileFresherFormPageComponent {
         careerObjective: [''],
         fatherName: [''],
         hobbies: [''],
+        schoolEducation: this.fb.array([this.createSchoolEducation()]),
       }
       // { validators: [this.fresherOrExperienceValidator()] }
     );
@@ -305,57 +316,112 @@ export class MobileFresherFormPageComponent {
     });
   }
 
+
+
+
+
   async next() {
-    if (this.step < 5 && this.step > 1 && this.step !== 3) {
-      this.step++;
-    } else if (this.step === 1) {
-      const isActive = sessionStorage.getItem('userName');
+    console.log(this.step + 'haii');
 
-      if (isActive === undefined || isActive === null) {
-        const isValid = await this.checkIfDetailsExists(this.mobile);
+    switch (this.step) {
 
-        if (isValid) {
-          this.candidateLogin();
+      case 1:
+        const isActive = sessionStorage.getItem('userName');
+
+        if (isActive === undefined || isActive === null) {
+          const isValid = await this.checkIfDetailsExists(this.mobile);
+
+          if (isValid) {
+            this.candidateLogin();
+          } else {
+            this.gs.showMobileMessage(
+              'Oops!',
+              'Mobile number or Email Id alreday exist'
+            );
+          }
         } else {
-          this.gs.showMobileMessage(
-            'Oops!',
-            'Mobile number or Email Id alreday exist'
-          );
-        }
-      } else {
-        this.step++;
-      }
-    } else if (this.step === 3) {
-      const fresher = this.candidateForm.get('fresher')?.value;
-      const experiences = this.candidateForm.get('experiences') as FormArray;
-
-      if (!fresher && experiences.length === 0) {
-        this.showExperienceError = true;
-
-        this.candidateForm.get('fresher')?.valueChanges.subscribe(() => {
-          this.hideExperienceErrorIfValid('fresher');
-        });
-
-        (
-          this.candidateForm.get('experiences') as FormArray
-        ).valueChanges.subscribe(() => {
-          this.hideExperienceErrorIfValid('exp');
-        });
-      } else {
-        const payload = this.candidateForm.getRawValue();
-
-        if (
-          (payload.experiences.length > 0 &&
-            payload.experiences?.[0]?.companyName !== '') ||
-          fresher
-        ) {
           this.step++;
-        } else {
-          this.toast.showToast('info', 'Enter your Experience Details');
         }
-      }
+        break;
+
+      case 2:
+        this.showSchoolError = false;
+        this.showCollegeError = false;
+        const isFresher = localStorage.getItem('isFresher');
+        if (isFresher === 'true') {
+          const schoolEducation = this.candidateForm.get('schoolEducation') as FormArray;
+          const qualification = this.candidateForm.get('qualification') as FormArray;
+
+          if (schoolEducation.length > 0) {
+            const firstGroup = schoolEducation.at(0) as FormGroup;
+            const schoolName = firstGroup.get('schoolName')?.value;
+
+            if (!schoolName || schoolName.trim() === '') {
+              this.showSchoolError = true;
+              this.toast.showToast('error', 'Please Enter the Schooling Details');
+              break;
+            }
+          }
+
+          if (qualification.length > 0) {
+            const firstGroup = qualification.at(0) as FormGroup;
+            const institutionName = firstGroup.get('institutionName')?.value;
+
+            if (!institutionName || institutionName.trim() === '') {
+              this.showCollegeError = true;
+              this.toast.showToast('error', 'Please Enter the College Details');
+              break;
+            }
+          }
+          this.step++;
+        }
+        else {
+          this.step++;
+        }
+        break;
+
+      case 3:
+        const fresher = this.candidateForm.get('fresher')?.value;
+        const experiences = this.candidateForm.get('experiences') as FormArray;
+
+        if (!fresher && experiences.length === 0) {
+          this.showExperienceError = true;
+
+          this.candidateForm.get('fresher')?.valueChanges.subscribe(() => {
+            this.hideExperienceErrorIfValid('fresher');
+          });
+
+          (
+            this.candidateForm.get('experiences') as FormArray
+          ).valueChanges.subscribe(() => {
+            this.hideExperienceErrorIfValid('exp');
+          });
+        } else {
+          const payload = this.candidateForm.getRawValue();
+
+          if (
+            (payload.experiences.length > 0 &&
+              payload.experiences?.[0]?.companyName !== '') ||
+            fresher
+          ) {
+            this.step++;
+          } else {
+            this.toast.showToast('info', 'Enter your Experience Details');
+          }
+        }
+        break;
+
+
+      default:
+        if (this.step < 5 && this.step > 1 && this.step !== 3) {
+          this.step++;
+        }
+        break;
     }
   }
+
+
+
 
   hideExperienceErrorIfValid(field: any) {
     const result = this.fresherOrExperienceValidator()(this.candidateForm);
@@ -372,7 +438,40 @@ export class MobileFresherFormPageComponent {
 
   submit() {
     if (this.candidateForm.valid) {
-      this.createCandidateAfterLogin();
+
+      this.showSoftSkillsError = false;
+      this.showCoreCompentenciesError = false;
+      this.showHobbiesError = false;
+
+      const isFresher = localStorage.getItem('isFresher');
+
+      if (isFresher === 'true') {
+        const softSkills: string[] = this.candidateForm.get('softSkills')?.value;
+        const coreCompentencies: string[] = this.candidateForm.get('coreCompentencies')?.value;
+        const hobbies: string[] = this.candidateForm.get('hobbies')?.value;
+
+        if (softSkills?.length < 3) {
+          this.showSoftSkillsError = true;
+        }
+        if (coreCompentencies?.length < 3) {
+          this.showCoreCompentenciesError = true;
+        }
+        if (hobbies?.length < 3) {
+          this.showHobbiesError = true;
+          this.toast.showToast('error', 'Please enter atleast 3 hobbies');
+        }
+
+        if (hobbies?.length > 2 && coreCompentencies?.length > 2 && softSkills?.length > 2) {
+          this.createCandidateAfterLogin();
+        }
+        else {
+          this.toast.showToast('error', 'Please enter atleast 3 details');
+        }
+      }
+      else {
+        this.createCandidateAfterLogin();
+      }
+
     } else {
     }
   }
@@ -467,10 +566,10 @@ export class MobileFresherFormPageComponent {
 
             const responsibilities = Array.isArray(exp.responsibilities)
               ? exp.responsibilities
-                  .map((r: any) =>
-                    typeof r === 'string' ? r : r.task || r.value || ''
-                  )
-                  .join(', ')
+                .map((r: any) =>
+                  typeof r === 'string' ? r : r.task || r.value || ''
+                )
+                .join(', ')
               : exp.responsibilities;
 
             let projects = exp.projects || [];
@@ -485,10 +584,10 @@ export class MobileFresherFormPageComponent {
                 ...proj,
                 projectSkills: Array.isArray(proj.projectSkills)
                   ? proj.projectSkills
-                      .map((r: any) =>
-                        typeof r === 'string' ? r : r.task || r.value || ''
-                      )
-                      .join(', ')
+                    .map((r: any) =>
+                      typeof r === 'string' ? r : r.task || r.value || ''
+                    )
+                    .join(', ')
                   : proj.projectSkills,
               }));
             }
@@ -517,6 +616,24 @@ export class MobileFresherFormPageComponent {
           );
           q.qualificationEndYear = this.datePipe.transform(
             q.qualificationEndYear,
+            'yyyy-MM-dd'
+          );
+        });
+      }
+
+      if (
+        payload.schoolEducation.length === 0 ||
+        Object.is(payload.schoolEducation[0].schoolName, '')
+      ) {
+        payload.schoolEducation = [];
+      } else {
+        payload.schoolEducation.forEach((q: any) => {
+          q.schoolStartYear = this.datePipe.transform(
+            q.schoolStartYear,
+            'yyyy-MM-dd'
+          );
+          q.schoolEndYear = this.datePipe.transform(
+            q.schoolEndYear,
             'yyyy-MM-dd'
           );
         });
@@ -640,10 +757,10 @@ export class MobileFresherFormPageComponent {
                   project.collegeProjectSkills
                 )
                   ? project.collegeProjectSkills
-                      .map((r: any) =>
-                        typeof r === 'string' ? r : r.task || r.value || ''
-                      )
-                      .join(', ')
+                    .map((r: any) =>
+                      typeof r === 'string' ? r : r.task || r.value || ''
+                    )
+                    .join(', ')
                   : project.collegeProjectSkills,
               })
             );
@@ -1024,11 +1141,27 @@ export class MobileFresherFormPageComponent {
   }
 
   getFieldOfStudy() {
+  const route = 'value-sets/search-by-code';
+  const postData = { valueSetCode: 'QUALIFICATION' };
+
+  this.api.retrieve(route, postData).subscribe({
+    next: (response: any[]) => {
+      this.fieldOfStudy = response.map(item => ({
+        ...item,
+       
+        filterText: item.displayValue
+          ? item.displayValue.replace(/\./g, '').toLowerCase()
+          : ''
+      }));
+    },
+  });
+}
+  getSchoolEducationFields() {
     const route = 'value-sets/search-by-code';
-    const postData = { valueSetCode: 'QUALIFICATION' };
+    const postData = { valueSetCode: 'SCHOOL_QUALIFICATION' };
     this.api.retrieve(route, postData).subscribe({
       next: (response) => {
-        this.fieldOfStudy = response;
+        this.schoolEducation = response;
       },
     });
   }
@@ -1120,8 +1253,8 @@ export class MobileFresherFormPageComponent {
     const skillsArray =
       typeof collegeProject.collegeProjectSkills === 'string'
         ? collegeProject.collegeProjectSkills
-            .split(',')
-            .map((skill) => skill.trim())
+          .split(',')
+          .map((skill) => skill.trim())
         : collegeProject.collegeProjectSkills;
 
     return this.fb.group({
@@ -1247,8 +1380,8 @@ export class MobileFresherFormPageComponent {
   getPrefferedLocationByStateId(additonalDetails: any) {
     const stateNameArray = additonalDetails?.stateName
       ? additonalDetails.stateName
-          .split(',')
-          .map((state: string) => state.trim())
+        .split(',')
+        .map((state: string) => state.trim())
       : [];
 
     const matchedStateIds = stateNameArray
@@ -1337,7 +1470,7 @@ export class MobileFresherFormPageComponent {
     const route = 'user/create';
     const postData = { valueSetCode: 'NATIONALITY' };
     this.api.retrieve(route, postData).subscribe({
-      next: (response) => {},
+      next: (response) => { },
     });
   }
   checkIfDetailsExists(mobile: string): Promise<boolean> {
@@ -1456,10 +1589,10 @@ export class MobileFresherFormPageComponent {
 
               const responsibilities = Array.isArray(exp.responsibilities)
                 ? exp.responsibilities
-                    .map((r: any) =>
-                      typeof r === 'string' ? r : r.task || r.value || ''
-                    )
-                    .join(', ')
+                  .map((r: any) =>
+                    typeof r === 'string' ? r : r.task || r.value || ''
+                  )
+                  .join(', ')
                 : exp.responsibilities;
 
               let projects = exp.projects || [];
@@ -1474,10 +1607,10 @@ export class MobileFresherFormPageComponent {
                   ...proj,
                   projectSkills: Array.isArray(proj.projectSkills)
                     ? proj.projectSkills
-                        .map((r: any) =>
-                          typeof r === 'string' ? r : r.task || r.value || ''
-                        )
-                        .join(', ')
+                      .map((r: any) =>
+                        typeof r === 'string' ? r : r.task || r.value || ''
+                      )
+                      .join(', ')
                     : proj.projectSkills,
                 }));
               }
@@ -1506,6 +1639,24 @@ export class MobileFresherFormPageComponent {
             );
             q.qualificationEndYear = this.datePipe.transform(
               q.qualificationEndYear,
+              'yyyy-MM-dd'
+            );
+          });
+        }
+
+        if (
+          payload.schoolEducation.length === 0 ||
+          Object.is(payload.schoolEducation[0].schoolName, '')
+        ) {
+          payload.schoolEducation = [];
+        } else {
+          payload.schoolEducation.forEach((q: any) => {
+            q.schoolStartYear = this.datePipe.transform(
+              q.schoolStartYear,
+              'yyyy-MM-dd'
+            );
+            q.schoolEndYear = this.datePipe.transform(
+              q.schoolEndYear,
               'yyyy-MM-dd'
             );
           });
@@ -1629,10 +1780,10 @@ export class MobileFresherFormPageComponent {
                     project.collegeProjectSkills
                   )
                     ? project.collegeProjectSkills
-                        .map((r: any) =>
-                          typeof r === 'string' ? r : r.task || r.value || ''
-                        )
-                        .join(', ')
+                      .map((r: any) =>
+                        typeof r === 'string' ? r : r.task || r.value || ''
+                      )
+                      .join(', ')
                     : project.collegeProjectSkills,
                 })
               );
@@ -1818,8 +1969,8 @@ export class MobileFresherFormPageComponent {
       : [];
     candidate.coreCompentencies = candidate?.coreCompentencies
       ? candidate.coreCompentencies
-          .split(',')
-          .map((skill: string) => skill.trim())
+        .split(',')
+        .map((skill: string) => skill.trim())
       : [];
 
     candidate.hobbies = candidate?.hobbies
@@ -1926,8 +2077,8 @@ export class MobileFresherFormPageComponent {
       experiences?.forEach((experience) => {
         const responsibilities = experience?.responsibilities
           ? experience.responsibilities
-              .split(',')
-              .map((res: string) => res.trim())
+            .split(',')
+            .map((res: string) => res.trim())
           : [];
 
         const experienceForm = this.createExperience();
@@ -1953,8 +2104,8 @@ export class MobileFresherFormPageComponent {
           experience.projects?.forEach((project: any) => {
             const projectSkills = project.projectSkills
               ? project.projectSkills
-                  .split(',')
-                  .map((res: string) => res.trim())
+                .split(',')
+                .map((res: string) => res.trim())
               : [];
             const projectForm = this.createProject();
             projectForm.patchValue({
@@ -1996,5 +2147,42 @@ export class MobileFresherFormPageComponent {
     }
 
     return null;
+  }
+  toggleEducation(keys: any) {
+    if (keys === 'isSchoolEducationOpen') {
+      this.isSchoolEducationOpen = !this.isSchoolEducationOpen;
+    }
+    else {
+      this.isCollegeEducationOpen = !this.isCollegeEducationOpen;
+    }
+  }
+
+  createSchoolEducation(): FormGroup {
+    return this.fb.group({
+      id: [''],
+      schoolName: [''],
+      educationLevel: [''],
+      schoolStartYear: [''],
+      schoolEndYear: [''],
+      percentage: ['']
+    });
+  }
+
+  get schoolControls() {
+    return this.candidateForm.get('schoolEducation') as FormArray;
+  }
+
+  addSchoolEducation() {
+    this.schoolControls.push(this.createSchoolEducation());
+  }
+
+  removeSchoolEducation(index: number) {
+    const confirmDelete = window.confirm(
+      'Are you sure you want to remove this school education?'
+    );
+    if (confirmDelete && this.schoolControls.length >= 1) {
+      this.schoolControls.removeAt(index);
+    }
+
   }
 }

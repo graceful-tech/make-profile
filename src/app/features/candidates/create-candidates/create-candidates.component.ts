@@ -21,6 +21,7 @@ import { PaymentService } from 'src/app/services/payment.service';
 import { PaymentOptionComponent } from '../payments/payment-option/payment-option.component';
 import { CollegeProject } from 'src/app/models/candidates/college-project';
 import { ToastService } from 'src/app/services/toast.service';
+import { SchoolEducation } from 'src/app/models/candidates/schoolEducation';
 
 @Component({
   standalone: false,
@@ -86,6 +87,8 @@ export class CreateCandidatesComponent {
   stateNames: any;
   additionalDetailsForm!: FormGroup;
   nationalityList: Array<ValueSet> = [];
+  schoolEducation: Array<ValueSet> = [];
+
 
   constructor(
     private api: ApiService,
@@ -99,8 +102,8 @@ export class CreateCandidatesComponent {
     public ref: DynamicDialogRef,
     private config: DynamicDialogConfig,
     private ps: PaymentService,
-    private toast:ToastService,
-    private el:ElementRef
+    private toast: ToastService,
+    private el: ElementRef
   ) {
     this.candidates = this.config.data?.candidates;
     this.payments = this.config.data?.payments;
@@ -120,6 +123,8 @@ export class CreateCandidatesComponent {
     this.createAdditionalDetailsForm();
     this.getStateNames();
     this.getNationalityList()
+    this.getSchoolEducationFields();
+
 
     if (this.candidates !== null && this.candidates !== undefined) {
       this.candidateId = this.candidates.id;
@@ -134,7 +139,7 @@ export class CreateCandidatesComponent {
     }
   }
 
-  ngAfterViewInit() {}
+  ngAfterViewInit() { }
 
   createCandidateForm() {
     this.candidateForm = this.fb.group({
@@ -167,24 +172,25 @@ export class CreateCandidatesComponent {
       achievementsMandatory: [''],
       summary: [''],
       careerObjective: [''],
-      hobbies:[''],
-      fatherName:['']
-    },{ validators: [this.fresherOrExperienceValidator()] }
+      hobbies: [''],
+      fatherName: [''],
+      schoolEducation: this.fb.array([]),
+    }, { validators: [this.fresherOrExperienceValidator()] }
     );
   }
 
   fresherOrExperienceValidator() {
-      return (formGroup: AbstractControl): { [key: string]: any } | null => {
-        const fresher = formGroup.get('fresher')?.value;
-        const experiences = formGroup.get('experiences') as FormArray;
-  
-        if (!fresher && experiences.length === 0) {
-          return { fresherOrExperienceRequired: true };
-        }
-  
-        return null;
-      };
-    }
+    return (formGroup: AbstractControl): { [key: string]: any } | null => {
+      const fresher = formGroup.get('fresher')?.value;
+      const experiences = formGroup.get('experiences') as FormArray;
+
+      if (!fresher && experiences.length === 0) {
+        return { fresherOrExperienceRequired: true };
+      }
+
+      return null;
+    };
+  }
 
   getGenderList() {
     const route = 'value-sets/search-by-code';
@@ -225,7 +231,7 @@ export class CreateCandidatesComponent {
 
   createCandidate() {
     if (this.candidateForm.valid) {
-        this.dataLoaded = false;
+      this.dataLoaded = false;
 
       const route = 'candidate/create';
       const payload = this.candidateForm.getRawValue();
@@ -270,9 +276,9 @@ export class CreateCandidatesComponent {
               'yyyy-MM-dd'
             );
 
-             const responsibilities = Array.isArray(exp.responsibilities)
-           ? exp.responsibilities.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ')
-            : exp.responsibilities;
+            const responsibilities = Array.isArray(exp.responsibilities)
+              ? exp.responsibilities.map((r: any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ')
+              : exp.responsibilities;
 
             let projects = exp.projects || [];
             const hasEmptyProjectName = projects.some(
@@ -285,8 +291,8 @@ export class CreateCandidatesComponent {
               projects = projects.map((proj: any) => ({
                 ...proj,
                 projectSkills: Array.isArray(proj.projectSkills)
-           ? proj.projectSkills.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ')
-            : proj.projectSkills,
+                  ? proj.projectSkills.map((r: any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ')
+                  : proj.projectSkills,
               }));
             }
 
@@ -314,6 +320,24 @@ export class CreateCandidatesComponent {
           );
           q.qualificationEndYear = this.datePipe.transform(
             q.qualificationEndYear,
+            'yyyy-MM-dd'
+          );
+        });
+      }
+
+      if (
+        payload.schoolEducation.length === 0 ||
+        Object.is(payload.schoolEducation[0].schoolName, '')
+      ) {
+        payload.schoolEducation = [];
+      } else {
+        payload.schoolEducation.forEach((q: any) => {
+          q.schoolStartYear = this.datePipe.transform(
+            q.schoolStartYear,
+            'yyyy-MM-dd'
+          );
+          q.schoolEndYear = this.datePipe.transform(
+            q.schoolEndYear,
             'yyyy-MM-dd'
           );
         });
@@ -351,7 +375,7 @@ export class CreateCandidatesComponent {
         });
       }
 
-       if (Object.is(payload.hobbies, '')) {
+      if (Object.is(payload.hobbies, '')) {
         payload.hobbies = '';
       } else {
         const hobbiesList: string[] = payload.hobbies;
@@ -414,9 +438,9 @@ export class CreateCandidatesComponent {
             payload.collegeProject = payload.collegeProject.map(
               (project: any) => ({
                 ...project,
-              collegeProjectSkills:  Array.isArray(project.collegeProjectSkills)
-           ? project.collegeProjectSkills.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ')
-            : project.collegeProjectSkills,
+                collegeProjectSkills: Array.isArray(project.collegeProjectSkills)
+                  ? project.collegeProjectSkills.map((r: any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ')
+                  : project.collegeProjectSkills,
               })
             );
           }
@@ -439,7 +463,7 @@ export class CreateCandidatesComponent {
           : false;
 
       payload.achievementsMandatory =
-        this.candidates?.achievementsMandatory !== null 
+        this.candidates?.achievementsMandatory !== null
           ? this.candidates?.achievementsMandatory
           : false;
 
@@ -475,31 +499,31 @@ export class CreateCandidatesComponent {
       this.showError = true;
       this.candidateForm.markAllAsTouched();
 
-         const firstInvalidControl: HTMLElement =
-          this.el.nativeElement.querySelector(
-            'form .ng-invalid[formcontrolname]'
-          );
+      const firstInvalidControl: HTMLElement =
+        this.el.nativeElement.querySelector(
+          'form .ng-invalid[formcontrolname]'
+        );
 
-        if (firstInvalidControl) {
-          
-          const parentSection = firstInvalidControl.closest(
-            '[id]'
-          ) as HTMLElement;
+      if (firstInvalidControl) {
 
-          if (parentSection) {
-            parentSection.scrollIntoView({
-              behavior: 'smooth',
-              block: 'center',
-            });
-            parentSection.focus({ preventScroll: true });
-          } else {
-            
-            firstInvalidControl.scrollIntoView({
-              behavior: 'smooth',
-              block: 'center',
-            });
-          }
+        const parentSection = firstInvalidControl.closest(
+          '[id]'
+        ) as HTMLElement;
+
+        if (parentSection) {
+          parentSection.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center',
+          });
+          parentSection.focus({ preventScroll: true });
+        } else {
+
+          firstInvalidControl.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center',
+          });
         }
+      }
 
       this.toast.showToast('error', 'Enter All Mandatory Fields');
     }
@@ -738,15 +762,22 @@ export class CreateCandidatesComponent {
     });
   }
 
-  getFieldOfStudy() {
-    const route = 'value-sets/search-by-code';
-    const postData = { valueSetCode: 'QUALIFICATION' };
-    this.api.retrieve(route, postData).subscribe({
-      next: (response) => {
-        this.fieldOfStudy = response;
-      },
-    });
-  }
+getFieldOfStudy() {
+  const route = 'value-sets/search-by-code';
+  const postData = { valueSetCode: 'QUALIFICATION' };
+
+  this.api.retrieve(route, postData).subscribe({
+    next: (response: any[]) => {
+      this.fieldOfStudy = response.map(item => ({
+        ...item,
+       
+        filterText: item.displayValue
+          ? item.displayValue.replace(/\./g, '').toLowerCase()
+          : ''
+      }));
+    },
+  });
+}
 
   addCandidateImage(event: any) {
     this.candidateImageAttachments = [];
@@ -803,14 +834,14 @@ export class CreateCandidatesComponent {
       : [];
     candidate.coreCompentencies = candidate?.coreCompentencies
       ? candidate.coreCompentencies
-          .split(',')
-          .map((skill: string) => skill.trim())
+        .split(',')
+        .map((skill: string) => skill.trim())
       : [];
 
-       candidate.hobbies = candidate?.hobbies
+    candidate.hobbies = candidate?.hobbies
       ? candidate.hobbies
-          .split(',')
-          .map((skill: string) => skill.trim())
+        .split(',')
+        .map((skill: string) => skill.trim())
       : [];
 
 
@@ -855,6 +886,19 @@ export class CreateCandidatesComponent {
       });
     }
 
+    if (candidate.schoolEducation?.length > 0) {
+      const schoolFormArray = this.candidateForm.get(
+        'schoolEducation'
+      ) as FormArray;
+      schoolFormArray.clear();
+
+      candidate.schoolEducation?.forEach((qualification) => {
+        schoolFormArray.push(
+          this.createSchoolEducationFormGroup(qualification)
+        );
+      });
+    }
+
     if (candidate.achievements?.length > 0) {
       const achievementFormArray = this.candidateForm.get(
         'achievements'
@@ -895,7 +939,7 @@ export class CreateCandidatesComponent {
       summary: candidate?.summary,
       careerObjective: candidate?.careerObjective,
       hobbies: candidate?.hobbies ? candidate?.hobbies : [],
-      fatherName:candidate?.fatherName,
+      fatherName: candidate?.fatherName,
     });
   }
 
@@ -922,8 +966,8 @@ export class CreateCandidatesComponent {
       experiences?.forEach((experience) => {
         const responsibilities = experience?.responsibilities
           ? experience.responsibilities
-              .split(',')
-              .map((res: string) => res.trim())
+            .split(',')
+            .map((res: string) => res.trim())
           : [];
 
         const experienceForm = this.createExperience();
@@ -948,8 +992,8 @@ export class CreateCandidatesComponent {
           experience.projects?.forEach((project: any) => {
             const projectSkills = project?.projectSkills
               ? project.projectSkills
-                  .split(',')
-                  .map((skill: string) => skill.trim())
+                .split(',')
+                .map((skill: string) => skill.trim())
               : [];
             const projectForm = this.createProject();
             projectForm.patchValue({
@@ -1004,8 +1048,8 @@ export class CreateCandidatesComponent {
     const skillsArray =
       typeof collegeProject.collegeProjectSkills === 'string'
         ? collegeProject.collegeProjectSkills
-            .split(',')
-            .map((skill) => skill.trim())
+          .split(',')
+          .map((skill) => skill.trim())
         : collegeProject.collegeProjectSkills;
 
     return this.fb.group({
@@ -1215,7 +1259,7 @@ export class CreateCandidatesComponent {
       payload['mobileNumber'] = mobile;
 
       this.api.retrieve(route, payload).subscribe({
-        next: (response: any) => {},
+        next: (response: any) => { },
       });
     }
   }
@@ -1223,8 +1267,8 @@ export class CreateCandidatesComponent {
   patchAdditionalDetails(additonalDetails: any) {
     const stateNameArray = additonalDetails?.stateName
       ? additonalDetails.stateName
-          .split(',')
-          .map((state: string) => state.trim())
+        .split(',')
+        .map((state: string) => state.trim())
       : [];
 
     const matchedStateIds = stateNameArray
@@ -1236,12 +1280,12 @@ export class CreateCandidatesComponent {
 
     const preferredLocationArray = additonalDetails?.preferredLocation
       ? additonalDetails.preferredLocation
-          .split(',')
-          .map((city: string) => city.trim())
-          .filter(
-            (city: string) =>
-              city && this.citiesName.some((c: any) => c.cityName === city)
-          )
+        .split(',')
+        .map((city: string) => city.trim())
+        .filter(
+          (city: string) =>
+            city && this.citiesName.some((c: any) => c.cityName === city)
+        )
       : [];
 
     this.additionalDetailsForm.patchValue({
@@ -1266,15 +1310,15 @@ export class CreateCandidatesComponent {
           this.getPrefferedLocationByStateId(response);
         }
       },
-      error: (error) => {},
+      error: (error) => { },
     });
   }
 
   getPrefferedLocationByStateId(additonalDetails: any) {
     const stateNameArray = additonalDetails?.stateName
       ? additonalDetails.stateName
-          .split(',')
-          .map((state: string) => state.trim())
+        .split(',')
+        .map((state: string) => state.trim())
       : [];
 
     const matchedStateIds = stateNameArray
@@ -1295,13 +1339,72 @@ export class CreateCandidatesComponent {
     });
   }
 
-    getNationalityList() {
+  getNationalityList() {
     const route = 'value-sets/search-by-code';
-     const postData = { valueSetCode: 'NATIONALITY' };
+    const postData = { valueSetCode: 'NATIONALITY' };
     this.api.retrieve(route, postData).subscribe({
       next: (response) => {
         this.nationalityList = response;
       },
     });
   }
+
+
+  createSchoolEducationFormGroup(qualification: SchoolEducation) {
+    return this.fb.group({
+      id: qualification.id,
+      schoolName: qualification.schoolName,
+      educationLevel: qualification.educationLevel,
+      schoolStartYear: qualification.schoolStartYear
+        ? new Date(qualification.schoolStartYear)
+        : null,
+      schoolEndYear: qualification.schoolEndYear
+        ? new Date(qualification.schoolEndYear)
+        : null,
+      percentage: qualification.percentage,
+    });
+  }
+
+
+  createSchoolEducation(): FormGroup {
+    return this.fb.group({
+      id: [''],
+      schoolName: [''],
+      educationLevel: [''],
+      schoolStartYear: [''],
+      schoolEndYear: [''],
+      percentage: ['']
+    });
+  }
+
+  get schoolControls() {
+    return this.candidateForm.get('schoolEducation') as FormArray;
+  }
+
+  addSchoolEducation() {
+    this.schoolControls.push(this.createSchoolEducation());
+
+  }
+
+  removeSchoolEducation(index: number) {
+    const confirmDelete = window.confirm(
+      'Are you sure you want to remove this school education?'
+    );
+    if (confirmDelete && this.schoolControls.length >= 1) {
+      this.schoolControls.removeAt(index);
+
+    }
+
+  }
+
+  getSchoolEducationFields() {
+    const route = 'value-sets/search-by-code';
+    const postData = { valueSetCode: 'SCHOOL_QUALIFICATION' };
+    this.api.retrieve(route, postData).subscribe({
+      next: (response) => {
+        this.schoolEducation = response;
+      },
+    });
+  }
+
 }

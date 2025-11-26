@@ -380,7 +380,7 @@ label {
 }
 
 .remove-btn {
-  background-color: #db4141;
+  background-color: #e63946;
   color: white;
   border: none;
   padding: 8px 12px;
@@ -388,8 +388,8 @@ label {
   border-radius: 8px;
   cursor: pointer;
   margin-right: 15px;
-  font-weight: bold;
-  font-style: italic;
+  font-weight: 400;
+  
 }
 
 .remove-btn:hover {
@@ -397,7 +397,7 @@ label {
 }
 
 .custom-btn {
-  background-color: #415ddb;
+  background-color: #2575fc;
   color: white;
   border: none;
   padding: 8px 12px;
@@ -405,8 +405,8 @@ label {
   border-radius: 8px;
   cursor: pointer;
   margin-right: 15px;
-  font-weight: bold;
-  font-style: italic;
+  font-weight: 400;
+  
 }
 
 .custom-btn:hover {
@@ -573,4 +573,15 @@ h4 {
 .btninactive {
   opacity: 0.4;
    
+}
+
+.divider {
+  width: 100%;
+  height: 3px;
+  background-color: #9ea9bf; 
+  margin-top: 20px;
+}
+
+.dark .divider {
+  background-color: #374151; 
 }

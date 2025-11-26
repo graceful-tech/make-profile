@@ -3,6 +3,7 @@ import { Certificates } from "./certificates";
 import { CollegeProject } from "./college-project";
 import { Experience } from "./experiences";
 import { Qualification } from "./qualification";
+import { SchoolEducation } from "./schoolEducation";
 
 export interface Candidate {
      
@@ -35,6 +36,7 @@ export interface Candidate {
     careerObjective:any;
     fatherName:any;
     hobbies:any;
+    schoolEducation: Array<SchoolEducation>;
 
 
 }

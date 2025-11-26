@@ -8,8 +8,8 @@ import { Router } from '@angular/router';
   styleUrl: './select-user-decision.component.css',
 })
 export class SelectUserDecisionComponent {
-  constructor(private router: Router) {}
-  ngOnInit() {}
+  constructor(private router: Router) { }
+  ngOnInit() { }
 
   private isMobileDevice(): boolean {
     const userAgent =
@@ -18,6 +18,20 @@ export class SelectUserDecisionComponent {
   }
 
   goToFresher() {
+
+    localStorage.setItem('isFresher', 'true');
+
+    const sourse = this.isMobileDevice();
+
+    if (sourse) {
+      this.router.navigate(['mob-fresher-form']);
+    } else {
+      this.router.navigate(['fresher-form']);
+    }
+  }
+
+  goToExperience() {
+    localStorage.setItem('isFresher', 'false');
     const sourse = this.isMobileDevice();
 
     if (sourse) {

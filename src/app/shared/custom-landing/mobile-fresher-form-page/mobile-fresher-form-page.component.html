@@ -127,7 +127,7 @@
               name="skills"
               placeholder="e.g. Angular, Java, Excel"
             ></tag-input>
-            <span>Eg: &nbsp; Computer Basics,SQL Basics,MS Office</span>
+            <span>Eg: &nbsp; Sales,Marketing,MS Office</span>
 
             <div
               *ngIf="skillsField.invalid && skillsField.touched"
@@ -278,128 +278,193 @@
 
   <form [formGroup]="candidateForm">
     <div *ngIf="step === 2">
-      <h2 class="section-heading">Education</h2>
-
-      <div formArrayName="qualification">
-        <div
-          *ngFor="
-            let qualifications of qualificationControls.controls;
+       <div class="education-section">
+        <div class="drawer-header" (click)="toggleEducation('isSchoolEducationOpen')">
+          <h3>School Education</h3>
+          <span [class.rotate]="isSchoolEducationOpen">⌃</span>
+        </div>
+        <div class="drawer-body" *ngIf="isSchoolEducationOpen">
+          <div formArrayName="schoolEducation">
+            <div *ngFor="
+            let qualifications of schoolControls.controls;
             let i = index
-          "
-          [formGroupName]="i"
-          class="qualification-box"
-        >
-          <div class="grid">
-            <!-- Institution Name -->
-            <div class="col-12 md:col-6 lg:col-3">
-              <div class="field-wrapper">
-                <label>Institution Name</label>
-                <div class="input-wrapper">
-                  <input
-                    type="text"
-                    pInputText
-                    formControlName="institutionName"
-                  />
+          " [formGroupName]="i" class="qualification-box">
+              <div class="grid">
+                <!-- Institution Name -->
+                <div class="col-12 md:col-6 lg:col-3">
+                  <div class="field-wrapper">
+                    <label>School Name</label>
+                    <div class="input-wrapper">
+                      <input type="text" pInputText formControlName="schoolName" />
+                    </div>
+                  </div>
                 </div>
+
+                <!-- Qualification -->
+                <div class="col-12 md:col-6 lg:col-3">
+                  <div class="field-wrapper">
+                    <label>Education Level</label>
+                    <div class="input-wrapper">
+                      <p-dropdown [options]="schoolEducation" optionLabel="displayValue" optionValue="dataValue"
+                        placeholder="Select Education" formControlName="educationLevel" [filter]="true"
+                        styleClass="narrow-dropdown">
+                      </p-dropdown>
+                    </div>
+                  </div>
+                </div>
+
+
+
+                <!-- Start Year -->
+                <div class="col-12 md:col-6 lg:col-3">
+                  <div class="field-wrapper">
+                    <label>Start Year</label>
+                    <div class="input-wrapper">
+                      <p-calendar formControlName="schoolStartYear" placeholder="Select Year"></p-calendar>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- End Year -->
+                <div class="col-12 md:col-6 lg:col-3">
+                  <div class="field-wrapper">
+                    <label>End Year</label>
+                    <div class="input-wrapper">
+                      <p-calendar formControlName="schoolEndYear" placeholder="Select Year"></p-calendar>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Percentage -->
+                <div class="col-12 md:col-6 lg:col-3">
+                  <div class="field-wrapper">
+                    <label>Percentage</label>
+                    <div class="input-wrapper">
+                      <input placeholder="Ex: 88.8" pKeyFilter="num" [maxLength]="4" type="number" [min]="0.0"
+                        [max]="99.99" pInputText formControlName="percentage" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Remove Qualification -->
+              <div class="col-12 md:col-6 lg:col-3 mt-2">
+                <button type="button" class="remove-btn" (click)="removeSchoolEducation(i)">
+                  Remove School Edcuation
+                </button>
               </div>
             </div>
 
-            <!-- Qualification -->
-            <div class="col-12 md:col-6 lg:col-3">
-              <div class="field-wrapper">
-                <label>Qualification</label>
-                <div class="input-wrapper">
-                  <p-dropdown
-                    [options]="fieldOfStudy"
-                    optionLabel="displayValue"
-                    optionValue="dataValue"
-                    placeholder="Select Qualification"
-                    formControlName="department"
-                    [filter]="true"
-                    styleClass="narrow-dropdown"
-                  >
-                  </p-dropdown>
-                </div>
-              </div>
+            <!-- Add Qualification -->
+            <div class="col-12 md:col-6 lg:col-3 mt-3">
+              <button type="button" class="custom-btn" (click)="addSchoolEducation()">
+                + Add School Edcuation
+              </button>
             </div>
-
-            <!-- Department -->
-            <div class="col-12 md:col-6 lg:col-3">
-              <div class="field-wrapper">
-                <label>Department</label>
-                <div class="input-wrapper">
-                  <input
-                    type="text"
-                    pInputText
-                    formControlName="fieldOfStudy"
-                  />
-                </div>
-              </div>
-            </div>
-
-            <!-- Start Year -->
-            <div class="col-12 md:col-6 lg:col-3">
-              <div class="field-wrapper">
-                <label>Start Year</label>
-                <div class="input-wrapper">
-                  <p-calendar
-                    formControlName="qualificationStartYear"
-                    placeholder="Select Year"
-                  ></p-calendar>
-                </div>
-              </div>
-            </div>
-
-            <!-- End Year -->
-            <div class="col-12 md:col-6 lg:col-3">
-              <div class="field-wrapper">
-                <label>End Year</label>
-                <div class="input-wrapper">
-                  <p-calendar
-                    formControlName="qualificationEndYear"
-                    placeholder="Select Year"
-                  ></p-calendar>
-                </div>
-              </div>
-            </div>
-
-            <!-- Percentage -->
-            <div class="col-12 md:col-6 lg:col-3">
-              <div class="field-wrapper">
-                <label>Percentage</label>
-                <div class="input-wrapper">
-                  <input
-                    placeholder="Ex: 88.8"
-                    pKeyFilter="num"
-                    [maxLength]="4"
-                    type="number"
-                    [min]="0.0"
-                    [max]="99.99"
-                    pInputText
-                    formControlName="percentage"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Remove Qualification -->
-          <div class="col-12 md:col-6 lg:col-3 mt-2">
-            <button
-              type="button"
-              class="remove-btn"
-              (click)="removeQualification(i)"
-            >
-              Remove Qualification
-            </button>
           </div>
         </div>
 
-        <!-- Add Qualification -->
-        <div class="col-12 md:col-6 lg:col-3 mt-3">
-          <button type="button" class="custom-btn" (click)="addQualication()">
-            + Add Qualification
-          </button>
+        <div *ngIf="showSchoolError" style="color: red; margin-top: 10px">
+          Please enter atleast one schooling details.
+        </div>
+      </div>
+
+      <div class="education-section">
+        <div class="drawer-header" (click)="toggleEducation('isCollegeEducationOpen')">
+          <h3>College/University Education</h3>
+          <span [class.rotate]="isCollegeEducationOpen">⌃</span>
+        </div>
+        <div class="drawer-body" *ngIf="isCollegeEducationOpen">
+          <div formArrayName="qualification">
+            <div *ngFor="
+            let qualifications of qualificationControls.controls;
+            let i = index
+          " [formGroupName]="i" class="qualification-box">
+              <div class="grid">
+                <!-- Institution Name -->
+                <div class="col-12 md:col-6 lg:col-3">
+                  <div class="field-wrapper">
+                    <label>Institution Name</label>
+                    <div class="input-wrapper">
+                      <input type="text" pInputText formControlName="institutionName" />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Qualification -->
+                <div class="col-12 md:col-6 lg:col-3">
+                  <div class="field-wrapper">
+                    <label>Qualification</label>
+                    <div class="input-wrapper">
+                      <p-dropdown [options]="fieldOfStudy" optionLabel="displayValue" optionValue="dataValue"
+                        placeholder="Select Qualification" formControlName="department" [filter]="true"
+                        styleClass="narrow-dropdown">
+                      </p-dropdown>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Department -->
+                <div class="col-12 md:col-6 lg:col-3">
+                  <div class="field-wrapper">
+                    <label>Department</label>
+                    <div class="input-wrapper">
+                      <input type="text" pInputText formControlName="fieldOfStudy" />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Start Year -->
+                <div class="col-12 md:col-6 lg:col-3">
+                  <div class="field-wrapper">
+                    <label>Start Year</label>
+                    <div class="input-wrapper">
+                      <p-calendar formControlName="qualificationStartYear" placeholder="Select Year"></p-calendar>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- End Year -->
+                <div class="col-12 md:col-6 lg:col-3">
+                  <div class="field-wrapper">
+                    <label>End Year</label>
+                    <div class="input-wrapper">
+                      <p-calendar formControlName="qualificationEndYear" placeholder="Select Year"></p-calendar>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Percentage -->
+                <div class="col-12 md:col-6 lg:col-3">
+                  <div class="field-wrapper">
+                    <label>Percentage</label>
+                    <div class="input-wrapper">
+                      <input placeholder="Ex: 88.8" pKeyFilter="num" [maxLength]="4" type="number" [min]="0.0"
+                        [max]="99.99" pInputText formControlName="percentage" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Remove Qualification -->
+              <div class="col-12 md:col-6 lg:col-3 mt-2">
+                <button type="button" class="remove-btn" (click)="removeQualification(i)">
+                  Remove College Education
+                </button>
+              </div>
+            </div>
+
+            <!-- Add Qualification -->
+            <div class="col-12 md:col-6 lg:col-3 mt-3">
+              <button type="button" class="custom-btn" (click)="addQualication()">
+                + Add College Education
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="showCollegeError" style="color: red; margin-top: 10px">
+          Please enter atleast one college details.
         </div>
       </div>
     </div>
@@ -849,6 +914,49 @@
         <div class="section-heading mt-3">Additional Info</div>
 
         <div class="grid">
+
+            <div class="col-12 md:col-6">
+            <div class="field-wrapper">
+              <label>Soft Skills</label>
+              <div class="input-wrapper">
+                <tag-input formControlName="softSkills" [separatorKeyCodes]="[13, 188]" [theme]="'modern'"
+                  placeholder="Type and press Enter or Comma" [addOnBlur]="true" [trimTags]="true" [editable]="true">
+                </tag-input>
+              </div>
+            </div>
+            <div *ngIf="showSoftSkillsError" style="color: red; margin-top: 5px">
+              Please enter atleast 3 soft skills.
+            </div>
+          </div>
+
+          <div class="col-12 md:col-6">
+            <div class="field-wrapper">
+              <label>Core Competencies</label>
+              <div class="input-wrapper">
+                <tag-input formControlName="coreCompentencies" [separatorKeyCodes]="[13, 188]" [theme]="'modern'"
+                  placeholder="Type and press Enter or Comma" [addOnBlur]="true" [trimTags]="true" [editable]="true">
+                </tag-input>
+              </div>
+            </div>
+            <div *ngIf="showCoreCompentenciesError" style="color: red; margin-top: 5px">
+              Please enter atleast 3 core compentencies.
+            </div>
+          </div>
+
+          <div class="col-12">
+            <div class="field-wrapper">
+              <label>Hobbies</label>
+              <div class="input-wrapper">
+                <tag-input formControlName="hobbies" [separatorKeyCodes]="[13, 188]" [theme]="'modern'"
+                  placeholder="Type and press Enter or Comma" [addOnBlur]="true" [trimTags]="true" [editable]="true">
+                </tag-input>
+              </div>
+            </div>
+            <div *ngIf="showHobbiesError" style="color: red; margin-top: 5px">
+              Please enter atleast 3 hobbies.
+            </div>
+          </div>
+
           <div class="col-12 md:col-6 lg:col-3">
             <div class="field-wrapper">
               <label>LinkedIn</label>

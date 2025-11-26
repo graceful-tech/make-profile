@@ -946,3 +946,16 @@ display: flex;
   background: rgba(0, 0, 0, 0.25);
   z-index: 998;
 }
+
+
+.divider {
+  width: 100%;
+  height: 1px;
+  background-color: #9ea9bf; 
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.dark .divider {
+  background-color: #374151; 
+}

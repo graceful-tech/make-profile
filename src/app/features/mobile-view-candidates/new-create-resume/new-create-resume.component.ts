@@ -44,6 +44,7 @@ import { PaymentOptionComponent } from 'src/app/features/candidates/payments/pay
 import { LoaderControllerService } from 'src/app/services/loader-controller.service';
 import templatesData from 'src/assets/resume-types/templatesData.json';
 import { MobileConfirmationPopupComponent } from 'src/app/shared/components/mobile-confirmation-popup/mobile-confirmation-popup.component';
+import { SchoolEducation } from 'src/app/models/candidates/schoolEducation';
 
 
 @Component({
@@ -136,7 +137,9 @@ export class NewCreateResumeComponent {
   coreCompentencies: Array<any> = [];
   totalPdfPages: any;
   templatesTypes = templatesData.templates;
-  showConfirmationPopup:boolean = false;
+  showConfirmationPopup: boolean = false;
+  schoolEducation: Array<ValueSet> = [];
+
 
   constructor(
     private api: ApiService,
@@ -174,6 +177,8 @@ export class NewCreateResumeComponent {
     this.getNationalityList();
     // this.getAvailableCredits();
     this.getSkillsFromApi();
+    this.getSchoolEducationFields();
+
   }
 
   ngAfterViewInit() {
@@ -210,7 +215,7 @@ export class NewCreateResumeComponent {
     this.startProcess();
     const route = `candidate/get-bytearray?additionalDetails=${this.addAdditoinalDetail}`;
 
-    if (!this.templateName) {
+    if (this.templateName === null || this.templateName === undefined) {
       this.templateName = localStorage.getItem('templateName');
     }
 
@@ -417,6 +422,7 @@ export class NewCreateResumeComponent {
         careerObjective: [''],
         hobbies: [''],
         fatherName: [''],
+        schoolEducation: this.fb.array([this.createSchoolEducation()]),
       },
       { validators: [this.fresherOrExperienceValidator()] }
     );
@@ -573,6 +579,24 @@ export class NewCreateResumeComponent {
           );
           q.qualificationEndYear = this.datePipe.transform(
             q.qualificationEndYear,
+            'yyyy-MM-dd'
+          );
+        });
+      }
+
+      if (
+        payload.schoolEducation.length === 0 ||
+        Object.is(payload.schoolEducation[0].schoolName, '')
+      ) {
+        payload.schoolEducation = [];
+      } else {
+        payload.schoolEducation.forEach((q: any) => {
+          q.schoolStartYear = this.datePipe.transform(
+            q.schoolStartYear,
+            'yyyy-MM-dd'
+          );
+          q.schoolEndYear = this.datePipe.transform(
+            q.schoolEndYear,
             'yyyy-MM-dd'
           );
         });
@@ -852,6 +876,24 @@ export class NewCreateResumeComponent {
           );
           q.qualificationEndYear = this.datePipe.transform(
             q.qualificationEndYear,
+            'yyyy-MM-dd'
+          );
+        });
+      }
+
+      if (
+        payload.schoolEducation.length === 0 ||
+        Object.is(payload.schoolEducation[0].schoolName, '')
+      ) {
+        payload.schoolEducation = [];
+      } else {
+        payload.schoolEducation.forEach((q: any) => {
+          q.schoolStartYear = this.datePipe.transform(
+            q.schoolStartYear,
+            'yyyy-MM-dd'
+          );
+          q.schoolEndYear = this.datePipe.transform(
+            q.schoolEndYear,
             'yyyy-MM-dd'
           );
         });
@@ -1273,15 +1315,22 @@ export class NewCreateResumeComponent {
     });
   }
 
-  getFieldOfStudy() {
-    const route = 'value-sets/search-by-code';
-    const postData = { valueSetCode: 'QUALIFICATION' };
-    this.api.retrieve(route, postData).subscribe({
-      next: (response) => {
-        this.fieldOfStudy = response;
-      },
-    });
-  }
+getFieldOfStudy() {
+  const route = 'value-sets/search-by-code';
+  const postData = { valueSetCode: 'QUALIFICATION' };
+
+  this.api.retrieve(route, postData).subscribe({
+    next: (response: any[]) => {
+      this.fieldOfStudy = response.map(item => ({
+        ...item,
+       
+        filterText: item.displayValue
+          ? item.displayValue.replace(/\./g, '').toLowerCase()
+          : ''
+      }));
+    },
+  });
+}
 
   addCandidateImage(event: any) {
     this.candidateImageAttachments = [];
@@ -1397,6 +1446,20 @@ export class NewCreateResumeComponent {
         );
       });
     }
+
+    if (candidate.schoolEducation?.length > 0) {
+      const schoolFormArray = this.candidateForm.get(
+        'schoolEducation'
+      ) as FormArray;
+      schoolFormArray.clear();
+
+      candidate.schoolEducation?.forEach((qualification) => {
+        schoolFormArray.push(
+          this.createSchoolEducationFormGroup(qualification)
+        );
+      });
+    }
+
 
     if (candidate.achievements?.some((a) => a && a.achievementsName.trim())) {
       const achievementFormArray = this.candidateForm.get(
@@ -2269,13 +2332,71 @@ export class NewCreateResumeComponent {
   stopProcess() {
     this.newLoader.hideLoader();
   }
-    proceedToDownload(event: any) {
+  proceedToDownload(event: any) {
     this.showConfirmationPopup = false
     this.createCandidate();
   }
 
   editContent(event: any) {
     this.showConfirmationPopup = false
-    this.currentTab ='edit';
+    this.currentTab = 'edit';
   }
+
+  createSchoolEducationFormGroup(qualification: SchoolEducation) {
+    return this.fb.group({
+      id: qualification.id,
+      schoolName: qualification.schoolName,
+      educationLevel: qualification.educationLevel,
+      schoolStartYear: qualification.schoolStartYear
+        ? new Date(qualification.schoolStartYear)
+        : null,
+      schoolEndYear: qualification.schoolEndYear
+        ? new Date(qualification.schoolEndYear)
+        : null,
+      percentage: qualification.percentage,
+    });
+  }
+
+
+  createSchoolEducation(): FormGroup {
+    return this.fb.group({
+      id: [''],
+      schoolName: [''],
+      educationLevel: [''],
+      schoolStartYear: [''],
+      schoolEndYear: [''],
+      percentage: ['']
+    });
+  }
+
+  get schoolControls() {
+    return this.candidateForm.get('schoolEducation') as FormArray;
+  }
+
+  addSchoolEducation() {
+    this.schoolControls.push(this.createSchoolEducation());
+
+  }
+
+  removeSchoolEducation(index: number) {
+    const confirmDelete = window.confirm(
+      'Are you sure you want to remove this school education?'
+    );
+    if (confirmDelete && this.schoolControls.length >= 1) {
+      this.schoolControls.removeAt(index);
+
+    }
+
+  }
+
+  getSchoolEducationFields() {
+    const route = 'value-sets/search-by-code';
+    const postData = { valueSetCode: 'SCHOOL_QUALIFICATION' };
+    this.api.retrieve(route, postData).subscribe({
+      next: (response) => {
+        this.schoolEducation = response;
+      },
+    });
+  }
+
 }

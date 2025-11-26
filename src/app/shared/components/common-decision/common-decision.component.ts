@@ -11,18 +11,33 @@ export class CommonDecisionComponent {
   constructor(private router: Router) { }
   ngOnInit() { }
 
-  goToFresher() {
+ 
+ 
+
+   goToFresher() {
+
+    localStorage.setItem('isFresher', 'true');
+
     const sourse = this.isMobileDevice();
-
-
     if (sourse) {
       this.router.navigate(['mob-candidate/resume-form']);
     }
     else {
       this.router.navigate(['candidate/fill-form']);
-
     }
 
+  }
+
+  goToExperience() {
+    localStorage.setItem('isFresher', 'false');
+
+    const sourse = this.isMobileDevice();
+    if (sourse) {
+      this.router.navigate(['mob-candidate/resume-form']);
+    }
+    else {
+      this.router.navigate(['candidate/fill-form']);
+    }
   }
 
   private isMobileDevice(): boolean {
