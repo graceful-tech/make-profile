@@ -82,8 +82,10 @@
                 <label [ngClass]="{ required: isRequired('skills') }">Skills</label>
                 <div class="input-wrapper">
                   <tag-input formControlName="skills" [separatorKeyCodes]="[13, 188]" [theme]="'modern'"
-                    placeholder="Type and press Enter or Comma" [trimTags]="false" [editable]="true">
+                    [addOnBlur]="true" [trimTags]="true" [editable]="true">
                   </tag-input>
+                  <span style="color:rgb(88, 86, 86)">Eg:Sales,Marketing,MS Office</span>
+
                 </div>
               </div>
               <small class="error-message" *ngIf="candidateForm.controls['skills'].invalid && showError">
@@ -106,8 +108,10 @@
                 <label>Soft Skills</label>
                 <div class="input-wrapper">
                   <tag-input formControlName="softSkills" [separatorKeyCodes]="[13, 188]" [theme]="'modern'"
-                    placeholder="Type and press Enter or Comma" [trimTags]="false" [editable]="true">
+                    [addOnBlur]="true" [trimTags]="true" [editable]="true">
                   </tag-input>
+                  <span style="color:rgb(88, 86, 86)">Eg:Communication,Teamwork,Fast Learning</span>
+
                 </div>
               </div>
             </div>
@@ -129,8 +133,10 @@
                 <label>Core Competencies</label>
                 <div class="input-wrapper">
                   <tag-input formControlName="coreCompentencies" [separatorKeyCodes]="[13, 188]" [theme]="'modern'"
-                    placeholder="Type and press Enter or Comma" [trimTags]="false" [editable]="true">
+                    [addOnBlur]="true" [trimTags]="true" [editable]="true">
                   </tag-input>
+                  <span style="color:rgb(88, 86, 86)">Eg:Customer Service,Analytical Thinking</span>
+
                 </div>
               </div>
             </div>
@@ -330,8 +336,11 @@
                 <label>Hobbies</label>
                 <div class="input-wrapper">
                   <tag-input formControlName="hobbies" [separatorKeyCodes]="[13, 188]" [theme]="'modern'"
-                    placeholder="Type and press Enter or Comma" [addOnBlur]="true" [trimTags]="true" [editable]="true">
+                    [addOnBlur]="true" [trimTags]="true" [editable]="true">
                   </tag-input>
+                  <span style="color:rgb(88, 86, 86)">Eg:Reading,Cooking,Traveling
+                  </span>
+
                 </div>
               </div>
             </div>

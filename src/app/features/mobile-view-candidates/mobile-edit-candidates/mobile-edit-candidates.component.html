@@ -147,9 +147,12 @@
           <div class="field-wrapper">
             <label>Hobbies</label>
             <div class="input-wrapper">
-              <tag-input formControlName="hobbies" [separatorKeyCodes]="[13, 188]" [theme]="'modern'"
-                placeholder="Type and press Enter or Comma" [addOnBlur]="true" [trimTags]="true" [editable]="true">
+              <tag-input formControlName="hobbies" [separatorKeyCodes]="[13, 188]" [theme]="'modern'" [addOnBlur]="true"
+                [trimTags]="true" [editable]="true">
               </tag-input>
+              <span style="color:rgb(88, 86, 86)">Eg:Reading,Cooking,Traveling
+              </span>
+
             </div>
           </div>
         </div>
@@ -171,9 +174,10 @@
           <div class="field-wrapper">
             <label [ngClass]="{ required: isRequired('skills') }">Skills</label>
             <div class="input-wrapper">
-              <tag-input formControlName="skills" [separatorKeyCodes]="[13, 188]" [theme]="'modern'"
-                placeholder="Type and press Enter or Comma" [addOnBlur]="true" [trimTags]="true" [editable]="true">
+              <tag-input formControlName="skills" [separatorKeyCodes]="[13, 188]" [theme]="'modern'" [addOnBlur]="true"
+                [trimTags]="true" [editable]="true">
               </tag-input>
+              <span style="color:rgb(88, 86, 86)">Eg:Sales,Marketing,MS Office</span>
             </div>
             <small class="error-message" *ngIf="candidateForm.controls['email'].invalid && showError">
               Email is required</small>
@@ -693,8 +697,10 @@
             <label>Soft Skills</label>
             <div class="input-wrapper">
               <tag-input formControlName="softSkills" [separatorKeyCodes]="[13, 188]" [theme]="'modern'"
-                placeholder="Type and press Enter or Comma" [addOnBlur]="true" [trimTags]="true" [editable]="true">
+                [addOnBlur]="true" [trimTags]="true" [editable]="true">
               </tag-input>
+              <span style="color:rgb(88, 86, 86)">Eg:Communication,Teamwork,Fast Learning</span>
+
             </div>
           </div>
         </div>
@@ -703,9 +709,14 @@
           <div class="field-wrapper">
             <label>Core Competencies</label>
             <div class="input-wrapper">
+
               <tag-input formControlName="coreCompentencies" [separatorKeyCodes]="[13, 188]" [theme]="'modern'"
-                placeholder="Type and press Enter or Comma" [addOnBlur]="true" [trimTags]="true" [editable]="true">
+                [addOnBlur]="true" [trimTags]="true" [editable]="true">
               </tag-input>
+              <span style="color:rgb(88, 86, 86)">Eg:Customer Service,Analytical Thinking</span>
+
+
+
             </div>
           </div>
         </div>

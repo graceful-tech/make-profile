@@ -647,7 +647,8 @@
             <div class="field-wrapper">
               <Span>Soft Skills</Span>
               <div class="input-wrapper">
-                <p-chips separator="," formControlName="softSkills" [addOnBlur]="true" [addOnTab]="true"></p-chips>
+                <p-chips separator="," formControlName="softSkills" [addOnBlur]="true" [addOnTab]="true"
+                  placeholder="Eg: Communication,Teamwork,Fast Learning"></p-chips>
               </div>
             </div>
             <div *ngIf="showSoftSkillsError" style="color: red; margin-top: 5px">
@@ -659,8 +660,9 @@
             <div class="field-wrapper">
               <label>Core Compentencies.</label>
               <div class="input-wrapper">
-                <p-chips separator="," formControlName="coreCompentencies" [addOnBlur]="true"
-                  [addOnTab]="true"></p-chips>
+                <p-chips separator="," formControlName="coreCompentencies" [addOnBlur]="true" [addOnTab]="true"
+                  placeholder="Eg: Project Management,Strategic Planning,Analytical Thinking"></p-chips>
+
               </div>
             </div>
             <div *ngIf="showCoreCompentenciesError" style="color: red; margin-top: 5px">
@@ -672,15 +674,14 @@
             <div class="field-wrapper">
               <label>Hobbies</label>
               <div class="input-wrapper">
-                <p-chips separator="," formControlName="hobbies" [addOnBlur]="true" [addOnTab]="true"></p-chips>
+                <p-chips separator="," formControlName="hobbies" [addOnBlur]="true" [addOnTab]="true"
+                  placeholder="Eg: Reading,Cooking,Traveling"></p-chips>
               </div>
             </div>
             <div *ngIf="showHobbiesError" style="color: red; margin-top: 5px">
               Please Fill atleast 3 hobbies.
             </div>
           </div>
-
-
         </div>
 
 
