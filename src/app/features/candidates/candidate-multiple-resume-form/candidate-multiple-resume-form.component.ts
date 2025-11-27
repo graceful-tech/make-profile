@@ -126,6 +126,11 @@ export class CandidateMultipleResumeFormComponent {
   showCoreCompentenciesError: boolean = false;
   showHobbiesError: boolean = false;
   schoolEducation: Array<ValueSet> = [];
+  firstSkillApiCalled = false;
+  suggestedSkills: any;
+  suggestedSoftSkills: any;
+  suggestedCoreCompentencies: any;
+
 
 
   constructor(
@@ -497,6 +502,7 @@ export class CandidateMultipleResumeFormComponent {
       }
 
       if (hobbies?.length > 2 && coreCompentencies?.length > 2 && softSkills?.length > 2) {
+         localStorage.removeItem('skillsData');
         this.createCandidateAfterLogin();
       }
       else {
@@ -504,6 +510,7 @@ export class CandidateMultipleResumeFormComponent {
       }
     }
     else {
+      localStorage.removeItem('skillsData');
       this.createCandidateAfterLogin();
     }
 
@@ -1118,22 +1125,22 @@ export class CandidateMultipleResumeFormComponent {
     });
   }
 
-getFieldOfStudy() {
-  const route = 'value-sets/search-by-code';
-  const postData = { valueSetCode: 'QUALIFICATION' };
+  getFieldOfStudy() {
+    const route = 'value-sets/search-by-code';
+    const postData = { valueSetCode: 'QUALIFICATION' };
 
-  this.api.retrieve(route, postData).subscribe({
-    next: (response: any[]) => {
-      this.fieldOfStudy = response.map(item => ({
-        ...item,
-       
-        filterText: item.displayValue
-          ? item.displayValue.replace(/\./g, '').toLowerCase()
-          : ''
-      }));
-    },
-  });
-}
+    this.api.retrieve(route, postData).subscribe({
+      next: (response: any[]) => {
+        this.fieldOfStudy = response.map(item => ({
+          ...item,
+
+          filterText: item.displayValue
+            ? item.displayValue.replace(/\./g, '').toLowerCase()
+            : ''
+        }));
+      },
+    });
+  }
 
   addCandidateImage(event: any) {
     this.candidateImageAttachments = [];
@@ -2113,7 +2120,7 @@ getFieldOfStudy() {
 
   }
 
-   getSchoolEducationFields() {
+  getSchoolEducationFields() {
     const route = 'value-sets/search-by-code';
     const postData = { valueSetCode: 'SCHOOL_QUALIFICATION' };
     this.api.retrieve(route, postData).subscribe({
@@ -2121,6 +2128,71 @@ getFieldOfStudy() {
         this.schoolEducation = response;
       },
     });
+  }
+
+
+  onSkillAdded(event: any) {
+    if (!this.firstSkillApiCalled && this.skills.length === 1) {
+      const firstSkill = this.skills;
+      this.firstSkillApiCalled = true;
+      this.callAISkillAPI(firstSkill);
+    }
+  }
+
+  callAISkillAPI(skill: string) {
+    this.startSuggestedProcess();
+    const route = `content/get-suggested-skills?skills=${skill}`;
+    this.api.get(route).subscribe({
+      next: (response) => {
+        if (response) { 
+          localStorage.setItem('skillsData', JSON.stringify(response));
+          
+          const suggested = response as any;
+
+          this.suggestedSkills = suggested?.skills;
+          this.suggestedSoftSkills = suggested?.softSkills;
+          this.suggestedCoreCompentencies = suggested?.coreCompentencies;
+
+           this.stopProcess();
+        }
+      },
+      error: (error) => {
+        this.stopProcess();
+        this.dataLoaded = true;
+      },
+    });
+  }
+
+
+  startSuggestedProcess() {
+    const messages = [
+      'Get Suggested Skills From Ai...',
+      'Please Wait...',
+      'Almost Done...',
+      'Ready To View...'
+    ];
+
+    this.newLoader.showLoader(messages, 4000);
+  }
+
+  addSkill(newSkill: string, key: any) {
+    const skills = this.candidateForm.get(key)?.value || [];
+
+    if (key === 'skills') {
+      if (newSkill && !this.skills.includes(newSkill)) {
+       this.skills = this.skills.concat(newSkill);
+      }
+    }
+    else {
+      if (newSkill && !skills.includes(newSkill)) {
+        const updatedSkills = [...skills, newSkill];
+        this.candidateForm.get(key)?.setValue(updatedSkills);
+      }
+    }
+  }
+
+  goBack(){
+    this.router.navigate(['/user-decision']);
   }
 
 }

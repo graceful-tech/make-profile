@@ -113,3 +113,42 @@
   font-size: 25px;
   justify-content: center;
 }
+
+
+/* Smooth background transition */
+.smooth-bg {
+  transition: background 1.2s ease-in-out;
+}
+
+/* Resume image styling and animation */
+.resume-image {
+  max-width: 100%;
+  border-radius: 10px;
+  transition: opacity 0.8s ease-in-out;
+  opacity: 1;
+}
+
+.fade-in {
+  opacity: 0;
+  animation: fadeIn 0.8s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Optional arrow button hover */
+.arrow-btn {
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.arrow-btn:hover {
+  transform: scale(1.1);
+}

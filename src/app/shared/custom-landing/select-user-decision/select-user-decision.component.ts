@@ -40,4 +40,14 @@ export class SelectUserDecisionComponent {
       this.router.navigate(['fresher-form']);
     }
   }
+
+  goBack() {
+    const sourse = this.isMobileDevice();
+    if (sourse) {
+      this.router.navigate(['resume-templates']);
+    }
+    else {
+      this.router.navigate(['select-template']);
+    }
+  }
 }

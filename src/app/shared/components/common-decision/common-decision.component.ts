@@ -11,10 +11,10 @@ export class CommonDecisionComponent {
   constructor(private router: Router) { }
   ngOnInit() { }
 
- 
- 
 
-   goToFresher() {
+
+
+  goToFresher() {
 
     localStorage.setItem('isFresher', 'true');
 
@@ -46,5 +46,14 @@ export class CommonDecisionComponent {
     return /android|iphone|ipad|ipod/i.test(userAgent);
   }
 
+  goBack() {
+     const sourse = this.isMobileDevice();
+    if (sourse) {
+      this.router.navigate(['mob-candidate']);
+    }
+    else {
+      this.router.navigate(['candidate']);
+    }
+  }
 
 }

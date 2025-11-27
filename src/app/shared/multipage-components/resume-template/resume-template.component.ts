@@ -25,25 +25,19 @@ import { Candidate } from 'src/app/models/candidates/candidate.model';
 export class ResumeTemplateComponent {
   @ViewChild('resumeImage', { static: false }) resumeImage!: ElementRef;
   @ViewChild('resumeContainer', { static: false }) resumeContainer!: ElementRef;
-
+ 
   resumePaths: { path: string; name: string; type: string }[] = [
     { path: './assets/img/Mercury.png', name: 'Mercury', type: 'Single Page' },
     { path: './assets/img/Venus.png', name: 'Venus', type: 'Multiple Page' },
     { path: './assets/img/Earth.png', name: 'Earth', type: 'Single Page' },
     { path: './assets/img/Mars.png', name: 'Mars', type: 'Single Page' },
-    {
-      path: './assets/img/Jupiter.png',
-      name: 'Jupiter',
-      type: 'Multiple Page',
-    },
+    { path: './assets/img/Jupiter.png', name: 'Jupiter', type: 'Multiple Page' },
     { path: './assets/img/Saturn.png', name: 'Saturn', type: 'Multiple Page' },
     { path: './assets/img/Uranus.png', name: 'Uranus', type: 'Multiple Page' },
-    {
-      path: './assets/img/Neptune.png',
-      name: 'Neptune',
-      type: 'Multiple Page',
-    },
+    { path: './assets/img/Neptune.png', name: 'Neptune', type: 'Multiple Page' },
+
   ];
+
 
   currentIndex = 0;
   currentResume = this.resumePaths[this.currentIndex].path;
@@ -77,8 +71,8 @@ export class ResumeTemplateComponent {
 
   ngOnInit() {
 
-     if (this.isMobileDevice()) {
-       
+    if (this.isMobileDevice()) {
+
       this.router.navigate(['/resume-templates']);
     }
 
@@ -160,9 +154,16 @@ export class ResumeTemplateComponent {
     this.gradientIndex = (this.gradientIndex + 1) % this.gradients.length;
   }
 
-   private isMobileDevice(): boolean {
+  private isMobileDevice(): boolean {
     const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
     return /android|iphone|ipad|ipod/i.test(userAgent);
+  }
+
+   onImageLoad() {
+    const image = this.resumeImage.nativeElement;
+    image.classList.remove('fade-in');
+    void image.offsetWidth; // trigger reflow
+    image.classList.add('fade-in');
   }
 
 }

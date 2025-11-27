@@ -13,7 +13,7 @@ import { GlobalService } from 'src/app/services/global.service';
 import { ChooseTemplateComponent } from '../choose-template/choose-template.component';
 import { Candidate } from 'src/app/models/candidates/candidate.model';
 import { VerifyCandidatesComponent } from '../../verify-candidates/verify-candidates.component';
- 
+
 @Component({
   selector: 'app-view-templates',
   standalone: false,
@@ -29,10 +29,10 @@ export class ViewTemplatesComponent {
     { path: './assets/img/Venus.png', name: 'Venus', type: 'Multiple Page' },
     { path: './assets/img/Earth.png', name: 'Earth', type: 'Single Page' },
     { path: './assets/img/Mars.png', name: 'Mars', type: 'Single Page' },
-    {path: './assets/img/Jupiter.png',name: 'Jupiter',type: 'Multiple Page'},
-    {path: './assets/img/Saturn.png',name: 'Saturn',type: 'Multiple Page'},
-     {path: './assets/img/Uranus.png',name: 'Uranus',type: 'Multiple Page'},
-      {path: './assets/img/Neptune.png',name: 'Neptune',type: 'Multiple Page'},
+    { path: './assets/img/Jupiter.png', name: 'Jupiter', type: 'Multiple Page' },
+    { path: './assets/img/Saturn.png', name: 'Saturn', type: 'Multiple Page' },
+    { path: './assets/img/Uranus.png', name: 'Uranus', type: 'Multiple Page' },
+    { path: './assets/img/Neptune.png', name: 'Neptune', type: 'Multiple Page' },
 
   ];
 
@@ -61,7 +61,7 @@ export class ViewTemplatesComponent {
     private router: Router,
     public ref: DynamicDialogRef,
     private config: DynamicDialogConfig
-    
+
   ) {
 
     this.candidates = this.config.data?.candidates;
@@ -72,13 +72,13 @@ export class ViewTemplatesComponent {
     localStorage.removeItem('resumeName');
 
     this.gs.candidateDetails$.subscribe((response) => {
-      if(response!==null){
+      if (response !== null) {
         this.candidates = response;
       }
     });
 
     this.gs.candidateImage$.subscribe((response) => {
-      if(response!==null){
+      if (response !== null) {
         this.candidateImageUrl = response;
       }
     });
@@ -116,7 +116,7 @@ export class ViewTemplatesComponent {
     this.currentResumePageType = this.resumePaths[this.currentIndex].type;
     this.resumeName = this.resumePaths[this.currentIndex].name;
 
-   }
+  }
 
   nextResume() {
 
@@ -131,11 +131,11 @@ export class ViewTemplatesComponent {
     this.currentResumePageType = this.resumePaths[this.currentIndex].type;
     this.resumeName = this.resumePaths[this.currentIndex].name;
 
-   }
+  }
 
 
-   navigateToMainpage(resumeName: any) {
-   
+  navigateToMainpage(resumeName: any) {
+
     localStorage.setItem('templateName', resumeName);
 
     this.gs.setCandidateDetails(this.candidates);
@@ -163,7 +163,7 @@ export class ViewTemplatesComponent {
   //     header: 'Enter the nick name for this resume',
   //   });
   // }
-  
+
 
   createResume(resumeName: any) {
     this.ref.close();
@@ -206,51 +206,51 @@ export class ViewTemplatesComponent {
   }
 
   private gradients: string[] = [
-  'linear-gradient(to bottom, #fff, #63c8ea)',         
-  'linear-gradient(to bottom, #ffecd2, #fcb69f)',        
-  'linear-gradient(to bottom, #a1c4fd, #c2e9fb)',       
-  'linear-gradient(to bottom, #fbc2eb, #a6c1ee)',       
-  'linear-gradient(to bottom, #fddb92, #d1fdff)',       
-  'linear-gradient(to bottom, #84fab0, #8fd3f4)',        
-  'linear-gradient(to bottom, #ff9a9e, #fad0c4)'       
-];
+    'linear-gradient(to bottom, #fff, #63c8ea)',
+    'linear-gradient(to bottom, #ffecd2, #fcb69f)',
+    'linear-gradient(to bottom, #a1c4fd, #c2e9fb)',
+    'linear-gradient(to bottom, #fbc2eb, #a6c1ee)',
+    'linear-gradient(to bottom, #fddb92, #d1fdff)',
+    'linear-gradient(to bottom, #84fab0, #8fd3f4)',
+    'linear-gradient(to bottom, #ff9a9e, #fad0c4)'
+  ];
 
 
-changeBackground() {
-  this.backgroundStyle = this.gradients[this.gradientIndex];
-  this.gradientIndex = (this.gradientIndex + 1) % this.gradients.length;
-}
+  changeBackground() {
+    this.backgroundStyle = this.gradients[this.gradientIndex];
+    this.gradientIndex = (this.gradientIndex + 1) % this.gradients.length;
+  }
 
- toVerifyCandidate(templateName:any) {
-      this.ref.close();
-      const candidateId = localStorage.getItem('candidateId');
+  toVerifyCandidate(templateName: any) {
+    this.ref.close();
+    const candidateId = localStorage.getItem('candidateId');
 
-      const ref = this.dialog.open(VerifyCandidatesComponent, {
-        data: {
+    const ref = this.dialog.open(VerifyCandidatesComponent, {
+      data: {
         candidates: this.candidates,
-        candidateImage :this.candidateImageUrl,
-        resumeName:templateName,
-         },
-        closable: true,
-        width: '70%',
-        height: '90%',
-        header: 'Check Your Details',
-      });
-  
-      ref.onClose.subscribe((response) => {
-        if (response) {
-          this.candidates = response;
-          this.candidateId = response.id;
-          const candidate = response as Candidate;
-         }
-      });
-    }
+        candidateImage: this.candidateImageUrl,
+        resumeName: templateName,
+      },
+      closable: true,
+      width: '70%',
+      height: '90%',
+      header: 'Check Your Details',
+    });
 
-    onImageLoad() {
-  const image = this.resumeImage.nativeElement;
-  image.classList.remove('fade-in');
-  void image.offsetWidth; // trigger reflow
-  image.classList.add('fade-in');
-}
+    ref.onClose.subscribe((response) => {
+      if (response) {
+        this.candidates = response;
+        this.candidateId = response.id;
+        const candidate = response as Candidate;
+      }
+    });
+  }
+
+  onImageLoad() {
+    const image = this.resumeImage.nativeElement;
+    image.classList.remove('fade-in');
+    void image.offsetWidth; // trigger reflow
+    image.classList.add('fade-in');
+  }
 
 }

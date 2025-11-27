@@ -7,146 +7,157 @@
       </p>
     </div>
   </div>
-  <form class="simple-form" #resumeForm="ngForm">
-
-    <div class="form-group">
-      <label>Do you have existing resume?</label>
-
-      <div class="input-row">
-        <div class="input-container" style="display: flex; gap: 13px; justify-content: flex-start">
-          <button class="yesBtn" (click)="havingResume('Yes')" [class.btnactive]="selectedResumeOption === 'Yes'"
-            [class.btninactive]="selectedResumeOption === 'No'">
-            Yes
-          </button>
-          <button class="noBtn" (click)="havingResume('No')" [class.btnactive]="selectedResumeOption === 'No'"
-            [class.btninactive]="selectedResumeOption === 'Yes'">
-            No
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <div class="form-group" *ngIf="showUploadResume">
-      <label>Upload your old resume here</label>
-      <div class="upload-container">
-        <input type="file" #attachment style="display: none" (change)="addAttachment($event)"
-          accept=".doc, .docx, .pdf" />
-        <div class="upload-box">
-          <p *ngIf="!resume?.fileName"></p>
-          <button class="browse-btn" (click)="attachment.click()">
-            Upload Resume
-          </button>
-          <div *ngIf="resume?.fileName" class="uploaded-file mt-3">
-            <i class="pi pi-paperclip mr-2"></i>
-            <span>{{ resume?.fileName }}</span>
-          </div>
-        </div>
-      </div>
-    </div>
 
 
-    <div class="form-group" *ngIf="showSuggestJonFields">
-      <label>What job are you looking for?</label>
+  <div class="botton-header">
+    <button type="button" class="back-btn" (click)="goBack()"><i class="fa fa-arrow-left"></i> Back</button>
+  </div>
 
-      <div class="input-row">
-        <div class="input-container">
-          <input type="text" placeholder="e.g. Frontend Developer, Nurse, Accountant" [(ngModel)]="jobRole"
-            name="jobRole" required #jobRoleField="ngModel" (input)="onJobInput()" (focus)="showSuggestions = true"
-            (blur)="hideSuggestionsWithDelay()" />
-
-          <ul *ngIf="filteredJobs.length && showSuggestions" class="dropdown">
-            <li *ngFor="let job of filteredJobs" (mousedown)="selectJob(job)">
-              {{ job }}
-            </li>
-          </ul>
-
-          <div *ngIf="jobRoleField.invalid && jobRoleField.touched" class="error">
-            Job role is required.
-          </div>
-        </div>
-
-        <button *ngIf="!jobRoleEntered && jobRole && jobRole.trim().length > 0" type="button" class="next-btn"
-          (click)="nextStep(jobRoleField)" [disabled]="!jobRole.trim()">
-          Next
-        </button>
-      </div>
-    </div>
-
-    <div *ngIf="showOtherFields">
+  <div class="mainContainer">
+    <form class="simple-form" #resumeForm="ngForm">
       <div class="form-group">
-        <label>Add / Edit Your Skills</label>
+        <label>Do you have existing resume?</label>
+
         <div class="input-row">
-          <div class="input-container">
-            <tag-input [separatorKeyCodes]="[13, 188]" [theme]="'modern'" [addOnBlur]="true" [trimTags]="true"
-              [editable]="true" [modelAsStrings]="true" #skillsField="ngModel"
-              [disabled]="jobRole.trim().length > 0 && jobRoleEntered" [(ngModel)]="skills" name="skills"
-              placeholder="e.g. Angular, Java, Excel"></tag-input>
-            <span>Eg: &nbsp; Sales,Marketing,MS Office</span>
-
-            <div *ngIf="skillsField.invalid && skillsField.touched" class="error">
-              Skills are required.
-            </div>
-          </div>
-
-          <button *ngIf="!hideSkillbutton" type="button" class="next-btn" (click)="hideBUtton('skills')"
-            [disabled]="!skills || skills.length === 0">
-            Next
-          </button>
-        </div>
-
-        <div *ngIf="showAllFields">
-          <div class="form-group">
-            <label>Your Full Name</label>
-            <input type="text" placeholder="e.g. Keerthi Raj" [(ngModel)]="name" name="name" required minlength="3"
-              #nameField="ngModel" />
-            <div *ngIf="nameField.invalid && nameField.touched" class="error">
-              Name is required
-            </div>
-          </div>
-
-          <!-- Mobile Number Field -->
-          <div class="form-group">
-            <label>Mobile Number</label>
-            <input type="tel" placeholder="e.g. 9876543210" [(ngModel)]="mobile" name="mobile" required maxlength="10"
-              pattern="^[0-9]{10}$" (keypress)="allowOnlyNumbers($event)" #mobileField="ngModel" />
-            <div *ngIf="mobileField.invalid && mobileField.touched" class="error">
-              Mobile number is required
-            </div>
-          </div>
-
-          <!-- Email Field -->
-          <div class="form-group">
-            <label>Email</label>
-            <input type="email" placeholder="e.g. keerthi@gmail.com" [(ngModel)]="email" name="email" required email
-              #emailField="ngModel" />
-            <div *ngIf="emailField.invalid && emailField.touched" class="error">
-              Enter a valid email address.
-            </div>
-          </div>
-
-          <!-- Gender Dropdown -->
-          <div class="form-group">
-            <label>Gender</label>
-            <select [(ngModel)]="gender" name="gender" required #genderField="ngModel" placeholder="Select">
-              <option value="" disabled selected>Select</option>
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
-            </select>
-            <div *ngIf="genderField.invalid && genderField.touched" class="error">
-              Please select your gender.
-            </div>
-          </div>
-
-          <div class="step1btn">
-            <button type="submit" class="step-submit-btn" [disabled]="!resumeForm.valid"
-              (click)="submitForm(resumeForm)">
-              Next
+          <div class="input-container" style="display: flex; gap: 13px; justify-content: flex-start">
+            <button class="yesBtn" (click)="havingResume('Yes')" [class.btnactive]="selectedResumeOption === 'Yes'"
+              [class.btninactive]="selectedResumeOption === 'No'">
+              Yes
+            </button>
+            <button class="noBtn" (click)="havingResume('No')" [class.btnactive]="selectedResumeOption === 'No'"
+              [class.btninactive]="selectedResumeOption === 'Yes'">
+              No
             </button>
           </div>
         </div>
       </div>
-    </div>
-  </form>
+
+      <div class="form-group" *ngIf="showUploadResume">
+        <label>Upload your old resume here</label>
+        <div class="upload-container">
+          <input type="file" #attachment style="display: none" (change)="addAttachment($event)"
+            accept=".doc, .docx, .pdf" />
+          <div class="upload-box">
+            <p *ngIf="!resume?.fileName"></p>
+            <button class="browse-btn" (click)="attachment.click()">
+              Upload Resume
+            </button>
+            <div *ngIf="resume?.fileName" class="uploaded-file mt-3">
+              <i class="pi pi-paperclip mr-2"></i>
+              <span>{{ resume?.fileName }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="form-group" *ngIf="showSuggestJonFields">
+        <label>What job are you looking for?</label>
+        <div class="input-row">
+          <div class="input-container">
+            <input type="text" placeholder="e.g. Frontend Developer, Nurse, Accountant" [(ngModel)]="jobRole"
+              name="jobRole" required #jobRoleField="ngModel" (input)="onJobInput()" (focus)="showSuggestions = true"
+              (blur)="hideSuggestionsWithDelay()" />
+
+            <ul *ngIf="filteredJobs.length && showSuggestions" class="dropdown">
+              <li *ngFor="let job of filteredJobs" (mousedown)="selectJob(job)">
+                {{ job }}
+              </li>
+            </ul>
+
+            <div *ngIf="jobRoleField.invalid && jobRoleField.touched" class="error">
+              Job role is required.
+            </div>
+          </div>
+
+          <button *ngIf="!jobRoleEntered && jobRole && jobRole.trim().length > 0" type="button" class="next-btn"
+            (click)="nextStep(jobRoleField)" [disabled]="!jobRole.trim()">
+            Next
+          </button>
+        </div>
+      </div>
+
+      <div *ngIf="showOtherFields">
+        <div class="form-group">
+          <label>Add / Edit Your Skills</label>
+          <div class="selected-skills">
+            <span class="skill-chip" *ngFor="let skill of suggestedSkills" (click)="addSkill(skill, 'skills')">
+              {{ skill }} &#43;
+            </span>
+          </div>
+          <div class="input-row">
+            <div class="input-container">
+              <tag-input [separatorKeyCodes]="[13, 188]" [theme]="'modern'" [addOnBlur]="true" [trimTags]="true"
+                [editable]="true" [modelAsStrings]="true" #skillsField="ngModel"
+                [disabled]="jobRole.trim().length > 0 && jobRoleEntered" [(ngModel)]="skills" name="skills"
+                placeholder="e.g. Angular, Java, Excel" (onAdd)="onSkillAdded($event)"></tag-input>
+              <span>Eg: &nbsp; Sales,Marketing,MS Office</span>
+
+              <div *ngIf="skillsField.invalid && skillsField.touched" class="error">
+                Skills are required.
+              </div>
+            </div>
+
+            <button *ngIf="!hideSkillbutton" type="button" class="next-btn" (click)="hideBUtton('skills')"
+              [disabled]="!skills || skills.length === 0">
+              Next
+            </button>
+          </div>
+
+          <div *ngIf="showAllFields">
+            <div class="form-group">
+              <label>Your Full Name</label>
+              <input type="text" placeholder="e.g. Keerthi Raj" [(ngModel)]="name" name="name" required minlength="3"
+                #nameField="ngModel" />
+              <div *ngIf="nameField.invalid && nameField.touched" class="error">
+                Name is required
+              </div>
+            </div>
+
+            <!-- Mobile Number Field -->
+            <div class="form-group">
+              <label>Mobile Number</label>
+              <input type="tel" placeholder="e.g. 9876543210" [(ngModel)]="mobile" name="mobile" required maxlength="10"
+                pattern="^[0-9]{10}$" (keypress)="allowOnlyNumbers($event)" #mobileField="ngModel" />
+              <div *ngIf="mobileField.invalid && mobileField.touched" class="error">
+                Mobile number is required
+              </div>
+            </div>
+
+            <!-- Email Field -->
+            <div class="form-group">
+              <label>Email</label>
+              <input type="email" placeholder="e.g. keerthi@gmail.com" [(ngModel)]="email" name="email" required email
+                #emailField="ngModel" />
+              <div *ngIf="emailField.invalid && emailField.touched" class="error">
+                Enter a valid email address.
+              </div>
+            </div>
+
+            <!-- Gender Dropdown -->
+            <div class="form-group">
+              <label>Gender</label>
+              <select [(ngModel)]="gender" name="gender" required #genderField="ngModel" placeholder="Select">
+                <option value="" disabled selected>Select</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+              </select>
+              <div *ngIf="genderField.invalid && genderField.touched" class="error">
+                Please select your gender.
+              </div>
+            </div>
+
+            <div class="step1btn">
+              <button type="submit" class="step-submit-btn" [disabled]="!resumeForm.valid"
+                (click)="submitForm(resumeForm)">
+                Next
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
 </div>
 
 <div class="profile-wrapper" *ngIf="step > 1">
@@ -221,8 +232,6 @@
                     </div>
                   </div>
                 </div>
-
-
 
                 <!-- Start Year -->
                 <div class="col-12 md:col-6 lg:col-3">
@@ -695,6 +704,14 @@
           <div class="col-12 md:col-6">
             <div class="field-wrapper">
               <label>Soft Skills</label>
+              <div class="form-group">
+                <div class="selected-skills">
+                  <span class="skill-chip" *ngFor="let skill of suggestedSoftSkills"
+                    (click)="addSkill(skill, 'softSkills')">
+                    {{ skill }} &#43;
+                  </span>
+                </div>
+              </div>
               <div class="input-wrapper">
                 <tag-input formControlName="softSkills" [separatorKeyCodes]="[13, 188]" [theme]="'modern'"
                   placeholder="Type and press Enter or Comma" [addOnBlur]="true" [trimTags]="true" [editable]="true">
@@ -709,6 +726,14 @@
           <div class="col-12 md:col-6">
             <div class="field-wrapper">
               <label>Core Competencies</label>
+              <div class="form-group">
+                <div class="selected-skills">
+                  <span class="skill-chip" *ngFor="let skill of suggestedCoreCompentencies"
+                    (click)="addSkill(skill, 'coreCompentencies')">
+                    {{ skill }} &#43;
+                  </span>
+                </div>
+              </div>
               <div class="input-wrapper">
                 <tag-input formControlName="coreCompentencies" [separatorKeyCodes]="[13, 188]" [theme]="'modern'"
                   placeholder="Type and press Enter or Comma" [addOnBlur]="true" [trimTags]="true" [editable]="true">

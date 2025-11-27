@@ -30,6 +30,7 @@ import {
 import { DatePipe } from '@angular/common';
 import { ModelLoginPopupComponent } from '../../popup/model-login-popup/model-login-popup.component';
 import { MobileLoginReminderPopupComponent } from '../../popup/mobile-login-reminder-popup/mobile-login-reminder-popup.component';
+import { LoaderControllerService } from 'src/app/services/loader-controller.service';
 
 @Component({
   selector: 'app-mobile-fresher-form-page',
@@ -101,6 +102,10 @@ export class MobileFresherFormPageComponent {
   showExperienceError: boolean = false;
   templateName: any;
   showOtherFields: boolean = false;
+  firstSkillApiCalled = false;
+  suggestedSkills: any;
+  suggestedSoftSkills: any;
+  suggestedCoreCompentencies: any;
 
   jobRole = '';
   skills = '';
@@ -136,7 +141,8 @@ export class MobileFresherFormPageComponent {
     public ref: DynamicDialogRef,
     private loader: LoaderService,
     private dialogeService: DialogService,
-    private toast: ToastService
+    private toast: ToastService,
+    private newLoader: LoaderControllerService
   ) {
     sessionStorage.removeItem('authType');
     sessionStorage.removeItem('token');
@@ -1141,21 +1147,21 @@ export class MobileFresherFormPageComponent {
   }
 
   getFieldOfStudy() {
-  const route = 'value-sets/search-by-code';
-  const postData = { valueSetCode: 'QUALIFICATION' };
+    const route = 'value-sets/search-by-code';
+    const postData = { valueSetCode: 'QUALIFICATION' };
 
-  this.api.retrieve(route, postData).subscribe({
-    next: (response: any[]) => {
-      this.fieldOfStudy = response.map(item => ({
-        ...item,
-       
-        filterText: item.displayValue
-          ? item.displayValue.replace(/\./g, '').toLowerCase()
-          : ''
-      }));
-    },
-  });
-}
+    this.api.retrieve(route, postData).subscribe({
+      next: (response: any[]) => {
+        this.fieldOfStudy = response.map(item => ({
+          ...item,
+
+          filterText: item.displayValue
+            ? item.displayValue.replace(/\./g, '').toLowerCase()
+            : ''
+        }));
+      },
+    });
+  }
   getSchoolEducationFields() {
     const route = 'value-sets/search-by-code';
     const postData = { valueSetCode: 'SCHOOL_QUALIFICATION' };
@@ -2184,5 +2190,74 @@ export class MobileFresherFormPageComponent {
       this.schoolControls.removeAt(index);
     }
 
+  }
+
+
+  onSkillAdded(event: any) {
+    if (!this.firstSkillApiCalled && this.skills.length === 1) {
+      const firstSkill = this.skills;
+      this.firstSkillApiCalled = true;
+      this.callAISkillAPI(firstSkill);
+    }
+  }
+
+  callAISkillAPI(skill: string) {
+    this.startSuggestedProcess();
+    const route = `content/get-suggested-skills?skills=${skill}`;
+    this.api.get(route).subscribe({
+      next: (response) => {
+        if (response) {
+          localStorage.setItem('skillsData', JSON.stringify(response));
+
+          const suggested = response as any;
+
+          this.suggestedSkills = suggested?.skills;
+          this.suggestedSoftSkills = suggested?.softSkills;
+          this.suggestedCoreCompentencies = suggested?.coreCompentencies;
+
+          this.stopProcess();
+        }
+      },
+      error: (error) => {
+        this.stopProcess();
+        this.dataLoaded = true;
+      },
+    });
+  }
+
+
+  startSuggestedProcess() {
+    const messages = [
+      'Get Suggested Skills From Ai...',
+      'Please Wait...',
+      'Almost Done...',
+      'Ready To View...'
+    ];
+
+    this.newLoader.showLoader(messages, 4000);
+  }
+
+  stopProcess() {
+    this.newLoader.hideLoader();
+  }
+
+  addSkill(newSkill: string, key: any) {
+    const skills = this.candidateForm.get(key)?.value || [];
+
+    if (key === 'skills') {
+      if (newSkill && !this.skills.includes(newSkill)) {
+        this.skills = this.skills.concat(newSkill);
+      }
+    }
+    else {
+      if (newSkill && !skills.includes(newSkill)) {
+        const updatedSkills = [...skills, newSkill];
+        this.candidateForm.get(key)?.setValue(updatedSkills);
+      }
+    }
+  }
+
+   goBack(){
+    this.router.navigate(['choose-direction']);
   }
 }
