@@ -22,6 +22,7 @@ import { CollegeProject } from 'src/app/models/candidates/college-project';
 import { LoaderService } from 'src/app/services/loader.service';
 import { ToastService } from 'src/app/services/toast.service';
 import { Project } from 'src/app/models/candidates/project';
+import { DiplomaEducation } from 'src/app/models/candidates/diploma-education';
 
 @Component({
   selector: 'app-candidate-common-details',
@@ -87,6 +88,7 @@ export class CandidateCommonDetailsComponent {
   citiesName: any;
   stateNames: any;
   additionalDetailsForm!: FormGroup;
+  diplomaEducation: Array<ValueSet> = [];
 
   constructor(
     private api: ApiService,
@@ -96,10 +98,10 @@ export class CandidateCommonDetailsComponent {
     private router: Router,
     public ref: DynamicDialogRef,
     private loader: LoaderService,
-    private toast:ToastService,
-    private el:ElementRef
+    private toast: ToastService,
+    private el: ElementRef
   ) {
-    
+
     this.gs.candidateDetails$.subscribe((response) => {
       if (response !== null && response !== undefined) {
         this.candidates = response;
@@ -117,6 +119,8 @@ export class CandidateCommonDetailsComponent {
     this.createAdditionalDetailsForm();
     this.getStateNames();
     this.getNationalityList();
+    this.getDiplomaEducationFields();
+
 
     if (this.candidates !== null && this.candidates !== undefined) {
       this.candidateId = this.candidates.id;
@@ -129,7 +133,7 @@ export class CandidateCommonDetailsComponent {
     }
   }
 
-  ngAfterViewInit() {}
+  ngAfterViewInit() { }
 
   createCandidateForm() {
     this.candidateForm = this.fb.group({
@@ -162,20 +166,22 @@ export class CandidateCommonDetailsComponent {
       achievementsMandatory: [''],
       summary: [''],
       careerObjective: [''],
-      fatherName:[''],
-      hobbies:['']
-    },{ validators: [this.fresherOrExperienceValidator()] });
+      fatherName: [''],
+      hobbies: [''],
+      schoolEducation: this.fb.array([]),
+      diplomaEducation: this.fb.array([]),
+    }, { validators: [this.fresherOrExperienceValidator()] });
   }
 
   fresherOrExperienceValidator() {
     return (formGroup: AbstractControl): { [key: string]: any } | null => {
       const fresher = formGroup.get('fresher')?.value;
       const experiences = formGroup.get('experiences') as FormArray;
-  
-       if (!fresher && experiences.length === 0) {
+
+      if (!fresher && experiences.length === 0) {
         return { fresherOrExperienceRequired: true };
       }
-  
+
       return null;
     };
   }
@@ -265,9 +271,9 @@ export class CandidateCommonDetailsComponent {
               'yyyy-MM-dd'
             );
 
-           const responsibilities = Array.isArray(exp.responsibilities)
-           ? exp.responsibilities.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ')
-            : exp.responsibilities;
+            const responsibilities = Array.isArray(exp.responsibilities)
+              ? exp.responsibilities.map((r: any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ')
+              : exp.responsibilities;
 
             let projects = exp.projects || [];
             const hasEmptyProjectName = projects.some(
@@ -280,8 +286,8 @@ export class CandidateCommonDetailsComponent {
               projects = projects.map((proj: any) => ({
                 ...proj,
                 projectSkills: Array.isArray(proj.projectSkills)
-           ? proj.projectSkills.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ')
-            : proj.projectSkills,
+                  ? proj.projectSkills.map((r: any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ')
+                  : proj.projectSkills,
               }));
             }
 
@@ -346,7 +352,7 @@ export class CandidateCommonDetailsComponent {
         });
       }
 
-       if (Object.is(payload.hobbies, '')) {
+      if (Object.is(payload.hobbies, '')) {
         payload.hobbies = '';
       } else {
         const hobbiesList: string[] = payload.hobbies;
@@ -409,9 +415,9 @@ export class CandidateCommonDetailsComponent {
             payload.collegeProject = payload.collegeProject.map(
               (project: any) => ({
                 ...project,
-             collegeProjectSkills:  Array.isArray(project.collegeProjectSkills)
-           ? project.collegeProjectSkills.map((r:any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ')
-            : project.collegeProjectSkills,
+                collegeProjectSkills: Array.isArray(project.collegeProjectSkills)
+                  ? project.collegeProjectSkills.map((r: any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ')
+                  : project.collegeProjectSkills,
               })
             );
           }
@@ -460,11 +466,11 @@ export class CandidateCommonDetailsComponent {
 
           this.gs.setCandidateDetails(response);
 
-           if(this.candidateImageUrl !== null && this.candidateImageUrl !== undefined){
+          if (this.candidateImageUrl !== null && this.candidateImageUrl !== undefined) {
             this.gs.setCandidateImage(this.candidateImageUrl);
           }
 
-           this.router.navigate(['candidate/template']);
+          this.router.navigate(['candidate/template']);
 
         },
         error: (error) => {
@@ -479,9 +485,9 @@ export class CandidateCommonDetailsComponent {
     } else {
       this.loader.stop();
       this.showError = true;
-      this.toast.showToast('error','Enter All Mandatory Fields');
-      
-        const firstInvalidControl: HTMLElement =
+      this.toast.showToast('error', 'Enter All Mandatory Fields');
+
+      const firstInvalidControl: HTMLElement =
         this.el.nativeElement.querySelector(
           'form .ng-invalid[formcontrolname]'
         );
@@ -741,22 +747,22 @@ export class CandidateCommonDetailsComponent {
     });
   }
 
- getFieldOfStudy() {
-  const route = 'value-sets/search-by-code';
-  const postData = { valueSetCode: 'QUALIFICATION' };
+  getFieldOfStudy() {
+    const route = 'value-sets/search-by-code';
+    const postData = { valueSetCode: 'QUALIFICATION' };
 
-  this.api.retrieve(route, postData).subscribe({
-    next: (response: any[]) => {
-      this.fieldOfStudy = response.map(item => ({
-        ...item,
-       
-        filterText: item.displayValue
-          ? item.displayValue.replace(/\./g, '').toLowerCase()
-          : ''
-      }));
-    },
-  });
-}
+    this.api.retrieve(route, postData).subscribe({
+      next: (response: any[]) => {
+        this.fieldOfStudy = response.map(item => ({
+          ...item,
+
+          filterText: item.displayValue
+            ? item.displayValue.replace(/\./g, '').toLowerCase()
+            : ''
+        }));
+      },
+    });
+  }
 
   addCandidateImage(event: any) {
     this.candidateImageAttachments = [];
@@ -813,21 +819,19 @@ export class CandidateCommonDetailsComponent {
       : [];
     candidate.coreCompentencies = candidate?.coreCompentencies
       ? candidate.coreCompentencies
-          .split(',')
-          .map((skill: string) => skill.trim())
+        .split(',')
+        .map((skill: string) => skill.trim())
       : [];
 
-       candidate.hobbies = candidate?.hobbies
+    candidate.hobbies = candidate?.hobbies
       ? candidate.hobbies
-          .split(',')
-          .map((skill: string) => skill.trim())
+        .split(',')
+        .map((skill: string) => skill.trim())
       : [];
 
 
 
-    if ( candidate.certificates?.some(c => c && (c.courseName?.trim()))) 
-  
-  {
+    if (candidate.certificates?.some(c => c && (c.courseName?.trim()))) {
       const certificateFormArray = this.candidateForm.get(
         'certificates'
       ) as FormArray;
@@ -855,7 +859,7 @@ export class CandidateCommonDetailsComponent {
       }
     }
 
-    if ( candidate.qualification?.some(q => q && (q.institutionName?.trim() || q.fieldOfStudy?.trim()))) {
+    if (candidate.qualification?.some(q => q && (q.institutionName?.trim() || q.fieldOfStudy?.trim()))) {
       const qualificationFormArray = this.candidateForm.get(
         'qualification'
       ) as FormArray;
@@ -907,8 +911,8 @@ export class CandidateCommonDetailsComponent {
       achievementsMandatory: candidate?.achievementsMandatory,
       summary: candidate?.summary,
       careerObjective: candidate?.careerObjective,
-       hobbies: candidate?.hobbies ? candidate?.hobbies : [],
-      fatherName:candidate?.fatherName,
+      hobbies: candidate?.hobbies ? candidate?.hobbies : [],
+      fatherName: candidate?.fatherName,
     });
   }
 
@@ -931,8 +935,8 @@ export class CandidateCommonDetailsComponent {
       experiences?.forEach((experience) => {
         const responsibilities = experience?.responsibilities
           ? experience.responsibilities
-              .split(',')
-              .map((res: string) => res.trim())
+            .split(',')
+            .map((res: string) => res.trim())
           : [];
 
         const experienceForm = this.createExperience();
@@ -947,14 +951,14 @@ export class CandidateCommonDetailsComponent {
           isDeleted: false,
         });
 
-        if (experience?.projects.some((p: Project) =>  p?.projectName?.trim())) {
+        if (experience?.projects.some((p: Project) => p?.projectName?.trim())) {
           const projectFormArray = experienceForm.get('projects') as FormArray;
           projectFormArray.clear();
           experience.projects?.forEach((project: any) => {
             const projectSkills = project?.projectSkills
               ? project.projectSkills
-                  .split(',')
-                  .map((skill: string) => skill.trim())
+                .split(',')
+                .map((skill: string) => skill.trim())
               : [];
             const projectForm = this.createProject();
             projectForm.patchValue({
@@ -977,8 +981,8 @@ export class CandidateCommonDetailsComponent {
       id: qualification.id,
       institutionName: qualification.institutionName,
       department: qualification.department,
-      qualificationStartYear:this.toValidDate(qualification.qualificationStartYear),
-      qualificationEndYear:this.toValidDate(qualification.qualificationEndYear),
+      qualificationStartYear: this.toValidDate(qualification.qualificationStartYear),
+      qualificationEndYear: this.toValidDate(qualification.qualificationEndYear),
       percentage: qualification.percentage,
       fieldOfStudy: qualification.fieldOfStudy,
       isDeleted: false,
@@ -1002,8 +1006,8 @@ export class CandidateCommonDetailsComponent {
     const skillsArray =
       typeof collegeProject.collegeProjectSkills === 'string'
         ? collegeProject.collegeProjectSkills
-            .split(',')
-            .map((skill) => skill.trim())
+          .split(',')
+          .map((skill) => skill.trim())
         : collegeProject.collegeProjectSkills;
 
     return this.fb.group({
@@ -1198,7 +1202,7 @@ export class CandidateCommonDetailsComponent {
       payload['mobileNumber'] = mobile;
 
       this.api.retrieve(route, payload).subscribe({
-        next: (response: any) => {},
+        next: (response: any) => { },
       });
     }
   }
@@ -1206,8 +1210,8 @@ export class CandidateCommonDetailsComponent {
   patchAdditionalDetails(additonalDetails: any) {
     const stateNameArray = additonalDetails?.stateName
       ? additonalDetails.stateName
-          .split(',')
-          .map((state: string) => state.trim())
+        .split(',')
+        .map((state: string) => state.trim())
       : [];
 
     const matchedStateIds = stateNameArray
@@ -1219,12 +1223,12 @@ export class CandidateCommonDetailsComponent {
 
     const preferredLocationArray = additonalDetails?.preferredLocation
       ? additonalDetails.preferredLocation
-          .split(',')
-          .map((city: string) => city.trim())
-          .filter(
-            (city: string) =>
-              city && this.citiesName.some((c: any) => c.cityName === city)
-          )
+        .split(',')
+        .map((city: string) => city.trim())
+        .filter(
+          (city: string) =>
+            city && this.citiesName.some((c: any) => c.cityName === city)
+        )
       : [];
 
     this.additionalDetailsForm.patchValue({
@@ -1249,15 +1253,15 @@ export class CandidateCommonDetailsComponent {
           this.getPrefferedLocationByStateId(response);
         }
       },
-      error: (error) => {},
+      error: (error) => { },
     });
   }
 
   getPrefferedLocationByStateId(additonalDetails: any) {
     const stateNameArray = additonalDetails?.stateName
       ? additonalDetails.stateName
-          .split(',')
-          .map((state: string) => state.trim())
+        .split(',')
+        .map((state: string) => state.trim())
       : [];
 
     const matchedStateIds = stateNameArray
@@ -1284,7 +1288,7 @@ export class CandidateCommonDetailsComponent {
 
   getNationalityList() {
     const route = 'value-sets/search-by-code';
-     const postData = { valueSetCode: 'NATIONALITY' };
+    const postData = { valueSetCode: 'NATIONALITY' };
     this.api.retrieve(route, postData).subscribe({
       next: (response) => {
         this.nationalityList = response;
@@ -1292,60 +1296,115 @@ export class CandidateCommonDetailsComponent {
     });
   }
 
-  
-  openSoftSkillsExample(){
- const popup = document.getElementById('examplePopup');
+
+  openSoftSkillsExample() {
+    const popup = document.getElementById('examplePopup');
     if (popup !== null) {
       popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
     }
   }
 
-   openSoftCoreCompentienciesExample(){
-     const popup = document.getElementById('exampleCorePopup');
+  openSoftCoreCompentienciesExample() {
+    const popup = document.getElementById('exampleCorePopup');
     if (popup !== null) {
       popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
     }
   }
 
   copyTextToChips(text: string, controlName: string) {
-  const control = this.candidateForm.get(controlName);
-  if (control) {
-    let currentValue = control.value || [];
-    // Prevent duplicates
-    if (!currentValue.includes(text)) {
-      currentValue.push(text);
-      control.setValue(currentValue);
+    const control = this.candidateForm.get(controlName);
+    if (control) {
+      let currentValue = control.value || [];
+      // Prevent duplicates
+      if (!currentValue.includes(text)) {
+        currentValue.push(text);
+        control.setValue(currentValue);
+      }
     }
   }
-}
 
- 
+
 
   toValidDate(value: any): Date | null {
-  if (!value || value === 'NaN/NaN/NaN') return null;
+    if (!value || value === 'NaN/NaN/NaN') return null;
 
-  if (value instanceof Date && !isNaN(value.getTime())) return value;
+    if (value instanceof Date && !isNaN(value.getTime())) return value;
 
-  if (typeof value === "string") {
-    const trimmed = value.trim();
+    if (typeof value === "string") {
+      const trimmed = value.trim();
 
-    // dd/MM/yyyy format
-    const match = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(trimmed);
-    if (match) {
-      const day = parseInt(match[1], 10);
-      const month = parseInt(match[2], 10) - 1;
-      const year = parseInt(match[3], 10);
-      const date = new Date(year, month, day);
+      // dd/MM/yyyy format
+      const match = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(trimmed);
+      if (match) {
+        const day = parseInt(match[1], 10);
+        const month = parseInt(match[2], 10) - 1;
+        const year = parseInt(match[3], 10);
+        const date = new Date(year, month, day);
+        return !isNaN(date.getTime()) ? date : null;
+      }
+
+      // fallback
+      const date = new Date(trimmed);
       return !isNaN(date.getTime()) ? date : null;
     }
 
-    // fallback
-    const date = new Date(trimmed);
-    return !isNaN(date.getTime()) ? date : null;
+    return null;
   }
 
-  return null;
-}
+  getDiplomaEducationFields() {
+    const route = 'value-sets/search-by-code';
+    const postData = { valueSetCode: 'DIPLOMA_QUALIFICATION' };
+    this.api.retrieve(route, postData).subscribe({
+      next: (response) => {
+        this.diplomaEducation = response;
+      },
+    });
+  }
+
+  createDiplomaEducationFormGroup(qualification: DiplomaEducation) {
+    return this.fb.group({
+      id: qualification.id,
+      diplomaInstitutionName: qualification.diplomaInstitutionName,
+      qualificationLevel: qualification.qualificationLevel,
+      diplomaStartYear: qualification.diplomaStartYear
+        ? new Date(qualification.diplomaStartYear)
+        : null,
+      diplomaEndYear: qualification.diplomaEndYear
+        ? new Date(qualification.diplomaEndYear)
+        : null,
+      percentage: qualification.percentage,
+    });
+  }
+
+
+  createDiplomaEducation(): FormGroup {
+    return this.fb.group({
+      id: [''],
+      diplomaInstitutionName: [''],
+      qualificationLevel: [''],
+      diplomaStartYear: [''],
+      diplomaEndYear: [''],
+      percentage: ['']
+    });
+  }
+
+  get diplomaControls() {
+    return this.candidateForm.get('diplomaEducation') as FormArray;
+  }
+
+  addDiplomaEducation() {
+    this.diplomaControls.push(this.createDiplomaEducation());
+  }
+
+  removeDiplomaEducation(index: number) {
+    const confirmDelete = window.confirm(
+      'Are you sure you want to remove this Diploma/ITI education?'
+    );
+    if (confirmDelete && this.diplomaControls.length >= 1) {
+      this.diplomaControls.removeAt(index);
+    }
+  }
+
 
 
 }

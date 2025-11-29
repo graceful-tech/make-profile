@@ -117,6 +117,7 @@ export class MobileCandidateMultipleResumeFormComponent {
   resume: any;
   isSchoolEducationOpen = true;
   isCollegeEducationOpen = false;
+  isDiplomaEducationOpen = false;
   schoolEducationlength: number = 0;
   showSchoolError: boolean = false;
   showCollegeError: boolean = false;
@@ -128,9 +129,13 @@ export class MobileCandidateMultipleResumeFormComponent {
   suggestedSoftSkills: any;
   suggestedCoreCompentencies: any;
   firstSkillApiCalled = false;
-
-
-
+  showLanguageKnownError: boolean = false;
+  showNationalityError: boolean = false;
+  showFatherNameError: boolean = false;
+  showDobError: boolean = false;
+  showMartialError: boolean = false;
+  diplomaEducationlength: number = 0;
+  diplomaEducation: Array<ValueSet> = [];
 
   constructor(
     private api: ApiService,
@@ -155,9 +160,7 @@ export class MobileCandidateMultipleResumeFormComponent {
     // this.getStateNames();
     this.getNationalityList();
     this.getSchoolEducationFields();
-
-
-
+    this.getDiplomaEducationFields();
   }
 
   ngAfterViewInit() { }
@@ -200,6 +203,8 @@ export class MobileCandidateMultipleResumeFormComponent {
         fatherName: [''],
         hobbies: [''],
         schoolEducation: this.fb.array([this.createSchoolEducation()]),
+        diplomaEducation: this.fb.array([this.createDiplomaEducation()]),
+
       }
       // { validators: [this.fresherOrExperienceValidator()] }
     );
@@ -464,7 +469,6 @@ export class MobileCandidateMultipleResumeFormComponent {
       const hobbies: string[] = this.candidateForm.get('hobbies')?.value;
 
 
-
       if (softSkills?.length < 3) {
         this.showSoftSkillsError = true;
       }
@@ -473,15 +477,21 @@ export class MobileCandidateMultipleResumeFormComponent {
       }
       if (hobbies?.length < 3) {
         this.showHobbiesError = true;
-        this.toast.showToast('error', 'Please enter atleast 3 hobbies');
       }
+
+      const ValidateMandatory = this.checkAllDetailsMandatoryForFreshers();
 
       if (hobbies?.length > 2 && coreCompentencies?.length > 2 && softSkills?.length > 2) {
         localStorage.removeItem('skillsData');
-        this.createCandidateAfterLogin();
+        if (ValidateMandatory) {
+          this.createCandidateAfterLogin();
+        }
+        else {
+          this.toast.showToast('error', 'Enter All Mandatory Fields');
+        }
       }
       else {
-        this.toast.showToast('error', 'Please enter atleast 3 details');
+        this.toast.showToast('error', 'Enter All Mandatory Fields');
       }
     }
     else {
@@ -646,9 +656,12 @@ export class MobileCandidateMultipleResumeFormComponent {
       });
     }
 
+
+
     if (
       payload.schoolEducation.length === 0 ||
-      Object.is(payload.schoolEducation[0].schoolName, '')
+      payload.schoolEducation?.every((s: any) => s.schoolName?.trim() === '')
+
     ) {
       payload.schoolEducation = [];
     } else {
@@ -659,6 +672,25 @@ export class MobileCandidateMultipleResumeFormComponent {
         );
         q.schoolEndYear = this.datePipe.transform(
           q.schoolEndYear,
+          'yyyy-MM-dd'
+        );
+      });
+    }
+
+
+    if (
+      payload.diplomaEducation.length === 0 ||
+      payload.diplomaEducation?.every((s: any) => s.diplomaInstitutionName?.trim() === '')
+    ) {
+      payload.diplomaEducation = [];
+    } else {
+      payload.diplomaEducation.forEach((q: any) => {
+        q.diplomaStartYear = this.datePipe.transform(
+          q.diplomaStartYear,
+          'yyyy-MM-dd'
+        );
+        q.diplomaEndYear = this.datePipe.transform(
+          q.diplomaEndYear,
           'yyyy-MM-dd'
         );
       });
@@ -2084,6 +2116,9 @@ export class MobileCandidateMultipleResumeFormComponent {
     if (keys === 'isSchoolEducationOpen') {
       this.isSchoolEducationOpen = !this.isSchoolEducationOpen;
     }
+    else if (keys === 'isDiplomaEducationOpen') {
+      this.isDiplomaEducationOpen = !this.isDiplomaEducationOpen;
+    }
     else {
       this.isCollegeEducationOpen = !this.isCollegeEducationOpen;
     }
@@ -2192,7 +2227,99 @@ export class MobileCandidateMultipleResumeFormComponent {
     }
   }
 
-  goBack(){
+  goBack() {
     this.router.navigate(['mob-candidate']);
   }
+
+  checkAllDetailsMandatoryForFreshers(): boolean {
+
+    const languageKnown = this.candidateForm.get('languagesKnown')?.value;
+    const dob = this.candidateForm.get('dob')?.value;
+    const fatherName = this.candidateForm.get('fatherName')?.value;
+    const nationality = this.candidateForm.get('nationality')?.value;
+    const martialStatus = this.candidateForm.get('maritalStatus')?.value;
+
+    this.showNationalityError = false;
+    this.showLanguageKnownError = false;
+    this.showFatherNameError = false;
+    this.showDobError = false;
+    this.showMartialError = false;
+
+    let valueCheck: boolean = true
+
+    if (!nationality || nationality.length === 0) {
+      this.showNationalityError = true
+      valueCheck = false
+    }
+
+    if (!languageKnown || languageKnown.length === 0) {
+      this.showLanguageKnownError = true;
+      valueCheck = false
+    }
+
+    if (!fatherName || fatherName === null) {
+      this.showFatherNameError = true
+      valueCheck = false
+    }
+
+    if (!dob || dob === null) {
+      this.showDobError = true
+      valueCheck = false
+    }
+
+    if (!martialStatus || martialStatus === null) {
+      this.showMartialError = true
+      valueCheck = false
+    }
+
+    if (valueCheck) {
+      return true;
+    }
+    else {
+      return false
+    }
+
+  }
+
+  getDiplomaEducationFields() {
+    const route = 'value-sets/search-by-code';
+    const postData = { valueSetCode: 'DIPLOMA_QUALIFICATION' };
+    this.api.retrieve(route, postData).subscribe({
+      next: (response) => {
+        this.diplomaEducation = response;
+      },
+    });
+  }
+
+
+  createDiplomaEducation(): FormGroup {
+    return this.fb.group({
+      id: [''],
+      diplomaInstitutionName: [''],
+      qualificationLevel: [''],
+      diplomaStartYear: [''],
+      diplomaEndYear: [''],
+      percentage: ['']
+    });
+  }
+
+  get diplomaControls() {
+    return this.candidateForm.get('diplomaEducation') as FormArray;
+  }
+
+  addDiplomaEducation() {
+    this.diplomaControls.push(this.createDiplomaEducation());
+    this.diplomaEducationlength = this.diplomaEducationlength + 1;
+  }
+
+  removeDiplomaEducation(index: number) {
+    const confirmDelete = window.confirm(
+      'Are you sure you want to remove this Diploma/ITI education?'
+    );
+    if (confirmDelete && this.diplomaControls.length >= 1) {
+      this.diplomaControls.removeAt(index);
+      this.diplomaEducationlength = this.diplomaEducationlength - 1;
+    }
+  }
+
 }

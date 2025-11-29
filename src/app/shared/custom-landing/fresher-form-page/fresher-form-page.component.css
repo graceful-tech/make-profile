@@ -10,7 +10,7 @@
   transition: transform 0.6s ease, padding-top 0.6s ease;
   font-family: "Poppins", sans-serif;
   min-height: 100vh;
-  
+
 }
 
 .mainContainer {
@@ -23,11 +23,14 @@
 
 
 .simple-form {
-  width: 90%;
-  max-width: 550px;
+  width: 100%;
+  max-width: 650px;
   display: flex;
   flex-direction: column;
   gap: 15px;
+  padding: 20px;
+  box-shadow: 0 5px 20px #0c0c0c91;
+  border-radius: 20px;
 }
 
 .form-group label {

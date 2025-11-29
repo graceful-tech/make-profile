@@ -354,7 +354,7 @@ img {
   width: 100%;
 }
 .custom-btn {
-  background-color: #415ddb;
+  background-color: #2575fc;
   color: white;
   border: none;
   padding: 8px 12px;
@@ -362,8 +362,8 @@ img {
   border-radius: 8px;
   cursor: pointer;
   /* margin-right: 15px; */
-  font-weight: bold;
-  font-style: italic;
+  font-weight: 500;
+  
 }
 
 .custom-btn:hover {
@@ -379,8 +379,8 @@ img {
   border-radius: 8px;
   cursor: pointer;
   /* margin-right: 15px; */
-  font-weight: bold;
-  font-style: italic;
+  font-weight: 500;
+  
 }
 
 .remove-btn:hover {

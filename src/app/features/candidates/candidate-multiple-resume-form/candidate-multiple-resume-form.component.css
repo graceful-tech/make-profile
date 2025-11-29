@@ -20,11 +20,14 @@
 }
 
 .simple-form {
-  width: 90%;
-  max-width: 550px;
+  width: 100%;
+  max-width: 650px;
   display: flex;
   flex-direction: column;
   gap: 15px;
+  padding: 20px;
+  box-shadow: 0 5px 20px #0c0c0c91;
+  border-radius: 20px;
 }
 
 .form-group label {
@@ -335,9 +338,10 @@ label {
 }
 
 .section-heading {
-  margin: 20px 0 10px;
+  margin: 20px 0 0px;
   font-size: 18px;
-  font-weight: 500;
+  font-weight: 410;
+  letter-spacing: inherit;
 }
 
 .buttons {
@@ -398,7 +402,7 @@ label {
 }
 
 .custom-btn {
-  background-color: #415ddb;
+  background-color: #2575fc;
   color: white;
   border: none;
   padding: 8px 12px;

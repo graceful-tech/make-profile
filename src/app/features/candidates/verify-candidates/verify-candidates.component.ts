@@ -39,6 +39,7 @@ import { ResumeCreatingComponent } from '../resume-creating/resume-creating.comp
 import { ToastService } from 'src/app/services/toast.service';
 import { LoaderControllerService } from 'src/app/services/loader-controller.service';
 import { SchoolEducation } from 'src/app/models/candidates/schoolEducation';
+import { DiplomaEducation } from 'src/app/models/candidates/diploma-education';
 
 @Component({
   selector: 'app-verify-candidates',
@@ -106,6 +107,8 @@ export class VerifyCandidatesComponent {
   qualificationlength: number = -1;
   schoolEducationlength: number = -1;
   schoolEducation: Array<ValueSet> = [];
+  diplomaEducationlength: number = -1;
+  diplomaEducation: Array<ValueSet> = [];
 
 
   constructor(
@@ -155,6 +158,7 @@ export class VerifyCandidatesComponent {
     //this.getCandidates();
     this.getNationalityList();
     this.getSchoolEducationFields();
+    this.getDiplomaEducationFields();
 
 
     if (this.candidates !== null && this.candidates !== undefined) {
@@ -207,6 +211,7 @@ export class VerifyCandidatesComponent {
         hobbies: [''],
         fatherName: [''],
         schoolEducation: this.fb.array([]),
+        diplomaEducation: this.fb.array([]),
       },
       { validators: [this.fresherOrExperienceValidator()] }
     );
@@ -391,6 +396,24 @@ export class VerifyCandidatesComponent {
         });
       }
 
+
+      if (
+        payload.diplomaEducation.length === 0 ||
+        Object.is(payload.diplomaEducation[0].diplomaInstitutionName, '')
+      ) {
+        payload.diplomaEducation = [];
+      } else {
+        payload.diplomaEducation.forEach((q: any) => {
+          q.diplomaStartYear = this.datePipe.transform(
+            q.diplomaStartYear,
+            'yyyy-MM-dd'
+          );
+          q.diplomaEndYear = this.datePipe.transform(
+            q.diplomaEndYear,
+            'yyyy-MM-dd'
+          );
+        });
+      }
 
       if (
         payload.achievements.length === 0 ||
@@ -807,22 +830,22 @@ export class VerifyCandidatesComponent {
     });
   }
 
-getFieldOfStudy() {
-  const route = 'value-sets/search-by-code';
-  const postData = { valueSetCode: 'QUALIFICATION' };
+  getFieldOfStudy() {
+    const route = 'value-sets/search-by-code';
+    const postData = { valueSetCode: 'QUALIFICATION' };
 
-  this.api.retrieve(route, postData).subscribe({
-    next: (response: any[]) => {
-      this.fieldOfStudy = response.map(item => ({
-        ...item,
-       
-        filterText: item.displayValue
-          ? item.displayValue.replace(/\./g, '').toLowerCase()
-          : ''
-      }));
-    },
-  });
-}
+    this.api.retrieve(route, postData).subscribe({
+      next: (response: any[]) => {
+        this.fieldOfStudy = response.map(item => ({
+          ...item,
+
+          filterText: item.displayValue
+            ? item.displayValue.replace(/\./g, '').toLowerCase()
+            : ''
+        }));
+      },
+    });
+  }
 
   addCandidateImage(event: any) {
     this.candidateImageAttachments = [];
@@ -937,6 +960,19 @@ getFieldOfStudy() {
       candidate.schoolEducation?.forEach((qualification) => {
         schoolFormArray.push(
           this.createSchoolEducationFormGroup(qualification)
+        );
+      });
+    }
+
+    if (candidate.diplomaEducation?.length > 0) {
+      const schoolFormArray = this.candidateForm.get(
+        'diplomaEducation'
+      ) as FormArray;
+      schoolFormArray.clear();
+
+      candidate.diplomaEducation?.forEach((qualification) => {
+        schoolFormArray.push(
+          this.createDiplomaEducationFormGroup(qualification)
         );
       });
     }
@@ -1665,7 +1701,7 @@ getFieldOfStudy() {
 
   }
 
-   getSchoolEducationFields() {
+  getSchoolEducationFields() {
     const route = 'value-sets/search-by-code';
     const postData = { valueSetCode: 'SCHOOL_QUALIFICATION' };
     this.api.retrieve(route, postData).subscribe({
@@ -1675,5 +1711,61 @@ getFieldOfStudy() {
     });
   }
 
+  getDiplomaEducationFields() {
+    const route = 'value-sets/search-by-code';
+    const postData = { valueSetCode: 'DIPLOMA_QUALIFICATION' };
+    this.api.retrieve(route, postData).subscribe({
+      next: (response) => {
+        this.diplomaEducation = response;
+      },
+    });
+  }
+
+
+  createDiplomaEducationFormGroup(qualification: DiplomaEducation) {
+    return this.fb.group({
+      id: qualification.id,
+      diplomaInstitutionName: qualification.diplomaInstitutionName,
+      qualificationLevel: qualification.qualificationLevel,
+      diplomaStartYear: qualification.diplomaStartYear
+        ? new Date(qualification.diplomaStartYear)
+        : null,
+      diplomaEndYear: qualification.diplomaEndYear
+        ? new Date(qualification.diplomaEndYear)
+        : null,
+      percentage: qualification.percentage,
+    });
+  }
+
+
+  createDiplomaEducation(): FormGroup {
+    return this.fb.group({
+      id: [''],
+      diplomaInstitutionName: [''],
+      qualificationLevel: [''],
+      diplomaStartYear: [''],
+      diplomaEndYear: [''],
+      percentage: ['']
+    });
+  }
+
+  get diplomaControls() {
+    return this.candidateForm.get('diplomaEducation') as FormArray;
+  }
+
+  addDiplomaEducation() {
+    this.diplomaControls.push(this.createDiplomaEducation());
+    this.diplomaEducationlength = this.diplomaEducationlength + 1;
+  }
+
+  removeDiplomaEducation(index: number) {
+    const confirmDelete = window.confirm(
+      'Are you sure you want to remove this Diploma/ITI education?'
+    );
+    if (confirmDelete && this.diplomaControls.length >= 1) {
+      this.diplomaControls.removeAt(index);
+      this.diplomaEducationlength = this.diplomaEducationlength - 1;
+    }
+  }
 
 }

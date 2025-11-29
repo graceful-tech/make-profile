@@ -1,6 +1,7 @@
 import { Achievements } from "./achievements";
 import { Certificates } from "./certificates";
 import { CollegeProject } from "./college-project";
+import { DiplomaEducation } from "./diploma-education";
 import { Experience } from "./experiences";
 import { Qualification } from "./qualification";
 import { SchoolEducation } from "./schoolEducation";
@@ -37,6 +38,7 @@ export interface Candidate {
     fatherName:any;
     hobbies:any;
     schoolEducation: Array<SchoolEducation>;
+    diplomaEducation: Array<DiplomaEducation>;
 
 
 }

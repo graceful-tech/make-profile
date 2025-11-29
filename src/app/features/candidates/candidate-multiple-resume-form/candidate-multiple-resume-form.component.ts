@@ -107,7 +107,6 @@ export class CandidateMultipleResumeFormComponent {
   showUploadResume: boolean = false;
   showSuggestJonFields: boolean = false;
   selectedResumeOption: 'Yes' | 'No' | null = null;
-
   existingResume = '';
   jobRole = '';
   skills = '';
@@ -130,7 +129,13 @@ export class CandidateMultipleResumeFormComponent {
   suggestedSkills: any;
   suggestedSoftSkills: any;
   suggestedCoreCompentencies: any;
-
+  showLanguageKnownError: boolean = false;
+  showNationalityError: boolean = false;
+  showFatherNameError: boolean = false;
+  showDobError: boolean = false;
+  showMartialError: boolean = false;
+  diplomaEducationlength: number = 0;
+  diplomaEducation: Array<ValueSet> = [];
 
 
   constructor(
@@ -158,8 +163,7 @@ export class CandidateMultipleResumeFormComponent {
     // this.getStateNames();
     this.getNationalityList();
     this.getSchoolEducationFields();
-
-
+    this.getDiplomaEducationFields();
   }
 
   onJobInput() {
@@ -277,6 +281,7 @@ export class CandidateMultipleResumeFormComponent {
         fatherName: [''],
         hobbies: [''],
         schoolEducation: this.fb.array([this.createSchoolEducation()]),
+        diplomaEducation: this.fb.array([this.createDiplomaEducation()]),
       }
       // { validators: [this.fresherOrExperienceValidator()] }
     );
@@ -498,15 +503,21 @@ export class CandidateMultipleResumeFormComponent {
       }
       if (hobbies?.length < 3) {
         this.showHobbiesError = true;
-        this.toast.showToast('error', 'Please enter atleast 3 hobbies');
       }
+      const ValidateMandatory = this.checkAllDetailsMandatoryForFreshers();
 
       if (hobbies?.length > 2 && coreCompentencies?.length > 2 && softSkills?.length > 2) {
-         localStorage.removeItem('skillsData');
-        this.createCandidateAfterLogin();
+        localStorage.removeItem('skillsData');
+
+        if (ValidateMandatory) {
+          this.createCandidateAfterLogin();
+        }
+        else {
+          this.toast.showToast('error', 'Enter All Mandatory Fields');
+        }
       }
       else {
-        this.toast.showToast('error', 'Please enter atleast 3 details');
+        this.toast.showToast('error', 'Enter All Mandatory Fields');
       }
     }
     else {
@@ -667,6 +678,25 @@ export class CandidateMultipleResumeFormComponent {
         );
         q.schoolEndYear = this.datePipe.transform(
           q.schoolEndYear,
+          'yyyy-MM-dd'
+        );
+      });
+    }
+
+
+    if (
+      payload.diplomaEducation.length === 0 ||
+      Object.is(payload.diplomaEducation[0].diplomaInstitutionName, '')
+    ) {
+      payload.diplomaEducation = [];
+    } else {
+      payload.diplomaEducation.forEach((q: any) => {
+        q.diplomaStartYear = this.datePipe.transform(
+          q.diplomaStartYear,
+          'yyyy-MM-dd'
+        );
+        q.diplomaEndYear = this.datePipe.transform(
+          q.diplomaEndYear,
           'yyyy-MM-dd'
         );
       });
@@ -2144,16 +2174,16 @@ export class CandidateMultipleResumeFormComponent {
     const route = `content/get-suggested-skills?skills=${skill}`;
     this.api.get(route).subscribe({
       next: (response) => {
-        if (response) { 
+        if (response) {
           localStorage.setItem('skillsData', JSON.stringify(response));
-          
+
           const suggested = response as any;
 
           this.suggestedSkills = suggested?.skills;
           this.suggestedSoftSkills = suggested?.softSkills;
           this.suggestedCoreCompentencies = suggested?.coreCompentencies;
 
-           this.stopProcess();
+          this.stopProcess();
         }
       },
       error: (error) => {
@@ -2180,7 +2210,7 @@ export class CandidateMultipleResumeFormComponent {
 
     if (key === 'skills') {
       if (newSkill && !this.skills.includes(newSkill)) {
-       this.skills = this.skills.concat(newSkill);
+        this.skills = this.skills.concat(newSkill);
       }
     }
     else {
@@ -2191,9 +2221,100 @@ export class CandidateMultipleResumeFormComponent {
     }
   }
 
-  goBack(){
+  goBack() {
     this.router.navigate(['/user-decision']);
   }
 
+  checkAllDetailsMandatoryForFreshers(): boolean {
+
+    const languageKnown = this.candidateForm.get('languagesKnown')?.value;
+    const dob = this.candidateForm.get('dob')?.value;
+    const fatherName = this.candidateForm.get('fatherName')?.value;
+    const nationality = this.candidateForm.get('nationality')?.value;
+    const martialStatus = this.candidateForm.get('maritalStatus')?.value;
+
+    this.showNationalityError = false;
+    this.showLanguageKnownError = false;
+    this.showFatherNameError = false;
+    this.showDobError = false;
+    this.showMartialError = false;
+
+    let valueCheck: boolean = true
+
+    if (!nationality || nationality.length === 0) {
+      this.showNationalityError = true
+      valueCheck = false
+    }
+
+    if (!languageKnown || languageKnown.length === 0) {
+      this.showLanguageKnownError = true;
+      valueCheck = false
+    }
+
+    if (!fatherName || fatherName === null) {
+      this.showFatherNameError = true
+      valueCheck = false
+    }
+
+    if (!dob || dob === null) {
+      this.showDobError = true
+      valueCheck = false
+    }
+
+    if (!martialStatus || martialStatus === null) {
+      this.showMartialError = true
+      valueCheck = false
+    }
+
+    if (valueCheck) {
+      return true;
+    }
+    else {
+      return false
+    }
+
+  }
+
+
+  getDiplomaEducationFields() {
+    const route = 'value-sets/search-by-code';
+    const postData = { valueSetCode: 'DIPLOMA_QUALIFICATION' };
+    this.api.retrieve(route, postData).subscribe({
+      next: (response) => {
+        this.diplomaEducation = response;
+      },
+    });
+  }
+
+
+  createDiplomaEducation(): FormGroup {
+    return this.fb.group({
+      id: [''],
+      diplomaInstitutionName: [''],
+      qualificationLevel: [''],
+      diplomaStartYear: [''],
+      diplomaEndYear: [''],
+      percentage: ['']
+    });
+  }
+
+  get diplomaControls() {
+    return this.candidateForm.get('diplomaEducation') as FormArray;
+  }
+
+  addDiplomaEducation() {
+    this.diplomaControls.push(this.createDiplomaEducation());
+    this.diplomaEducationlength = this.diplomaEducationlength + 1;
+  }
+
+  removeDiplomaEducation(index: number) {
+    const confirmDelete = window.confirm(
+      'Are you sure you want to remove this Diploma/ITI education?'
+    );
+    if (confirmDelete && this.diplomaControls.length >= 1) {
+      this.diplomaControls.removeAt(index);
+      this.diplomaEducationlength = this.diplomaEducationlength - 1;
+    }
+  }
 }
 
