@@ -201,6 +201,10 @@ export class NewCreateResumeComponent {
 
       const candidateClone = JSON.parse(JSON.stringify(this.candidates));
       this.patchCandidateForm(candidateClone);
+
+      if (this.candidates?.fresher) {
+        this.addAdditoinalDetail = true;
+      }
       this.previewPdf();
     } else {
       this.getCandidates();
@@ -218,9 +222,6 @@ export class NewCreateResumeComponent {
   async previewPdf() {
     this.startProcess();
 
-     if(this.candidates?.fresher){
-       this.addAdditoinalDetail = true;
-    }
 
 
     const route = `candidate/get-bytearray?additionalDetails=${this.addAdditoinalDetail}`;
