@@ -2039,6 +2039,10 @@ export class PreviewAndCreateResumeComponent {
     // this.isPreview = true;
     this.startProcess();
 
+    if(this.candidates?.fresher){
+       this.addAdditoinalDetail = true;
+    }
+
     const route = `candidate/get-bytearray?additionalDetails=${this.addAdditoinalDetail}`;
 
     if (this.templateName === null || this.templateName === undefined) {
