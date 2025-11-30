@@ -136,6 +136,9 @@ export class MobileCandidateMultipleResumeFormComponent {
   showMartialError: boolean = false;
   diplomaEducationlength: number = 0;
   diplomaEducation: Array<ValueSet> = [];
+  showStrengthsError: boolean = false;
+  showGoalsError: boolean = false;
+  showExtraCurricularError: boolean = false;
 
   constructor(
     private api: ApiService,
@@ -204,6 +207,9 @@ export class MobileCandidateMultipleResumeFormComponent {
         hobbies: [''],
         schoolEducation: this.fb.array([this.createSchoolEducation()]),
         diplomaEducation: this.fb.array([this.createDiplomaEducation()]),
+        strengths: [''],
+        goals: [''],
+        extraCurricularActivities: [''],
 
       }
       // { validators: [this.fresherOrExperienceValidator()] }
@@ -456,39 +462,13 @@ export class MobileCandidateMultipleResumeFormComponent {
   }
 
   submit() {
-
-    this.showSoftSkillsError = false;
-    this.showCoreCompentenciesError = false;
-    this.showHobbiesError = false;
-
     const isFresher = localStorage.getItem('isFresher');
 
     if (isFresher === 'true') {
-      const softSkills: string[] = this.candidateForm.get('softSkills')?.value;
-      const coreCompentencies: string[] = this.candidateForm.get('coreCompentencies')?.value;
-      const hobbies: string[] = this.candidateForm.get('hobbies')?.value;
-
-
-      if (softSkills?.length < 3) {
-        this.showSoftSkillsError = true;
-      }
-      if (coreCompentencies?.length < 3) {
-        this.showCoreCompentenciesError = true;
-      }
-      if (hobbies?.length < 3) {
-        this.showHobbiesError = true;
-      }
-
       const ValidateMandatory = this.checkAllDetailsMandatoryForFreshers();
-
-      if (hobbies?.length > 2 && coreCompentencies?.length > 2 && softSkills?.length > 2) {
+      if (ValidateMandatory) {
         localStorage.removeItem('skillsData');
-        if (ValidateMandatory) {
-          this.createCandidateAfterLogin();
-        }
-        else {
-          this.toast.showToast('error', 'Enter All Mandatory Fields');
-        }
+        this.createCandidateAfterLogin();
       }
       else {
         this.toast.showToast('error', 'Enter All Mandatory Fields');
@@ -791,6 +771,41 @@ export class MobileCandidateMultipleResumeFormComponent {
       payload.coreCompentencies = commaSeparatedString;
     }
 
+    if (Object.is(payload.strengths, '')) {
+      payload.strengths = '';
+    } else {
+      const stringList: string[] = payload.strengths;
+      const commaSeparatedString: string = stringList
+        .map((r: any) =>
+          typeof r === 'string' ? r : r.task || r.value || ''
+        )
+        .join(', ');
+      payload.strengths = commaSeparatedString;
+    }
+
+    if (Object.is(payload.goals, '')) {
+      payload.goals = '';
+    } else {
+      const stringList: string[] = payload.goals;
+      const commaSeparatedString: string = stringList
+        .map((r: any) =>
+          typeof r === 'string' ? r : r.task || r.value || ''
+        )
+        .join(', ');
+      payload.goals = commaSeparatedString;
+    }
+
+    if (Object.is(payload.extraCurricularActivities, '')) {
+      payload.extraCurricularActivities = '';
+    } else {
+      const stringList: string[] = payload.extraCurricularActivities;
+      const commaSeparatedString: string = stringList
+        .map((r: any) =>
+          typeof r === 'string' ? r : r.task || r.value || ''
+        )
+        .join(', ');
+      payload.extraCurricularActivities = commaSeparatedString;
+    }
     if (payload.fresher) {
       if (
         payload.collegeProject.length === 0 ||
@@ -2238,14 +2253,41 @@ export class MobileCandidateMultipleResumeFormComponent {
     const fatherName = this.candidateForm.get('fatherName')?.value;
     const nationality = this.candidateForm.get('nationality')?.value;
     const martialStatus = this.candidateForm.get('maritalStatus')?.value;
+    const strengths = this.candidateForm.get('strengths')?.value;
+    const goals = this.candidateForm.get('goals')?.value;
+    const extraCurricularActivities = this.candidateForm.get('extraCurricularActivities')?.value;
+    const softSkills: string[] = this.candidateForm.get('softSkills')?.value;
+    const coreCompentencies: string[] = this.candidateForm.get('coreCompentencies')?.value;
+    const hobbies: string[] = this.candidateForm.get('hobbies')?.value;
+
 
     this.showNationalityError = false;
     this.showLanguageKnownError = false;
     this.showFatherNameError = false;
     this.showDobError = false;
     this.showMartialError = false;
+    this.showStrengthsError = false;
+    this.showGoalsError = false;
+    this.showExtraCurricularError = false;
+    this.showSoftSkillsError = false;
+    this.showCoreCompentenciesError = false;
+    this.showHobbiesError = false;
 
     let valueCheck: boolean = true
+
+
+    if (softSkills?.length < 3) {
+      this.showSoftSkillsError = true;
+      valueCheck = false
+    }
+    if (coreCompentencies?.length < 3) {
+      this.showCoreCompentenciesError = true;
+      valueCheck = false
+    }
+    if (hobbies?.length < 3) {
+      this.showHobbiesError = true;
+      valueCheck = false
+    }
 
     if (!nationality || nationality.length === 0) {
       this.showNationalityError = true
@@ -2269,6 +2311,21 @@ export class MobileCandidateMultipleResumeFormComponent {
 
     if (!martialStatus || martialStatus === null) {
       this.showMartialError = true
+      valueCheck = false
+    }
+
+    if (!strengths || strengths.length === 0) {
+      this.showStrengthsError = true;
+      valueCheck = false
+    }
+
+    if (!goals || goals.length === 0) {
+      this.showGoalsError = true;
+      valueCheck = false
+    }
+
+    if (!extraCurricularActivities || extraCurricularActivities.length === 0) {
+      this.showExtraCurricularError = true;
       valueCheck = false
     }
 

@@ -193,6 +193,9 @@ export class MobileCreateCandidatesComponent {
         fatherName: [''],
         schoolEducation: this.fb.array([]),
         diplomaEducation: this.fb.array([]),
+        strengths: [''],
+        goals: [''],
+        extraCurricularActivities: [''],
       },
       { validators: [this.fresherOrExperienceValidator()] }
     );
@@ -373,7 +376,7 @@ export class MobileCreateCandidatesComponent {
         });
       }
 
-        if (
+      if (
         payload.diplomaEducation.length === 0 ||
         Object.is(payload.diplomaEducation[0].diplomaInstitutionName, '')
       ) {
@@ -467,6 +470,41 @@ export class MobileCreateCandidatesComponent {
         const stringList: string[] = payload.coreCompentencies;
         const commaSeparatedString: string = stringList.map((r: any) => typeof r === 'string' ? r : r.task || r.value || '').join(', ');
         payload.coreCompentencies = commaSeparatedString;
+      }
+      if (Object.is(payload.strengths, '')) {
+        payload.strengths = '';
+      } else {
+        const stringList: string[] = payload.strengths;
+        const commaSeparatedString: string = stringList
+          .map((r: any) =>
+            typeof r === 'string' ? r : r.task || r.value || ''
+          )
+          .join(', ');
+        payload.strengths = commaSeparatedString;
+      }
+
+      if (Object.is(payload.goals, '')) {
+        payload.goals = '';
+      } else {
+        const stringList: string[] = payload.goals;
+        const commaSeparatedString: string = stringList
+          .map((r: any) =>
+            typeof r === 'string' ? r : r.task || r.value || ''
+          )
+          .join(', ');
+        payload.goals = commaSeparatedString;
+      }
+
+      if (Object.is(payload.extraCurricularActivities, '')) {
+        payload.extraCurricularActivities = '';
+      } else {
+        const stringList: string[] = payload.extraCurricularActivities;
+        const commaSeparatedString: string = stringList
+          .map((r: any) =>
+            typeof r === 'string' ? r : r.task || r.value || ''
+          )
+          .join(', ');
+        payload.extraCurricularActivities = commaSeparatedString;
       }
 
       if (payload.fresher) {
@@ -894,6 +932,24 @@ export class MobileCreateCandidatesComponent {
         .map((skill: string) => skill.trim())
       : [];
 
+    candidate.strengths = candidate?.strengths
+      ? candidate.strengths
+        .split(',')
+        .map((skill: string) => skill.trim())
+      : [];
+
+    candidate.goals = candidate?.goals
+      ? candidate.goals
+        .split(',')
+        .map((skill: string) => skill.trim())
+      : [];
+
+    candidate.extraCurricularActivities = candidate?.extraCurricularActivities
+      ? candidate.extraCurricularActivities
+        .split(',')
+        .map((skill: string) => skill.trim())
+      : [];
+
 
     if (candidate.certificates?.length > 0) {
       const certificateFormArray = this.candidateForm.get(
@@ -932,7 +988,7 @@ export class MobileCreateCandidatesComponent {
       });
     }
 
-        if (candidate.diplomaEducation?.length > 0) {
+    if (candidate.diplomaEducation?.length > 0) {
       const schoolFormArray = this.candidateForm.get(
         'diplomaEducation'
       ) as FormArray;
@@ -1004,6 +1060,9 @@ export class MobileCreateCandidatesComponent {
       careerObjective: candidate?.careerObjective,
       hobbies: candidate?.hobbies ? candidate?.hobbies : [],
       fatherName: candidate?.fatherName,
+      strengths: candidate?.strengths ? candidate?.strengths : [],
+      goals: candidate?.goals ? candidate?.goals : [],
+      extraCurricularActivities: candidate?.extraCurricularActivities ? candidate?.extraCurricularActivities : [],
     });
   }
 

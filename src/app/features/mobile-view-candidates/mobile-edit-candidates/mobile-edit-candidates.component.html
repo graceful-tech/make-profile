@@ -230,6 +230,70 @@
             </div>
           </div>
         </div>
+        <div class="col-12 md:col-6">
+          <div class="field-wrapper">
+            <Span>Strengths</Span>
+
+            <div class="input-wrapper">
+              <tag-input
+                formControlName="strengths"
+                [separatorKeyCodes]="[13, 188]"
+                [theme]="'modern'"
+                [addOnBlur]="true"
+                [trimTags]="true"
+                [editable]="true"
+              >
+              </tag-input>
+              <span style="color: rgb(88, 86, 86)"
+                >Eg: Quick learner , Time management , Good communication
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 md:col-6">
+          <div class="field-wrapper">
+            <Span>Extra Curricular Activities</Span>
+
+            <div class="input-wrapper">
+              <tag-input
+                formControlName="extraCurricularActivities"
+                [separatorKeyCodes]="[13, 188]"
+                [theme]="'modern'"
+                [addOnBlur]="true"
+                [trimTags]="true"
+                [editable]="true"
+              >
+              </tag-input>
+              <span style="color: rgb(88, 86, 86)"
+                >Eg: Volunteered for social service events , Participated in
+                college cultural events</span
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <div class="field-wrapper">
+            <Span>Goals</Span>
+
+            <div class="input-wrapper">
+              <tag-input
+                formControlName="goals"
+                [separatorKeyCodes]="[13, 188]"
+                [theme]="'modern'"
+                [addOnBlur]="true"
+                [trimTags]="true"
+                [editable]="true"
+              >
+              </tag-input>
+              <span style="color: rgb(88, 86, 86)"
+                >Eg: Contribute positively to my team , Achieve steady growth in
+                my field</span
+              >
+            </div>
+          </div>
+        </div>
       </div>
 
       <app-make-profile-divider></app-make-profile-divider>
@@ -674,7 +738,7 @@
               class="remove-btn"
               (click)="removeSchoolEducation(i)"
             >
-              Remove School Education
+              Remove School/Intermediate
             </button>
           </div>
         </div>
@@ -686,7 +750,7 @@
             class="custom-btn"
             (click)="addSchoolEducation()"
           >
-            + Add School Education
+            + Add School/Intermediate  
           </button>
         </div>
       </div>

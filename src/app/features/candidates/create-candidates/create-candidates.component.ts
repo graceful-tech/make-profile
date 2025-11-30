@@ -126,7 +126,7 @@ export class CreateCandidatesComponent {
     this.getStateNames();
     this.getNationalityList()
     this.getSchoolEducationFields();
-      this.getDiplomaEducationFields();
+    this.getDiplomaEducationFields();
 
 
     if (this.candidates !== null && this.candidates !== undefined) {
@@ -178,6 +178,10 @@ export class CreateCandidatesComponent {
       hobbies: [''],
       fatherName: [''],
       schoolEducation: this.fb.array([]),
+      diplomaEducation: this.fb.array([]),
+      strengths: [''],
+      goals: [''],
+      extraCurricularActivities: [''],
     }, { validators: [this.fresherOrExperienceValidator()] }
     );
   }
@@ -420,6 +424,30 @@ export class CreateCandidatesComponent {
         const stringList: string[] = payload.coreCompentencies;
         const commaSeparatedString: string = stringList.join(', ');
         payload.coreCompentencies = commaSeparatedString;
+      }
+
+      if (Object.is(payload.strengths, '')) {
+        payload.strengths = '';
+      } else {
+        const stringList: string[] = payload.strengths;
+        const commaSeparatedString: string = stringList.join(', ');
+        payload.strengths = commaSeparatedString;
+      }
+
+      if (Object.is(payload.goals, '')) {
+        payload.goals = '';
+      } else {
+        const stringList: string[] = payload.goals;
+        const commaSeparatedString: string = stringList.join(', ');
+        payload.goals = commaSeparatedString;
+      }
+
+      if (Object.is(payload.extraCurricularActivities, '')) {
+        payload.extraCurricularActivities = '';
+      } else {
+        const stringList: string[] = payload.extraCurricularActivities;
+        const commaSeparatedString: string = stringList.join(', ');
+        payload.extraCurricularActivities = commaSeparatedString;
       }
 
       if (payload.fresher) {
@@ -848,6 +876,26 @@ export class CreateCandidatesComponent {
       : [];
 
 
+    candidate.strengths = candidate?.strengths
+      ? candidate.strengths
+        .split(',')
+        .map((skill: string) => skill.trim())
+      : [];
+
+    candidate.goals = candidate?.goals
+      ? candidate.goals
+        .split(',')
+        .map((skill: string) => skill.trim())
+      : [];
+
+    candidate.extraCurricularActivities = candidate?.extraCurricularActivities
+      ? candidate.extraCurricularActivities
+        .split(',')
+        .map((skill: string) => skill.trim())
+      : [];
+
+
+
     if (candidate.certificates?.length > 0) {
       const certificateFormArray = this.candidateForm.get(
         'certificates'
@@ -956,6 +1004,9 @@ export class CreateCandidatesComponent {
       careerObjective: candidate?.careerObjective,
       hobbies: candidate?.hobbies ? candidate?.hobbies : [],
       fatherName: candidate?.fatherName,
+      strengths: candidate?.strengths ? candidate?.strengths : [],
+      goals: candidate?.goals ? candidate?.goals : [],
+      extraCurricularActivities: candidate?.extraCurricularActivities ? candidate?.extraCurricularActivities : [],
     });
   }
 

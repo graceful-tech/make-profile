@@ -781,7 +781,7 @@
               </div>
             </div>
 
-            <div class="col-12 sm:col-6 md:col-4">
+            <div class="col-12 sm:col-6">
               <div class="field-wrapper">
                 <label>Address</label>
                 <div class="input-wrapper">
@@ -795,7 +795,7 @@
               </div>
             </div>
 
-            <div class="col-12 sm:col-6 md:col-4">
+            <div class="col-12 sm:col-6">
               <div class="field-wrapper">
                 <input
                   type="file"
@@ -816,6 +816,54 @@
                       <i class="fas fa-pencil-alt" Style="font-size: 18px;"></i>
                     </span>
                   </ng-template>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12 md:col-6">
+              <div class="field-wrapper">
+                <Span>Strengths</Span>
+
+                <div class="input-wrapper">
+                  <p-chips
+                    separator=","
+                    formControlName="strengths"
+                    [addOnBlur]="true"
+                    [addOnTab]="true"
+                    placeholder="Eg: Strengths , Time management , Good communication skills"
+                  ></p-chips>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12 md:col-6">
+              <div class="field-wrapper">
+                <Span>Extra Curricular Activities</Span>
+
+                <div class="input-wrapper">
+                  <p-chips
+                    separator=","
+                    formControlName="extraCurricularActivities"
+                    [addOnBlur]="true"
+                    [addOnTab]="true"
+                    placeholder="Eg: Participation in sports competitions , Volunteering in community service programs"
+                  ></p-chips>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <div class="field-wrapper">
+                <Span>Goals</Span>
+
+                <div class="input-wrapper">
+                  <p-chips
+                    separator=","
+                    formControlName="goals"
+                    [addOnBlur]="true"
+                    [addOnTab]="true"
+                    placeholder="Eg: To work in a collaborative environment and expand my expertise , To continuously learn and improve in the field of technology"
+                  ></p-chips>
                 </div>
               </div>
             </div>

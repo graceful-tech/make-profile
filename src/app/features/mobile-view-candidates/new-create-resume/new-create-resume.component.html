@@ -495,6 +495,71 @@
                 </div>
               </div>
             </div>
+
+            <div class="col-12 md:col-6">
+              <div class="field-wrapper">
+                <Span>Strengths</Span>
+
+                <div class="input-wrapper">
+                  <tag-input
+                    formControlName="strengths"
+                    [separatorKeyCodes]="[13, 188]"
+                    [theme]="'modern'"
+                    [addOnBlur]="true"
+                    [trimTags]="true"
+                    [editable]="true"
+                  >
+                  </tag-input>
+                  <span style="color: rgb(88, 86, 86)"
+                    >Eg: Quick learner , Time management , Good communication
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12 md:col-6">
+              <div class="field-wrapper">
+                <Span>Extra Curricular Activities</Span>
+
+                <div class="input-wrapper">
+                  <tag-input
+                    formControlName="extraCurricularActivities"
+                    [separatorKeyCodes]="[13, 188]"
+                    [theme]="'modern'"
+                    [addOnBlur]="true"
+                    [trimTags]="true"
+                    [editable]="true"
+                  >
+                  </tag-input>
+                  <span style="color: rgb(88, 86, 86)"
+                    >Eg: Volunteered for social service events , Participated in
+                    college cultural events</span
+                  >
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <div class="field-wrapper">
+                <Span>Goals</Span>
+
+                <div class="input-wrapper">
+                  <tag-input
+                    formControlName="goals"
+                    [separatorKeyCodes]="[13, 188]"
+                    [theme]="'modern'"
+                    [addOnBlur]="true"
+                    [trimTags]="true"
+                    [editable]="true"
+                  >
+                  </tag-input>
+                  <span style="color: rgb(88, 86, 86)"
+                    >Eg: Contribute positively to my team , Achieve steady
+                    growth in my field</span
+                  >
+                </div>
+              </div>
+            </div>
           </div>
 
           <app-make-profile-divider></app-make-profile-divider>
@@ -911,120 +976,6 @@
                       <input
                         type="text"
                         pInputText
-                        formControlName="diplomaInstitutionName"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-12 md:col-6 lg:col-3">
-                  <div class="field-wrapper">
-                    <label>Education Level</label>
-                    <div class="input-wrapper">
-                      <p-dropdown
-                        [options]="diplomaEducation"
-                        optionLabel="displayValue"
-                        optionValue="dataValue"
-                        placeholder="Select Qualification"
-                        formControlName="qualificationLevel"
-                        [filter]="true"
-                        styleClass="narrow-dropdown"
-                      >
-                      </p-dropdown>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Start Year -->
-                <div class="col-12 md:col-6 lg:col-3">
-                  <div class="field-wrapper">
-                    <label>Start Year</label>
-                    <div class="input-wrapper">
-                      <p-calendar
-                        formControlName="diplomaStartYear"
-                        placeholder="Select Year"
-                      ></p-calendar>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- End Year -->
-                <div class="col-12 md:col-6 lg:col-3">
-                  <div class="field-wrapper">
-                    <label>End Year</label>
-                    <div class="input-wrapper">
-                      <p-calendar
-                        formControlName="diplomaEndYear"
-                        placeholder="Select Year"
-                      ></p-calendar>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Percentage -->
-                <div class="col-12 md:col-6 lg:col-3">
-                  <div class="field-wrapper">
-                    <label>Percentage</label>
-                    <div class="input-wrapper">
-                      <input
-                        placeholder="Ex: 88.8"
-                        pKeyFilter="num"
-                        [maxLength]="4"
-                        type="number"
-                        [min]="0.0"
-                        [max]="99.99"
-                        pInputText
-                        formControlName="percentage"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Remove Qualification -->
-              <div class="col-12 md:col-6 lg:col-3 mt-2">
-                <button
-                  type="button"
-                  class="remove-btn"
-                  (click)="removeDiplomaEducation(i)"
-                >
-                  Remove Diploma/ITI
-                </button>
-              </div>
-            </div>
-
-            <!-- Add Qualification -->
-            <div class="col-12 md:col-6 lg:col-3 mt-3">
-              <button
-                type="button"
-                class="custom-btn"
-                (click)="addDiplomaEducation()"
-              >
-                Add Diploma/ITI
-              </button>
-            </div>
-          </div>
-
-          <div class="divider"></div>
-
-          <span class="sub-school-heading">Diploma/ITI</span>
-          <div formArrayName="diplomaEducation" class="school-container">
-            <div
-              *ngFor="
-                let qualifications of diplomaControls.controls;
-                let i = index
-              "
-              [formGroupName]="i"
-              class="qualification-box"
-            >
-              <div class="grid">
-                <div class="col-12 md:col-6 lg:col-3">
-                  <div class="field-wrapper">
-                    <label>School Name</label>
-                    <div class="input-wrapper">
-                      <input
-                        type="text"
-                        pInputText
                         formControlName="schoolName"
                       />
                     </div>
@@ -1100,9 +1051,9 @@
                 <button
                   type="button"
                   class="remove-btn"
-                  (click)="removeSchoolEducation(i)"
+                  (click)="removeDiplomaEducation(i)"
                 >
-                  Remove School Education
+                  Remove School/Intermediate
                 </button>
               </div>
             </div>
@@ -1114,7 +1065,121 @@
                 class="custom-btn"
                 (click)="addSchoolEducation()"
               >
-                + Add School Education
+                + Add School/Intermediate
+              </button>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <span class="sub-school-heading">Diploma/ITI</span>
+          <div formArrayName="diplomaEducation" class="school-container">
+            <div
+              *ngFor="
+                let qualifications of diplomaControls.controls;
+                let i = index
+              "
+              [formGroupName]="i"
+              class="qualification-box"
+            >
+              <div class="grid">
+                <div class="col-12 md:col-6 lg:col-3">
+                  <div class="field-wrapper">
+                    <label>Institution Name</label>
+                    <div class="input-wrapper">
+                      <input
+                        type="text"
+                        pInputText
+                        formControlName="diplomaInstitutionName"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-12 md:col-6 lg:col-3">
+                  <div class="field-wrapper">
+                    <label>Education Level</label>
+                    <div class="input-wrapper">
+                      <p-dropdown
+                        [options]="diplomaEducation"
+                        optionLabel="displayValue"
+                        optionValue="dataValue"
+                        placeholder="Select Qualification"
+                        formControlName="qualificationLevel"
+                        [filter]="true"
+                        styleClass="narrow-dropdown"
+                      >
+                      </p-dropdown>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Start Year -->
+                <div class="col-12 md:col-6 lg:col-3">
+                  <div class="field-wrapper">
+                    <label>Start Year</label>
+                    <div class="input-wrapper">
+                      <p-calendar
+                        formControlName="diplomaEndYear"
+                        placeholder="Select Year"
+                      ></p-calendar>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- End Year -->
+                <div class="col-12 md:col-6 lg:col-3">
+                  <div class="field-wrapper">
+                    <label>End Year</label>
+                    <div class="input-wrapper">
+                      <p-calendar
+                        formControlName="schoolEndYear"
+                        placeholder="Select Year"
+                      ></p-calendar>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Percentage -->
+                <div class="col-12 md:col-6 lg:col-3">
+                  <div class="field-wrapper">
+                    <label>Percentage</label>
+                    <div class="input-wrapper">
+                      <input
+                        placeholder="Ex: 88.8"
+                        pKeyFilter="num"
+                        [maxLength]="4"
+                        type="number"
+                        [min]="0.0"
+                        [max]="99.99"
+                        pInputText
+                        formControlName="percentage"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Remove Qualification -->
+              <div class="col-12 md:col-6 lg:col-3 mt-2">
+                <button
+                  type="button"
+                  class="remove-btn"
+                  (click)="removeDiplomaEducation(i)"
+                >
+                  Remove Diploma/ITI
+                </button>
+              </div>
+            </div>
+
+            <!-- Add Qualification -->
+            <div class="col-12 md:col-6 lg:col-3 mt-3">
+              <button
+                type="button"
+                class="custom-btn"
+                (click)="addDiplomaEducation()"
+              >
+                + Add Diploma/ITI
               </button>
             </div>
           </div>

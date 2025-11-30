@@ -427,7 +427,7 @@
         </div>
       </div>
 
-         <div class="education-section">
+      <div class="education-section">
         <div
           class="drawer-header"
           (click)="toggleEducation('isDiplomaEducationOpen')"
@@ -1264,6 +1264,113 @@
             </div>
             <div *ngIf="showHobbiesError" style="color: red; margin-top: 5px">
               Please enter atleast 3 hobbies.
+            </div>
+          </div>
+
+          <div class="col-12 md:col-6">
+            <div class="field-wrapper">
+              <Span>Strengths</Span>
+              <div class="form-group">
+                <div class="selected-skills">
+                  <!-- <span
+                    class="skill-chip"
+                    *ngFor="let skill of suggestedSoftSkills"
+                    (click)="addSkill(skill, 'strengths')"
+                  >
+                    {{ skill }} &#43;
+                  </span> -->
+                </div>
+              </div>
+              <div class="input-wrapper">
+                <tag-input
+                  formControlName="strengths"
+                  [separatorKeyCodes]="[13, 188]"
+                  [theme]="'modern'"
+                  [addOnBlur]="true"
+                  [trimTags]="true"
+                  [editable]="true"
+                >
+                </tag-input>
+                <span style="color: rgb(88, 86, 86)"
+                  >Eg: Quick learner , Time management , Good communication
+                </span>
+              </div>
+            </div>
+            <div *ngIf="showStrengthsError" style="color: red; margin-top: 5px">
+              Please Enter Atleast 3 Strengths.
+            </div>
+          </div>
+
+          <div class="col-12 md:col-6">
+            <div class="field-wrapper">
+              <Span>Extra Curricular Activities</Span>
+              <div class="form-group">
+                <div class="selected-skills">
+                  <!-- <span
+                    class="skill-chip"
+                    *ngFor="let skill of suggestedSoftSkills"
+                    (click)="addSkill(skill, 'strengths')"
+                  >
+                    {{ skill }} &#43;
+                  </span> -->
+                </div>
+              </div>
+              <div class="input-wrapper">
+                <tag-input
+                  formControlName="extraCurricularActivities"
+                  [separatorKeyCodes]="[13, 188]"
+                  [theme]="'modern'"
+                  [addOnBlur]="true"
+                  [trimTags]="true"
+                  [editable]="true"
+                >
+                </tag-input>
+                <span style="color: rgb(88, 86, 86)"
+                  >Eg: Volunteered for social service events , Participated in
+                  college cultural events</span
+                >
+              </div>
+            </div>
+            <div
+              *ngIf="showExtraCurricularError"
+              style="color: red; margin-top: 5px"
+            >
+              Please Enter Extra Curricular Activities.
+            </div>
+          </div>
+
+          <div class="col-12">
+            <div class="field-wrapper">
+              <Span>Goals</Span>
+              <div class="form-group">
+                <div class="selected-skills">
+                  <!-- <span
+                    class="skill-chip"
+                    *ngFor="let skill of suggestedSoftSkills"
+                    (click)="addSkill(skill, 'strengths')"
+                  >
+                    {{ skill }} &#43;
+                  </span> -->
+                </div>
+              </div>
+              <div class="input-wrapper">
+                <tag-input
+                  formControlName="goals"
+                  [separatorKeyCodes]="[13, 188]"
+                  [theme]="'modern'"
+                  [addOnBlur]="true"
+                  [trimTags]="true"
+                  [editable]="true"
+                >
+                </tag-input>
+                <span style="color: rgb(88, 86, 86)"
+                  >Eg: Contribute positively to my team , Achieve steady growth in
+                  my field</span
+                >
+              </div>
+            </div>
+            <div *ngIf="showGoalsError" style="color: red; margin-top: 5px">
+              Please Enter Atleast 1 Goals.
             </div>
           </div>
 

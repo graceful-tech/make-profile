@@ -426,7 +426,11 @@ export class NewCreateResumeComponent {
         careerObjective: [''],
         hobbies: [''],
         fatherName: [''],
-        schoolEducation: this.fb.array([this.createSchoolEducation()]),
+        schoolEducation: this.fb.array([]),
+        diplomaEducation: this.fb.array([]),
+        strengths: [''],
+        goals: [''],
+        extraCurricularActivities: [''],
       },
       { validators: [this.fresherOrExperienceValidator()] }
     );
@@ -607,6 +611,24 @@ export class NewCreateResumeComponent {
       }
 
       if (
+        payload.diplomaEducation.length === 0 ||
+        Object.is(payload.diplomaEducation[0].diplomaInstitutionName, '')
+      ) {
+        payload.diplomaEducation = [];
+      } else {
+        payload.diplomaEducation.forEach((q: any) => {
+          q.diplomaStartYear = this.datePipe.transform(
+            q.diplomaStartYear,
+            'yyyy-MM-dd'
+          );
+          q.diplomaEndYear = this.datePipe.transform(
+            q.diplomaEndYear,
+            'yyyy-MM-dd'
+          );
+        });
+      }
+
+      if (
         payload.achievements.length === 0 ||
         Object.is(payload.achievements[0].achievementsName, '')
       ) {
@@ -695,6 +717,42 @@ export class NewCreateResumeComponent {
           )
           .join(', ');
         payload.coreCompentencies = commaSeparatedString;
+      }
+
+      if (Object.is(payload.strengths, '')) {
+        payload.strengths = '';
+      } else {
+        const stringList: string[] = payload.strengths;
+        const commaSeparatedString: string = stringList
+          .map((r: any) =>
+            typeof r === 'string' ? r : r.task || r.value || ''
+          )
+          .join(', ');
+        payload.strengths = commaSeparatedString;
+      }
+
+      if (Object.is(payload.goals, '')) {
+        payload.goals = '';
+      } else {
+        const stringList: string[] = payload.goals;
+        const commaSeparatedString: string = stringList
+          .map((r: any) =>
+            typeof r === 'string' ? r : r.task || r.value || ''
+          )
+          .join(', ');
+        payload.goals = commaSeparatedString;
+      }
+
+      if (Object.is(payload.extraCurricularActivities, '')) {
+        payload.extraCurricularActivities = '';
+      } else {
+        const stringList: string[] = payload.extraCurricularActivities;
+        const commaSeparatedString: string = stringList
+          .map((r: any) =>
+            typeof r === 'string' ? r : r.task || r.value || ''
+          )
+          .join(', ');
+        payload.extraCurricularActivities = commaSeparatedString;
       }
 
       if (payload.fresher) {
@@ -904,6 +962,24 @@ export class NewCreateResumeComponent {
       }
 
       if (
+        payload.diplomaEducation.length === 0 ||
+        Object.is(payload.diplomaEducation[0].diplomaInstitutionName, '')
+      ) {
+        payload.diplomaEducation = [];
+      } else {
+        payload.diplomaEducation.forEach((q: any) => {
+          q.diplomaStartYear = this.datePipe.transform(
+            q.diplomaStartYear,
+            'yyyy-MM-dd'
+          );
+          q.diplomaEndYear = this.datePipe.transform(
+            q.diplomaEndYear,
+            'yyyy-MM-dd'
+          );
+        });
+      }
+
+      if (
         payload.achievements.length === 0 ||
         Object.is(payload.achievements[0].achievementsName, '')
       ) {
@@ -993,6 +1069,43 @@ export class NewCreateResumeComponent {
           .join(', ');
         payload.coreCompentencies = commaSeparatedString;
       }
+
+      if (Object.is(payload.strengths, '')) {
+        payload.strengths = '';
+      } else {
+        const stringList: string[] = payload.strengths;
+        const commaSeparatedString: string = stringList
+          .map((r: any) =>
+            typeof r === 'string' ? r : r.task || r.value || ''
+          )
+          .join(', ');
+        payload.strengths = commaSeparatedString;
+      }
+
+      if (Object.is(payload.goals, '')) {
+        payload.goals = '';
+      } else {
+        const stringList: string[] = payload.goals;
+        const commaSeparatedString: string = stringList
+          .map((r: any) =>
+            typeof r === 'string' ? r : r.task || r.value || ''
+          )
+          .join(', ');
+        payload.goals = commaSeparatedString;
+      }
+
+      if (Object.is(payload.extraCurricularActivities, '')) {
+        payload.extraCurricularActivities = '';
+      } else {
+        const stringList: string[] = payload.extraCurricularActivities;
+        const commaSeparatedString: string = stringList
+          .map((r: any) =>
+            typeof r === 'string' ? r : r.task || r.value || ''
+          )
+          .join(', ');
+        payload.extraCurricularActivities = commaSeparatedString;
+      }
+
 
       if (payload.fresher) {
         if (
@@ -1400,6 +1513,25 @@ export class NewCreateResumeComponent {
       ? candidate.hobbies.split(',').map((skill: string) => skill.trim())
       : [];
 
+    candidate.strengths = candidate?.strengths
+      ? candidate.strengths
+        .split(',')
+        .map((skill: string) => skill.trim())
+      : [];
+
+    candidate.goals = candidate?.goals
+      ? candidate.goals
+        .split(',')
+        .map((skill: string) => skill.trim())
+      : [];
+
+    candidate.extraCurricularActivities = candidate?.extraCurricularActivities
+      ? candidate.extraCurricularActivities
+        .split(',')
+        .map((skill: string) => skill.trim())
+      : [];
+
+
     if (candidate.certificates?.some((c) => c && c.courseName?.trim())) {
       const certificateFormArray = this.candidateForm.get(
         'certificates'
@@ -1519,6 +1651,9 @@ export class NewCreateResumeComponent {
       careerObjective: candidate?.careerObjective,
       hobbies: candidate?.hobbies ? candidate?.hobbies : [],
       fatherName: candidate?.fatherName,
+      strengths: candidate?.strengths ? candidate?.strengths : [],
+      goals: candidate?.goals ? candidate?.goals : [],
+      extraCurricularActivities: candidate?.extraCurricularActivities ? candidate?.extraCurricularActivities : [],
     });
   }
 
@@ -1699,6 +1834,7 @@ export class NewCreateResumeComponent {
       next: (response) => {
         const candidate = response as Candidate;
         if (candidate !== null) {
+          this.stopProcess();
           this.candidateId = candidate?.id;
           this.candidates = candidate;
 

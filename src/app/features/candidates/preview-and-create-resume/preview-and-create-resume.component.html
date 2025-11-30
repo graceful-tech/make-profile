@@ -102,7 +102,7 @@
                   formControlName="softSkills"
                   [addOnBlur]="true"
                   [addOnTab]="true"
-                  placeholder="Eg: Communication,Teamwork,Fast Learning"
+                  placeholder="Eg: Communication , Teamwork , Fast Learning"
                 ></p-chips>
               </div>
             </div>
@@ -136,7 +136,59 @@
                   formControlName="coreCompentencies"
                   [addOnBlur]="true"
                   [addOnTab]="true"
-                  placeholder="Eg: Project Management,Strategic Planning,Analytical Thinking"
+                  placeholder="Eg: Project Management , Strategic Planning , Analytical Thinking"
+                ></p-chips>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="grid">
+          <div class="col-12">
+            <div class="field-wrapper">
+              <Span>Strengths</Span>
+
+              <div class="input-wrapper">
+                <p-chips
+                  separator=","
+                  formControlName="strengths"
+                  [addOnBlur]="true"
+                  [addOnTab]="true"
+                  placeholder="Eg: Strengths , Time management , Good communication skills"
+                ></p-chips>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <div class="field-wrapper">
+              <Span>Extra Curricular Activities</Span>
+
+              <div class="input-wrapper">
+                <p-chips
+                  separator=","
+                  formControlName="extraCurricularActivities"
+                  [addOnBlur]="true"
+                  [addOnTab]="true"
+                  placeholder="Eg: Participation in sports competitions , Volunteering in community service programs"
+                ></p-chips>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <div class="field-wrapper">
+              <Span>Goals/Aim</Span>
+
+              <div class="input-wrapper">
+                <p-chips
+                  separator=","
+                  formControlName="goals"
+                  [addOnBlur]="true"
+                  [addOnTab]="true"
+                  placeholder="Eg: To work in a collaborative environment and expand my expertise , To continuously learn and improve in the field of technology"
                 ></p-chips>
               </div>
             </div>
@@ -983,7 +1035,7 @@
                 </div>
 
                 <!-- Qualification -->
-                <div class="col-12 md:col-6 ">
+                <div class="col-12 md:col-6">
                   <div class="field-wrapper">
                     <label>Education Level</label>
                     <div class="input-wrapper">
@@ -1054,7 +1106,7 @@
                   class="remove-btn"
                   (click)="removeDiplomaEducation(i)"
                 >
-                  Remove Diploma/ITI  
+                  Remove Diploma/ITI
                 </button>
               </div>
             </div>
@@ -1066,7 +1118,7 @@
                 class="custom-btn"
                 (click)="addDiplomaEducation()"
               >
-                + Add Diploma/ITI  
+                + Add Diploma/ITI
               </button>
             </div>
           </div>
@@ -1206,7 +1258,7 @@
                 class="custom-btn"
                 (click)="addQualication()"
               >
-               +  Add College/University
+                + Add College/University
               </button>
             </div>
           </div>

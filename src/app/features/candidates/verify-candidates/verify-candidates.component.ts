@@ -109,6 +109,9 @@ export class VerifyCandidatesComponent {
   schoolEducation: Array<ValueSet> = [];
   diplomaEducationlength: number = -1;
   diplomaEducation: Array<ValueSet> = [];
+  showStrenghtsError: boolean = false;
+  showGoalsError: boolean = false;
+  showExtraCurricularError: boolean = false;
 
 
   constructor(
@@ -212,6 +215,9 @@ export class VerifyCandidatesComponent {
         fatherName: [''],
         schoolEducation: this.fb.array([]),
         diplomaEducation: this.fb.array([]),
+        strengths: [''],
+        goals: [''],
+        extraCurricularActivities: [''],
       },
       { validators: [this.fresherOrExperienceValidator()] }
     );
@@ -488,6 +494,30 @@ export class VerifyCandidatesComponent {
         const stringList: string[] = payload.coreCompentencies;
         const commaSeparatedString: string = stringList.join(', ');
         payload.coreCompentencies = commaSeparatedString;
+      }
+
+      if (Object.is(payload.strengths, '')) {
+        payload.strengths = '';
+      } else {
+        const stringList: string[] = payload.strengths;
+        const commaSeparatedString: string = stringList.join(', ');
+        payload.strengths = commaSeparatedString;
+      }
+
+      if (Object.is(payload.goals, '')) {
+        payload.goals = '';
+      } else {
+        const stringList: string[] = payload.goals;
+        const commaSeparatedString: string = stringList.join(', ');
+        payload.goals = commaSeparatedString;
+      }
+
+      if (Object.is(payload.extraCurricularActivities, '')) {
+        payload.extraCurricularActivities = '';
+      } else {
+        const stringList: string[] = payload.extraCurricularActivities;
+        const commaSeparatedString: string = stringList.join(', ');
+        payload.extraCurricularActivities = commaSeparatedString;
       }
 
       if (payload.fresher) {
@@ -906,6 +936,24 @@ export class VerifyCandidatesComponent {
         .map((skill: string) => skill.trim())
       : [];
 
+    candidate.strengths = candidate?.strengths
+      ? candidate.strengths
+        .split(',')
+        .map((skill: string) => skill.trim())
+      : [];
+
+    candidate.goals = candidate?.goals
+      ? candidate.goals
+        .split(',')
+        .map((skill: string) => skill.trim())
+      : [];
+
+    candidate.extraCurricularActivities = candidate?.extraCurricularActivities
+      ? candidate.extraCurricularActivities
+        .split(',')
+        .map((skill: string) => skill.trim())
+      : [];
+
     candidate.hobbies = candidate?.hobbies
       ? candidate.hobbies.split(',').map((skill: string) => skill.trim())
       : [];
@@ -1017,6 +1065,9 @@ export class VerifyCandidatesComponent {
       achievementsMandatory: candidate?.achievementsMandatory,
       hobbies: candidate?.hobbies ? candidate?.hobbies : [],
       fatherName: candidate?.fatherName,
+      strengths: candidate?.strengths ? candidate?.strengths : [],
+      goals: candidate?.goals ? candidate?.goals : [],
+      extraCurricularActivities: candidate?.extraCurricularActivities ? candidate?.extraCurricularActivities : [],
     });
   }
 
@@ -1547,6 +1598,31 @@ export class VerifyCandidatesComponent {
           const commaSeparatedString: string = stringList.join(', ');
           payload.coreCompentencies = commaSeparatedString;
         }
+
+        if (Object.is(payload.strengths, '')) {
+          payload.strengths = '';
+        } else {
+          const stringList: string[] = payload.strengths;
+          const commaSeparatedString: string = stringList.join(', ');
+          payload.strengths = commaSeparatedString;
+        }
+
+        if (Object.is(payload.goals, '')) {
+          payload.goals = '';
+        } else {
+          const stringList: string[] = payload.goals;
+          const commaSeparatedString: string = stringList.join(', ');
+          payload.goals = commaSeparatedString;
+        }
+
+        if (Object.is(payload.extraCurricularActivities, '')) {
+          payload.extraCurricularActivities = '';
+        } else {
+          const stringList: string[] = payload.extraCurricularActivities;
+          const commaSeparatedString: string = stringList.join(', ');
+          payload.extraCurricularActivities = commaSeparatedString;
+        }
+
 
         if (payload.fresher) {
           if (

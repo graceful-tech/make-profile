@@ -723,7 +723,7 @@
                 class="remove-btn"
                 (click)="removeSchoolEducation(i)"
               >
-                Remove School/Intermediate  
+                Remove School/Intermediate
               </button>
 
               <button
@@ -732,7 +732,7 @@
                 type="button"
                 (click)="addSchoolEducation()"
               >
-                Add School/Intermediate  
+                Add School/Intermediate
               </button>
             </div>
           </div>
@@ -847,7 +847,7 @@
                 class="remove-btn"
                 (click)="removeDiplomaEducation(i)"
               >
-                Remove Diploma/ITI  
+                Remove Diploma/ITI
               </button>
 
               <button
@@ -856,7 +856,7 @@
                 type="button"
                 (click)="addDiplomaEducation()"
               >
-                Add Diploma/ITI  
+                Add Diploma/ITI
               </button>
             </div>
           </div>
@@ -868,7 +868,7 @@
           type="button"
           (click)="addDiplomaEducation()"
         >
-           Add Diploma/ITI  
+          Add Diploma/ITI
         </button>
 
         <div class="divider"></div>
@@ -988,7 +988,7 @@
                 class="remove-btn"
                 (click)="removeQualification(i)"
               >
-                Remove College/University  
+                Remove College/University
               </button>
               <button
                 *ngIf="qualificationlength == i"
@@ -996,7 +996,7 @@
                 type="button"
                 (click)="addQualication()"
               >
-                Add College/University 
+                Add College/University
               </button>
             </div>
           </div>
@@ -1008,7 +1008,7 @@
           type="button"
           (click)="addQualication()"
         >
-          Add College/University 
+          Add College/University
         </button>
 
         <div *ngIf="showCollegeError" style="color: red; margin-top: 10px">
@@ -1203,6 +1203,96 @@
               style="color: red; margin-top: 5px"
             >
               Please enter atleast 3 core compentencies.
+            </div>
+          </div>
+
+          <div class="col-12 md:col-6">
+            <div class="field-wrapper">
+              <Span>Strengths</Span>
+              <div class="form-group">
+                <div class="selected-skills">
+                  <!-- <span
+                    class="skill-chip"
+                    *ngFor="let skill of suggestedSoftSkills"
+                    (click)="addSkill(skill, 'strengths')"
+                  >
+                    {{ skill }} &#43;
+                  </span> -->
+                </div>
+              </div>
+              <div class="input-wrapper">
+                <p-chips
+                  separator=","
+                  formControlName="strengths"
+                  [addOnBlur]="true"
+                  [addOnTab]="true"
+                  placeholder="Eg: Strengths,Time management,Good communication skills"
+                ></p-chips>
+              </div>
+            </div>
+            <div *ngIf="showStrengthsError" style="color: red; margin-top: 5px">
+              Please Enter Atleast 3 Strengths.
+            </div>
+          </div>
+
+          <div class="col-12 md:col-6">
+            <div class="field-wrapper">
+              <Span>Extra Curricular Activities</Span>
+              <div class="form-group">
+                <div class="selected-skills">
+                  <!-- <span
+                    class="skill-chip"
+                    *ngFor="let skill of suggestedSoftSkills"
+                    (click)="addSkill(skill, 'strengths')"
+                  >
+                    {{ skill }} &#43;
+                  </span> -->
+                </div>
+              </div>
+              <div class="input-wrapper">
+                <p-chips
+                  separator=","
+                  formControlName="extraCurricularActivities"
+                  [addOnBlur]="true"
+                  [addOnTab]="true"
+                  placeholder="Eg: Participation in sports competitions,Volunteering in community service programs"
+                ></p-chips>
+              </div>
+            </div>
+            <div
+              *ngIf="showExtraCurricularError"
+              style="color: red; margin-top: 5px"
+            >
+              Please Enter Extra Curricular Activities.
+            </div>
+          </div>
+
+          <div class="col-12">
+            <div class="field-wrapper">
+              <Span>Goals</Span>
+              <div class="form-group">
+                <div class="selected-skills">
+                  <!-- <span
+                    class="skill-chip"
+                    *ngFor="let skill of suggestedSoftSkills"
+                    (click)="addSkill(skill, 'strengths')"
+                  >
+                    {{ skill }} &#43;
+                  </span> -->
+                </div>
+              </div>
+              <div class="input-wrapper">
+                <p-chips
+                  separator=","
+                  formControlName="goals"
+                  [addOnBlur]="true"
+                  [addOnTab]="true"
+                  placeholder="Eg: To work in a collaborative environment and expand my expertise , To continuously learn and improve in the field of technology"
+                ></p-chips>
+              </div>
+            </div>
+            <div *ngIf="showGoalsError" style="color: red; margin-top: 5px">
+              Please Enter Atleast 1 Goals.
             </div>
           </div>
         </div>
