@@ -39,6 +39,7 @@
 
       <div class="form-group">
         <label><strong>Add Skills</strong></label>
+
         <div class="selected-skills">
           <span
             class="skill-chip"
@@ -1451,7 +1452,7 @@
 <ng-container *ngIf="showConfirmationPopup">
   <div class="blur-overlay"></div>
   <app-confirmation-popup
-    (proceedToDownload)="proceedToDownload($event)"
+    (closePopupTap)="proceedToDownload($event)"
     (editContent)="editContent($event)"
   ></app-confirmation-popup>
 </ng-container>

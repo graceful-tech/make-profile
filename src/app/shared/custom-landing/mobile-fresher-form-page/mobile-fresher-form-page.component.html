@@ -304,7 +304,7 @@
           class="drawer-header"
           (click)="toggleEducation('isSchoolEducationOpen')"
         >
-          <h3>School Education</h3>
+          <h3>School/Intermedidate Education</h3>
           <span [class.rotate]="isSchoolEducationOpen">⌃</span>
         </div>
         <div class="drawer-body" *ngIf="isSchoolEducationOpen">
@@ -344,6 +344,8 @@
                         placeholder="Select Education"
                         formControlName="educationLevel"
                         [filter]="true"
+                          filterBy="filterText"
+                      [filterMatchMode]="'contains'"
                         styleClass="narrow-dropdown"
                       >
                       </p-dropdown>
@@ -472,6 +474,8 @@
                         placeholder="Select Qualification"
                         formControlName="qualificationLevel"
                         [filter]="true"
+                          filterBy="filterText"
+                      [filterMatchMode]="'contains'"
                         styleClass="narrow-dropdown"
                       >
                       </p-dropdown>
@@ -596,6 +600,8 @@
                         placeholder="Select Qualification"
                         formControlName="department"
                         [filter]="true"
+                          filterBy="filterText"
+                      [filterMatchMode]="'contains'"
                         styleClass="narrow-dropdown"
                       >
                       </p-dropdown>

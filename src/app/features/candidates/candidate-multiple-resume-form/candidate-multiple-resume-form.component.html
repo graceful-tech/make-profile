@@ -654,6 +654,8 @@
                       placeholder="Select Qualification"
                       formControlName="educationLevel"
                       [filter]="true"
+                       filterBy="filterText"
+                      [filterMatchMode]="'contains'"
                       styleClass="narrow-dropdown"
                     >
                     </p-dropdown>
@@ -788,6 +790,8 @@
                       placeholder="Select Qualification"
                       formControlName="qualificationLevel"
                       [filter]="true"
+                      filterBy="filterText"
+                      [filterMatchMode]="'contains'"
                       styleClass="narrow-dropdown"
                     >
                     </p-dropdown>

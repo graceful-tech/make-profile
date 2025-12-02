@@ -344,6 +344,8 @@
                         placeholder="Select Qualification"
                         formControlName="educationLevel"
                         [filter]="true"
+                        filterBy="filterText"
+                        [filterMatchMode]="'contains'"
                         styleClass="narrow-dropdown"
                       >
                       </p-dropdown>
@@ -472,6 +474,8 @@
                         placeholder="Select Qualification"
                         formControlName="qualificationLevel"
                         [filter]="true"
+                        filterBy="filterText"
+                        [filterMatchMode]="'contains'"
                         styleClass="narrow-dropdown"
                       >
                       </p-dropdown>
@@ -1365,8 +1369,8 @@
                 >
                 </tag-input>
                 <span style="color: rgb(88, 86, 86)"
-                  >Eg: Contribute positively to my team , Achieve steady growth in
-                  my field</span
+                  >Eg: Contribute positively to my team , Achieve steady growth
+                  in my field</span
                 >
               </div>
             </div>

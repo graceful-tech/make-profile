@@ -2163,7 +2163,13 @@ export class CandidateMultipleResumeFormComponent {
     const postData = { valueSetCode: 'SCHOOL_QUALIFICATION' };
     this.api.retrieve(route, postData).subscribe({
       next: (response) => {
-        this.schoolEducation = response;
+        this.schoolEducation = response.map((item: any) => ({
+          ...item,
+
+          filterText: item.displayValue
+            ? item.displayValue.replace(/\./g, '').toLowerCase()
+            : ''
+        }));
       },
     });
   }
@@ -2331,7 +2337,13 @@ export class CandidateMultipleResumeFormComponent {
     const postData = { valueSetCode: 'DIPLOMA_QUALIFICATION' };
     this.api.retrieve(route, postData).subscribe({
       next: (response) => {
-        this.diplomaEducation = response;
+        this.diplomaEducation = response.map((item: any) => ({
+          ...item,
+
+          filterText: item.displayValue
+            ? item.displayValue.replace(/\./g, '').toLowerCase()
+            : ''
+        }));
       },
     });
   }
