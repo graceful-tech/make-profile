@@ -23,6 +23,7 @@ import { LoaderService } from 'src/app/services/loader.service';
 import { ToastService } from 'src/app/services/toast.service';
 import { Project } from 'src/app/models/candidates/project';
 import { DiplomaEducation } from 'src/app/models/candidates/diploma-education';
+import { SchoolEducation } from 'src/app/models/candidates/schoolEducation';
 
 @Component({
   selector: 'app-candidate-common-details',
@@ -89,6 +90,7 @@ export class CandidateCommonDetailsComponent {
   stateNames: any;
   additionalDetailsForm!: FormGroup;
   diplomaEducation: Array<ValueSet> = [];
+  schoolEducation: Array<ValueSet> = [];
 
   constructor(
     private api: ApiService,
@@ -120,6 +122,8 @@ export class CandidateCommonDetailsComponent {
     this.getStateNames();
     this.getNationalityList();
     this.getDiplomaEducationFields();
+    this.getSchoolEducationFields();
+
 
 
     if (this.candidates !== null && this.candidates !== undefined) {
@@ -170,6 +174,9 @@ export class CandidateCommonDetailsComponent {
       hobbies: [''],
       schoolEducation: this.fb.array([]),
       diplomaEducation: this.fb.array([]),
+      strengths: [''],
+      goals: [''],
+      extraCurricularActivities: [''],
     }, { validators: [this.fresherOrExperienceValidator()] });
   }
 
@@ -321,6 +328,43 @@ export class CandidateCommonDetailsComponent {
       }
 
       if (
+        payload.schoolEducation.length === 0 ||
+        Object.is(payload.schoolEducation[0].schoolName, '')
+      ) {
+        payload.schoolEducation = [];
+      } else {
+        payload.schoolEducation.forEach((q: any) => {
+          q.schoolStartYear = this.datePipe.transform(
+            q.schoolStartYear,
+            'yyyy-MM-dd'
+          );
+          q.schoolEndYear = this.datePipe.transform(
+            q.schoolEndYear,
+            'yyyy-MM-dd'
+          );
+        });
+      }
+
+      if (
+        payload.diplomaEducation.length === 0 ||
+        Object.is(payload.diplomaEducation[0].diplomaInstitutionName, '')
+      ) {
+        payload.diplomaEducation = [];
+      } else {
+        payload.diplomaEducation.forEach((q: any) => {
+          q.diplomaStartYear = this.datePipe.transform(
+            q.diplomaStartYear,
+            'yyyy-MM-dd'
+          );
+          q.diplomaEndYear = this.datePipe.transform(
+            q.diplomaEndYear,
+            'yyyy-MM-dd'
+          );
+        });
+      }
+
+
+      if (
         payload.achievements.length === 0 ||
         Object.is(payload.achievements[0].achievementsName, '')
       ) {
@@ -395,6 +439,31 @@ export class CandidateCommonDetailsComponent {
         const commaSeparatedString: string = stringList.join(', ');
         payload.coreCompentencies = commaSeparatedString;
       }
+
+      if (Object.is(payload.strengths, '')) {
+        payload.strengths = '';
+      } else {
+        const stringList: string[] = payload.strengths;
+        const commaSeparatedString: string = stringList.join(', ');
+        payload.strengths = commaSeparatedString;
+      }
+
+      if (Object.is(payload.goals, '')) {
+        payload.goals = '';
+      } else {
+        const stringList: string[] = payload.goals;
+        const commaSeparatedString: string = stringList.join(', ');
+        payload.goals = commaSeparatedString;
+      }
+
+      if (Object.is(payload.extraCurricularActivities, '')) {
+        payload.extraCurricularActivities = '';
+      } else {
+        const stringList: string[] = payload.extraCurricularActivities;
+        const commaSeparatedString: string = stringList.join(', ');
+        payload.extraCurricularActivities = commaSeparatedString;
+      }
+
 
       if (payload.fresher) {
         if (
@@ -829,6 +898,25 @@ export class CandidateCommonDetailsComponent {
         .map((skill: string) => skill.trim())
       : [];
 
+    candidate.strengths = candidate?.strengths
+      ? candidate.strengths
+        .split(',')
+        .map((skill: string) => skill.trim())
+      : [];
+
+    candidate.goals = candidate?.goals
+      ? candidate.goals
+        .split(',')
+        .map((skill: string) => skill.trim())
+      : [];
+
+    candidate.extraCurricularActivities = candidate?.extraCurricularActivities
+      ? candidate.extraCurricularActivities
+        .split(',')
+        .map((skill: string) => skill.trim())
+      : [];
+
+
 
 
     if (candidate.certificates?.some(c => c && (c.courseName?.trim()))) {
@@ -872,6 +960,35 @@ export class CandidateCommonDetailsComponent {
       });
     }
 
+
+    if (candidate.schoolEducation?.length > 0) {
+      const schoolFormArray = this.candidateForm.get(
+        'schoolEducation'
+      ) as FormArray;
+      schoolFormArray.clear();
+
+      candidate.schoolEducation?.forEach((qualification) => {
+        schoolFormArray.push(
+          this.createSchoolEducationFormGroup(qualification)
+        );
+      });
+    }
+
+    if (candidate.diplomaEducation?.length > 0) {
+      const schoolFormArray = this.candidateForm.get(
+        'diplomaEducation'
+      ) as FormArray;
+      schoolFormArray.clear();
+
+      candidate.diplomaEducation?.forEach((qualification) => {
+        schoolFormArray.push(
+          this.createDiplomaEducationFormGroup(qualification)
+        );
+      });
+    }
+
+
+
     if (candidate.achievements?.some(a => a && (a.achievementsName.trim()))) {
       const achievementFormArray = this.candidateForm.get(
         'achievements'
@@ -913,6 +1030,9 @@ export class CandidateCommonDetailsComponent {
       careerObjective: candidate?.careerObjective,
       hobbies: candidate?.hobbies ? candidate?.hobbies : [],
       fatherName: candidate?.fatherName,
+      strengths: candidate?.strengths ? candidate?.strengths : [],
+      goals: candidate?.goals ? candidate?.goals : [],
+      extraCurricularActivities: candidate?.extraCurricularActivities ? candidate?.extraCurricularActivities : [],
     });
   }
 
@@ -1351,12 +1471,82 @@ export class CandidateCommonDetailsComponent {
     return null;
   }
 
+  createSchoolEducationFormGroup(qualification: SchoolEducation) {
+    return this.fb.group({
+      id: qualification.id,
+      schoolName: qualification.schoolName,
+      educationLevel: qualification.educationLevel,
+      schoolStartYear: qualification.schoolStartYear
+        ? new Date(qualification.schoolStartYear)
+        : null,
+      schoolEndYear: qualification.schoolEndYear
+        ? new Date(qualification.schoolEndYear)
+        : null,
+      percentage: qualification.percentage,
+    });
+  }
+
+
+  createSchoolEducation(): FormGroup {
+    return this.fb.group({
+      id: [''],
+      schoolName: [''],
+      educationLevel: [''],
+      schoolStartYear: [''],
+      schoolEndYear: [''],
+      percentage: ['']
+    });
+  }
+
+  get schoolControls() {
+    return this.candidateForm.get('schoolEducation') as FormArray;
+  }
+
+  addSchoolEducation() {
+    this.schoolControls.push(this.createSchoolEducation());
+
+  }
+
+  removeSchoolEducation(index: number) {
+    const confirmDelete = window.confirm(
+      'Are you sure you want to remove this school education?'
+    );
+    if (confirmDelete && this.schoolControls.length >= 1) {
+      this.schoolControls.removeAt(index);
+
+    }
+
+  }
+
+
+  getSchoolEducationFields() {
+    const route = 'value-sets/search-by-code';
+    const postData = { valueSetCode: 'SCHOOL_QUALIFICATION' };
+    this.api.retrieve(route, postData).subscribe({
+      next: (response) => {
+        this.schoolEducation = response.map((item: any) => ({
+          ...item,
+
+          filterText: item.displayValue
+            ? item.displayValue.replace(/\./g, '').toLowerCase()
+            : ''
+        }));
+      },
+    });
+  }
+
   getDiplomaEducationFields() {
     const route = 'value-sets/search-by-code';
     const postData = { valueSetCode: 'DIPLOMA_QUALIFICATION' };
     this.api.retrieve(route, postData).subscribe({
       next: (response) => {
-        this.diplomaEducation = response;
+        this.diplomaEducation = response.map((item: any) => ({
+          ...item,
+
+          filterText: item.displayValue
+            ? item.displayValue.replace(/\./g, '').toLowerCase()
+            : ''
+        }));
       },
     });
   }

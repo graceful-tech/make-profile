@@ -32,6 +32,8 @@ import { DatePipe } from '@angular/common';
 import { MobileLoaderService } from 'src/app/services/mobile.loader.service';
 import { ToastService } from 'src/app/services/toast.service';
 import { Project } from 'src/app/models/candidates/project';
+import { DiplomaEducation } from 'src/app/models/candidates/diploma-education';
+import { SchoolEducation } from 'src/app/models/candidates/schoolEducation';
 
 @Component({
   selector: 'app-mobile-common-details',
@@ -86,6 +88,8 @@ export class MobileCommonDetailsComponent {
   citiesName: any;
   stateNames: any;
   additionalDetailsForm!: FormGroup;
+  schoolEducation: Array<ValueSet> = [];
+  diplomaEducation: Array<ValueSet> = [];
 
   constructor(
     private api: ApiService,
@@ -116,6 +120,8 @@ export class MobileCommonDetailsComponent {
     this.createAdditionalDetailsForm();
     this.getStateNames();
     this.getNationalityList();
+    this.getSchoolEducationFields();
+    this.getDiplomaEducationFields();
 
     if (this.candidates !== null && this.candidates !== undefined) {
       this.candidateId = this.candidates.id;
@@ -128,7 +134,7 @@ export class MobileCommonDetailsComponent {
     }
   }
 
-  ngAfterViewInit() {}
+  ngAfterViewInit() { }
 
   createCandidateForm() {
     this.candidateForm = this.fb.group(
@@ -167,6 +173,11 @@ export class MobileCommonDetailsComponent {
         certificatesMandatory: [''],
         hobbies: [''],
         fatherName: [''],
+        schoolEducation: this.fb.array([]),
+        diplomaEducation: this.fb.array([]),
+        strengths: [''],
+        goals: [''],
+        extraCurricularActivities: [''],
       },
       { validators: [this.fresherOrExperienceValidator()] }
     );
@@ -272,10 +283,10 @@ export class MobileCommonDetailsComponent {
 
             const responsibilities = Array.isArray(exp.responsibilities)
               ? exp.responsibilities
-                  .map((r: any) =>
-                    typeof r === 'string' ? r : r.task || r.value || ''
-                  )
-                  .join(', ')
+                .map((r: any) =>
+                  typeof r === 'string' ? r : r.task || r.value || ''
+                )
+                .join(', ')
               : exp.responsibilities;
 
             let projects = exp.projects || [];
@@ -290,10 +301,10 @@ export class MobileCommonDetailsComponent {
                 ...proj,
                 projectSkills: Array.isArray(proj.projectSkills)
                   ? proj.projectSkills
-                      .map((r: any) =>
-                        typeof r === 'string' ? r : r.task || r.value || ''
-                      )
-                      .join(', ')
+                    .map((r: any) =>
+                      typeof r === 'string' ? r : r.task || r.value || ''
+                    )
+                    .join(', ')
                   : proj.projectSkills,
               }));
             }
@@ -326,6 +337,43 @@ export class MobileCommonDetailsComponent {
           );
         });
       }
+
+      if (
+        payload.schoolEducation.length === 0 ||
+        Object.is(payload.schoolEducation[0].schoolName, '')
+      ) {
+        payload.schoolEducation = [];
+      } else {
+        payload.schoolEducation.forEach((q: any) => {
+          q.schoolStartYear = this.datePipe.transform(
+            q.schoolStartYear,
+            'yyyy-MM-dd'
+          );
+          q.schoolEndYear = this.datePipe.transform(
+            q.schoolEndYear,
+            'yyyy-MM-dd'
+          );
+        });
+      }
+
+      if (
+        payload.diplomaEducation.length === 0 ||
+        Object.is(payload.diplomaEducation[0].diplomaInstitutionName, '')
+      ) {
+        payload.diplomaEducation = [];
+      } else {
+        payload.diplomaEducation.forEach((q: any) => {
+          q.diplomaStartYear = this.datePipe.transform(
+            q.diplomaStartYear,
+            'yyyy-MM-dd'
+          );
+          q.diplomaEndYear = this.datePipe.transform(
+            q.diplomaEndYear,
+            'yyyy-MM-dd'
+          );
+        });
+      }
+
 
       if (
         payload.achievements.length === 0 ||
@@ -422,6 +470,42 @@ export class MobileCommonDetailsComponent {
         payload.coreCompentencies = commaSeparatedString;
       }
 
+      if (Object.is(payload.strengths, '')) {
+        payload.strengths = '';
+      } else {
+        const stringList: string[] = payload.strengths;
+        const commaSeparatedString: string = stringList
+          .map((r: any) =>
+            typeof r === 'string' ? r : r.task || r.value || ''
+          )
+          .join(', ');
+        payload.strengths = commaSeparatedString;
+      }
+
+      if (Object.is(payload.goals, '')) {
+        payload.goals = '';
+      } else {
+        const stringList: string[] = payload.goals;
+        const commaSeparatedString: string = stringList
+          .map((r: any) =>
+            typeof r === 'string' ? r : r.task || r.value || ''
+          )
+          .join(', ');
+        payload.goals = commaSeparatedString;
+      }
+
+      if (Object.is(payload.extraCurricularActivities, '')) {
+        payload.extraCurricularActivities = '';
+      } else {
+        const stringList: string[] = payload.extraCurricularActivities;
+        const commaSeparatedString: string = stringList
+          .map((r: any) =>
+            typeof r === 'string' ? r : r.task || r.value || ''
+          )
+          .join(', ');
+        payload.extraCurricularActivities = commaSeparatedString;
+      }
+
       if (payload.fresher) {
         if (
           payload.collegeProject.length === 0 ||
@@ -445,10 +529,10 @@ export class MobileCommonDetailsComponent {
                   project.collegeProjectSkills
                 )
                   ? project.collegeProjectSkills
-                      .map((r: any) =>
-                        typeof r === 'string' ? r : r.task || r.value || ''
-                      )
-                      .join(', ')
+                    .map((r: any) =>
+                      typeof r === 'string' ? r : r.task || r.value || ''
+                    )
+                    .join(', ')
                   : project.collegeProjectSkills,
               })
             );
@@ -771,22 +855,22 @@ export class MobileCommonDetailsComponent {
     });
   }
 
-getFieldOfStudy() {
-  const route = 'value-sets/search-by-code';
-  const postData = { valueSetCode: 'QUALIFICATION' };
+  getFieldOfStudy() {
+    const route = 'value-sets/search-by-code';
+    const postData = { valueSetCode: 'QUALIFICATION' };
 
-  this.api.retrieve(route, postData).subscribe({
-    next: (response: any[]) => {
-      this.fieldOfStudy = response.map(item => ({
-        ...item,
-       
-        filterText: item.displayValue
-          ? item.displayValue.replace(/\./g, '').toLowerCase()
-          : ''
-      }));
-    },
-  });
-}
+    this.api.retrieve(route, postData).subscribe({
+      next: (response: any[]) => {
+        this.fieldOfStudy = response.map(item => ({
+          ...item,
+
+          filterText: item.displayValue
+            ? item.displayValue.replace(/\./g, '').toLowerCase()
+            : ''
+        }));
+      },
+    });
+  }
 
   addCandidateImage(event: any) {
     this.candidateImageAttachments = [];
@@ -844,13 +928,32 @@ getFieldOfStudy() {
       : [];
     candidate.coreCompentencies = candidate?.coreCompentencies
       ? candidate.coreCompentencies
-          .split(',')
-          .map((skill: string) => skill.trim())
+        .split(',')
+        .map((skill: string) => skill.trim())
       : [];
 
     candidate.hobbies = candidate?.hobbies
       ? candidate.hobbies.split(',').map((skill: string) => skill.trim())
       : [];
+
+      candidate.strengths = candidate?.strengths
+      ? candidate.strengths
+        .split(',')
+        .map((skill: string) => skill.trim())
+      : [];
+
+    candidate.goals = candidate?.goals
+      ? candidate.goals
+        .split(',')
+        .map((skill: string) => skill.trim())
+      : [];
+
+    candidate.extraCurricularActivities = candidate?.extraCurricularActivities
+      ? candidate.extraCurricularActivities
+        .split(',')
+        .map((skill: string) => skill.trim())
+      : [];
+
 
     if (candidate.certificates?.some((c) => c && c.courseName?.trim())) {
       const certificateFormArray = this.candidateForm.get(
@@ -899,6 +1002,33 @@ getFieldOfStudy() {
       });
     }
 
+     if (candidate.schoolEducation?.length > 0) {
+          const schoolFormArray = this.candidateForm.get(
+            'schoolEducation'
+          ) as FormArray;
+          schoolFormArray.clear();
+    
+          candidate.schoolEducation?.forEach((qualification) => {
+            schoolFormArray.push(
+              this.createSchoolEducationFormGroup(qualification)
+            );
+          });
+        }
+    
+        if (candidate.diplomaEducation?.length > 0) {
+          const schoolFormArray = this.candidateForm.get(
+            'diplomaEducation'
+          ) as FormArray;
+          schoolFormArray.clear();
+    
+          candidate.diplomaEducation?.forEach((qualification) => {
+            schoolFormArray.push(
+              this.createDiplomaEducationFormGroup(qualification)
+            );
+          });
+        }
+    
+
     if (candidate.achievements?.some((a) => a && a.achievementsName.trim())) {
       const achievementFormArray = this.candidateForm.get(
         'achievements'
@@ -940,6 +1070,9 @@ getFieldOfStudy() {
       careerObjective: candidate?.careerObjective,
       hobbies: candidate?.hobbies ? candidate?.hobbies : [],
       fatherName: candidate?.fatherName,
+      strengths: candidate?.strengths ? candidate?.strengths : [],
+      goals: candidate?.goals ? candidate?.goals : [],
+      extraCurricularActivities: candidate?.extraCurricularActivities ? candidate?.extraCurricularActivities : [],
     });
   }
 
@@ -962,8 +1095,8 @@ getFieldOfStudy() {
       experiences?.forEach((experience) => {
         const responsibilities = experience?.responsibilities
           ? experience.responsibilities
-              .split(',')
-              .map((res: string) => res.trim())
+            .split(',')
+            .map((res: string) => res.trim())
           : [];
 
         const experienceForm = this.createExperience();
@@ -989,8 +1122,8 @@ getFieldOfStudy() {
           experience.projects?.forEach((project: any) => {
             const projectSkills = project.projectSkills
               ? project.projectSkills
-                  .split(',')
-                  .map((res: string) => res.trim())
+                .split(',')
+                .map((res: string) => res.trim())
               : [];
             const projectForm = this.createProject();
             projectForm.patchValue({
@@ -1042,8 +1175,8 @@ getFieldOfStudy() {
     const skillsArray =
       typeof collegeProject.collegeProjectSkills === 'string'
         ? collegeProject.collegeProjectSkills
-            .split(',')
-            .map((skill) => skill.trim())
+          .split(',')
+          .map((skill) => skill.trim())
         : collegeProject.collegeProjectSkills;
 
     return this.fb.group({
@@ -1229,7 +1362,7 @@ getFieldOfStudy() {
       payload['mobileNumber'] = number;
 
       this.api.retrieve(route, payload).subscribe({
-        next: (response: any) => {},
+        next: (response: any) => { },
       });
     }
   }
@@ -1237,8 +1370,8 @@ getFieldOfStudy() {
   patchAdditionalDetails(additonalDetails: any) {
     const stateNameArray = additonalDetails?.stateName
       ? additonalDetails.stateName
-          .split(',')
-          .map((state: string) => state.trim())
+        .split(',')
+        .map((state: string) => state.trim())
       : [];
 
     const matchedStateIds = stateNameArray
@@ -1250,12 +1383,12 @@ getFieldOfStudy() {
 
     const preferredLocationArray = additonalDetails?.preferredLocation
       ? additonalDetails.preferredLocation
-          .split(',')
-          .map((city: string) => city.trim())
-          .filter(
-            (city: string) =>
-              city && this.citiesName.some((c: any) => c.cityName === city)
-          )
+        .split(',')
+        .map((city: string) => city.trim())
+        .filter(
+          (city: string) =>
+            city && this.citiesName.some((c: any) => c.cityName === city)
+        )
       : [];
 
     this.additionalDetailsForm.patchValue({
@@ -1278,15 +1411,15 @@ getFieldOfStudy() {
           this.getPrefferedLocationByStateId(response);
         }
       },
-      error: (error) => {},
+      error: (error) => { },
     });
   }
 
   getPrefferedLocationByStateId(additonalDetails: any) {
     const stateNameArray = additonalDetails?.stateName
       ? additonalDetails.stateName
-          .split(',')
-          .map((state: string) => state.trim())
+        .split(',')
+        .map((state: string) => state.trim())
       : [];
 
     const matchedStateIds = stateNameArray
@@ -1368,4 +1501,130 @@ getFieldOfStudy() {
       }
     }
   }
+
+  createSchoolEducationFormGroup(qualification: SchoolEducation) {
+      return this.fb.group({
+        id: qualification.id,
+        schoolName: qualification.schoolName,
+        educationLevel: qualification.educationLevel,
+        schoolStartYear: qualification.schoolStartYear
+          ? new Date(qualification.schoolStartYear)
+          : null,
+        schoolEndYear: qualification.schoolEndYear
+          ? new Date(qualification.schoolEndYear)
+          : null,
+        percentage: qualification.percentage,
+      });
+    }
+  
+  
+    createSchoolEducation(): FormGroup {
+      return this.fb.group({
+        id: [''],
+        schoolName: [''],
+        educationLevel: [''],
+        schoolStartYear: [''],
+        schoolEndYear: [''],
+        percentage: ['']
+      });
+    }
+  
+    get schoolControls() {
+      return this.candidateForm.get('schoolEducation') as FormArray;
+    }
+  
+    addSchoolEducation() {
+      this.schoolControls.push(this.createSchoolEducation());
+  
+    }
+  
+    removeSchoolEducation(index: number) {
+      const confirmDelete = window.confirm(
+        'Are you sure you want to remove this school education?'
+      );
+      if (confirmDelete && this.schoolControls.length >= 1) {
+        this.schoolControls.removeAt(index);
+  
+      }
+  
+    }
+  
+    getSchoolEducationFields() {
+      const route = 'value-sets/search-by-code';
+      const postData = { valueSetCode: 'SCHOOL_QUALIFICATION' };
+      this.api.retrieve(route, postData).subscribe({
+        next: (response) => {
+          this.schoolEducation = response.map((item:any) => ({
+          ...item,
+
+          filterText: item.displayValue
+            ? item.displayValue.replace(/\./g, '').toLowerCase()
+            : ''
+        }));
+        },
+      });
+    }
+  
+  
+    createDiplomaEducationFormGroup(qualification: DiplomaEducation) {
+      return this.fb.group({
+        id: qualification.id,
+        diplomaInstitutionName: qualification.diplomaInstitutionName,
+        qualificationLevel: qualification.qualificationLevel,
+        diplomaStartYear: qualification.diplomaStartYear
+          ? new Date(qualification.diplomaStartYear)
+          : null,
+        diplomaEndYear: qualification.diplomaEndYear
+          ? new Date(qualification.diplomaEndYear)
+          : null,
+        percentage: qualification.percentage,
+      });
+    }
+  
+  
+    getDiplomaEducationFields() {
+      const route = 'value-sets/search-by-code';
+      const postData = { valueSetCode: 'DIPLOMA_QUALIFICATION' };
+      this.api.retrieve(route, postData).subscribe({
+        next: (response) => {
+          this.diplomaEducation = response.map((item:any) => ({
+          ...item,
+
+          filterText: item.displayValue
+            ? item.displayValue.replace(/\./g, '').toLowerCase()
+            : ''
+        }));
+        },
+      });
+    }
+  
+  
+    createDiplomaEducation(): FormGroup {
+      return this.fb.group({
+        id: [''],
+        diplomaInstitutionName: [''],
+        qualificationLevel: [''],
+        diplomaStartYear: [''],
+        diplomaEndYear: [''],
+        percentage: ['']
+      });
+    }
+  
+    get diplomaControls() {
+      return this.candidateForm.get('diplomaEducation') as FormArray;
+    }
+  
+    addDiplomaEducation() {
+      this.diplomaControls.push(this.createDiplomaEducation());
+    }
+  
+    removeDiplomaEducation(index: number) {
+      const confirmDelete = window.confirm(
+        'Are you sure you want to remove this Diploma/ITI education?'
+      );
+      if (confirmDelete && this.diplomaControls.length >= 1) {
+        this.diplomaControls.removeAt(index);
+      }
+    }
+  
 }

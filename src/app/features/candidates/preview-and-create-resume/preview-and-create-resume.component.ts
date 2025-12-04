@@ -32,7 +32,7 @@ import {
 import { ApiService } from '../../../services/api.service';
 import { GlobalService } from '../../../services/global.service';
 import { ValueSet } from '../../../models/admin/value-set.model';
-import { elementAt, Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged, elementAt, Subscription } from 'rxjs';
 import { Lookup } from '../../../models/master/lookup.model';
 import { Candidate } from 'src/app/models/candidates/candidate.model';
 import { Qualification } from 'src/app/models/candidates/qualification';
@@ -163,6 +163,7 @@ export class PreviewAndCreateResumeComponent {
   schoolEducationlength: any;
   schoolEducation: Array<ValueSet> = [];
   diplomaEducation: Array<ValueSet> = [];
+  suggestedRespondibilities: any;
 
 
   constructor(
@@ -384,7 +385,7 @@ export class PreviewAndCreateResumeComponent {
         }
       },
       error: (error) => {
-        this.dataLoaded = true;
+
         this.gs.showMessage('Error', 'Please try after some time');
 
         console.log(error);
@@ -403,7 +404,7 @@ export class PreviewAndCreateResumeComponent {
   }
 
   createResume(candiateDto: any) {
-    this.generating = true;
+    this.startProcess();
 
     const templateName = localStorage.getItem('templateName');
 
@@ -414,6 +415,7 @@ export class PreviewAndCreateResumeComponent {
     this.api.retrieve(route, payload).subscribe({
       next: (response: any) => {
         if (response.resumePdf) {
+          this.stopProcess();
           const base64String = response.resumePdf.trim();
           const byteCharacters = atob(base64String);
           const byteNumbers = new Array(byteCharacters.length);
@@ -441,14 +443,15 @@ export class PreviewAndCreateResumeComponent {
             'Your resume has been downloaded successfully'
           );
           localStorage.removeItem('resumeName');
-          this.generating = false;
+
 
           this.router.navigate(['candidate']);
         }
-        this.generating = false;
+
       },
       error: (error) => {
-        this.generating = false;
+        this.stopProcess();
+
         this.showErrorPopup = true;
         this.errorMessage = error.error?.message;
         this.errorStatus = error.error?.status;
@@ -542,12 +545,59 @@ export class PreviewAndCreateResumeComponent {
   }
 
   createCandidate() {
+
+
     this.generating = true;
+
+    const payload = this.candidateForm.getRawValue();
+
+    if (payload?.fresher) {
+
+    }
+    else {
+      if (payload?.experiences?.length > 0) {
+        const isCompanyNamePresent = payload.experiences?.every(
+          (s: any) => s.companyName?.trim() !== '' &&
+            s.responsibilities?.length > 0 &&
+            s.role?.trim() !== ''
+        );
+
+
+        const isProjectPresent = payload.experiences?.every((exp: any) => {
+          if (exp.projects?.length > 0) {
+            return exp.projects?.every((proj: any) => {
+              return (
+                proj.projectName?.trim() !== '' &&
+                proj.projectDescription?.trim() !== ''
+              );
+            });
+          }
+          else {
+            return true;
+          }
+
+        });
+
+        if (!isCompanyNamePresent) {
+          this.gs.showMessage('Error', 'Your experience details are incomplete—please fill them in.');
+          return;
+        }
+        if (!isProjectPresent) {
+          this.gs.showMessage('Error', 'Your Project details are incomplete—please fill them in.');
+          return;
+        }
+
+      }
+    }
+
+
+    this.startProcess();
+
     if (this.candidateForm.valid) {
-      this.dataLoaded = false;
+
 
       const route = 'candidate/create';
-      const payload = this.candidateForm.getRawValue();
+
 
       if (payload.lastWorkingDate) {
         payload['lastWorkingDate'] = this.datePipe.transform(
@@ -782,6 +832,28 @@ export class PreviewAndCreateResumeComponent {
         payload.extraCurricularActivities = commaSeparatedString;
       }
 
+      const isCompanyNamePresent = payload.experiences?.every(
+        (s: any) => s.companyName?.trim() !== '' &&
+          s.responsibilities?.length > 0 &&
+          s.role?.trim() !== ''
+      );
+
+
+      const isProjectPresent = payload.experiences?.every((exp: any) => {
+        if (exp.projects?.length > 0) {
+          return exp.projects?.every((proj: any) => {
+            return (
+              proj.projectName?.trim() !== '' &&
+              proj.projectDescription?.trim() !== ''
+            );
+          });
+        }
+        else {
+          return true;
+        }
+
+      });
+
 
       if (payload.fresher) {
         if (
@@ -791,7 +863,7 @@ export class PreviewAndCreateResumeComponent {
           payload.collegeProject = [];
         } else {
           const hasValidProject = payload.collegeProject.some(
-            (project: { collegeProjectName: string }) =>
+            (project: any) =>
               project.collegeProjectName &&
               project.collegeProjectName.trim() !== ''
           );
@@ -840,31 +912,29 @@ export class PreviewAndCreateResumeComponent {
       this.api.retrieve(route, payload).subscribe({
         next: (response) => {
           if (response) {
+            this.stopProcess();
             this.candidateId = response?.id;
-            this.dataLoaded = true;
+
             localStorage.setItem('candidateId', this.candidateId);
             this.returnCandidate = response;
 
-            this.generating = false;
+
             this.createResume(response);
           } else {
-            this.generating = false;
+
           }
           // this.close(this.returnCandidate);
           // this.gs.showMessage('Success', 'Create Successfully');
         },
         error: (error) => {
-          this.generating = false;
-          this.dataLoaded = true;
-
+          this.stopProcess();
           this.gs.showMessage('Error', 'Error in Creating Resume');
-
-          console.log(error);
         },
       });
-      this.dataLoaded = true;
+
     } else {
-      this.generating = false;
+      this.stopProcess();
+
       this.showError = true;
       this.candidateForm.markAllAsTouched();
 
@@ -932,8 +1002,62 @@ export class PreviewAndCreateResumeComponent {
   }
 
   addExperience(): void {
-    this.experienceControls.push(this.createExperience());
+     const group = this.createExperience();
+     this.experienceControls.push(group);
+ 
+     this.attachRoleListener(group);
+   }
+ 
+   attachRoleListener(group: FormGroup) {
+     group.get('role')?.valueChanges
+       .pipe(
+         debounceTime(1500),
+         distinctUntilChanged()
+       )
+       .subscribe(roleValue => {
+ 
+         if (roleValue?.trim()?.length >= 5) {
+           this.getSuggestedResponsibilities(roleValue);
+         }
+       });
+   }
+
+     getSuggestedResponsibilities(responsebility: any) {
+
+    const route = 'content/get-suggested-responsibility';
+    const payload = {
+      response: [responsebility]
+
+    }
+    this.api.retrieve(route, payload).subscribe({
+      next: (response) => {
+        if (response) {
+          const res = response as any;
+          this.suggestedRespondibilities = res?.response;
+        }
+      },
+      error: (error) => {
+
+
+      },
+    });
   }
+
+    addResponsibilities(index: any, value: any) {
+      const expGroup = this.experienceControls.at(index) as FormGroup;
+  
+      const response = expGroup.get('responsibilities')?.value || [];
+  
+      if (value && !response.some((s: any) => s.value === value)) {
+        const updatedSkills = [
+          ...response,
+          { display: value, value: value }
+        ];
+  
+        expGroup.get('responsibilities')?.setValue(updatedSkills);
+      }
+  
+    }
 
   removeExperience(index: number): void {
     const confirmDelete = window.confirm(
@@ -1176,7 +1300,7 @@ export class PreviewAndCreateResumeComponent {
       this.candidateImageUrl !== undefined &&
       this.multipartFile !== undefined
     ) {
-      this.dataLoaded = false;
+
       const route = 'candidate/upload-image';
       const formData = new FormData();
       formData.append('attachment', this.multipartFile);
@@ -1186,7 +1310,7 @@ export class PreviewAndCreateResumeComponent {
           this.candidateImageUrl = URL.createObjectURL(response);
         },
         error: (error) => {
-          this.dataLoaded = true;
+
           this.gs.showMessage('Error', 'Error in updating logo.');
         },
       });
@@ -1562,7 +1686,7 @@ export class PreviewAndCreateResumeComponent {
     this.api.upload(route, formData).subscribe({
       next: (response) => {
         this.candidateImageUrl = URL.createObjectURL(response);
-        this.dataLoaded = true;
+
       },
     });
   }
@@ -1601,8 +1725,7 @@ export class PreviewAndCreateResumeComponent {
       const templateName = localStorage.getItem('templateName');
 
       const pageType: any = this.templatesTypes.find(template => template.templateName === templateName)?.pages
-      console.log('page size' + pageType);
-      console.log(templateName);
+
 
       if (pageType > 1) {
         this.createCandidate();
@@ -1666,7 +1789,7 @@ export class PreviewAndCreateResumeComponent {
       },
       error: (error) => {
         this.stopProcess();
-        this.dataLoaded = true;
+
         this.gs.showMobileMessage('Error', 'Please try after some time');
       },
     });
@@ -1687,7 +1810,7 @@ export class PreviewAndCreateResumeComponent {
       },
       error: (error) => {
         this.stopProcess();
-        this.dataLoaded = true;
+
         this.gs.showMobileMessage('Error', 'Please try after some time');
       },
     });
@@ -1752,7 +1875,7 @@ export class PreviewAndCreateResumeComponent {
       },
       error: (error) => {
         this.stopProcess();
-        this.dataLoaded = true;
+
       },
     });
   }
@@ -2131,9 +2254,8 @@ export class PreviewAndCreateResumeComponent {
 
   updateDetails(): Promise<void> {
     return new Promise((resolve, reject) => {
-      this.generating = true;
+      this.startProcess();
       if (this.candidateForm.valid) {
-        this.dataLoaded = false;
 
         const route = 'candidate/create';
         const payload = this.candidateForm.getRawValue();
@@ -2431,34 +2553,26 @@ export class PreviewAndCreateResumeComponent {
         this.api.retrieve(route, payload).subscribe({
           next: (response) => {
             if (response) {
+              this.stopProcess();
               this.candidateId = response?.id;
-              this.dataLoaded = true;
               localStorage.setItem('candidateId', this.candidateId);
               this.candidates = response;
-
-              this.generating = false;
             } else {
-              this.generating = false;
-            }
 
+            }
             this.previewPdf();
-            // this.close(this.returnCandidate);
-            // this.gs.showMessage('Success', 'Create Successfully');
           },
           error: (error) => {
-            this.generating = false;
-            this.dataLoaded = true;
-
+            this.stopProcess();
             this.gs.showMessage('Error', 'Error in Creating Resume');
-
-            console.log(error);
           },
         });
-        this.dataLoaded = true;
+
         resolve();
       } else {
+         this.stopProcess();
         reject();
-        this.generating = false;
+
         this.showError = true;
         this.candidateForm.markAllAsTouched();
         this.toast.showToast('error', 'Enter All Mandatory Fields');
@@ -2492,7 +2606,7 @@ export class PreviewAndCreateResumeComponent {
         },
         error: (error) => {
           this.stopProcess();
-          this.dataLoaded = true;
+
         },
       });
     } else {

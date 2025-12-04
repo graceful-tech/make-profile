@@ -22,7 +22,7 @@ import {
 import { ApiService } from '../../../services/api.service';
 import { GlobalService } from '../../../services/global.service';
 import { ValueSet } from '../../../models/admin/value-set.model';
-import { Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged, Subscription } from 'rxjs';
 import { Lookup } from '../../../models/master/lookup.model';
 import { Candidate } from 'src/app/models/candidates/candidate.model';
 import { Qualification } from 'src/app/models/candidates/qualification';
@@ -141,6 +141,7 @@ export class NewCreateResumeComponent {
   showConfirmationPopup: boolean = false;
   schoolEducation: Array<ValueSet> = [];
   diplomaEducation: Array<ValueSet> = [];
+  suggestedRespondibilities: any;
 
 
 
@@ -845,13 +846,56 @@ export class NewCreateResumeComponent {
   }
 
   createCandidate() {
+
+
+    const payload = this.candidateForm.getRawValue();
+
+    if (payload?.fresher) {
+
+    }
+    else {
+      if (payload?.experiences?.length > 0) {
+        const isCompanyNamePresent = payload.experiences?.every(
+          (s: any) => s.companyName?.trim() !== '' &&
+            s.responsibilities?.length > 0 &&
+            s.role?.trim() !== ''
+        );
+
+
+        const isProjectPresent = payload.experiences?.every((exp: any) => {
+          if (exp.projects?.length > 0) {
+            return exp.projects?.every((proj: any) => {
+              return (
+                proj.projectName?.trim() !== '' &&
+                proj.projectDescription?.trim() !== ''
+              );
+            });
+          }
+          else {
+            return true;
+          }
+
+        });
+
+        if (!isCompanyNamePresent) {
+          this.gs.showMobileMessage('Error', 'Your experience details are incomplete—please fill them in.');
+          return;
+        }
+        if (!isProjectPresent) {
+          this.gs.showMobileMessage('Error', 'Your Project details are incomplete—please fill them in.');
+          return;
+        }
+
+      }
+    }
+
     this.startProcess();
 
     if (this.candidateForm.valid) {
       this.dataLoaded = false;
 
       const route = 'candidate/create';
-      const payload = this.candidateForm.getRawValue();
+
 
       if (payload.lastWorkingDate) {
         payload['lastWorkingDate'] = this.datePipe.transform(
@@ -1254,7 +1298,61 @@ export class NewCreateResumeComponent {
   }
 
   addExperience(): void {
-    this.experienceControls.push(this.createExperience());
+    const group = this.createExperience();
+    this.experienceControls.push(group);
+
+    this.attachRoleListener(group);
+  }
+
+  attachRoleListener(group: FormGroup) {
+    group.get('role')?.valueChanges
+      .pipe(
+        debounceTime(1500),
+        distinctUntilChanged()
+      )
+      .subscribe(roleValue => {
+
+        if (roleValue?.trim()?.length >= 5) {
+          this.getSuggestedResponsibilities(roleValue);
+        }
+      });
+  }
+
+  getSuggestedResponsibilities(responsebility: any) {
+
+    const route = 'content/get-suggested-responsibility';
+    const payload = {
+      response: [responsebility]
+
+    }
+    this.api.retrieve(route, payload).subscribe({
+      next: (response) => {
+        if (response) {
+          const res = response as any;
+          this.suggestedRespondibilities = res?.response;
+        }
+      },
+      error: (error) => {
+
+
+      },
+    });
+  }
+
+  addResponsibilities(index: any, value: any) {
+    const expGroup = this.experienceControls.at(index) as FormGroup;
+
+    const response = expGroup.get('responsibilities')?.value || [];
+
+    if (value && !response.some((s: any) => s.value === value)) {
+      const updatedSkills = [
+        ...response,
+        { display: value, value: value }
+      ];
+
+      expGroup.get('responsibilities')?.setValue(updatedSkills);
+    }
+
   }
 
   removeExperience(index: number): void {

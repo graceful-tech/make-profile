@@ -804,8 +804,28 @@
               </div>
 
               <div class="col-12 md:col-6">
+               <span
+                        *ngIf="suggestedRespondibilities"
+                        style="
+                          margin-bottom: 5px;
+                          font-size: 15px;
+                          font-weight: 500;
+                        "
+                        >Add a responsibility from the suggestions:</span
+                      >
+                        <div class="form-group"   *ngIf="suggestedRespondibilities">
+                          <div class="selected-skills">
+                            <span
+                              class="skill-chip"
+                              *ngFor="let response of suggestedRespondibilities"
+                              (click)="addResponsibilities(i, response)"
+                            >
+                              {{ response }} &#43;
+                            </span>
+                          </div>
+                        </div>
                 <div class="field-wrapper">
-                  <label>Responsibilities</label>
+                    <label>Responsibilities</label>
                   <div class="input-wrapper">
                     <tag-input
                       formControlName="responsibilities"

@@ -9,7 +9,7 @@ import {
 import { ApiService } from '../../../services/api.service';
 import { GlobalService } from '../../../services/global.service';
 import { ValueSet } from '../../../models/admin/value-set.model';
-import { elementAt, Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged, elementAt, Subscription } from 'rxjs';
 import { Lookup } from '../../../models/master/lookup.model';
 import { Candidate } from 'src/app/models/candidates/candidate.model';
 import { Qualification } from 'src/app/models/candidates/qualification';
@@ -32,6 +32,8 @@ import { DatePipe } from '@angular/common';
 import { ModelLoginPopupComponent } from '../../popup/model-login-popup/model-login-popup.component';
 import { LoginReminderPopupComponent } from '../../popup/login-reminder-popup/login-reminder-popup.component';
 import { LoaderControllerService } from 'src/app/services/loader-controller.service';
+import { DiplomaEducation } from 'src/app/models/candidates/diploma-education';
+import { SchoolEducation } from 'src/app/models/candidates/schoolEducation';
 
 @Component({
   selector: 'app-fresher-form-page',
@@ -140,6 +142,7 @@ export class FresherFormPageComponent {
   showStrengthsError: boolean = false;
   showGoalsError: boolean = false;
   showExtraCurricularError: boolean = false;
+  suggestedRespondibilities: any;
 
 
   constructor(
@@ -482,6 +485,7 @@ export class FresherFormPageComponent {
         const fresher = this.candidateForm.get('fresher')?.value;
         const experiences = this.candidateForm.get('experiences') as FormArray;
 
+
         if (!fresher && experiences.length === 0) {
           this.showExperienceError = true;
 
@@ -489,21 +493,48 @@ export class FresherFormPageComponent {
             this.hideExperienceErrorIfValid('fresher');
           });
 
-          (this.candidateForm.get('experiences') as FormArray).valueChanges.subscribe(() => {
-            this.hideExperienceErrorIfValid('exp');
-          });
+          if (experiences?.length > 0) {
+            (this.candidateForm.get('experiences') as FormArray).valueChanges.subscribe((s: any) => {
+              this.hideExperienceErrorIfValid('exp');
+            });
+          }
 
         } else {
           const payload = this.candidateForm.getRawValue();
 
-          if (
-            (payload.experiences.length > 0 &&
-              payload.experiences?.[0]?.companyName !== '') ||
-            fresher
-          ) {
+          const isCompanyNamePresent = payload.experiences?.every(
+            (s: any) => s.companyName?.trim() !== '' &&
+              s.responsibilities?.length > 0 &&
+              s.role?.trim() !== ''
+          );
+
+
+          const isProjectPresent = payload.experiences?.every((exp: any) => {
+            if (exp.projects?.length > 0) {
+              return exp.projects?.every((proj: any) => {
+                return (
+                  proj.projectName?.trim() !== '' &&
+                  proj.projectDescription?.trim() !== ''
+                );
+              });
+            }
+            else {
+              return true;
+            }
+
+          });
+
+          if (fresher) {
             this.step++;
-          } else {
-            this.toast.showToast('info', 'Enter your Experience Details');
+          }
+          else if (isCompanyNamePresent && isProjectPresent) {
+            this.step++;
+          }
+          else if (!isCompanyNamePresent) {
+            this.toast.showToast('error', 'Your experience details are incomplete—please fill them in.');
+          }
+          else if (!isProjectPresent) {
+            this.toast.showToast('error', 'Your Project details are incomplete—please fill them in.');
           }
         }
         break;
@@ -1038,10 +1069,64 @@ export class FresherFormPageComponent {
     });
   }
 
+
   addExperience(): void {
-    this.experienceControls.push(this.createExperience());
+    const group = this.createExperience();
+    this.experienceControls.push(group);
+
+    this.attachRoleListener(group);
   }
 
+  attachRoleListener(group: FormGroup) {
+    group.get('role')?.valueChanges
+      .pipe(
+        debounceTime(1500),
+        distinctUntilChanged()
+      )
+      .subscribe(roleValue => {
+
+        if (roleValue?.trim()?.length >= 5) {
+          this.getSuggestedResponsibilities(roleValue);
+        }
+      });
+  }
+
+  getSuggestedResponsibilities(responsebility: any) {
+
+    const route = 'content/get-suggested-responsibility';
+    const payload = {
+      response: [responsebility]
+
+    }
+    this.api.retrieve(route, payload).subscribe({
+      next: (response) => {
+        if (response) {
+          const res = response as any;
+          this.suggestedRespondibilities = res?.response;
+        }
+      },
+      error: (error) => {
+
+
+      },
+    });
+  }
+
+  addResponsibilities(index: any, value: any) {
+    const expGroup = this.experienceControls.at(index) as FormGroup;
+
+    const response = expGroup.get('responsibilities')?.value || [];
+
+    if (value && !response.some((s: any) => s.value === value)) {
+      const updatedSkills = [
+        ...response,
+        { display: value, value: value }
+      ];
+
+      expGroup.get('responsibilities')?.setValue(updatedSkills);
+    }
+
+  }
   removeExperience(index: number): void {
     const confirmDelete = window.confirm(
       'Are you sure you want to remove this Experience?'
@@ -1314,6 +1399,25 @@ export class FresherFormPageComponent {
         .map((skill: string) => skill.trim())
       : [];
 
+
+    candidate.strengths = candidate?.strengths
+      ? candidate.strengths
+        .split(',')
+        .map((skill: string) => skill.trim())
+      : [];
+
+    candidate.goals = candidate?.goals
+      ? candidate.goals
+        .split(',')
+        .map((skill: string) => skill.trim())
+      : [];
+
+    candidate.extraCurricularActivities = candidate?.extraCurricularActivities
+      ? candidate.extraCurricularActivities
+        .split(',')
+        .map((skill: string) => skill.trim())
+      : [];
+
     candidate.hobbies = candidate?.hobbies
       ? candidate.hobbies.split(',').map((skill: string) => skill.trim())
       : [];
@@ -1365,6 +1469,36 @@ export class FresherFormPageComponent {
       });
     }
 
+    if (candidate.schoolEducation?.length > 0) {
+      const schoolFormArray = this.candidateForm.get(
+        'schoolEducation'
+      ) as FormArray;
+      schoolFormArray.clear();
+
+      candidate.schoolEducation?.forEach((qualification) => {
+        schoolFormArray.push(
+          this.createSchoolEducationFormGroup(qualification)
+        );
+      });
+    }
+
+
+    if (candidate.diplomaEducation?.length > 0) {
+      const schoolFormArray = this.candidateForm.get(
+        'diplomaEducation'
+      ) as FormArray;
+      schoolFormArray.clear();
+
+      candidate.diplomaEducation?.forEach((qualification) => {
+        schoolFormArray.push(
+          this.createDiplomaEducationFormGroup(qualification)
+        );
+      });
+    }
+
+
+
+
     if (candidate.achievements?.some((a) => a && a.achievementsName.trim())) {
       const achievementFormArray = this.candidateForm.get(
         'achievements'
@@ -1382,10 +1516,7 @@ export class FresherFormPageComponent {
 
     this.candidateForm.patchValue({
       id: candidate?.id,
-      name: candidate?.name,
-      mobileNumber: candidate?.mobileNumber,
-      email: candidate?.email,
-      gender: candidate?.gender,
+
       nationality: candidate?.nationality,
       languagesKnown: candidate?.languagesKnown,
       fresher: candidate?.fresher,
@@ -1406,6 +1537,9 @@ export class FresherFormPageComponent {
       careerObjective: candidate?.careerObjective,
       hobbies: candidate?.hobbies ? candidate?.hobbies : [],
       fatherName: candidate?.fatherName,
+      strengths: candidate?.strengths ? candidate?.strengths : [],
+      goals: candidate?.goals ? candidate?.goals : [],
+      extraCurricularActivities: candidate?.extraCurricularActivities ? candidate?.extraCurricularActivities : [],
     });
   }
 
@@ -2273,6 +2407,11 @@ export class FresherFormPageComponent {
     this.skills = candidates?.skills;
     this.gender = candidates?.gender;
     this.email = candidates?.email;
+
+    this.skills = candidates?.skills
+      ? candidates.skills.split(',').map((skill: string) => skill.trim())
+      : [];
+    this.hideBUtton('skills');
   }
 
 
@@ -2527,5 +2666,35 @@ export class FresherFormPageComponent {
       this.diplomaControls.removeAt(index);
       this.diplomaEducationlength = this.diplomaEducationlength - 1;
     }
+  }
+
+  createSchoolEducationFormGroup(qualification: SchoolEducation) {
+    return this.fb.group({
+      id: qualification.id,
+      schoolName: qualification.schoolName,
+      educationLevel: qualification.educationLevel,
+      schoolStartYear: qualification.schoolStartYear
+        ? new Date(qualification.schoolStartYear)
+        : null,
+      schoolEndYear: qualification.schoolEndYear
+        ? new Date(qualification.schoolEndYear)
+        : null,
+      percentage: qualification.percentage,
+    });
+  }
+
+  createDiplomaEducationFormGroup(qualification: DiplomaEducation) {
+    return this.fb.group({
+      id: qualification.id,
+      diplomaInstitutionName: qualification.diplomaInstitutionName,
+      qualificationLevel: qualification.qualificationLevel,
+      diplomaStartYear: qualification.diplomaStartYear
+        ? new Date(qualification.diplomaStartYear)
+        : null,
+      diplomaEndYear: qualification.diplomaEndYear
+        ? new Date(qualification.diplomaEndYear)
+        : null,
+      percentage: qualification.percentage,
+    });
   }
 }

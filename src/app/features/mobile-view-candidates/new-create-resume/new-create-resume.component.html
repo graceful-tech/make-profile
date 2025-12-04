@@ -27,48 +27,6 @@
   </div>
 
   <div *ngIf="currentTab === 'edit'" class="edit-tab">
-    <!-- <div class="overlay" *ngIf="isUploading">
-      <div class="spinner-container">
-        <mat-spinner
-          [diameter]="80"
-          strokeWidth="5"
-          class="custom-blue"
-        ></mat-spinner>
-        <p class="loading-text">
-          Generating Resume<span class="dot dot1">.</span
-          ><span class="dot dot2">.</span><span class="dot dot3">.</span>
-        </p>
-      </div>
-    </div>
-
-    <div class="overlay" *ngIf="isGettingContent">
-      <div class="spinner-container">
-        <mat-spinner
-          [diameter]="80"
-          strokeWidth="5"
-          class="custom-blue"
-        ></mat-spinner>
-        <p class="loading-text">
-          Optimizing Content<span class="dot dot1">.</span
-          ><span class="dot dot2">.</span><span class="dot dot3">.</span>
-        </p>
-      </div>
-    </div>
-
-    <div class="overlay" *ngIf="isVerifying">
-      <div class="spinner-container">
-        <mat-spinner
-          [diameter]="80"
-          strokeWidth="5"
-          class="custom-blue"
-        ></mat-spinner>
-        <p class="loading-text">
-          Verifying Your Details <span class="dot dot1">.</span
-          ><span class="dot dot2">.</span><span class="dot dot3">.</span>
-        </p>
-      </div>
-    </div> -->
-
     <div>
       <form [formGroup]="candidateForm">
         <div class="form-group">
@@ -671,6 +629,28 @@
                   </div>
 
                   <div class="col-12 md:col-6">
+                    
+                      <span
+                        *ngIf="suggestedRespondibilities"
+                        style="
+                          margin-bottom: 5px;
+                          font-size: 15px;
+                          font-weight: 500;
+                        "
+                        >Add a responsibility from the suggestions:</span
+                      >
+                      <div class="form-group" *ngIf="suggestedRespondibilities">
+                        <div class="selected-skills">
+                          <span
+                            class="skill-chip"
+                            *ngFor="let response of suggestedRespondibilities"
+                            (click)="addResponsibilities(i, response)"
+                          >
+                            {{ response }} &#43;
+                          </span>
+                        </div>
+                      </div>
+                   
                     <div class="field-wrapper">
                       <div
                         class="label-wrapper"
@@ -681,6 +661,7 @@
                         "
                       >
                         <label>Responsibilities</label>
+
                         <div class="project-btn">
                           <button
                             type="button"
