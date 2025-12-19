@@ -20,7 +20,9 @@ import { Candidate } from 'src/app/models/candidates/candidate.model';
 import { LocalStorage } from '@ng-idle/core';
 import { AddCandidatesComponent } from '../../add-candidates/add-candidates.component';
 import { VerifyCandidatesComponent } from '../../verify-candidates/verify-candidates.component';
- 
+import { LoaderControllerService } from 'src/app/services/loader-controller.service';
+ import templatesData from 'src/assets/templates/templates.json';
+
 @Component({
   selector: 'app-choose-template',
   standalone: false,
@@ -40,28 +42,29 @@ export class ChooseTemplateComponent {
   isWorkingHere: boolean = false;
   candidatesArray: Array<Candidate> = [];
 
-  // Array of Resume Paths
-  resumePaths: { path: string; name: string; type: string }[] = [
-    { path: './assets/img/Mercury.png', name: 'Mercury', type: 'Single Page' },
-    { path: './assets/img/Venus.png', name: 'Venus', type: 'Multiple Page' },
-    { path: './assets/img/Earth.png', name: 'Earth', type: 'Single Page' },
-    { path: './assets/img/Mars.png', name: 'Mars', type: 'Single Page' },
-    {path: './assets/img/Jupiter.png',name: 'Jupiter',type: 'Multiple Page'},
-    {path: './assets/img/Saturn.png',name: 'Saturn',type: 'Multiple Page'},
-    {path: './assets/img/Uranus.png',name: 'Uranus',type: 'Multiple Page'},
-  ];
+  resumePaths: { templateLocation: string; templateName: string; templateType: string }[] = [];
 
   currentIndex = 0;
-  currentResume = this.resumePaths[this.currentIndex].path;
-  currentResumePageType = this.resumePaths[this.currentIndex].type;
+
   isSelected: boolean = false;
   candidates: Array<Candidate> = [];
   candidateId: any;
   candidateImageUrl: any;
 
-  get currentResumeName(): string {
-    return this.resumePaths[this.currentIndex].name;
+
+
+  get currentResume(): string {
+    return this.resumePaths[this.currentIndex]?.templateLocation ?? '';
   }
+
+  get currentResumePageType(): string {
+    return this.resumePaths[this.currentIndex]?.templateType ?? '';
+  }
+
+  get currentResumeName(): string {
+    return this.resumePaths[this.currentIndex]?.templateName ?? '';
+  }
+
 
   constructor(
     private api: ApiService,
@@ -73,18 +76,24 @@ export class ChooseTemplateComponent {
     private cdr: ChangeDetectorRef,
     private router: Router,
     public ref: DynamicDialogRef,
-    private config: DynamicDialogConfig
+    private config: DynamicDialogConfig,
+    private newLoader: LoaderControllerService
   ) {
     this.candidates = this.config.data?.candidates;
     this.candidateImageUrl = this.config.data?.candidateImage;
+
+    
   }
 
   ngOnInit() {
     localStorage.removeItem('resumeName');
-     
-    if(this.candidates === null || this.candidates === undefined){
-       this.getCandidates();
+
+    if (this.candidates === null || this.candidates === undefined) {
+      this.getCandidates();
     }
+
+  this.resumePaths = templatesData.resumePaths
+   
   }
 
   ngAfterViewInit() {
@@ -129,10 +138,10 @@ export class ChooseTemplateComponent {
     } else {
       this.currentIndex = this.resumePaths.length - 1;
     }
-    this.currentResume = this.resumePaths[this.currentIndex].path;
-    this.currentResumePageType = this.resumePaths[this.currentIndex].type;
+    this.currentResume;
+    this.currentResumePageType;
 
-   }
+  }
 
   nextResume() {
     if (this.currentIndex < this.resumePaths.length - 1) {
@@ -140,13 +149,13 @@ export class ChooseTemplateComponent {
     } else {
       this.currentIndex = 0;
     }
-    this.currentResume = this.resumePaths[this.currentIndex].path;
-    this.currentResumePageType = this.resumePaths[this.currentIndex].type;
+     this.currentResume;
+    this.currentResumePageType;
 
-   }
+  }
 
- 
- 
+
+
 
   toVerify(resumeName: any) {
     this.ref.close();
@@ -189,7 +198,7 @@ export class ChooseTemplateComponent {
   }
 
 
-    getCandidates() {
+  getCandidates() {
     // this.ngxLoaderStart('Resume is getting ready, please wait...');
 
     const route = 'candidate';
@@ -201,7 +210,7 @@ export class ChooseTemplateComponent {
           this.candidateId = candidate?.id;
           localStorage.setItem('candidateId', this.candidateId);
 
-         }
+        }
         // this.ngxLoaderStop();
       },
       error: (err) => {
@@ -211,4 +220,6 @@ export class ChooseTemplateComponent {
     });
     //  this.ngxLoaderStop();
   }
+
+
 }

@@ -80,6 +80,7 @@
 .create-resume:hover {
   transform: scale(1.05);
   background-color: #052e5a;
+ 
 }
 
 .actions {
@@ -958,4 +959,19 @@ display: flex;
 
 .dark .divider {
   background-color: #374151; 
+}
+
+
+.overlays {
+  position: fixed;
+  top: 0;
+  left:40;
+  right: 20;
+  bottom: 0;
+  backdrop-filter: blur(6px);
+  background-color: rgba(255, 255, 255, 0.4);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

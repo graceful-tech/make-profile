@@ -183,6 +183,7 @@ export class NewCreateResumeComponent {
     this.getSkillsFromApi();
     this.getSchoolEducationFields();
     this.getDiplomaEducationFields();
+    this.getAvailableCredits();
 
   }
 
@@ -206,7 +207,8 @@ export class NewCreateResumeComponent {
       if (this.candidates?.fresher) {
         this.addAdditoinalDetail = true;
       }
-      this.previewPdf();
+      // this.previewPdf();
+       this.previewPdfItem();
     } else {
       this.getCandidates();
     }
@@ -826,7 +828,8 @@ export class NewCreateResumeComponent {
 
             this.stopProcess();
 
-            this.previewPdf();
+            // this.previewPdf();
+             this.previewPdfItem();
           }
         },
         error: (error) => {
@@ -1220,7 +1223,7 @@ export class NewCreateResumeComponent {
             this.candidates = response as Candidate;
 
             this.stopProcess();
-            this.createResume(this.candidates);
+            this.generateResume();
           }
         },
         error: (error) => {
@@ -1956,7 +1959,8 @@ export class NewCreateResumeComponent {
             this.stopProcess();
           }
 
-          this.previewPdf();
+          // this.previewPdf();
+           this.previewPdfItem();
           this.getSkillsFromApi();
         }
       },
@@ -2124,7 +2128,7 @@ export class NewCreateResumeComponent {
   }
 
   async createFinalResume() {
-    await this.getAvailableCredits();
+    
     if (
       this.balanceCredits === null ||
       this.balanceCredits === undefined ||
@@ -2712,5 +2716,233 @@ export class NewCreateResumeComponent {
     }
   }
 
+  
+  async previewPdfItem() {
+    const response = await this.generatingJobIdForPDf();
+
+    if (response) {
+      this.previewPdfByPlaywright();
+    }
+  }
+
+
+  async previewPdfByPlaywright() {
+    // this.isPreview = true;
+    this.startProcess();
+
+    const jobId = localStorage.getItem('jobId');
+
+    let count = 0;
+    const interval = setInterval(() => {
+
+      if (count <= 15) {
+        const route = `resume/get-pdf-bytes?jobId=${jobId}`;
+
+
+        this.api.get(route).subscribe({
+          next: async (response: any) => {
+
+            if (response?.resumePdf.trim().length > 10) {
+              clearInterval(interval);
+              try {
+                const pdfjsLib = await import('pdfjs-dist/build/pdf');
+                const pdfjsWorker = await import('pdfjs-dist/build/pdf.worker.entry');
+
+                (pdfjsLib as any).GlobalWorkerOptions.workerSrc = pdfjsWorker;
+
+                const base64Pdf = response.resumePdf;
+
+                this.arrayBuffer = this.base64ToArrayBuffer(base64Pdf);
+
+                const pdf = await (pdfjsLib as any).getDocument({
+                  data: this.arrayBuffer,
+                }).promise;
+
+                const container = this.pdfContainer.nativeElement;
+                container.innerHTML = '';
+
+                this.totalPdfPages = pdf.numPages
+
+                const numPages = pdf.numPages;
+                for (let i = 1; i <= numPages; i++) {
+                  const page = await pdf.getPage(i);
+                  const viewport = page.getViewport({ scale: 1.2 });
+
+                  const canvas = document.createElement('canvas');
+                  const context = canvas.getContext('2d')!;
+                  canvas.height = viewport.height;
+                  canvas.width = viewport.width;
+
+                  const renderContext = { canvasContext: context, viewport };
+                  await page.render(renderContext).promise;
+
+                  canvas.style.display = 'block';
+                  canvas.style.margin = '10px auto';
+                  canvas.style.maxWidth = '100%';
+                  canvas.style.boxShadow = '0 0 8px rgba(0, 0, 0, 0.1)';
+
+                  const separator = document.createElement('div');
+                  separator.className = 'page-separator';
+                  separator.innerHTML = `<span style="font-size: 15px; font-weight:500;">Page ${i}</span>`;
+                  container.appendChild(separator);
+
+                  container.appendChild(canvas);
+
+                  this.htmlcontent = canvas;
+                }
+                this.stopProcess();
+              } catch (err) {
+                clearInterval(interval);
+                this.stopProcess();
+              }
+            }
+
+          },
+          error: (err) => {
+            clearInterval(interval);
+            console.error('API Error:', err);
+            this.stopProcess();
+          },
+        });
+
+      } else {
+        this.stopProcess();
+        clearInterval(interval);
+      }
+
+      count++;
+
+    }, 1500);
+  }
+
+    base64ToArrayBuffer(base64: string): ArrayBuffer {
+    const binaryString = window.atob(base64);
+    const len = binaryString.length;
+    const bytes = new Uint8Array(len);
+
+    for (let i = 0; i < len; i++) {
+      bytes[i] = binaryString.charCodeAt(i);
+    }
+
+    return bytes.buffer;
+  }
+
+
+    generatingJobIdForPDf(): Promise<boolean> {
+    this.startProcess();
+    const templateName = localStorage.getItem('templateName');
+
+    const jobId = localStorage.getItem('jobId');
+
+    const route = `resume/generate-jobid?additionalDetails=${this.addAdditoinalDetail}&jobId=${jobId}`;
+
+    const payload = { ...this.candidates, templateName: templateName };
+
+    return new Promise((resolve, reject) => {
+      this.api.retrieve(route, payload).subscribe({
+        next: (response: any) => {
+          if (response) {
+            this.stopProcess();
+            const jobIdResponse = response as any;
+
+            localStorage.setItem('jobId', jobIdResponse.jobId);
+
+            resolve(true);
+          }
+        },
+        error: (error) => {
+          resolve(false);
+          this.stopProcess();
+
+          if (error.error?.code === 'MP_0016') {
+            this.showPopup = true;
+            this.errorMessage = error.error?.message;
+            this.errorStatus = error.error?.status;
+          }
+          else {
+            this.showErrorPopup = true;
+            this.errorMessage = error.error?.message;
+            this.errorStatus = error.error?.status;
+          }
+        },
+      });
+
+    });
+  }
+
+
+   generateResume() {
+
+    const jobId = localStorage.getItem('jobId');
+    const candidateName = this.candidateForm.get('name')?.value;
+    const templateName = localStorage.getItem('templateName');
+
+
+    let count = 0;
+
+    this.startProcess();
+
+    const interval = setInterval(() => {
+
+      if (count <= 5) {
+
+        const route = `resume/generate-resume?jobId=${jobId}&templateName=${templateName}`;
+        this.api.get(route).subscribe({
+          next: (response: any) => {
+            if (response.resumePdf.trim().length > 10) {
+              clearInterval(interval);
+              this.stopProcess();
+              const base64String = response.resumePdf.trim();
+              const byteCharacters = atob(base64String);
+              const byteNumbers = new Array(byteCharacters.length);
+              for (let i = 0; i < byteCharacters.length; i++) {
+                byteNumbers[i] = byteCharacters.charCodeAt(i);
+              }
+
+              const byteArray = new Uint8Array(byteNumbers);
+              const blob = new Blob([byteArray], { type: 'application/pdf' });
+
+              // Create a link element and trigger download
+              const url = window.URL.createObjectURL(blob);
+              const a = document.createElement('a');
+              a.href = url;
+              a.download = (candidateName || 'resume') + '.pdf';
+              document.body.appendChild(a);
+              a.click();
+
+              // Clean up
+              document.body.removeChild(a);
+              window.URL.revokeObjectURL(url);
+
+              this.toast.showToast(
+                'success',
+                'Your resume has been downloaded successfully'
+              );
+              localStorage.removeItem('templateName');
+              localStorage.removeItem('jobId');
+
+
+              this.router.navigate(['candidate']);
+            }
+
+          },
+          error: (error) => {
+            this.stopProcess();
+            if (error.status !== 202)
+              clearInterval(interval);
+            this.showErrorPopup = true;
+            this.errorMessage = error.error?.message;
+            this.errorStatus = error.error?.status;
+          },
+        });
+
+      }
+      else {
+        clearInterval(interval);
+      }
+
+      count++;
+    }, 1500);
+  }
 
 }

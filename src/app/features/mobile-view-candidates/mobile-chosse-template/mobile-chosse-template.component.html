@@ -1,4 +1,4 @@
-<div class="resume-container" [ngStyle]="{ background: backgroundStyle }">
+<!-- <div class="resume-container" [ngStyle]="{ background: backgroundStyle }">
   <div class="tick-icon">
     <span>&nbsp;Choose Template&nbsp;</span>
   </div>
@@ -11,7 +11,7 @@
   <br />
 
   <div class="page-type">
-    <span class="type">{{ resumeName }} - {{ currentResumePageType }}</span>
+    <span class="type">{{ currentResumeName }} - {{ currentResumePageType }}</span>
   </div>
 
   <div
@@ -29,9 +29,75 @@
 
   <div class="arrow-controls">
     <button (click)="prevResume()" class="arrow-btn">⬅️</button>
-    <button class="create-resume-btn" (click)="openNickNameField(resumeName)">
+    <button class="create-resume-btn" (click)="openNickNameField(currentResumeName)">
       Select
     </button>
     <button (click)="nextResume()" class="arrow-btn">➡️</button>
   </div>
+</div> -->
+
+<div class="profile-wrapper">
+  <button class="back-btn" (click)="backToCandidates()"><i class="fa fa-arrow-left"></i> Back</button>
+  <h2 class="resume-header">Choose Template</h2>
+</div>
+
+<div class="content-column">
+  <div class="category-wrapper">
+    <button class="nav-btn left" (click)="scrollLeft()">&#10094;</button>
+
+    <div class="category-mask">
+      <div class="category-scroll" #scrollContainer>
+        <div
+          class="category-item"
+          *ngFor="let category of categories"
+          [class.active]="selectedCategory === category"
+          (click)="selectCategory(category)"
+        >
+          {{ category }}
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT ARROW -->
+    <button class="nav-btn right" (click)="scrollRight()">&#10095;</button>
+  </div>
+</div>
+
+<div class="resume-gallery">
+  <div class="resume-card" *ngFor="let resume of resumePaths">
+    <div class="image-wrapper">
+      <img
+        [src]="resume.templateLocation"
+        [alt]="resume.templateName"
+        (click)="openPreview(resume)"
+        draggable="false"
+      />
+
+      <button
+        class="eye-overlay"
+        title="Preview Template"
+        (click)="openPreview(resume)"
+      >
+        <i class="fas fa-eye"></i>
+      </button>
+    </div>
+
+    <div class="resume-info">
+      <h3>{{ resume.templateName }}</h3>
+      <button
+        class="Select-template"
+        (click)="openNickNameField(resume.templateName)"
+      >
+        Select Template
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" *ngIf="selectedResume" (click)="closePreview()">
+  <img
+    [src]="selectedResume.path"
+    [alt]="selectedResume.name"
+    class="overlay-img"
+  />
 </div>

@@ -11,8 +11,10 @@ import {
   ViewChild,
 } from '@angular/core';
 import { Router } from '@angular/router';
+import { ApiService } from 'src/app/services/api.service';
 import { GlobalService } from 'src/app/services/global.service';
 import { LoaderControllerService } from 'src/app/services/loader-controller.service';
+import templatesData from 'src/assets/templates/templates.json';
 
 @Component({
   selector: 'app-new-landing-page',
@@ -28,29 +30,19 @@ import { LoaderControllerService } from 'src/app/services/loader-controller.serv
 })
 export class NewLandingPageComponent implements AfterViewInit {
   @Input('scrollAnimate') animationClass = 'animate-on-scroll';
+  @ViewChild('scrollContainer', { static: false })
+  scrollContainer!: ElementRef<HTMLDivElement>;
 
-  resumePaths: { path: string; name: string; type: string }[] = [
-    { path: './assets/img/Mercury.png', name: 'Mercury', type: 'Single Page' },
-    { path: './assets/img/Venus.png', name: 'Venus', type: 'Multiple Page' },
-    { path: './assets/img/Earth.png', name: 'Earth', type: 'Single Page' },
-    { path: './assets/img/Mars.png', name: 'Mars', type: 'Single Page' },
-    {
-      path: './assets/img/Jupiter.png',
-      name: 'Jupiter',
-      type: 'Multiple Page',
-    },
-    { path: './assets/img/Saturn.png', name: 'Saturn', type: 'Multiple Page' },
-    { path: './assets/img/Uranus.png', name: 'Uranus', type: 'Multiple Page' },
-    {
-      path: './assets/img/Neptune.png',
-      name: 'Neptune',
-      type: 'Multiple Page',
-    },
+  resumePaths: { templateLocation: string; templateName: string; templateType: string }[] = [
+
   ];
 
   observer!: IntersectionObserver;
   private swiper: any;
   showTour = false;
+  templatesData: any;
+  categories: string[] = [];
+  selectedCategory: any;
 
   constructor(
     private ngZone: NgZone,
@@ -58,12 +50,21 @@ export class NewLandingPageComponent implements AfterViewInit {
     private el: ElementRef,
     private router: Router,
     private gs: GlobalService,
-    private loader: LoaderControllerService
+    private loader: LoaderControllerService,
+    private api: ApiService
   ) { }
 
   ngOnInit() {
     localStorage.clear();
 
+    this.gs.allTemplates$.subscribe(response => {
+      if (!response) return;
+
+      this.templatesData = response;
+      this.categories = Object.keys(this.templatesData);
+      this.selectedCategory = this.categories[0];
+      this.resumePaths = this.templatesData[this.selectedCategory] ?? [];
+    });
   }
 
   ngAfterViewInit(): void { }
@@ -82,7 +83,7 @@ export class NewLandingPageComponent implements AfterViewInit {
   }
 
   selectTemplate(templateName: any) {
-    // this.router.navigate(['/select-template']);
+
 
     if (this.isMobileDevice()) {
       localStorage.setItem('templateName', templateName);
@@ -132,8 +133,30 @@ export class NewLandingPageComponent implements AfterViewInit {
     this.loader.showLoader(messages, 2000);
   }
 
-  // manual hide:
-  stopProcess() {
-    this.loader.hideLoader();
+
+
+  selectCategory(category: string) {
+    this.selectedCategory = category;
+
+    const templates = this.templatesData[category] ?? [];
+    this.resumePaths = templates;
   }
+
+
+  scrollLeft() {
+    this.scrollContainer.nativeElement.scrollBy({
+      left: -220,
+      behavior: 'smooth'
+    });
+  }
+
+  scrollRight() {
+    this.scrollContainer.nativeElement.scrollBy({
+      left: 220,
+      behavior: 'smooth'
+    });
+  }
+
+
+
 }

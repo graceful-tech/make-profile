@@ -16,6 +16,7 @@ import {
 import { ApiService } from 'src/app/services/api.service';
 import { GlobalService } from 'src/app/services/global.service';
 import { Candidate } from 'src/app/models/candidates/candidate.model';
+import templatesData from 'src/assets/templates/templates.json';
 
 @Component({
   selector: 'app-mobile-templates',
@@ -26,6 +27,8 @@ import { Candidate } from 'src/app/models/candidates/candidate.model';
 export class MobileTemplatesComponent {
   @ViewChild('resumeImage', { static: false }) resumeImage!: ElementRef;
   @ViewChild('resumeContainer', { static: false }) resumeContainer!: ElementRef;
+  @ViewChild('scrollContainer', { static: false })
+  scrollContainer!: ElementRef<HTMLDivElement>;
 
   scale = 1;
   isDragging = false;
@@ -35,35 +38,18 @@ export class MobileTemplatesComponent {
   translateY = 0;
   isWorkingHere: boolean = false;
   candidatesArray: Array<Candidate> = [];
+  selectedResume: any = null;
+  templatesData: any;
+  categories: string[] = [];
+  selectedCategory: any;
 
-  resumePaths: { path: string; name: string; type: string }[] = [
-    { path: './assets/img/Mercury.png', name: 'Mercury', type: 'Single Page' },
-    { path: './assets/img/Venus.png', name: 'Venus', type: 'Multiple Page' },
-    { path: './assets/img/Earth.png', name: 'Earth', type: 'Single Page' },
-    { path: './assets/img/Mars.png', name: 'Mars', type: 'Single Page' },
-    {
-      path: './assets/img/Jupiter.png',
-      name: 'Jupiter',
-      type: 'Multiple Page',
-    },
-    { path: './assets/img/Saturn.png', name: 'Saturn', type: 'Multiple Page' },
-    { path: './assets/img/Uranus.png', name: 'Uranus', type: 'Multiple Page' },
-    { path: './assets/img/Uranus.png', name: 'Uranus', type: 'Multiple Page' },
-    {
-      path: './assets/img/Neptune.png',
-      name: 'Neptune',
-      type: 'Multiple Page',
-    },
+  resumePaths: { templateLocation: string; templateName: string; templateType: string }[] = [
+
   ];
 
-  get currentResumeName(): string {
-    return this.resumePaths[this.currentIndex].name;
-  }
 
   currentIndex = 0;
-  currentResume = this.resumePaths[this.currentIndex].path;
-  currentResumePageType = this.resumePaths[this.currentIndex].type;
-  resumeName = this.resumePaths[this.currentIndex].name;
+
   isSelected: boolean = false;
   candidates: Array<Candidate> = [];
   candidateId: any;
@@ -74,14 +60,36 @@ export class MobileTemplatesComponent {
   backgroundStyle: string = 'linear-gradient(to bottom, #c85f78, #5e84c6))';
   private gradientIndex = 0;
 
+  get currentResume(): string {
+    return this.resumePaths[this.currentIndex]?.templateLocation ?? '';
+  }
+
+  get currentResumePageType(): string {
+    return this.resumePaths[this.currentIndex]?.templateType ?? '';
+  }
+
+  get currentResumeName(): string {
+    return this.resumePaths[this.currentIndex]?.templateName ?? '';
+  }
+
   constructor(
     private gs: GlobalService,
 
     private router: Router,
     public ref: DynamicDialogRef
-  ) {}
+  ) {
 
-  ngOnInit() {}
+    this.gs.allTemplates$.subscribe(response => {
+      if (!response) return;
+
+      this.templatesData = response;
+      this.categories = Object.keys(this.templatesData);
+      this.selectedCategory = this.categories[0];
+      this.resumePaths = this.templatesData[this.selectedCategory] ?? [];
+    });
+  }
+
+  ngOnInit() { }
 
   prevResume() {
     this.changeBackground();
@@ -90,9 +98,9 @@ export class MobileTemplatesComponent {
     } else {
       this.currentIndex = this.resumePaths.length - 1;
     }
-    this.currentResume = this.resumePaths[this.currentIndex].path;
-    this.currentResumePageType = this.resumePaths[this.currentIndex].type;
-    this.resumeName = this.resumePaths[this.currentIndex].name;
+    this.currentResume;
+    this.currentResumePageType;;
+    this.currentResumeName;
   }
 
   nextResume() {
@@ -103,9 +111,9 @@ export class MobileTemplatesComponent {
     } else {
       this.currentIndex = 0;
     }
-    this.currentResume = this.resumePaths[this.currentIndex].path;
-    this.currentResumePageType = this.resumePaths[this.currentIndex].type;
-    this.resumeName = this.resumePaths[this.currentIndex].name;
+    this.currentResume;
+    this.currentResumePageType;;
+    this.currentResumeName;
   }
 
   openNickNameField(templateName: any) {
@@ -155,4 +163,49 @@ export class MobileTemplatesComponent {
     this.backgroundStyle = this.gradients[this.gradientIndex];
     this.gradientIndex = (this.gradientIndex + 1) % this.gradients.length;
   }
+
+
+  goBack(): void {
+    this.router.navigate(['mob-candidate/create-resume']);
+  }
+
+  openPreview(resume: any): void {
+    this.selectedResume = resume;
+  }
+
+  closePreview(): void {
+    this.selectedResume = null;
+  }
+
+  async changeTemplate(templateName: any) {
+    this.gs.setResumeName(templateName);
+
+    await localStorage.setItem('templateName', templateName);
+
+    this.router.navigate(['mob-candidate/create-resume']);
+  }
+
+
+  selectCategory(category: string) {
+    this.selectedCategory = category;
+
+    const templates = this.templatesData[category] ?? [];
+    this.resumePaths = templates;
+  }
+
+
+  scrollLeft() {
+    this.scrollContainer.nativeElement.scrollBy({
+      left: -220,
+      behavior: 'smooth'
+    });
+  }
+
+  scrollRight() {
+    this.scrollContainer.nativeElement.scrollBy({
+      left: 220,
+      behavior: 'smooth'
+    });
+  }
+
 }

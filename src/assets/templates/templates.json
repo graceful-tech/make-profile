@@ -1,0 +1,53 @@
+{
+  "resumePaths": [
+    {
+      "templateLocation": "assets/img/Mercury.png",
+      "templateName": "Mercury",
+      "templateType": "Single Page"
+    },
+    {
+      "templateLocation": "assets/img/Venus.png",
+      "templateName": "Venus",
+      "templateType": "Multiple Page"
+    },
+    { "templateLocation": "assets/img/Earth.png", "templateName": "Earth", "templateType": "Single Page" },
+    { "templateLocation": "assets/img/Mars.png", "templateName": "Mars", "templateType": "Single Page" },
+    {
+      "templateLocation": "assets/img/Jupiter.png",
+      "templateName": "Jupiter",
+      "templateType": "Multiple Page"
+    },
+    {
+      "templateLocation": "assets/img/Saturn.png",
+      "templateName": "Saturn",
+      "templateType": "Multiple Page"
+    },
+    {
+      "templateLocation": "assets/img/Uranus.png",
+      "templateName": "Uranus",
+      "templateType": "Multiple Page"
+    },
+    {
+      "templateLocation": "assets/img/Neptune.png",
+      "templateName": "Neptune",
+      "templateType": "Multiple Page"
+    }
+  ],
+
+  "Freshers": [
+    {
+      "templateLocation": "assets/img/Mercury.png",
+      "templateName": "Mercury",
+      "templateType": "Single Page"
+    },
+    {
+      "templateLocation": "assets/img/Venus.png",
+      "templateName": "Venus",
+      "templateType": "Multiple Page"
+    }
+    
+  ]
+
+
+
+}

@@ -1,16 +1,46 @@
- 
 <div class="profile-wrapper">
-  <button class="back-btn" (click)="goBack()">← Back</button>
-  <h2 class="resume-header">Choose Template</h2>
+  <div class="header-contents">
+    <div>
+    <button class="back-btn" (click)="goBack()">← Back</button>
+     </div> 
+     <div>
+    <h2 class="resume-header">Choose Template</h2>
+    </div>
+  </div>
+
+  <div class="content-column">
+    <div class="category-wrapper">
+      
+      <button class="nav-btn left" (click)="scrollLeft()">&#10094;</button>
+
+      <div class="category-mask">
+        <div class="category-scroll" #scrollContainer>
+          <div
+            class="category-item"
+            *ngFor="let category of categories"
+            [class.active]="selectedCategory === category"
+            (click)="selectCategory(category)"
+          >
+            {{ category }}
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT ARROW -->
+      <button class="nav-btn right" (click)="scrollRight()">&#10095;</button>
+    </div>
+  </div>
 </div>
 
-
- 
 <div class="resume-gallery">
   <div class="resume-card" *ngFor="let resume of resumePaths">
-    <img [src]="resume.path" (click)="selectTemplate(resume.name)" [alt]="resume.name"  />
+    <img
+      [src]="resume.templateLocation"
+      (click)="selectTemplate(resume.templateName)"
+      [alt]="resume.templateName"
+    />
     <div class="resume-info">
-      <h3>{{ resume.name }}</h3>
+      <h3>{{ resume.templateName }}</h3>
       <!-- <p>{{ resume.type }}</p> -->
     </div>
   </div>

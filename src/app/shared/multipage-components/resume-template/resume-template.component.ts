@@ -15,6 +15,7 @@ import {
 import { ApiService } from 'src/app/services/api.service';
 import { GlobalService } from 'src/app/services/global.service';
 import { Candidate } from 'src/app/models/candidates/candidate.model';
+import templatesData from 'src/assets/templates/templates.json';
 
 @Component({
   selector: 'app-resume-template',
@@ -25,24 +26,17 @@ import { Candidate } from 'src/app/models/candidates/candidate.model';
 export class ResumeTemplateComponent {
   @ViewChild('resumeImage', { static: false }) resumeImage!: ElementRef;
   @ViewChild('resumeContainer', { static: false }) resumeContainer!: ElementRef;
- 
-  resumePaths: { path: string; name: string; type: string }[] = [
-    { path: './assets/img/Mercury.png', name: 'Mercury', type: 'Single Page' },
-    { path: './assets/img/Venus.png', name: 'Venus', type: 'Multiple Page' },
-    { path: './assets/img/Earth.png', name: 'Earth', type: 'Single Page' },
-    { path: './assets/img/Mars.png', name: 'Mars', type: 'Single Page' },
-    { path: './assets/img/Jupiter.png', name: 'Jupiter', type: 'Multiple Page' },
-    { path: './assets/img/Saturn.png', name: 'Saturn', type: 'Multiple Page' },
-    { path: './assets/img/Uranus.png', name: 'Uranus', type: 'Multiple Page' },
-    { path: './assets/img/Neptune.png', name: 'Neptune', type: 'Multiple Page' },
 
-  ];
 
+ resumePaths: { templateLocation: string; templateName: string; templateType: string }[] = [];
+  templatesData: any;
+  categories: string[] = [];
+  selectedCategory: any;
+  @ViewChild('scrollContainer', { static: false })
+  scrollContainer!: ElementRef<HTMLDivElement>;
 
   currentIndex = 0;
-  currentResume = this.resumePaths[this.currentIndex].path;
-  currentResumePageType = this.resumePaths[this.currentIndex].type;
-  resumeName = this.resumePaths[this.currentIndex].name;
+
   isSelected: boolean = false;
   candidates: Array<Candidate> = [];
   candidateId: any;
@@ -52,6 +46,19 @@ export class ResumeTemplateComponent {
 
   backgroundStyle: string = 'linear-gradient(to bottom, #fff, #63c8ea)';
   private gradientIndex = 0;
+
+
+  get currentResume(): string {
+    return this.resumePaths[this.currentIndex]?.templateLocation ?? '';
+  }
+
+  get currentResumePageType(): string {
+    return this.resumePaths[this.currentIndex]?.templateType ?? '';
+  }
+
+  get currentResumeName(): string {
+    return this.resumePaths[this.currentIndex]?.templateName ?? '';
+  }
 
   constructor(
     private api: ApiService,
@@ -67,6 +74,15 @@ export class ResumeTemplateComponent {
   ) {
     this.candidates = this.config.data?.candidates;
     this.candidateImageUrl = this.config.data?.candidateImage;
+
+    this.gs.allTemplates$.subscribe(response => {
+      if (!response) return;
+
+      this.templatesData = response;
+      this.categories = Object.keys(this.templatesData);
+      this.selectedCategory = this.categories[0];
+      this.resumePaths = this.templatesData[this.selectedCategory] ?? [];
+    });
   }
 
   ngOnInit() {
@@ -103,9 +119,9 @@ export class ResumeTemplateComponent {
     } else {
       this.currentIndex = this.resumePaths.length - 1;
     }
-    this.currentResume = this.resumePaths[this.currentIndex].path;
-    this.currentResumePageType = this.resumePaths[this.currentIndex].type;
-    this.resumeName = this.resumePaths[this.currentIndex].name;
+    this.currentResume;
+    this.currentResumePageType;
+    this.currentResumeName;
   }
 
   nextResume() {
@@ -116,9 +132,9 @@ export class ResumeTemplateComponent {
     } else {
       this.currentIndex = 0;
     }
-    this.currentResume = this.resumePaths[this.currentIndex].path;
-    this.currentResumePageType = this.resumePaths[this.currentIndex].type;
-    this.resumeName = this.resumePaths[this.currentIndex].name;
+    this.currentResume;
+    this.currentResumePageType;
+    this.currentResumeName;
   }
 
   navigateToMainpage(resumeName: any) {
@@ -159,11 +175,33 @@ export class ResumeTemplateComponent {
     return /android|iphone|ipad|ipod/i.test(userAgent);
   }
 
-   onImageLoad() {
+  onImageLoad() {
     const image = this.resumeImage.nativeElement;
     image.classList.remove('fade-in');
     void image.offsetWidth; // trigger reflow
     image.classList.add('fade-in');
   }
+
+   selectCategory(category: string) {
+      this.selectedCategory = category;
+  
+      const templates = this.templatesData[category] ?? [];
+      this.resumePaths = templates;
+    }
+  
+  
+    scrollLeft() {
+      this.scrollContainer.nativeElement.scrollBy({
+        left: -220,
+        behavior: 'smooth'
+      });
+    }
+  
+    scrollRight() {
+      this.scrollContainer.nativeElement.scrollBy({
+        left: 220,
+        behavior: 'smooth'
+      });
+    }
 
 }

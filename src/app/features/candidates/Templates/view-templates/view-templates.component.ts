@@ -13,33 +13,33 @@ import { GlobalService } from 'src/app/services/global.service';
 import { ChooseTemplateComponent } from '../choose-template/choose-template.component';
 import { Candidate } from 'src/app/models/candidates/candidate.model';
 import { VerifyCandidatesComponent } from '../../verify-candidates/verify-candidates.component';
+import { LoaderControllerService } from 'src/app/services/loader-controller.service';
+import templatesData from 'src/assets/templates/templates.json';
+import { TemplatesData } from 'src/app/models/Template/template.model';
+
+
+
+
 
 @Component({
   selector: 'app-view-templates',
   standalone: false,
   templateUrl: './view-templates.component.html',
   styleUrl: './view-templates.component.css',
+
 })
 export class ViewTemplatesComponent {
   @ViewChild('resumeImage', { static: false }) resumeImage!: ElementRef;
   @ViewChild('resumeContainer', { static: false }) resumeContainer!: ElementRef;
+  @ViewChild('scrollContainer', { static: false })
+  scrollContainer!: ElementRef<HTMLDivElement>;
 
-  resumePaths: { path: string; name: string; type: string }[] = [
-    { path: './assets/img/Mercury.png', name: 'Mercury', type: 'Single Page' },
-    { path: './assets/img/Venus.png', name: 'Venus', type: 'Multiple Page' },
-    { path: './assets/img/Earth.png', name: 'Earth', type: 'Single Page' },
-    { path: './assets/img/Mars.png', name: 'Mars', type: 'Single Page' },
-    { path: './assets/img/Jupiter.png', name: 'Jupiter', type: 'Multiple Page' },
-    { path: './assets/img/Saturn.png', name: 'Saturn', type: 'Multiple Page' },
-    { path: './assets/img/Uranus.png', name: 'Uranus', type: 'Multiple Page' },
-    { path: './assets/img/Neptune.png', name: 'Neptune', type: 'Multiple Page' },
-
-  ];
+  resumePaths: { templateLocation: string; templateName: string; templateType: string }[] = [];
 
   currentIndex = 0;
-  currentResume = this.resumePaths[this.currentIndex].path;
-  currentResumePageType = this.resumePaths[this.currentIndex].type;
-  resumeName = this.resumePaths[this.currentIndex].name;
+
+
+
   isSelected: boolean = false;
   candidates: Array<Candidate> = [];
   candidateId: any;
@@ -49,6 +49,21 @@ export class ViewTemplatesComponent {
 
   backgroundStyle: string = 'linear-gradient(to bottom, #fff, #63c8ea)';
   private gradientIndex = 0;
+  categories: string[] = [];
+  templatesData: any;
+  selectedCategory = '';
+
+  get currentResume(): string {
+    return this.resumePaths[this.currentIndex]?.templateLocation ?? '';
+  }
+
+  get currentResumePageType(): string {
+    return this.resumePaths[this.currentIndex]?.templateType ?? '';
+  }
+
+  get currentResumeName(): string {
+    return this.resumePaths[this.currentIndex]?.templateName ?? '';
+  }
 
   constructor(
     private api: ApiService,
@@ -60,16 +75,18 @@ export class ViewTemplatesComponent {
     private cdr: ChangeDetectorRef,
     private router: Router,
     public ref: DynamicDialogRef,
-    private config: DynamicDialogConfig
+    private config: DynamicDialogConfig,
+    private newLoader: LoaderControllerService
 
   ) {
 
     this.candidates = this.config.data?.candidates;
     this.candidateImageUrl = this.config.data?.candidateImage;
+
   }
 
   ngOnInit() {
-    localStorage.removeItem('resumeName');
+    localStorage.removeItem('templateName');
 
     this.gs.candidateDetails$.subscribe((response) => {
       if (response !== null) {
@@ -82,6 +99,16 @@ export class ViewTemplatesComponent {
         this.candidateImageUrl = response;
       }
     });
+
+    this.gs.allTemplates$.subscribe(response => {
+      if (!response) return;
+
+      this.templatesData = response;
+      this.categories = Object.keys(this.templatesData);
+      this.selectedCategory = this.categories[0];
+      this.resumePaths = this.templatesData[this.selectedCategory] ?? [];
+    });
+
   }
 
   chooseTemplate() {
@@ -112,9 +139,9 @@ export class ViewTemplatesComponent {
     } else {
       this.currentIndex = this.resumePaths.length - 1;
     }
-    this.currentResume = this.resumePaths[this.currentIndex].path;
-    this.currentResumePageType = this.resumePaths[this.currentIndex].type;
-    this.resumeName = this.resumePaths[this.currentIndex].name;
+    this.currentResume;
+    this.currentResumePageType;
+    this.currentResumeName;
 
   }
 
@@ -127,10 +154,14 @@ export class ViewTemplatesComponent {
     } else {
       this.currentIndex = 0;
     }
-    this.currentResume = this.resumePaths[this.currentIndex].path;
-    this.currentResumePageType = this.resumePaths[this.currentIndex].type;
-    this.resumeName = this.resumePaths[this.currentIndex].name;
+    this.currentResume;
+    this.currentResumePageType;
+    this.currentResumeName;
 
+  }
+
+  changeTemplateSection() {
+    this.resumePaths = templatesData.Freshers;
   }
 
 
@@ -251,6 +282,38 @@ export class ViewTemplatesComponent {
     image.classList.remove('fade-in');
     void image.offsetWidth; // trigger reflow
     image.classList.add('fade-in');
+  }
+
+  scrollLeft() {
+    this.scrollContainer.nativeElement.scrollBy({
+      left: -220,
+      behavior: 'smooth'
+    });
+  }
+
+  scrollRight() {
+    this.scrollContainer.nativeElement.scrollBy({
+      left: 220,
+      behavior: 'smooth'
+    });
+  }
+
+  selectCategory(category: string) {
+    this.selectedCategory = category;
+
+    const templates = this.templatesData[category] ?? [];
+    this.resumePaths = templates;
+
+    this.currentIndex = 0;
+    setTimeout(() => this.onImageLoad());
+  }
+
+    selectTemplate(templateName: string) {
+    this.gs.setResumeName(templateName);
+    localStorage.setItem('templateName', templateName);
+    this.gs.setCandidateDetails(this.candidates);
+    this.gs.setCandidateImage(this.candidateImageUrl);
+    this.router.navigate(['candidate/verify-details']);
   }
 
 }

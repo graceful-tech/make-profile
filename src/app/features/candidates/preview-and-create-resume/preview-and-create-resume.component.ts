@@ -49,6 +49,8 @@ import templatesData from 'src/assets/resume-types/templatesData.json';
 import { ConfirmationPopupComponent } from 'src/app/shared/components/confirmation-popup/confirmation-popup.component';
 import { SchoolEducation } from 'src/app/models/candidates/schoolEducation';
 import { DiplomaEducation } from 'src/app/models/candidates/diploma-education';
+import { GlobalLoaderComponent } from 'src/app/shared/components/global-loader/global-loader.component';
+ 
 
 
 
@@ -201,6 +203,8 @@ export class PreviewAndCreateResumeComponent {
     });
   }
 
+
+
   async ngOnInit() {
     this.createCandidateForm();
     this.generateYearList();
@@ -212,6 +216,8 @@ export class PreviewAndCreateResumeComponent {
     // this.getAvailableCredits();
     this.getSchoolEducationFields();
     this.getDiplomaEducationFields();
+    this.getAvailableCredits();
+
 
 
     if (this.candidates !== null && this.candidates !== undefined) {
@@ -222,7 +228,8 @@ export class PreviewAndCreateResumeComponent {
         this.addAdditoinalDetail = true;
       }
 
-      this.previewPdf();
+      // this.previewPdf();
+      this.previewPdfItem();
     } else {
       await this.getCandidates();
 
@@ -230,10 +237,20 @@ export class PreviewAndCreateResumeComponent {
         this.addAdditoinalDetail = true;
       }
 
-      this.previewPdf();
+      // this.previewPdf();
+      this.previewPdfItem();
     }
 
     this.getSkillsFromApi();
+
+    this.candidateForm.valueChanges
+      .pipe(
+        debounceTime(5000),
+        distinctUntilChanged()
+      )
+      .subscribe(() => {
+        this.updateDetails();
+      });
   }
 
   ngAfterViewInit() { }
@@ -361,7 +378,7 @@ export class PreviewAndCreateResumeComponent {
   }
 
   getResumeContents(content: any) {
-    this.ngxLoaderStart();
+    this.startProcess();
 
     const route = `content/openai?content=${content}`;
 
@@ -374,21 +391,22 @@ export class PreviewAndCreateResumeComponent {
               .get('summary')
               ?.setValue(responseContent?.resumeContent);
 
-            this.ngxLoaderStop();
+            this.stopProcess();
           } else {
             this.candidateForm
               .get('careerObjective')
               ?.setValue(responseContent?.resumeContent);
 
-            this.ngxLoaderStop();
+            this.stopProcess();
           }
         }
       },
       error: (error) => {
+        this.stopProcess();
 
         this.gs.showMessage('Error', 'Please try after some time');
 
-        console.log(error);
+
       },
     });
   }
@@ -396,7 +414,7 @@ export class PreviewAndCreateResumeComponent {
   ngxLoaderStop() {
     setTimeout(() => {
       this.isUploading = false;
-    }, 2000);
+    }, 1000);
   }
 
   ngxLoaderStart() {
@@ -547,7 +565,6 @@ export class PreviewAndCreateResumeComponent {
   createCandidate() {
 
 
-    this.generating = true;
 
     const payload = this.candidateForm.getRawValue();
 
@@ -916,10 +933,10 @@ export class PreviewAndCreateResumeComponent {
             this.candidateId = response?.id;
 
             localStorage.setItem('candidateId', this.candidateId);
-            this.returnCandidate = response;
+            this.candidates = response;
 
 
-            this.createResume(response);
+            this.generateResume();
           } else {
 
           }
@@ -1002,27 +1019,27 @@ export class PreviewAndCreateResumeComponent {
   }
 
   addExperience(): void {
-     const group = this.createExperience();
-     this.experienceControls.push(group);
- 
-     this.attachRoleListener(group);
-   }
- 
-   attachRoleListener(group: FormGroup) {
-     group.get('role')?.valueChanges
-       .pipe(
-         debounceTime(1500),
-         distinctUntilChanged()
-       )
-       .subscribe(roleValue => {
- 
-         if (roleValue?.trim()?.length >= 5) {
-           this.getSuggestedResponsibilities(roleValue);
-         }
-       });
-   }
+    const group = this.createExperience();
+    this.experienceControls.push(group);
 
-     getSuggestedResponsibilities(responsebility: any) {
+    this.attachRoleListener(group);
+  }
+
+  attachRoleListener(group: FormGroup) {
+    group.get('role')?.valueChanges
+      .pipe(
+        debounceTime(1500),
+        distinctUntilChanged()
+      )
+      .subscribe(roleValue => {
+
+        if (roleValue?.trim()?.length >= 5) {
+          this.getSuggestedResponsibilities(roleValue);
+        }
+      });
+  }
+
+  getSuggestedResponsibilities(responsebility: any) {
 
     const route = 'content/get-suggested-responsibility';
     const payload = {
@@ -1043,21 +1060,21 @@ export class PreviewAndCreateResumeComponent {
     });
   }
 
-    addResponsibilities(index: any, value: any) {
-      const expGroup = this.experienceControls.at(index) as FormGroup;
-  
-      const response = expGroup.get('responsibilities')?.value || [];
-  
-      if (value && !response.some((s: any) => s.value === value)) {
-        const updatedSkills = [
-          ...response,
-          { display: value, value: value }
-        ];
-  
-        expGroup.get('responsibilities')?.setValue(updatedSkills);
-      }
-  
+  addResponsibilities(index: any, value: any) {
+    const expGroup = this.experienceControls.at(index) as FormGroup;
+
+    const response = expGroup.get('responsibilities')?.value || [];
+
+    if (value && !response.some((s: any) => s.value === value)) {
+      const updatedSkills = [
+        ...response,
+        { display: value, value: value }
+      ];
+
+      expGroup.get('responsibilities')?.setValue(updatedSkills);
     }
+
+  }
 
   removeExperience(index: number): void {
     const confirmDelete = window.confirm(
@@ -1671,6 +1688,7 @@ export class PreviewAndCreateResumeComponent {
           }
         },
         error: (error) => {
+          this.stopProcess();
           reject();
         },
       });
@@ -1712,7 +1730,6 @@ export class PreviewAndCreateResumeComponent {
   }
 
   async createFinalResume() {
-    await this.getAvailableCredits();
 
     if (
       this.balanceCredits === null ||
@@ -2252,6 +2269,118 @@ export class PreviewAndCreateResumeComponent {
     });
   }
 
+
+  async previewPdfItem() {
+    const response = await this.generatingJobIdForPDf();
+
+    if (response) {
+      this.previewPdfByPlaywright();
+    }
+  }
+
+
+  async previewPdfByPlaywright() {
+    // this.isPreview = true;
+    this.ngxLoaderStart();
+
+    const jobId = localStorage.getItem('jobId');
+
+    let count = 0;
+    const interval = setInterval(() => {
+
+      if (count <= 15) {
+        const route = `resume/get-pdf-bytes?jobId=${jobId}`;
+
+
+        this.api.get(route).subscribe({
+          next: async (response: any) => {
+
+            if (response?.resumePdf.trim().length > 10) {
+              clearInterval(interval);
+              try {
+                const pdfjsLib = await import('pdfjs-dist/build/pdf');
+                const pdfjsWorker = await import('pdfjs-dist/build/pdf.worker.entry');
+
+                (pdfjsLib as any).GlobalWorkerOptions.workerSrc = pdfjsWorker;
+
+                const base64Pdf = response.resumePdf;
+
+                this.arrayBuffer = this.base64ToArrayBuffer(base64Pdf);
+
+                const pdf = await (pdfjsLib as any).getDocument({
+                  data: this.arrayBuffer,
+                }).promise;
+
+                const container = this.pdfContainer.nativeElement;
+                container.innerHTML = '';
+
+                this.totalPdfPages = pdf.numPages
+
+                const numPages = pdf.numPages;
+                for (let i = 1; i <= numPages; i++) {
+                  const page = await pdf.getPage(i);
+                  const viewport = page.getViewport({ scale: 1.2 });
+
+                  const canvas = document.createElement('canvas');
+                  const context = canvas.getContext('2d')!;
+                  canvas.height = viewport.height;
+                  canvas.width = viewport.width;
+
+                  const renderContext = { canvasContext: context, viewport };
+                  await page.render(renderContext).promise;
+
+                  canvas.style.display = 'block';
+                  canvas.style.margin = '10px auto';
+                  canvas.style.maxWidth = '100%';
+                  canvas.style.boxShadow = '0 0 8px rgba(0, 0, 0, 0.1)';
+
+                  const separator = document.createElement('div');
+                  separator.className = 'page-separator';
+                  separator.innerHTML = `<span style="font-size: 15px; font-weight:500;">Page ${i}</span>`;
+                  container.appendChild(separator);
+
+                  container.appendChild(canvas);
+
+                  this.htmlcontent = canvas;
+                }
+                this.ngxLoaderStop();
+              } catch (err) {
+                clearInterval(interval);
+                this.ngxLoaderStop();
+              }
+            }
+
+          },
+          error: (err) => {
+            clearInterval(interval);
+            console.error('API Error:', err);
+            this.ngxLoaderStop();
+          },
+        });
+
+      } else {
+        this.ngxLoaderStop();
+        clearInterval(interval);
+      }
+
+      count++;
+
+    }, 1500);
+  }
+
+  base64ToArrayBuffer(base64: string): ArrayBuffer {
+    const binaryString = window.atob(base64);
+    const len = binaryString.length;
+    const bytes = new Uint8Array(len);
+
+    for (let i = 0; i < len; i++) {
+      bytes[i] = binaryString.charCodeAt(i);
+    }
+
+    return bytes.buffer;
+  }
+
+
   updateDetails(): Promise<void> {
     return new Promise((resolve, reject) => {
       this.startProcess();
@@ -2560,7 +2689,8 @@ export class PreviewAndCreateResumeComponent {
             } else {
 
             }
-            this.previewPdf();
+            // this.previewPdf();
+            this.previewPdfItem();
           },
           error: (error) => {
             this.stopProcess();
@@ -2570,7 +2700,7 @@ export class PreviewAndCreateResumeComponent {
 
         resolve();
       } else {
-         this.stopProcess();
+        this.stopProcess();
         reject();
 
         this.showError = true;
@@ -2640,7 +2770,8 @@ export class PreviewAndCreateResumeComponent {
   onCheckboxChange(event: any) {
     this.addAdditoinalDetail = event.checked;
 
-    this.previewPdf();
+    // this.previewPdf();
+    this.previewPdfItem();
   }
 
   startLoaderForGettingContent() {
@@ -2788,6 +2919,199 @@ export class PreviewAndCreateResumeComponent {
     if (confirmDelete && this.diplomaControls.length >= 1) {
       this.diplomaControls.removeAt(index);
     }
+  }
+
+
+  generatingJobIdForPDf(): Promise<boolean> {
+    this.startProcess();
+    const templateName = localStorage.getItem('templateName');
+
+    const jobId = localStorage.getItem('jobId');
+
+    const route = `resume/generate-jobid?additionalDetails=${this.addAdditoinalDetail}&jobId=${jobId}`;
+
+    const payload = { ...this.candidates, templateName: templateName };
+
+    return new Promise((resolve, reject) => {
+      this.api.retrieve(route, payload).subscribe({
+        next: (response: any) => {
+          if (response) {
+            this.stopProcess();
+            const jobIdResponse = response as any;
+
+            localStorage.setItem('jobId', jobIdResponse.jobId);
+
+            resolve(true);
+          }
+        },
+        error: (error) => {
+          resolve(false);
+          this.stopProcess();
+
+          if (error.error?.code === 'MP_0016') {
+            this.showPopup = true;
+            this.errorMessage = error.error?.message;
+            this.errorStatus = error.error?.status;
+          }
+          else {
+            this.showErrorPopup = true;
+            this.errorMessage = error.error?.message;
+            this.errorStatus = error.error?.status;
+          }
+        },
+      });
+
+    });
+  }
+
+
+  byteStatus() {
+
+    const jobId = localStorage.getItem('jobId');
+    const candidateName = this.candidateForm.get('name')?.value;
+
+    let count = 0;
+
+    this.startProcess();
+
+
+
+    const interval = setInterval(() => {
+
+      if (count <= 5) {
+
+        const route = `resume/get-pdf-bytes?jobId=${jobId}`;
+        this.api.get(route).subscribe({
+          next: (response: any) => {
+            if (response.resumePdf.trim().length > 10) {
+              clearInterval(interval);
+              this.stopProcess();
+              const base64String = response.resumePdf.trim();
+              const byteCharacters = atob(base64String);
+              const byteNumbers = new Array(byteCharacters.length);
+              for (let i = 0; i < byteCharacters.length; i++) {
+                byteNumbers[i] = byteCharacters.charCodeAt(i);
+              }
+
+              const byteArray = new Uint8Array(byteNumbers);
+              const blob = new Blob([byteArray], { type: 'application/pdf' });
+
+              // Create a link element and trigger download
+              const url = window.URL.createObjectURL(blob);
+              const a = document.createElement('a');
+              a.href = url;
+              a.download = (candidateName || 'resume') + '.pdf';
+              document.body.appendChild(a);
+              a.click();
+
+              // Clean up
+              document.body.removeChild(a);
+              window.URL.revokeObjectURL(url);
+
+              this.toast.showToast(
+                'success',
+                'Your resume has been downloaded successfully'
+              );
+              localStorage.removeItem('templateName');
+              localStorage.removeItem('jobId');
+
+
+              this.router.navigate(['candidate']);
+            }
+
+          },
+          error: (error) => {
+            this.stopProcess();
+            if (error.status !== 202)
+              clearInterval(interval);
+            this.showErrorPopup = true;
+            this.errorMessage = error.error?.message;
+            this.errorStatus = error.error?.status;
+          },
+        });
+
+      }
+      else {
+        clearInterval(interval);
+      }
+
+      count++;
+    }, 1500);
+  }
+
+
+  generateResume() {
+
+    const jobId = localStorage.getItem('jobId');
+    const candidateName = this.candidateForm.get('name')?.value;
+    const templateName = localStorage.getItem('templateName');
+
+
+    let count = 0;
+
+    this.startProcess();
+
+    const interval = setInterval(() => {
+
+      if (count <= 5) {
+
+        const route = `resume/generate-resume?jobId=${jobId}&templateName=${templateName}`;
+        this.api.get(route).subscribe({
+          next: (response: any) => {
+            if (response.resumePdf.trim().length > 10) {
+              clearInterval(interval);
+              this.stopProcess();
+              const base64String = response.resumePdf.trim();
+              const byteCharacters = atob(base64String);
+              const byteNumbers = new Array(byteCharacters.length);
+              for (let i = 0; i < byteCharacters.length; i++) {
+                byteNumbers[i] = byteCharacters.charCodeAt(i);
+              }
+
+              const byteArray = new Uint8Array(byteNumbers);
+              const blob = new Blob([byteArray], { type: 'application/pdf' });
+
+              // Create a link element and trigger download
+              const url = window.URL.createObjectURL(blob);
+              const a = document.createElement('a');
+              a.href = url;
+              a.download = (candidateName || 'resume') + '.pdf';
+              document.body.appendChild(a);
+              a.click();
+
+              // Clean up
+              document.body.removeChild(a);
+              window.URL.revokeObjectURL(url);
+
+              this.toast.showToast(
+                'success',
+                'Your resume has been downloaded successfully'
+              );
+              localStorage.removeItem('templateName');
+              localStorage.removeItem('jobId');
+
+
+              this.router.navigate(['candidate']);
+            }
+
+          },
+          error: (error) => {
+            this.stopProcess();
+            if (error.status !== 202)
+              clearInterval(interval);
+            this.showErrorPopup = true;
+            this.errorMessage = error.error?.message;
+            this.errorStatus = error.error?.status;
+          },
+        });
+
+      }
+      else {
+        clearInterval(interval);
+      }
+
+      count++;
+    }, 1500);
   }
 
 }

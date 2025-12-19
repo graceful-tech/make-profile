@@ -1,6 +1,20 @@
 <div class="main-wrapper">
   <div class="resume-preview-wrapper">
     <div class="mobile-preview">
+      <div class="overlays" *ngIf="isUploading">
+        <div class="spinner-container">
+          <mat-spinner
+            [diameter]="80"
+            strokeWidth="5"
+            class="custom-blue"
+          ></mat-spinner>
+          <p class="loading-text">
+           Preview Resume<span class="dot dot1">.</span
+            ><span class="dot dot2">.</span><span class="dot dot3">.</span>
+          </p>
+        </div>
+      </div>
+
       <div class="pdf-container" #pdfContainer></div>
     </div>
   </div>
@@ -564,7 +578,15 @@
                   </div>
 
                   <div class="col-12">
-                    <span *ngIf="suggestedRespondibilities" style="margin-bottom:5px;font-size:15px;font-weight:500;">Add a responsibility from the suggestions:</span>
+                    <span
+                      *ngIf="suggestedRespondibilities"
+                      style="
+                        margin-bottom: 5px;
+                        font-size: 15px;
+                        font-weight: 500;
+                      "
+                      >Add a responsibility from the suggestions:</span
+                    >
                     <div class="form-group" *ngIf="suggestedRespondibilities">
                       <div class="selected-skills">
                         <span

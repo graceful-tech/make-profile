@@ -11,6 +11,7 @@ import { LoginPopupComponent } from '../shared/popup/login-popup/login-popup.com
 import { MobileMessageComponent } from '../shared/mobile-message/mobile-message.component';
 import { CustomMessageComponent } from '../shared/custom-message/custom-message.component';
 import { CustomMobileMessageComponent } from '../shared/custom-mobile-message/custom-mobile-message.component';
+import { TemplateDetails, TemplatesData } from '../models/Template/template.model';
 
 @Injectable({
   providedIn: 'root',
@@ -58,6 +59,9 @@ export class GlobalService {
   public navigate = new BehaviorSubject<boolean>(false);
   public navigate$ = this.navigate.asObservable();
 
+  public allTemplates = new BehaviorSubject(null);
+  public allTemplates$ = this.allTemplates.asObservable();
+
 
 
   todayEvents: Array<any> = [];
@@ -74,6 +78,9 @@ export class GlobalService {
   idleTimoutsUserId: any;
   taskBar$: any;
   candidates: Array<Candidate> = [];
+  resumePaths: any;
+  templatesData!: TemplatesData;
+
 
   constructor(
     private dialog: DialogService,
@@ -81,7 +88,7 @@ export class GlobalService {
     private api: ApiService,
     private datePipe: DatePipe,
     private messageService: MessageService
-  ) {}
+  ) { }
 
   public setDuplicateJobAppliedId(data: any) {
     this.duplicateJobApplied.next(data);
@@ -128,7 +135,7 @@ export class GlobalService {
     this.resumeName.next(data);
   }
 
-   public setNickName(data: any) {
+  public setNickName(data: any) {
     this.nickName.next(data);
   }
 
@@ -138,6 +145,10 @@ export class GlobalService {
 
   public setNavigate(data: any) {
     this.navigate.next(data);
+  }
+
+  public setAllTemplates(data: any) {
+    this.allTemplates.next(data);
   }
 
 
@@ -151,63 +162,63 @@ export class GlobalService {
     });
   }
 
-   customMessage() {
+  customMessage() {
     this.dialog.open(CustomMessageComponent, {
       data: {
 
       },
       closable: false,
-      header: status+'☺️',
+      header: status + '☺️',
     });
   }
 
-    customWebMessage(status: string, message: String ,templateName:String,nickName:String) {
+  customWebMessage(status: string, message: String, templateName: String, nickName: String) {
     this.dialog.open(CustomMessageComponent, {
       data: {
         message: message,
-        templateName:templateName,
-        nickName:nickName
+        templateName: templateName,
+        nickName: nickName
       },
       closable: false,
-      header: status+'☺️',
+      header: status + '☺️',
     });
   }
 
-  openLogin(status:string,message:string){
-    this.dialog.open(LoginPopupComponent,{
-      data:{
-        message:message,
+  openLogin(status: string, message: string) {
+    this.dialog.open(LoginPopupComponent, {
+      data: {
+        message: message,
       },
-      closable:false,
-      header:status,
+      closable: false,
+      header: status,
     });
   }
 
-  customMobileMessage(status: string, message: String ,templateName:String) {
+  customMobileMessage(status: string, message: String, templateName: String) {
     this.dialog.open(CustomMobileMessageComponent, {
       data: {
         message: message,
-        templateName:templateName
+        templateName: templateName
       },
       //  width: '100%',
       //  height:'100%',
       closable: false,
-      header: status+'☺️',
-        styleClass: 'payment-dialog-header',
+      header: status + '☺️',
+      styleClass: 'payment-dialog-header',
     });
   }
 
-  customMobileMessageWithNickName(status: string, message: String ,templateName:String,nickName:any) {
+  customMobileMessageWithNickName(status: string, message: String, templateName: String, nickName: any) {
     this.dialog.open(CustomMobileMessageComponent, {
       data: {
         message: message,
-        templateName:templateName,
-        nickName:nickName
+        templateName: templateName,
+        nickName: nickName
       },
       //  width: '100%',
       //  height:'100%',
       closable: false,
-      header: status+'☺️',
+      header: status + '☺️',
       styleClass: 'payment-dialog-header-mobile',
     });
   }
@@ -233,10 +244,50 @@ export class GlobalService {
   }
 
   loadData() {
-    this.getCandidateById();
-    this.getNotifications();
-    this.getTodayEvents();
+    this.getAllTemplate();
   }
+
+  getAllTemplate() {
+    const route = 'templates/get-all';
+
+    this.api.get(route).subscribe({
+      next: (response: any) => {
+        if (!response) return;
+
+        // reset data
+        this.templatesData = {};
+        this.resumePaths = [];
+
+        response.forEach((header:any) => {
+          const category = header.templateHeaderName;
+
+          if (!this.templatesData[category]) {
+            this.templatesData[category] = [];
+          }
+
+          header.template.forEach((tpl: any) => {
+            const templateDetails = {
+              templateLocation: tpl.templateLocation,
+              templateName: tpl.templateName,
+              templateType: tpl.templateType
+            };
+
+          
+            this.templatesData[category].push(templateDetails);
+
+          });
+        });
+
+
+        console.log(this.templatesData);
+        this.setAllTemplates(this.templatesData);
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
+  }
+
 
   // getNotifications() {
   //   this.retrieveNotifications();

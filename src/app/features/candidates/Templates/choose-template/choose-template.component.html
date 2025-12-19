@@ -1,5 +1,5 @@
 <div #resumeContainer class="resume-container">
-  <img #resumeImage [src]="currentResume" class="resume-image" />
+  <img   *ngIf="currentResume" #resumeImage [src]="currentResume" class="resume-image" />
 
   <div class="arrow-controls">
     <button (click)="prevResume()" class="arrow-btn">⬅️</button>
@@ -16,6 +16,6 @@
   </div>
 </div>
 
-<button class="create-resume-btn" (click)="toVerify(currentResumeName)">
+<button class="create-resume-btn" *ngIf="currentResumeName" (click)="toVerify(currentResumeName)">
   Select
 </button>
