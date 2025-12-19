@@ -142,6 +142,10 @@ export class NewCreateResumeComponent {
   schoolEducation: Array<ValueSet> = [];
   diplomaEducation: Array<ValueSet> = [];
   suggestedRespondibilities: any;
+  templatesData: any;
+  categories: string[] = [];
+  selectedCategory: any;
+  resumePaths: any;
 
 
 
@@ -185,6 +189,15 @@ export class NewCreateResumeComponent {
     this.getDiplomaEducationFields();
     this.getAvailableCredits();
 
+    this.gs.allTemplates$.subscribe(response => {
+      if (!response) return;
+
+      this.templatesData = response;
+      this.categories = Object.keys(this.templatesData);
+      this.selectedCategory = this.categories[0];
+      this.resumePaths = this.templatesData[this.selectedCategory] ?? [];
+    });
+
   }
 
   ngAfterViewInit() {
@@ -208,7 +221,7 @@ export class NewCreateResumeComponent {
         this.addAdditoinalDetail = true;
       }
       // this.previewPdf();
-       this.previewPdfItem();
+      this.previewPdfItem();
     } else {
       this.getCandidates();
     }
@@ -829,7 +842,7 @@ export class NewCreateResumeComponent {
             this.stopProcess();
 
             // this.previewPdf();
-             this.previewPdfItem();
+            this.previewPdfItem();
           }
         },
         error: (error) => {
@@ -1960,7 +1973,7 @@ export class NewCreateResumeComponent {
           }
 
           // this.previewPdf();
-           this.previewPdfItem();
+          this.previewPdfItem();
           this.getSkillsFromApi();
         }
       },
@@ -2128,7 +2141,7 @@ export class NewCreateResumeComponent {
   }
 
   async createFinalResume() {
-    
+
     if (
       this.balanceCredits === null ||
       this.balanceCredits === undefined ||
@@ -2138,7 +2151,14 @@ export class NewCreateResumeComponent {
     } else {
       const templateName = localStorage.getItem('templateName');
 
-      const pageType: any = this.templatesTypes.find(template => template.templateName === templateName)?.pages
+      const foundResume: any = Object.values(this.templatesData)
+        .flatMap(resumes => resumes)
+        .find((resume: any) => resume.templateName.trim() === templateName);
+
+      // const pageType: any = this.templatesTypes.find(template => template.templateName === templateName)?.pages
+
+      const pageType: any = foundResume?.templateType.trim() === 'Single Page' ? 1 : 2;
+
 
       if (pageType > 1) {
         this.createCandidate();
@@ -2716,7 +2736,7 @@ export class NewCreateResumeComponent {
     }
   }
 
-  
+
   async previewPdfItem() {
     const response = await this.generatingJobIdForPDf();
 
@@ -2815,7 +2835,7 @@ export class NewCreateResumeComponent {
     }, 1500);
   }
 
-    base64ToArrayBuffer(base64: string): ArrayBuffer {
+  base64ToArrayBuffer(base64: string): ArrayBuffer {
     const binaryString = window.atob(base64);
     const len = binaryString.length;
     const bytes = new Uint8Array(len);
@@ -2828,7 +2848,7 @@ export class NewCreateResumeComponent {
   }
 
 
-    generatingJobIdForPDf(): Promise<boolean> {
+  generatingJobIdForPDf(): Promise<boolean> {
     this.startProcess();
     const templateName = localStorage.getItem('templateName');
 
@@ -2871,7 +2891,7 @@ export class NewCreateResumeComponent {
   }
 
 
-   generateResume() {
+  generateResume() {
 
     const jobId = localStorage.getItem('jobId');
     const candidateName = this.candidateForm.get('name')?.value;

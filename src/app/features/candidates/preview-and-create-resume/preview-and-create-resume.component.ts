@@ -50,7 +50,7 @@ import { ConfirmationPopupComponent } from 'src/app/shared/components/confirmati
 import { SchoolEducation } from 'src/app/models/candidates/schoolEducation';
 import { DiplomaEducation } from 'src/app/models/candidates/diploma-education';
 import { GlobalLoaderComponent } from 'src/app/shared/components/global-loader/global-loader.component';
- 
+
 
 
 
@@ -166,6 +166,10 @@ export class PreviewAndCreateResumeComponent {
   schoolEducation: Array<ValueSet> = [];
   diplomaEducation: Array<ValueSet> = [];
   suggestedRespondibilities: any;
+  templatesData: any;
+  categories: string[] = [];
+  selectedCategory: any;
+  resumePaths: any;
 
 
   constructor(
@@ -217,6 +221,15 @@ export class PreviewAndCreateResumeComponent {
     this.getSchoolEducationFields();
     this.getDiplomaEducationFields();
     this.getAvailableCredits();
+
+    this.gs.allTemplates$.subscribe(response => {
+      if (!response) return;
+
+      this.templatesData = response;
+      this.categories = Object.keys(this.templatesData);
+      this.selectedCategory = this.categories[0];
+      this.resumePaths = this.templatesData[this.selectedCategory] ?? [];
+    });
 
 
 
@@ -1741,7 +1754,15 @@ export class PreviewAndCreateResumeComponent {
 
       const templateName = localStorage.getItem('templateName');
 
-      const pageType: any = this.templatesTypes.find(template => template.templateName === templateName)?.pages
+
+      const foundResume: any = Object.values(this.templatesData)
+        .flatMap(resumes => resumes)
+        .find((resume: any) => resume.templateName.trim() === templateName);
+
+
+      // const pageType: any = this.templatesTypes.find(template => template.templateName === templateName)?.pages
+
+      const pageType: any = foundResume?.templateType.trim() === 'Single Page' ? 1 : 2;
 
 
       if (pageType > 1) {
