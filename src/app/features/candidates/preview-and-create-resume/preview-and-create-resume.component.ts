@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import {
   Component,
   ElementRef,
+  NgZone,
   QueryList,
   ViewChild,
   ViewChildren,
@@ -189,7 +190,8 @@ export class PreviewAndCreateResumeComponent {
     private ps: PaymentService,
     private toast: ToastService,
     private el: ElementRef,
-    private newLoader: LoaderControllerService
+    private newLoader: LoaderControllerService,
+    private zone: NgZone
   ) {
     this.candidates = this.config.data?.candidates;
     this.templateName = this.config.data?.templateName;
@@ -2291,6 +2293,50 @@ export class PreviewAndCreateResumeComponent {
   }
 
 
+  // async previewPdfItem() {
+  //   const response = await this.generatingJobIdForPDf();
+
+  //   const jobId: any = localStorage.getItem('jobId');
+
+  //   if (response) {
+  //     this.listenForCompletion(jobId, () => {
+  //       this.previewPdfByPlaywright();
+  //     });
+  //   }
+
+
+  //   // if (response) {
+  //   //   this.previewPdfByPlaywright();
+  //   // }
+  // }
+
+  // listenForCompletion(jobId: string, onCompleted: () => void) {
+
+  //  const eventSource = new EventSource(
+  //     'https://makeprofiles.com/profilev2rest/ssm/subscribe/' + jobId
+  //   );
+
+
+  //   const eventSource = new EventSource(
+  //     'http://localhost:8080/ssm/subscribe/' + jobId
+  //   );
+
+  //   this.ngxLoaderStart();
+  //   eventSource.addEventListener('completed', (event: any) => {
+  //     // run inside Angular zone
+  //     this.zone.run(() => {
+  //       onCompleted();
+  //       eventSource.close();
+  //       this.ngxLoaderStop();
+  //     });
+  //   });
+
+  //   eventSource.onerror = () => {
+  //     eventSource.close();
+  //     this.ngxLoaderStop();
+  //   };
+  // }
+
   async previewPdfItem() {
     const response = await this.generatingJobIdForPDf();
 
@@ -2310,7 +2356,7 @@ export class PreviewAndCreateResumeComponent {
     const interval = setInterval(() => {
 
       if (count <= 15) {
-        const route = `resume/get-pdf-bytes?jobId=${jobId}`;
+        const route = `resume/download-bytes?jobId=${jobId}`;
 
 
         this.api.get(route).subscribe({
@@ -2386,7 +2432,7 @@ export class PreviewAndCreateResumeComponent {
 
       count++;
 
-    }, 1500);
+    }, 3000);
   }
 
   base64ToArrayBuffer(base64: string): ArrayBuffer {
@@ -2949,7 +2995,7 @@ export class PreviewAndCreateResumeComponent {
 
     const jobId = localStorage.getItem('jobId');
 
-    const route = `resume/generate-jobid?additionalDetails=${this.addAdditoinalDetail}&jobId=${jobId}`;
+    const route = `resume/generate-pdf-jobid?additionalDetails=${this.addAdditoinalDetail}&jobId=${jobId}`;
 
     const payload = { ...this.candidates, templateName: templateName };
 
@@ -3076,7 +3122,7 @@ export class PreviewAndCreateResumeComponent {
 
       if (count <= 5) {
 
-        const route = `resume/generate-resume?jobId=${jobId}&templateName=${templateName}`;
+       const route = `resume/generate-resume?jobId=${jobId}&templateName=${templateName}`;
         this.api.get(route).subscribe({
           next: (response: any) => {
             if (response.resumePdf.trim().length > 10) {

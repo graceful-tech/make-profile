@@ -73,14 +73,14 @@
     <img
       [src]="resume.templateLocation"
       [alt]="resume.templateName"
-      (click)="openPreview(resume)"
+      (click)="openPreview(resume.templateName,resume.templateLocation)"
       draggable="false"
     />
 
      <button
         class="eye-overlay"
         title="Preview Template"
-        (click)="openPreview(resume)"
+        (click)="openPreview(resume.templateName,resume.templateLocation)"
       >
         <i class="fas fa-eye"></i>
       </button>
@@ -97,9 +97,9 @@
 
  
 <div class="overlay" *ngIf="selectedResume" (click)="closePreview()">
-  <img
-    [src]="selectedResume.path"
-    [alt]="selectedResume.name"
+ <img
+    [src]="selectedTemplatepath"
+    [alt]="selectedResume"
     class="overlay-img"
   />
 </div>

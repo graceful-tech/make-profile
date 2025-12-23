@@ -2756,7 +2756,7 @@ export class NewCreateResumeComponent {
     const interval = setInterval(() => {
 
       if (count <= 15) {
-        const route = `resume/get-pdf-bytes?jobId=${jobId}`;
+        const route = `resume/download-bytes?jobId=${jobId}`;
 
 
         this.api.get(route).subscribe({
@@ -2832,7 +2832,7 @@ export class NewCreateResumeComponent {
 
       count++;
 
-    }, 1500);
+    }, 3000);
   }
 
   base64ToArrayBuffer(base64: string): ArrayBuffer {
@@ -2854,7 +2854,7 @@ export class NewCreateResumeComponent {
 
     const jobId = localStorage.getItem('jobId');
 
-    const route = `resume/generate-jobid?additionalDetails=${this.addAdditoinalDetail}&jobId=${jobId}`;
+    const route = `resume/generate-pdf-jobid?additionalDetails=${this.addAdditoinalDetail}&jobId=${jobId}`;
 
     const payload = { ...this.candidates, templateName: templateName };
 
@@ -2906,7 +2906,7 @@ export class NewCreateResumeComponent {
 
       if (count <= 5) {
 
-        const route = `resume/generate-resume?jobId=${jobId}&templateName=${templateName}`;
+       const route = `resume/generate-resume?jobId=${jobId}&templateName=${templateName}`;
         this.api.get(route).subscribe({
           next: (response: any) => {
             if (response.resumePdf.trim().length > 10) {
@@ -2942,7 +2942,7 @@ export class NewCreateResumeComponent {
               localStorage.removeItem('jobId');
 
 
-              this.router.navigate(['candidate']);
+              this.router.navigate(['mob-candidate']);
             }
 
           },
@@ -2962,7 +2962,7 @@ export class NewCreateResumeComponent {
       }
 
       count++;
-    }, 1500);
+    }, 3000);
   }
 
 }

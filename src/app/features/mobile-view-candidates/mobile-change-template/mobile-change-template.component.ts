@@ -20,6 +20,7 @@ export class MobileChangeTemplateComponent {
   templatesData: any;
   categories: string[] = [];
   selectedCategory: any;
+  selectedTemplatepath: any;
 
   constructor(private router: Router, private gs: GlobalService, private api: ApiService, private newLoader: LoaderControllerService) {
 
@@ -37,12 +38,14 @@ export class MobileChangeTemplateComponent {
     this.router.navigate(['mob-candidate/create-resume']);
   }
 
-  openPreview(resume: any): void {
+  openPreview(resume: any,location:any): void {
     this.selectedResume = resume;
+    this.selectedTemplatepath = location;
   }
 
   closePreview(): void {
     this.selectedResume = null;
+    this.selectedTemplatepath = null;
   }
 
   async changeTemplate(templateName: any) {

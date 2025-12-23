@@ -62,6 +62,7 @@ export class MobileChosseTemplateComponent {
   backgroundStyle: string = 'linear-gradient(to bottom, #c85f78, #5e84c6))';
   private gradientIndex = 0;
   isImageChanging = false;
+  selectedTemplatepath: any;
 
   get currentResume(): string {
     return this.resumePaths[this.currentIndex]?.templateLocation ?? '';
@@ -269,13 +270,14 @@ export class MobileChosseTemplateComponent {
     });
   }
 
-
-  openPreview(resume: any): void {
+ openPreview(resume: any,location:any): void {
     this.selectedResume = resume;
+    this.selectedTemplatepath = location;
   }
 
   closePreview(): void {
     this.selectedResume = null;
+    this.selectedTemplatepath = null;
   }
 
  
