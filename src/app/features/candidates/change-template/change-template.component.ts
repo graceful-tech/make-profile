@@ -19,6 +19,7 @@ export class ChangeTemplateComponent {
   selectedCategory: any;
   @ViewChild('scrollContainer', { static: false })
   scrollContainer!: ElementRef<HTMLDivElement>;
+  selected: string = 'All Page';
 
 
   constructor(private router: Router,
@@ -36,8 +37,6 @@ export class ChangeTemplateComponent {
       this.selectedCategory = this.categories[0];
       this.resumePaths = this.templatesData[this.selectedCategory] ?? [];
     });
-
-
   }
 
   openResume(resume: any) {
@@ -62,7 +61,13 @@ export class ChangeTemplateComponent {
     this.selectedCategory = category;
 
     const templates = this.templatesData[category] ?? [];
-    this.resumePaths = templates;
+    if (this.selected !== 'All Page') {
+      this.resumePaths = templates.filter((s: any) => s.templateType === this.selected);
+    }
+    else{
+       this.resumePaths = templates;
+    }
+     
   }
 
 
@@ -78,5 +83,17 @@ export class ChangeTemplateComponent {
       left: 220,
       behavior: 'smooth'
     });
+  }
+
+  selectedType(type: any) {
+    this.selected = type;
+    console.log(this.selected);
+    const templates = this.templatesData[this.selectedCategory] ?? [];
+    if (this.selected !== 'All Page') {
+      this.resumePaths = templates.filter((s: any) => s.templateType === type);
+    }
+    else{
+       this.resumePaths = templates;
+    }
   }
 }

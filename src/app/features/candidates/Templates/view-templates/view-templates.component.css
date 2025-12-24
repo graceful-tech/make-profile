@@ -436,3 +436,32 @@
     flex-direction: column;
   }
 }
+
+.selectedType{
+  display: flex;
+  gap: 50px;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background: #ffffff;
+  position: sticky;
+}
+
+.single-page ,
+.multiple-page{
+  border:none;
+  padding: 7px 10px;
+  border-radius: 17px;
+}
+
+.single-page , .multiple-page{
+  background: lightcoral;
+  color: white;
+  font-weight: 600px;
+}
+
+.selectedType button.active{
+   background: rgb(24, 114, 24);
+   color: white;
+   transform: scale(1.3);
+}

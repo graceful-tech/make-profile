@@ -28,7 +28,7 @@ export class ResumeTemplateComponent {
   @ViewChild('resumeContainer', { static: false }) resumeContainer!: ElementRef;
 
 
- resumePaths: { templateLocation: string; templateName: string; templateType: string }[] = [];
+  resumePaths: { templateLocation: string; templateName: string; templateType: string }[] = [];
   templatesData: any;
   categories: string[] = [];
   selectedCategory: any;
@@ -43,6 +43,7 @@ export class ResumeTemplateComponent {
   candidateImageUrl: any;
   candidatesArray: any;
   candidatesUpdateData: any;
+  selected: string = 'All Page';
 
   backgroundStyle: string = 'linear-gradient(to bottom, #fff, #63c8ea)';
   private gradientIndex = 0;
@@ -182,26 +183,44 @@ export class ResumeTemplateComponent {
     image.classList.add('fade-in');
   }
 
-   selectCategory(category: string) {
-      this.selectedCategory = category;
-  
-      const templates = this.templatesData[category] ?? [];
+  selectCategory(category: string) {
+    this.selectedCategory = category;
+
+    const templates = this.templatesData[category] ?? [];
+    if (this.selected !== 'All Page') {
+      this.resumePaths = templates.filter((s: any) => s.templateType === this.selected);
+    }
+    else {
       this.resumePaths = templates;
     }
-  
-  
-    scrollLeft() {
-      this.scrollContainer.nativeElement.scrollBy({
-        left: -220,
-        behavior: 'smooth'
-      });
-    }
-  
-    scrollRight() {
-      this.scrollContainer.nativeElement.scrollBy({
-        left: 220,
-        behavior: 'smooth'
-      });
-    }
 
+  }
+
+
+
+  scrollLeft() {
+    this.scrollContainer.nativeElement.scrollBy({
+      left: -220,
+      behavior: 'smooth'
+    });
+  }
+
+  scrollRight() {
+    this.scrollContainer.nativeElement.scrollBy({
+      left: 220,
+      behavior: 'smooth'
+    });
+  }
+
+  selectedType(type: any) {
+    this.selected = type;
+    console.log(this.selected);
+    const templates = this.templatesData[this.selectedCategory] ?? [];
+    if (this.selected !== 'All Page') {
+      this.resumePaths = templates.filter((s: any) => s.templateType === type);
+    }
+    else {
+      this.resumePaths = templates;
+    }
+  }
 }

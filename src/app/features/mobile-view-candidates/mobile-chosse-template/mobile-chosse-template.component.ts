@@ -63,6 +63,7 @@ export class MobileChosseTemplateComponent {
   private gradientIndex = 0;
   isImageChanging = false;
   selectedTemplatepath: any;
+  selected: string = 'All Page';
 
   get currentResume(): string {
     return this.resumePaths[this.currentIndex]?.templateLocation ?? '';
@@ -250,9 +251,13 @@ export class MobileChosseTemplateComponent {
 
   selectCategory(category: string) {
     this.selectedCategory = category;
-
     const templates = this.templatesData[category] ?? [];
-    this.resumePaths = templates;
+    if (this.selected !== 'All Page') {
+      this.resumePaths = templates.filter((s: any) => s.templateType === this.selected);
+    }
+    else {
+      this.resumePaths = templates;
+    }
   }
 
 
@@ -270,7 +275,7 @@ export class MobileChosseTemplateComponent {
     });
   }
 
- openPreview(resume: any,location:any): void {
+  openPreview(resume: any, location: any): void {
     this.selectedResume = resume;
     this.selectedTemplatepath = location;
   }
@@ -280,7 +285,17 @@ export class MobileChosseTemplateComponent {
     this.selectedTemplatepath = null;
   }
 
- 
+  selectedType(type: any) {
+    this.selected = type;
+    console.log(this.selected);
+    const templates = this.templatesData[this.selectedCategory] ?? [];
+    if (this.selected !== 'All Page') {
+      this.resumePaths = templates.filter((s: any) => s.templateType === type);
+    }
+    else {
+      this.resumePaths = templates;
+    }
+  }
 
 
 }

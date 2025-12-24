@@ -1,96 +1,15 @@
-<!-- <div class="wrapper">
-  <div
-    class="profile-wrapper smooth-bg"
-    [ngStyle]="{ background: backgroundStyle }"
-  >
-    <section class="header-section">
-      <button class="create-resume-btn" (click)="goBack()">
-        <i class="fa fa-arrow-left"></i> Back
-      </button>
-
-      <div class="main-container">
-        <div class="resume-container">
-          <button (click)="prevResume()" class="arrow-btn left-arrow">
-            ⬅️
-          </button>
-
-          <img
-            #resumeImage
-            [src]="currentResume"
-            class="resume-image fade-in"
-            (load)="onImageLoad()"
-          />
-
-          <button (click)="nextResume()" class="arrow-btn right-arrow">
-            ➡️
-          </button>
-        </div>
-
-        <div class="content-card">
-          <div class="content-column">
-            <div class="category-wrapper">
-             
-              <button class="nav-btn left" (click)="scrollLeft()">
-                &#10094;
-              </button>
-
-              
-              <div class="category-mask">
-                <div class="category-scroll" #scrollContainer>
-                  <div
-                    class="category-item"
-                    *ngFor="let category of categories"
-                    [class.active]="selectedCategory === category"
-                    (click)="selectCategory(category)"
-                  >
-                    {{ category }}
-                  </div>
-                </div>
-              </div>
-
-              
-              <button class="nav-btn right" (click)="scrollRight()">
-                &#10095;
-              </button>
-            </div>
-          </div>
-
-          <div class="resume-type">
-            <span class="resume-name"
-              >{{ currentResumeName }} - {{ currentResumePageType }}</span
-            >
-          </div>
-
-          <div class="select-btn">
-            <button
-              class="start-btn"
-              (click)="navigateToMainpage(currentResumeName)"
-            >
-              Select Template
-            </button>
-          </div>
-        </div>
-      </div>
-    </section>
-  </div>
-</div>
-
- -->
-
-
- <div class="profile-wrapper">
+<div class="profile-wrapper">
   <div class="header-contents">
     <div>
-    <button class="back-btn" (click)="goBack()">← Back</button>
-     </div> 
-     <div>
-    <h2 class="resume-header">Choose Template</h2>
+      <button class="back-btn" (click)="goBack()">← Back</button>
+    </div>
+    <div>
+      <h2 class="resume-header">Choose Template</h2>
     </div>
   </div>
 
   <div class="content-column">
     <div class="category-wrapper">
-      
       <button class="nav-btn left" (click)="scrollLeft()">&#10094;</button>
 
       <div class="category-mask">
@@ -106,22 +25,52 @@
         </div>
       </div>
 
-       
+      <!-- RIGHT ARROW -->
       <button class="nav-btn right" (click)="scrollRight()">&#10095;</button>
     </div>
   </div>
 </div>
 
-<div class="resume-gallery">
-  <div class="resume-card" *ngFor="let resume of resumePaths">
-    <img
-      [src]="resume.templateLocation"
-      (click)="selectTemplate(resume.templateName)"
-      [alt]="resume.templateName"
-    />
-    <div class="resume-info">
-      <h3>{{ resume.templateName }}</h3>
-      <!-- <p>{{ resume.type }}</p> -->
+<div class="selectedType">
+  <button
+    class="single-page"
+    type="button"
+    (click)="selectedType('All Page')"
+    [class.active]="selected === 'All Page'"
+  >
+    All Page
+  </button>
+  <button
+    class="single-page"
+    type="button"
+    (click)="selectedType('Single Page')"
+    [class.active]="selected === 'Single Page'"
+  >
+    Single Page
+  </button>
+  <button
+    class="multiple-page"
+    type="button"
+    (click)="selectedType('Multiple Page')"
+    [class.active]="selected === 'Multiple Page'"
+  >
+    Mutiple Page
+  </button>
+</div>
+
+<div>
+  <div class="resume-gallery">
+    <div class="resume-card" *ngFor="let resume of resumePaths">
+      <img
+        [src]="resume.templateLocation"
+        (click)="selectTemplate(resume.templateName)"
+        [alt]="resume.templateName"
+      />
+      <div class="resume-info">
+        <h3>{{ resume.templateName }} - {{ resume.templateType }}</h3>
+      </div>
     </div>
   </div>
 </div>
+
+ 

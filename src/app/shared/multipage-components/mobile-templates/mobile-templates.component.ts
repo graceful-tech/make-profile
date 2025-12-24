@@ -42,6 +42,7 @@ export class MobileTemplatesComponent {
   templatesData: any;
   categories: string[] = [];
   selectedCategory: any;
+  selected: string = 'All Page';
 
   resumePaths: { templateLocation: string; templateName: string; templateType: string }[] = [
 
@@ -170,7 +171,7 @@ export class MobileTemplatesComponent {
     this.router.navigate(['mob-candidate/create-resume']);
   }
 
- openPreview(resume: any,location:any): void {
+  openPreview(resume: any, location: any): void {
     this.selectedResume = resume;
     this.selectedTemplatepath = location;
   }
@@ -188,15 +189,19 @@ export class MobileTemplatesComponent {
     this.router.navigate(['mob-candidate/create-resume']);
   }
 
-
   selectCategory(category: string) {
     this.selectedCategory = category;
 
+
     const templates = this.templatesData[category] ?? [];
-    this.resumePaths = templates;
+    if (this.selected !== 'All Page') {
+      this.resumePaths = templates.filter((s: any) => s.templateType === this.selected);
+    }
+    else {
+      this.resumePaths = templates;
+    }
+
   }
-
-
   scrollLeft() {
     this.scrollContainer.nativeElement.scrollBy({
       left: -220,
@@ -211,4 +216,15 @@ export class MobileTemplatesComponent {
     });
   }
 
+  selectedType(type: any) {
+    this.selected = type;
+    console.log(this.selected);
+    const templates = this.templatesData[this.selectedCategory] ?? [];
+    if (this.selected !== 'All Page') {
+      this.resumePaths = templates.filter((s: any) => s.templateType === type);
+    }
+    else {
+      this.resumePaths = templates;
+    }
+  }
 }

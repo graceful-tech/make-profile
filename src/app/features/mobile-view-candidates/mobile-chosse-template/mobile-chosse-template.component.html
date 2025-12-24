@@ -1,40 +1,4 @@
-<!-- <div class="resume-container" [ngStyle]="{ background: backgroundStyle }">
-  <div class="tick-icon">
-    <span>&nbsp;Choose Template&nbsp;</span>
-  </div>
-  <div class="backButton">
-    <button class="goBackButton" (click)="backToCandidates()">
-      &nbsp;Back&nbsp;
-    </button>
-  </div>
-
-  <br />
-
-  <div class="page-type">
-    <span class="type">{{ currentResumeName }} - {{ currentResumePageType }}</span>
-  </div>
-
-  <div
-    class="resumes"
-    (touchstart)="onTouchStart($event)"
-    (touchend)="onTouchEnd($event)"
-  >
-    <img
-      #resumeImage
-      [src]="currentResume"
-      [class.fade-in]="isImageChanging"
-      class="resume-image"
-    />
-  </div>
-
-  <div class="arrow-controls">
-    <button (click)="prevResume()" class="arrow-btn">⬅️</button>
-    <button class="create-resume-btn" (click)="openNickNameField(currentResumeName)">
-      Select
-    </button>
-    <button (click)="nextResume()" class="arrow-btn">➡️</button>
-  </div>
-</div> -->
+ 
 
 <div class="profile-wrapper">
   <button class="back-btn" (click)="backToCandidates()"><i class="fa fa-arrow-left"></i> Back</button>
@@ -58,9 +22,36 @@
       </div>
     </div>
 
-    <!-- RIGHT ARROW -->
+ 
     <button class="nav-btn right" (click)="scrollRight()">&#10095;</button>
   </div>
+</div>
+
+<div class="selectedType">
+  <button
+    class="single-page"
+    type="button"
+    (click)="selectedType('All Page')"
+    [class.active]="selected === 'All Page'"
+  >
+    All Page
+  </button>
+  <button
+    class="single-page"
+    type="button"
+    (click)="selectedType('Single Page')"
+    [class.active]="selected === 'Single Page'"
+  >
+    Single Page
+  </button>
+  <button
+    class="multiple-page"
+    type="button"
+    (click)="selectedType('Multiple Page')"
+    [class.active]="selected === 'Multiple Page'"
+  >
+    Mutiple Page
+  </button>
 </div>
 
 <div class="resume-gallery">

@@ -52,6 +52,7 @@ export class ViewTemplatesComponent {
   categories: string[] = [];
   templatesData: any;
   selectedCategory = '';
+  selected: string = 'All Page';
 
   get currentResume(): string {
     return this.resumePaths[this.currentIndex]?.templateLocation ?? '';
@@ -302,13 +303,19 @@ export class ViewTemplatesComponent {
     this.selectedCategory = category;
 
     const templates = this.templatesData[category] ?? [];
-    this.resumePaths = templates;
-
-    this.currentIndex = 0;
-    setTimeout(() => this.onImageLoad());
+    if (this.selected !== 'All Page') {
+      this.resumePaths = templates.filter((s: any) => s.templateType === this.selected);
+    }
+    else {
+      this.resumePaths = templates;
+    }
+    
   }
 
-    selectTemplate(templateName: string) {
+
+
+
+  selectTemplate(templateName: string) {
     this.gs.setResumeName(templateName);
     localStorage.setItem('templateName', templateName);
     this.gs.setCandidateDetails(this.candidates);
@@ -316,4 +323,15 @@ export class ViewTemplatesComponent {
     this.router.navigate(['candidate/verify-details']);
   }
 
+  selectedType(type: any) {
+    this.selected = type;
+    console.log(this.selected);
+    const templates = this.templatesData[this.selectedCategory] ?? [];
+    if (this.selected !== 'All Page') {
+      this.resumePaths = templates.filter((s: any) => s.templateType === type);
+    }
+    else {
+      this.resumePaths = templates;
+    }
+  }
 }

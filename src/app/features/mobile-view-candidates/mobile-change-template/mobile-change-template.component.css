@@ -6,7 +6,7 @@
   position: relative;
 }
 
- 
+
 
 .back-btn {
   position: absolute;
@@ -128,6 +128,7 @@
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -138,6 +139,7 @@
     transform: scale(0.9);
     opacity: 0;
   }
+
   to {
     transform: scale(1);
     opacity: 1;
@@ -154,8 +156,8 @@
 }
 
 
- 
- 
+
+
 .image-wrapper {
   position: relative;
   width: 100%;
@@ -192,12 +194,12 @@
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  opacity: 0;  
+  opacity: 0;
   transition: opacity 0.3s ease, transform 0.2s ease;
 }
 
 .image-wrapper:hover .eye-overlay {
-  opacity: 1; 
+  opacity: 1;
 }
 
 .eye-overlay:hover {
@@ -208,12 +210,13 @@
 /* 📱 Always visible on mobile */
 @media (max-width: 768px) {
   .eye-overlay {
-    opacity: 1 !important; /* Always visible */
+    opacity: 1 !important;
+    /* Always visible */
   }
 }
 
- 
- 
+
+
 
 /* Optional arrow button hover */
 .arrow-btn {
@@ -224,26 +227,26 @@
   transform: scale(1.1);
 }
 
- 
+
 .content-column {
-  max-width: 900px;        
+  max-width: 900px;
   width: 100%;
-  overflow: hidden;       
+  overflow: hidden;
 }
 
- 
+
 .category-wrapper {
   position: relative;
   width: 100%;
 }
 
- 
+
 .category-mask {
   width: 100%;
-  overflow: hidden;         
+  overflow: hidden;
 }
 
- 
+
 .category-scroll {
   display: flex;
   gap: 14px;
@@ -284,26 +287,62 @@
   border-radius: 50%;
   border: none;
   background: #14b43c;
-  color:white;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-.nav-btn.left { left: 6px; }
-.nav-btn.right { right: 6px; }
+.nav-btn.left {
+  left: 6px;
+}
+
+.nav-btn.right {
+  right: 6px;
+}
+
 .category-wrapper {
   width: 100%;
-  min-width: 0;        
+  min-width: 0;
 }
 
 
-.header-contents{
+.header-contents {
   display: flex;
   justify-content: space-between;
-  gap:20px;
+  gap: 20px;
 }
 
 @media (max-width: 600px) {
-  .header-contents{
+  .header-contents {
     flex-direction: column;
   }
+}
+
+.selectedType {
+  display: flex;
+  gap: 30px;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background: #ffffff;
+  position: sticky;
+}
+
+.single-page,
+.multiple-page {
+  border: none;
+  padding: 7px 10px;
+  border-radius: 17px;
+}
+
+.single-page,
+.multiple-page {
+  background: lightcoral;
+  color: white;
+  font-weight: 600px;
+}
+
+.selectedType button.active {
+  background: rgb(24, 114, 24);
+  color: white;
+  transform: scale(1.2);
 }
