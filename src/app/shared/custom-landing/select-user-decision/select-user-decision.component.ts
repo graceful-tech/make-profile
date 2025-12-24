@@ -18,14 +18,16 @@ export class SelectUserDecisionComponent {
   }
 
   goToFresher() {
-
+    
     localStorage.setItem('isFresher', 'true');
 
     const sourse = this.isMobileDevice();
-
+ 
     if (sourse) {
+
       this.router.navigate(['mob-fresher-form']);
     } else {
+
       this.router.navigate(['fresher-form']);
     }
   }

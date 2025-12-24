@@ -168,7 +168,6 @@ export class FresherFormPageComponent {
 
   ngOnInit() {
     this.createCandidateForm();
-
     this.generateYearList();
     this.getGenderList();
     this.getLanguages();
@@ -2471,7 +2470,7 @@ export class FresherFormPageComponent {
   }
 
   callAISkillAPI(skill: string) {
-    this.startSuggestedProcess();
+  
     const route = `content/get-suggested-skills?skills=${skill}`;
     this.api.get(route).subscribe({
       next: (response) => {
@@ -2484,11 +2483,10 @@ export class FresherFormPageComponent {
           this.suggestedSoftSkills = suggested?.softSkills;
           this.suggestedCoreCompentencies = suggested?.coreCompentencies;
 
-          this.stopProcess();
+           
         }
       },
       error: (error) => {
-        this.stopProcess();
         this.dataLoaded = true;
       },
     });

@@ -170,7 +170,6 @@ export class MobileFresherFormPageComponent {
 
   ngOnInit() {
     this.createCandidateForm();
-    this.createCandidateForm();
     this.generateYearList();
     this.getGenderList();
     this.getLanguages();
@@ -2436,7 +2435,7 @@ export class MobileFresherFormPageComponent {
   }
 
   callAISkillAPI(skill: string) {
-    this.startSuggestedProcess();
+     
     const route = `content/get-suggested-skills?skills=${skill}`;
     this.api.get(route).subscribe({
       next: (response) => {
@@ -2449,11 +2448,11 @@ export class MobileFresherFormPageComponent {
           this.suggestedSoftSkills = suggested?.softSkills;
           this.suggestedCoreCompentencies = suggested?.coreCompentencies;
 
-          this.stopProcess();
+           
         }
       },
       error: (error) => {
-        this.stopProcess();
+         
         this.dataLoaded = true;
       },
     });

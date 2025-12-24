@@ -260,8 +260,7 @@ export class PreviewAndCreateResumeComponent {
 
     this.candidateForm.valueChanges
       .pipe(
-        debounceTime(5000),
-        distinctUntilChanged()
+        debounceTime(5000)
       )
       .subscribe(() => {
         this.updateDetails();

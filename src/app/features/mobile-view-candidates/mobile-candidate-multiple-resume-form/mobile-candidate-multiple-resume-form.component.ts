@@ -157,7 +157,7 @@ export class MobileCandidateMultipleResumeFormComponent {
 
   ngOnInit() {
     this.createCandidateForm();
-    this.createCandidateForm();
+   
     this.generateYearList();
     this.getGenderList();
     this.getLanguages();
