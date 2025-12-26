@@ -342,10 +342,6 @@ export class MobileFresherFormPageComponent {
     });
   }
 
-
-
-
-
   async next() {
     console.log(this.step + 'haii');
 
@@ -995,7 +991,9 @@ export class MobileFresherFormPageComponent {
           sessionStorage.setItem('userId', response.id);
           sessionStorage.setItem('password', response.password);
 
-          this.loginPopup(response.userName, response.password);
+          // this.loginPopup(response.userName, response.password);
+
+          this.step++;
         }
       },
       error: (error) => {
@@ -2435,7 +2433,7 @@ export class MobileFresherFormPageComponent {
   }
 
   callAISkillAPI(skill: string) {
-     
+
     const route = `content/get-suggested-skills?skills=${skill}`;
     this.api.get(route).subscribe({
       next: (response) => {
@@ -2448,11 +2446,11 @@ export class MobileFresherFormPageComponent {
           this.suggestedSoftSkills = suggested?.softSkills;
           this.suggestedCoreCompentencies = suggested?.coreCompentencies;
 
-           
+
         }
       },
       error: (error) => {
-         
+
         this.dataLoaded = true;
       },
     });

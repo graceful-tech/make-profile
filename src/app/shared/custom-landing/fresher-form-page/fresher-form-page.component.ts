@@ -1026,7 +1026,10 @@ export class FresherFormPageComponent {
           sessionStorage.setItem('userId', response.id);
           sessionStorage.setItem('password', response.password);
 
-          this.loginPopup(response.userName, response.password);
+          // show the login on after creating the resume
+          // this.loginPopup(response.userName, response.password);
+
+           this.step++;
         }
       },
       error: (error) => {

@@ -1,26 +1,41 @@
 <div class="refer-popup">
 
-    <div class="refer-content">
+  <div class="refer-content">
 
-       
-        <span class="popup-title">
-            You have chosen 
-        </span>
+    <!-- Close Button -->
+    <button class="close-btn"   (click)="ClosePopup()">Close</button>
 
-        <span class="popup-subtitle">
-            Single Page Resume
-        </span>
-
-        
-        <span class="popup-message">
-            Your resume contains more than one page of content. Please review and adjust the content.
-        </span>
-
-        <div class="button-types" style="margin-top: 15px;">
-            <button class="common-btn proceed-btn" (click)="stillDownload()">Still Download</button>
-            <button class="common-btn edit-btn" (click)="EditContent()">Edit Content</button>
-        </div>
-
+    <!-- Title -->
+    <div class="popup-title">
+      <div>You have chosen</div>
     </div>
+
+    <span class="popup-subtitle">
+      Single Page Resume
+    </span>
+
+    <span class="popup-message">
+      Your resume contains more than one page of content.
+      Please review and adjust the content.
+    </span>
+
+    <!-- Main Buttons -->
+    <div class="button-types">
+      <button class="common-btn proceed-btn" (click)="stillDownload()">
+        Still Download
+      </button>
+      <button class="common-btn edit-btn" (click)="EditContent()">
+        Edit Content
+      </button>
+    </div>
+
+    <!-- Change Template Button -->
+    <div class="change-template-wrapper">
+      <button class="change-template-btn"  (click)="ChangeTemplate()" >
+        Change Template
+      </button>
+    </div>
+
+  </div>
 
 </div>

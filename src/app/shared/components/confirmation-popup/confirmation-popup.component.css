@@ -56,13 +56,13 @@
    Heading (FIRST SPAN)
 ------------------------------ */
 .popup-title {
-    display: block;
+    display: flex;
     font-size: 20px;
     font-weight: 700;
-
     color: black;
     margin-bottom: 5px;
     line-height: 26px;
+    justify-content: center;
 }
 
 .popup-subtitle {
@@ -184,4 +184,47 @@
         font-size: 14px !important;
         line-height: 20px !important;
     }
+}
+
+
+.close-btn {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    background: lightcoral;
+    border: none;
+    font-size: 22px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #000000;
+    transition: transform 0.2s ease, color 0.2s ease;
+    border-radius: 18px;
+    padding:5px 12px;
+}
+
+.close-btn:hover {
+    transform: scale(1.2);
+}
+
+.change-template-wrapper {
+    margin-top: 18px;
+}
+
+.change-template-btn {
+    width: 100%;
+    border: none;
+    border-radius: 22px;
+    padding: 10px 15px;
+    font-size: 14px;
+    font-weight: 600;
+    font-size: 14pt;
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    color: white;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.change-template-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
 }

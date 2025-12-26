@@ -121,7 +121,25 @@
     background: linear-gradient(135deg, #3BAA84, #0B8F6A);
 }
 
+.bottom-btn{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
 
+.change-template ,.close-popup{
+    border: none;
+    padding:5px 10px;
+    border-radius: 18px;
+}
+.change-template{
+    background: lightgreen;
+}
+
+.close-popup{
+    background: lightcoral;
+}
+ 
 @media (max-width: 768px) {
 
     .refer-popup {

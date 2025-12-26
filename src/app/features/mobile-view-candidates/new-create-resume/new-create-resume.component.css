@@ -94,10 +94,21 @@
   bottom: 0;
   padding: 16px;
   width: 100%;
-  background: transparent;
+  background: #ffffff;
   display: flex;
   justify-content: space-between;
-  gap:10px;
+  gap: 10px;
+}
+
+.bottom-button-preview{
+   position: sticky;
+  bottom: 0;
+  padding-bottom: 5px;
+  width: 100%;
+  background: #ffffff;
+  display: flex;
+  justify-content:center;
+  gap: 10px;
 }
 
 .create-btn {
@@ -115,7 +126,18 @@
   background: rgb(184, 130, 31);
 }
 
-.change-template{
+.update-btn {
+  background: rgb(164, 110, 11);
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  font-size: 1rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.change-template {
   background: linear-gradient(90deg, #0078ff, #00c6ff);
   color: white;
   padding: 12px 24px;
@@ -144,7 +166,8 @@
     font-size: 1rem;
     padding: 10px;
   }
-  .change-template{
+
+  .change-template {
     width: 90%;
     font-size: 1rem;
     padding: 10px;
@@ -369,11 +392,11 @@ img {
     max-width: 100% !important;
   }
 
-   .custom-btn,
+  .custom-btn,
   .remove-btn {
     font-size: 14px;
     padding: 8px 10px;
-    
+
   }
 }
 
@@ -435,19 +458,23 @@ img {
 .dot1 {
   animation-delay: 0s;
 }
+
 .dot2 {
   animation-delay: 0.2s;
 }
+
 .dot3 {
   animation-delay: 0.4s;
 }
 
 @keyframes blink {
+
   0%,
   80%,
   100% {
     opacity: 0;
   }
+
   40% {
     opacity: 1;
   }
@@ -524,6 +551,7 @@ img {
   border-radius: 4px;
   cursor: pointer;
 }
+
 .close-btn:hover {
   background: #dc2626;
 }
@@ -583,6 +611,7 @@ img {
   margin-top: 15px;
   background-color: #fff;
 }
+
 .mobile-preview {
   width: 100%;
   height: 100%;
@@ -678,7 +707,7 @@ canvas {
   background: #fff;
   padding: 15px;
   border-radius: 8px;
- box-shadow: 0 0 10px 4px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 0 10px 4px rgba(0, 0, 0, 0.08);
 
   margin-bottom: 10px;
 }
@@ -711,7 +740,7 @@ canvas {
   position: relative;
   text-align: center;
   margin: 20px 0;
-   
+
 }
 
 .page-separator::before {
@@ -735,7 +764,7 @@ canvas {
 
 .blur-overlay {
   position: fixed;
-  inset: 0;  
+  inset: 0;
   backdrop-filter: blur(6px);
   background: rgba(0, 0, 0, 0.25);
   z-index: 998;

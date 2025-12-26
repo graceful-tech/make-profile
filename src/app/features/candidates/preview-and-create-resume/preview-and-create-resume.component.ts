@@ -243,29 +243,31 @@ export class PreviewAndCreateResumeComponent {
         this.addAdditoinalDetail = true;
       }
 
-      // this.previewPdf();
-      this.previewPdfItem();
+      await this.previewPdfItem();
+      this.showPopupStarting();
+
     } else {
       await this.getCandidates();
 
       if (this.candidates?.fresher) {
         this.addAdditoinalDetail = true;
       }
+      await this.previewPdfItem();
+      this.showPopupStarting();
 
-      // this.previewPdf();
-      this.previewPdfItem();
     }
-
     this.getSkillsFromApi();
-
     this.candidateForm.valueChanges
       .pipe(
-        debounceTime(5000)
+        debounceTime(5000),
+        distinctUntilChanged()
       )
       .subscribe(() => {
         this.updateDetails();
       });
   }
+
+
 
   ngAfterViewInit() { }
   onResumeEdit(event: Event) {
@@ -1755,16 +1757,11 @@ export class PreviewAndCreateResumeComponent {
 
       const templateName = localStorage.getItem('templateName');
 
-
       const foundResume: any = Object.values(this.templatesData)
         .flatMap(resumes => resumes)
         .find((resume: any) => resume.templateName.trim() === templateName);
 
-
-      // const pageType: any = this.templatesTypes.find(template => template.templateName === templateName)?.pages
-
       const pageType: any = foundResume?.templateType.trim() === 'Single Page' ? 1 : 2;
-
 
       if (pageType > 1) {
         this.createCandidate();
@@ -1777,9 +1774,22 @@ export class PreviewAndCreateResumeComponent {
           this.createCandidate();
         }
       }
-
     }
 
+  }
+
+  showPopupStarting() {
+    const templateName = localStorage.getItem('templateName');
+
+    const foundResume: any = Object.values(this.templatesData)
+      .flatMap(resumes => resumes)
+      .find((resume: any) => resume.templateName.trim() === templateName);
+
+    const pageType: any = foundResume?.templateType.trim() === 'Single Page' ? 1 : 2;
+
+    if (pageType === 1 && this.totalPdfPages > 1) {
+      this.showConfirmationPopup = !this.showConfirmationPopup;
+    }
   }
 
   createResumeAfterPAy(event: any) {
@@ -2340,98 +2350,96 @@ export class PreviewAndCreateResumeComponent {
     const response = await this.generatingJobIdForPDf();
 
     if (response) {
-      this.previewPdfByPlaywright();
+      const returnValue = await this.previewPdfByPlaywright();
     }
   }
 
 
-  async previewPdfByPlaywright() {
+  async previewPdfByPlaywright(): Promise<void> {
     // this.isPreview = true;
-    this.ngxLoaderStart();
 
-    const jobId = localStorage.getItem('jobId');
+    return new Promise((resolve, reject) => {
+      this.ngxLoaderStart();
 
-    let count = 0;
-    const interval = setInterval(() => {
+      const jobId = localStorage.getItem('jobId');
 
-      if (count <= 15) {
-        const route = `resume/download-bytes?jobId=${jobId}`;
+      let count = 0;
+      const interval = setInterval(() => {
 
+        if (count <= 15) {
+          const route = `resume/download-bytes?jobId=${jobId}`;
+          this.api.get(route).subscribe({
+            next: async (response: any) => {
 
-        this.api.get(route).subscribe({
-          next: async (response: any) => {
-
-            if (response?.resumePdf.trim().length > 10) {
-              clearInterval(interval);
-              try {
-                const pdfjsLib = await import('pdfjs-dist/build/pdf');
-                const pdfjsWorker = await import('pdfjs-dist/build/pdf.worker.entry');
-
-                (pdfjsLib as any).GlobalWorkerOptions.workerSrc = pdfjsWorker;
-
-                const base64Pdf = response.resumePdf;
-
-                this.arrayBuffer = this.base64ToArrayBuffer(base64Pdf);
-
-                const pdf = await (pdfjsLib as any).getDocument({
-                  data: this.arrayBuffer,
-                }).promise;
-
-                const container = this.pdfContainer.nativeElement;
-                container.innerHTML = '';
-
-                this.totalPdfPages = pdf.numPages
-
-                const numPages = pdf.numPages;
-                for (let i = 1; i <= numPages; i++) {
-                  const page = await pdf.getPage(i);
-                  const viewport = page.getViewport({ scale: 1.2 });
-
-                  const canvas = document.createElement('canvas');
-                  const context = canvas.getContext('2d')!;
-                  canvas.height = viewport.height;
-                  canvas.width = viewport.width;
-
-                  const renderContext = { canvasContext: context, viewport };
-                  await page.render(renderContext).promise;
-
-                  canvas.style.display = 'block';
-                  canvas.style.margin = '10px auto';
-                  canvas.style.maxWidth = '100%';
-                  canvas.style.boxShadow = '0 0 8px rgba(0, 0, 0, 0.1)';
-
-                  const separator = document.createElement('div');
-                  separator.className = 'page-separator';
-                  separator.innerHTML = `<span style="font-size: 15px; font-weight:500;">Page ${i}</span>`;
-                  container.appendChild(separator);
-
-                  container.appendChild(canvas);
-
-                  this.htmlcontent = canvas;
-                }
-                this.ngxLoaderStop();
-              } catch (err) {
+              if (response?.resumePdf.trim().length > 10) {
                 clearInterval(interval);
-                this.ngxLoaderStop();
+                try {
+                  const pdfjsLib = await import('pdfjs-dist/build/pdf');
+                  const pdfjsWorker = await import('pdfjs-dist/build/pdf.worker.entry');
+
+                  (pdfjsLib as any).GlobalWorkerOptions.workerSrc = pdfjsWorker;
+
+                  const base64Pdf = response.resumePdf;
+
+                  this.arrayBuffer = this.base64ToArrayBuffer(base64Pdf);
+
+                  const pdf = await (pdfjsLib as any).getDocument({
+                    data: this.arrayBuffer,
+                  }).promise;
+
+                  const container = this.pdfContainer.nativeElement;
+                  container.innerHTML = '';
+
+                  this.totalPdfPages = pdf.numPages
+                  const numPages = pdf.numPages;
+                  for (let i = 1; i <= numPages; i++) {
+                    const page = await pdf.getPage(i);
+                    const viewport = page.getViewport({ scale: 1.2 });
+
+                    const canvas = document.createElement('canvas');
+                    const context = canvas.getContext('2d')!;
+                    canvas.height = viewport.height;
+                    canvas.width = viewport.width;
+
+                    const renderContext = { canvasContext: context, viewport };
+                    await page.render(renderContext).promise;
+
+                    canvas.style.display = 'block';
+                    canvas.style.margin = '10px auto';
+                    canvas.style.maxWidth = '100%';
+                    canvas.style.boxShadow = '0 0 8px rgba(0, 0, 0, 0.1)';
+
+                    const separator = document.createElement('div');
+                    separator.className = 'page-separator';
+                    separator.innerHTML = `<span style="font-size: 15px; font-weight:500;">Page ${i}</span>`;
+                    container.appendChild(separator);
+
+                    container.appendChild(canvas);
+
+                    this.htmlcontent = canvas;
+                  }
+                  resolve();
+                  this.ngxLoaderStop();
+                } catch (err) {
+                  clearInterval(interval);
+                  this.ngxLoaderStop();
+                }
               }
-            }
+            },
+            error: (err) => {
+              clearInterval(interval);
+              console.error('API Error:', err);
+              this.ngxLoaderStop();
+            },
+          });
+        } else {
+          this.ngxLoaderStop();
+          clearInterval(interval);
+        }
+        count++;
+      }, 3000);
 
-          },
-          error: (err) => {
-            clearInterval(interval);
-            console.error('API Error:', err);
-            this.ngxLoaderStop();
-          },
-        });
-
-      } else {
-        this.ngxLoaderStop();
-        clearInterval(interval);
-      }
-
-      count++;
-
-    }, 3000);
+    })
   }
 
   base64ToArrayBuffer(base64: string): ArrayBuffer {
@@ -3121,7 +3129,7 @@ export class PreviewAndCreateResumeComponent {
 
       if (count <= 5) {
 
-       const route = `resume/generate-resume?jobId=${jobId}&templateName=${templateName}`;
+        const route = `resume/generate-resume?jobId=${jobId}&templateName=${templateName}`;
         this.api.get(route).subscribe({
           next: (response: any) => {
             if (response.resumePdf.trim().length > 10) {
@@ -3180,4 +3188,12 @@ export class PreviewAndCreateResumeComponent {
     }, 1500);
   }
 
+  closePopups(event: any) {
+    this.showConfirmationPopup = false
+  }
+
+  changeTemplates(event: any) {
+    this.showConfirmationPopup = false
+    this.changeTemplate();
+  }
 }

@@ -10,13 +10,22 @@ export class ConfirmationPopupComponent {
 
   @Output() closePopupTap = new EventEmitter<any>();
   @Output() editContent = new EventEmitter<any>();
+  @Output() closePopup = new EventEmitter<any>();
+  @Output() changeTemplate = new EventEmitter<any>();
 
 
   stillDownload() {
-  this.closePopupTap.emit('hai');
+    this.closePopupTap.emit('hai');
   }
 
   EditContent() {
-  this.editContent.emit('hai');
+    this.editContent.emit('hai');
   }
+
+   ClosePopup() {
+     this.closePopup.emit('close');
+   }
+   ChangeTemplate() {
+     this.changeTemplate.emit('close');
+   }
 }
