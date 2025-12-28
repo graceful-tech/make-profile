@@ -1,17 +1,43 @@
 <div class="p-dialog-content">
-  <span class="Heading" style="font-weight: bold; font-size: 1.4rem"
-    >Your Account Created Successfully</span
+  <span
+    class="Heading"
+    style="font-weight: bold; font-size: 1.4rem; "
+    >ThankYou For Choosing MakeProfiles</span
   >
 
-  <br />
+  <span class="Heading" style="font-weight: bold; font-size: 1.4rem;margin-top: 10px"
+    >One last Step</span
+  >
+<!-- 
+  <div class="google-signup-section" style="text-align: center">
+    <div class="sign-with" (click)="onGoogleSignup()">Easy SignUp</div>
+    <div style="font-size: 22px">👇</div>
+    <img
+      #googleImage
+      src="assets/img/continueGoogle.png"
+      alt="Google Login"
+      id="google-btn"
+      style="height: 40px; cursor: pointer"
+      (click)="onGoogleSignup()"
+    />
+  </div>
 
-  <p><b>UserName : </b> {{ userName }}</p>
-  <p><b>Password : </b> {{ password }}</p>
-  <br />
-  <p>You Can Change Your Password ( Go to -> My Account -> Edit User )</p>
-  <p>By Default Your Username and Password will be your Mobile Number</p>
+  <div class="divider-section">OR</div> -->
+
+  <div class="grid">
+    <div class="col-12">
+      <label>Enter Your Password</label>
+      <div class="input-wrapper">
+        <input type="text" pInputText [(ngModel)]="password" name="password" />
+      </div>
+      <small class="error-message" *ngIf="showError">
+        Password Should greater than 5 letters></small
+      >
+    </div>
+  </div>
 </div>
 
-<div class="p-dialog-footer">
-  <p-button label="Close" (onClick)="closePopup()"></p-button>
+<div class="p-dialog-footer bottom-btn">
+  <!-- <p-button label="Close" (onClick)="closePopup()"></p-button> -->
+ <p-button   (onClick)="updatePassword()">Save Password</p-button>
 </div>

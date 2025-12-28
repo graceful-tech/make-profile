@@ -46,6 +46,8 @@ import templatesData from 'src/assets/resume-types/templatesData.json';
 import { MobileConfirmationPopupComponent } from 'src/app/shared/components/mobile-confirmation-popup/mobile-confirmation-popup.component';
 import { SchoolEducation } from 'src/app/models/candidates/schoolEducation';
 import { DiplomaEducation } from 'src/app/models/candidates/diploma-education';
+import { ModelLoginPopupComponent } from 'src/app/shared/popup/model-login-popup/model-login-popup.component';
+import { MobilePopupComponent } from 'src/app/shared/popup/mobile-popup/mobile-popup.component';
 
 
 @Component({
@@ -146,6 +148,7 @@ export class NewCreateResumeComponent {
   categories: string[] = [];
   selectedCategory: any;
   resumePaths: any;
+  updatePasswordFlag: any;
 
 
 
@@ -237,6 +240,8 @@ export class NewCreateResumeComponent {
         this.candidateImageUrl = response;
       }
     });
+
+    this.updatePasswordFlag = sessionStorage.getItem('updatePassword');
   }
 
   async previewPdf() {
@@ -2212,36 +2217,29 @@ export class NewCreateResumeComponent {
 
 
       if (pageType > 1) {
-        this.createCandidate();
+        // this.createCandidate();
+
+        if (this.updatePasswordFlag !== undefined && this.updatePasswordFlag === 'false') {
+          this.oneLastStep();
+        }
+        else {
+          this.generateResume();
+        }
       }
       else {
 
         if (this.totalPdfPages > 1) {
-          // const ref = this.dialog.open(MobileConfirmationPopupComponent, {
-          //   data: {
-          //   },
-          //   closable: false,
-          //   height: '30%',
-          //   width:'90%',
-          //   styleClass: 'payment-dialog-header-mobile',
-
-          // });
-
-          // ref.onClose.subscribe((response) => {
-          //   if (response === 'download') {
-          //     this.createCandidate();
-          //   }
-          //   else {
-          //     this.currentTab = 'edit'
-
-          //   }
-
-          // });
-
           this.showConfirmationPopup = !this.showConfirmationPopup;
         }
         else {
-          this.createCandidate();
+          // this.createCandidate();
+
+          if (this.updatePasswordFlag !== undefined && this.updatePasswordFlag === 'false') {
+            this.oneLastStep();
+          }
+          else {
+            this.generateResume();
+          }
         }
       }
     }
@@ -2667,7 +2665,14 @@ export class NewCreateResumeComponent {
   }
   proceedToDownload(event: any) {
     this.showConfirmationPopup = false
-    this.createCandidate();
+    // this.createCandidate();
+
+    if (this.updatePasswordFlag !== undefined && this.updatePasswordFlag === 'false') {
+      this.oneLastStep();
+    }
+    else {
+      this.generateResume();
+    }
   }
 
   editContent(event: any) {
@@ -2919,7 +2924,7 @@ export class NewCreateResumeComponent {
       this.api.retrieve(route, payload).subscribe({
         next: (response: any) => {
           if (response) {
-            this.stopProcess();
+            // this.stopProcess();
             const jobIdResponse = response as any;
 
             localStorage.setItem('jobId', jobIdResponse.jobId);
@@ -2999,7 +3004,15 @@ export class NewCreateResumeComponent {
               localStorage.removeItem('jobId');
 
 
+              // if (this.updatePasswordFlag !== undefined && this.updatePasswordFlag === 'false') {
+              //   this.oneLastStep();
+              // }
+              // else {
+              //   this.router.navigate(['mob-candidate']);
+              // }
               this.router.navigate(['mob-candidate']);
+
+
             }
 
           },
@@ -3035,4 +3048,24 @@ export class NewCreateResumeComponent {
       this.showConfirmationPopup = !this.showConfirmationPopup;
     }
   }
+
+  oneLastStep() {
+    const ref = this.dialog.open(MobilePopupComponent, {
+
+      data: {
+        mobileNumber: this.candidates?.mobileNumber,
+        email: this.candidates?.email
+      },
+
+      header: '',
+      // width: '200px',
+      styleClass: 'custom-popup',
+      closable: false,
+    });
+
+    ref.onClose.subscribe((response) => {
+      this.generateResume();
+    });
+  }
+
 }

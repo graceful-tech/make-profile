@@ -51,6 +51,7 @@ import { ConfirmationPopupComponent } from 'src/app/shared/components/confirmati
 import { SchoolEducation } from 'src/app/models/candidates/schoolEducation';
 import { DiplomaEducation } from 'src/app/models/candidates/diploma-education';
 import { GlobalLoaderComponent } from 'src/app/shared/components/global-loader/global-loader.component';
+import { ModelLoginPopupComponent } from 'src/app/shared/popup/model-login-popup/model-login-popup.component';
 
 
 
@@ -171,6 +172,7 @@ export class PreviewAndCreateResumeComponent {
   categories: string[] = [];
   selectedCategory: any;
   resumePaths: any;
+  updatePasswordFlag: any;
 
 
   constructor(
@@ -207,6 +209,7 @@ export class PreviewAndCreateResumeComponent {
     this.gs.resumeName$.subscribe((response) => {
       this.templateName = response;
     });
+
   }
 
 
@@ -269,7 +272,10 @@ export class PreviewAndCreateResumeComponent {
 
 
 
-  ngAfterViewInit() { }
+  ngAfterViewInit() {
+
+    this.updatePasswordFlag = sessionStorage.getItem('updatePassword');
+  }
   onResumeEdit(event: Event) {
     const element = event.target as HTMLElement;
     this.editedHtml = element.innerHTML;
@@ -1764,14 +1770,31 @@ export class PreviewAndCreateResumeComponent {
       const pageType: any = foundResume?.templateType.trim() === 'Single Page' ? 1 : 2;
 
       if (pageType > 1) {
-        this.createCandidate();
+
+        if (this.updatePasswordFlag !== undefined && this.updatePasswordFlag === 'false') {
+          this.oneLastStep();
+        }
+        else {
+          this.generateResume();
+        }
+
+        // this.oneLastStep();
+        //already details has been saved so directly create the resume
+        // this.createCandidate();
       }
       else {
         if (this.totalPdfPages > 1) {
           this.showConfirmationPopup = !this.showConfirmationPopup;
         }
         else {
-          this.createCandidate();
+          if (this.updatePasswordFlag !== undefined && this.updatePasswordFlag === 'false') {
+            this.oneLastStep();
+          }
+          else {
+            this.generateResume();
+          }
+          //already details has been saved so directly create the resume
+          // this.createCandidate();
         }
       }
     }
@@ -2877,7 +2900,14 @@ export class PreviewAndCreateResumeComponent {
 
   proceedToDownload(event: any) {
     this.showConfirmationPopup = false
-    this.createCandidate();
+    // this.createCandidate();
+
+    if (this.updatePasswordFlag !== undefined && this.updatePasswordFlag === 'false') {
+      this.oneLastStep();
+    }
+    else {
+      this.generateResume();
+    }
   }
 
   editContent(event: any) {
@@ -3164,8 +3194,15 @@ export class PreviewAndCreateResumeComponent {
               localStorage.removeItem('templateName');
               localStorage.removeItem('jobId');
 
+              // if (this.updatePasswordFlag !== undefined && this.updatePasswordFlag === 'false') {
+              //   this.oneLastStep();
+              // }
+              // else {
+              //   this.router.navigate(['candidate']);
+              // }
 
               this.router.navigate(['candidate']);
+
             }
 
           },
@@ -3196,4 +3233,41 @@ export class PreviewAndCreateResumeComponent {
     this.showConfirmationPopup = false
     this.changeTemplate();
   }
+
+  loginPopup(userName: any, password: any) {
+    const ref = this.dialog.open(ModelLoginPopupComponent, {
+      data: {
+        userName,
+        password,
+      },
+      header: '',
+      width: '400px',
+      styleClass: 'custom-popup',
+      closable: false,
+    });
+
+    ref.onClose.subscribe((response) => {
+
+    });
+  }
+
+  oneLastStep() {
+    const ref = this.dialog.open(ModelLoginPopupComponent, {
+
+      data: {
+        mobileNumber: this.candidates?.mobileNumber,
+        email: this.candidates?.email
+      },
+
+      header: '',
+      // width: '400px',
+      styleClass: 'custom-popup',
+      closable: false,
+    });
+
+    ref.onClose.subscribe((response) => {
+      this.generateResume();
+    });
+  }
+
 }

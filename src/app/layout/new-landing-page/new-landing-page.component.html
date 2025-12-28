@@ -1,6 +1,11 @@
 <header id="header" class="header fixed-top d-flex align-items-center">
-  <a href="#login" class="herologin-btn">Login</a>
-  <a href="#create-resume-directly" class="herologin-btn">Create Account</a>
+   <div *ngIf="!isMobile">
+    <a href="#select-template" class="header-hero">Create Resume →</a>
+  </div>
+  <div class="header-login">
+    <a href="#login" class="herologin-btn">Login</a>
+    <a href="#create-resume-directly" class="herologin-btn">Create Account</a>
+  </div>
 </header>
 
 <section class="hero-section">
@@ -34,15 +39,7 @@
         <span>recognized resume in minutes</span>
       </h1>
 
-      <!-- <p>
-        Stop wasting hours creating resumes — just enter your details and get
-        your
-        <strong>ATS-optimized, HR’s choice resume</strong>
-        in minutes for only
-        <span style="color: #ff5e38; font-weight: 700">₹10</span>
-      </p> -->
-
-      <p>
+      <p class="amount-content">
         <strong>ATS-optimized, HR’s choice resume</strong>
         for only
         <span
@@ -178,6 +175,8 @@
             >
               <div class="hero-content" style="padding: 25px">
                 <h1>Create Your <span>Resume</span> and Apply for Jobs</h1>
+
+                  <a href="#select-template" class="custom-create">Start Your Career</a>
 
                 <p>
                   Build a professional resume in minutes and apply for the right
@@ -353,6 +352,8 @@
       <h5>🤖 Smart AI. Smarter Resumes.</h5>
 
       <h1>AI that <span>perfects your words</span></h1>
+
+         <a href="#select-template" class="custom-create">Build with AI</a>
 
       <p>
         Let AI instantly create the

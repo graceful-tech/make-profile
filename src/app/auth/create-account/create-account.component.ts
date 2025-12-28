@@ -39,7 +39,7 @@ export class CreateAccountComponent {
     private deviceDetectorService: DeviceDetectorService,
     private router: Router,
     private route: ActivatedRoute
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.createRegisterForm();
@@ -71,7 +71,10 @@ export class CreateAccountComponent {
     if (this.createAccountForm.valid) {
       this.loadingFlag = true;
       const route = 'user/create';
-      const postData = this.createAccountForm.value;
+      const postData = {
+        ...this.createAccountForm.value,
+        updatePassword: true
+      }
 
       this.api.retrieve(route, postData).subscribe({
         next: (response) => {
@@ -85,6 +88,8 @@ export class CreateAccountComponent {
           sessionStorage.setItem('token', response.token);
           sessionStorage.setItem('userName', response.userName);
           sessionStorage.setItem('userId', response.id);
+          const updatePassword = response?.updatePassword === true ? 'true' : 'false';
+          sessionStorage.setItem('updatePassword', updatePassword);
           this.router.navigate(['/candidate']);
           console.log(response);
         },
@@ -109,6 +114,8 @@ export class CreateAccountComponent {
     const redirectUri = isMobile
       ? `${baseUrl}/#/mob-candidate`
       : `${baseUrl}/#/candidate`;
+    
+    document.cookie = `password_flag=true; path=/`;
     document.cookie = `redirect_uri=${encodeURIComponent(redirectUri)}; path=/`;
     const hash = window.location.hash; // "#/mob-login/mob-create?reference=mycoupen"
     const queryString = hash.split('?')[1]; // "reference=mycoupen"
@@ -127,8 +134,8 @@ export class CreateAccountComponent {
     this.router.navigate(['/login']);
   }
 
-    togglePassword() {
+  togglePassword() {
     this.showPassword = !this.showPassword;
   }
- 
+
 }

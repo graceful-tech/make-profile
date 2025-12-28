@@ -19,7 +19,7 @@ export class LoginComponent {
   loginForm!: FormGroup;
   showError = false;
   loadingFlag: boolean = false;
-  loginType: string ='mobile'
+  loginType: string = 'mobile'
   error!: String;
   loginError!: String;
   showPassword: boolean = false;
@@ -34,7 +34,7 @@ export class LoginComponent {
   ) { }
 
   ngOnInit() {
-      if (this.isMobileDevice()) {
+    if (this.isMobileDevice()) {
       // redirect to mobile login if mobile
       this.router.navigate(['/mob-login']);
     }
@@ -92,6 +92,8 @@ export class LoginComponent {
         sessionStorage.setItem('token', response.token);
         sessionStorage.setItem('userName', response.userName);
         sessionStorage.setItem('userId', response.id);
+        const updatePassword = response.updatePassword === true ? 'true' : 'false';
+        sessionStorage.setItem('updatePassword', updatePassword);
         this.router.navigate(['/candidate']);
       },
       error: (error) => {
@@ -103,8 +105,8 @@ export class LoginComponent {
 
 
   onGoogleLogin() {
-   localStorage.clear();
-   this.gs.navigate.next(false);
+    localStorage.clear();
+    this.gs.navigate.next(false);
 
     const restUrl = environment.restUrl;
     const isMobile = this.deviceDetectorService.isMobile();
@@ -137,8 +139,8 @@ export class LoginComponent {
     return /android|iphone|ipad|ipod/i.test(userAgent);
   }
 
-   togglePassword() {
+  togglePassword() {
     this.showPassword = !this.showPassword;
   }
- 
+
 }

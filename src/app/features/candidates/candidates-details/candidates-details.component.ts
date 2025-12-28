@@ -37,6 +37,7 @@ import { ToastService } from 'src/app/services/toast.service';
 import { skip } from 'rxjs/operators';
 import { SchoolEducation } from 'src/app/models/candidates/schoolEducation';
 import { DiplomaEducation } from 'src/app/models/candidates/diploma-education';
+import { ModelLoginPopupComponent } from 'src/app/shared/popup/model-login-popup/model-login-popup.component';
 
 @Component({
   selector: 'app-candidates-details',
@@ -177,6 +178,7 @@ export class CandidatesDetailsComponent {
     this.getNationalityList();
     this.getSchoolEducationFields();
     this.getDiplomaEducationFields();
+    
 
   }
 
@@ -2262,5 +2264,7 @@ export class CandidatesDetailsComponent {
       this.diplomaControls.removeAt(index);
     }
   }
+
+  
 
 }

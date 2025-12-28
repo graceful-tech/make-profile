@@ -43,6 +43,7 @@ export class NewLandingPageComponent implements AfterViewInit {
   templatesData: any;
   categories: string[] = [];
   selectedCategory: any;
+  isMobile:boolean = false;
 
   constructor(
     private ngZone: NgZone,
@@ -65,6 +66,8 @@ export class NewLandingPageComponent implements AfterViewInit {
       this.selectedCategory = this.categories[0];
       this.resumePaths = this.templatesData[this.selectedCategory] ?? [];
     });
+ 
+   this.isMobile = this.isMobileDevice();
   }
 
   ngAfterViewInit(): void { }

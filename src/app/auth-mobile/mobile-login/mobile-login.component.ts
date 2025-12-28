@@ -17,7 +17,7 @@ export class MobileLoginComponent {
   loginForm!: FormGroup;
   showError = false;
   loadingFlag: boolean = false;
-   loginType: string ='mobile'
+  loginType: string = 'mobile'
   error!: String;
   loginError!: String;
   showPassword: boolean = false;
@@ -90,6 +90,8 @@ export class MobileLoginComponent {
         sessionStorage.setItem('token', response.token);
         sessionStorage.setItem('userName', response.userName);
         sessionStorage.setItem('userId', response.id);
+        const updatePassword = response?.updatePassword === true ? 'true' : 'false';
+        sessionStorage.setItem('updatePassword', updatePassword);
         this.router.navigate(['/mob-candidate']);
       },
       error: (error) => {
@@ -102,7 +104,7 @@ export class MobileLoginComponent {
   onGoogleLogin() {
     localStorage.clear();
     this.gs.navigate.next(false);
-    
+
     const restUrl = environment.restUrl;
     const isMobile = this.deviceDetectorService.isMobile();
     const baseUrl = window.location.origin;
@@ -123,13 +125,13 @@ export class MobileLoginComponent {
   }
 
 
- 
+
 
 
   togglePassword() {
     this.showPassword = !this.showPassword;
   }
- 
+
 
 
 }

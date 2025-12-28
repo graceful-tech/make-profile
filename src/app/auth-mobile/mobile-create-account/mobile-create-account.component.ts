@@ -23,14 +23,14 @@ export class MobileCreateAccountComponent {
   error!: string;
   isReference = false;
   showPassword: boolean = false;
-  
+
   constructor(
     private fb: FormBuilder,
     private api: ApiService,
     private gs: GlobalService,
     private deviceDetectorService: DeviceDetectorService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.createRegisterForm();
@@ -70,6 +70,7 @@ export class MobileCreateAccountComponent {
       ? `${baseUrl}/#/mob-candidate`
       : `${baseUrl}/#/candidate`;
 
+    document.cookie = `password_flag=true; path=/`;
     document.cookie = `redirect_uri=${encodeURIComponent(redirectUri)}; path=/`;
 
     const hash = window.location.hash; // "#/mob-login/mob-create?reference=mycoupen"
@@ -103,8 +104,11 @@ export class MobileCreateAccountComponent {
           sessionStorage.setItem('token', response.token);
           sessionStorage.setItem('userName', response.userName);
           sessionStorage.setItem('userId', response.id);
+          const updatePassword = response?.updatePassword === true ? 'true' : 'false';
+          sessionStorage.setItem('updatePassword', updatePassword);
           // window.alert('Your Account Created SuccessFully');
           this.router.navigate(['/mob-candidate']);
+
           console.log(response);
         },
         error: (error) => {
@@ -120,6 +124,6 @@ export class MobileCreateAccountComponent {
   togglePassword() {
     this.showPassword = !this.showPassword;
   }
- 
+
 
 }

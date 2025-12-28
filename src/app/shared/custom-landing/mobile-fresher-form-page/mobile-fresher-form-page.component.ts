@@ -975,10 +975,11 @@ export class MobileFresherFormPageComponent {
       email: this.email,
       mobileNumber: this.mobile,
       userName: this.name,
+      updatePassword: false
     };
 
     this.api.retrieve(route, postData).subscribe({
-      next: (response) => {
+      next: async (response) => {
         this.loader.stop();
         if (response) {
           this.loader.stop();
@@ -990,8 +991,12 @@ export class MobileFresherFormPageComponent {
           sessionStorage.setItem('mobileNumber', response.mobileNumber);
           sessionStorage.setItem('userId', response.id);
           sessionStorage.setItem('password', response.password);
+          const updatePassword = response?.updatePassword === true ? 'true' : 'false';
+          sessionStorage.setItem('updatePassword', updatePassword);
 
           // this.loginPopup(response.userName, response.password);
+
+          const saveCandidate = await this.saveCandidate();
 
           this.step++;
         }

@@ -267,20 +267,19 @@ export class FresherFormPageComponent {
     this.candidateForm = this.fb.group(
       {
         id: [''],
-        name: ['', Validators.required],
+        name: [''],
         mobileNumber: [
-          '',
-          Validators.compose([Validators.required, Validators.minLength(10)]),
+          ''
         ],
         email: [
           '',
-          Validators.compose([Validators.required, Validators.email]),
+
         ],
-        gender: ['', Validators.required],
+        gender: ['',],
         nationality: [''],
         languagesKnown: [''],
         fresher: [''],
-        skills: ['', Validators.required],
+        skills: [''],
         linkedIn: [''],
         dob: [''],
         address: [''],
@@ -618,6 +617,7 @@ export class FresherFormPageComponent {
     this.candidateForm.get('email')?.setValue(this.email);
     this.candidateForm.get('gender')?.setValue(this.gender);
     this.candidateForm.get('name')?.setValue(this.name);
+    this.candidateForm.get('skills')?.setValue(this.skills);
 
     if (this.candidateForm.valid) {
       this.dataLoaded = false;
@@ -982,6 +982,9 @@ export class FresherFormPageComponent {
             sessionStorage.setItem('userId', response.id);
             sessionStorage.setItem('password', response.password);
 
+            const updatePassword = response?.updatePassword === true ? 'true' : 'false';
+            sessionStorage.setItem('updatePassword', updatePassword);
+
             this.createCandidateAfterLogin();
           }
         },
@@ -1010,10 +1013,11 @@ export class FresherFormPageComponent {
       email: this.email,
       mobileNumber: this.mobile,
       userName: this.name,
+      updatePassword: false
     };
 
     this.api.retrieve(route, postData).subscribe({
-      next: (response) => {
+      next: async (response) => {
         this.loader.stop();
         if (response) {
           this.loader.stop();
@@ -1025,11 +1029,14 @@ export class FresherFormPageComponent {
           sessionStorage.setItem('mobileNumber', response.mobileNumber);
           sessionStorage.setItem('userId', response.id);
           sessionStorage.setItem('password', response.password);
+          const updatePassword = response.updatePassword === true ? 'true' : 'false';
+          sessionStorage.setItem('updatePassword', updatePassword);
 
           // show the login on after creating the resume
           // this.loginPopup(response.userName, response.password);
-
-           this.step++;
+          //  this.saveCandidate();
+          const saveCandidate = await this.saveCandidate();
+          this.step++;
         }
       },
       error: (error) => {
@@ -2473,7 +2480,7 @@ export class FresherFormPageComponent {
   }
 
   callAISkillAPI(skill: string) {
-  
+
     const route = `content/get-suggested-skills?skills=${skill}`;
     this.api.get(route).subscribe({
       next: (response) => {
@@ -2486,7 +2493,7 @@ export class FresherFormPageComponent {
           this.suggestedSoftSkills = suggested?.softSkills;
           this.suggestedCoreCompentencies = suggested?.coreCompentencies;
 
-           
+
         }
       },
       error: (error) => {

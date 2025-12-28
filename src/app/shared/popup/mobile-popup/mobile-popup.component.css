@@ -7,11 +7,155 @@
     justify-content: flex-end;
 }
 
-.Heading{
+.Heading {
     font-weight: bold;
     font-size: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
-    
+}
+
+
+.google-signup-section {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.sign-with {
+    font-size: 13pt;
+    font-weight: 600;
+}
+
+.heading {
+    display: flex;
+    margin-left: 33%;
+}
+
+.divider-section {
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14pt;
+    margin: 5px 0;
+    font-weight: 600;
+
+}
+
+.divider-section::before,
+.divider-section::after {
+    content: "";
+    flex: 1;
+    border-bottom: 2px solid #ccc;
+}
+
+.divider-section::before {
+    margin-right: 12px;
+}
+
+.divider-section::after {
+    margin-left: 12px;
+}
+
+.bottom-btn {
+    display: flex;
+    justify-content: space-between;
+}
+
+.update-btn{
+    border:none;
+    padding: 5px 10px;
+    background: rgb(41, 84, 98);
+    color: rgb(246, 246, 246);
+    border-radius: 18px;
+    font-size: 13pt;
+    font-weight: 600;
+
+}
+
+.update-btn:hover{
+    background: rgb(20, 107, 230);
+
+}.message {
+    padding: 0rem 0rem 1.5rem 0rem;
+}
+
+.button-wrapper {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.Heading {
+    font-weight: bold;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.google-signup-section {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.sign-with {
+    font-size: 13pt;
+    font-weight: 600;
+}
+
+.heading {
+    display: flex;
+    margin-left: 33%;
+}
+
+.divider-section {
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14pt;
+    margin: 5px 0;
+    font-weight: 600;
+
+}
+
+.divider-section::before,
+.divider-section::after {
+    content: "";
+    flex: 1;
+    border-bottom: 2px solid #ccc;
+}
+
+.divider-section::before {
+    margin-right: 12px;
+}
+
+.divider-section::after {
+    margin-left: 12px;
+}
+
+.bottom-btn {
+    display: flex;
+    justify-content: space-between;
+}
+
+.update-btn{
+    border:none;
+    padding: 5px 10px;
+    background: rgb(41, 84, 98);
+    color: rgb(246, 246, 246);
+    border-radius: 18px;
+    font-size: 13pt;
+    font-weight: 600;
+
+}
+
+.update-btn:hover{
+    background: rgb(20, 107, 230);
+
 }

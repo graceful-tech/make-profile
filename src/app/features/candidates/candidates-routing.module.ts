@@ -54,10 +54,6 @@ const routes: Routes = [
   { path: 'fill-form', component: CandidateMultipleResumeFormComponent },
 
 
-
-
-
-
 ];
 
 @NgModule({
