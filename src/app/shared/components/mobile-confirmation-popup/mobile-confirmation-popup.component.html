@@ -1,31 +1,31 @@
 <div class="refer-popup">
+  <div class="refer-content">
+    <span class="popup-title"> You have chosen </span>
 
-    <div class="refer-content">
+    <span class="popup-subtitle"> Single Page Resume </span>
 
-       
-        <span class="popup-title">
-            You have chosen 
-        </span>
+    <span class="popup-message">
+      Your resume contains more than one page of content. Please review and
+      adjust the content.
+    </span>
 
-        <span class="popup-subtitle">
-            Single Page Resume
-        </span>
+    <div class="button-types" style="margin-top: 15px">
+      <!-- <button class="common-btn proceed-btn" (click)="stillDownload()">Still Download</button> -->
+      <button class="common-btn proceed-btn" (click)="ChangeTemplate()">
+        Change Template
+      </button>
+      <button class="common-btn edit-btn" (click)="EditContent()">
+        Edit Content
+      </button>
 
-        
-        <span class="popup-message">
-            Your resume contains more than one page of content. Please review and adjust the content.
-        </span>
-
-        <div class="button-types" style="margin-top: 15px;">
-            <button class="common-btn proceed-btn" (click)="stillDownload()">Still Download</button>
-            <button class="common-btn edit-btn" (click)="EditContent()">Edit Content</button>
-        </div>
-
-         <div class="bottom-btn" style="margin-top:10px">
-            <button class="change-template"  (click)="ChangeTemplate()">Change Template</button>
-            <button  class="close-popup" (click)="ClosePopup()">Close</button>
-        </div>
-
+       <button class="common-btn close-popup" (click)="ClosePopup()">Close</button>
     </div>
 
+    <!-- <div class="bottom-btn" style="margin-top: 10px">
+      <button class="change-template" (click)="ChangeTemplate()">
+        Change Template
+      </button>  
+      <button class="close-popup" (click)="ClosePopup()">Close</button>  
+    </div> -->
+  </div>
 </div>

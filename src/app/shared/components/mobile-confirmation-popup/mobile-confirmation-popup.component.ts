@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { GlobalService } from 'src/app/services/global.service';
 
 @Component({
   selector: 'app-mobile-confirmation-popup',
@@ -12,6 +13,8 @@ export class MobileConfirmationPopupComponent {
   @Output() editContent = new EventEmitter<any>();
   @Output() closePopup = new EventEmitter<any>();
   @Output() changeTemplate = new EventEmitter<any>();
+
+  constructor(private gs: GlobalService) { }
 
 
   stillDownload() {
@@ -26,6 +29,7 @@ export class MobileConfirmationPopupComponent {
     this.closePopup.emit('close');
   }
   ChangeTemplate() {
+    this.gs.setSinglePageResumeState(true);
     this.changeTemplate.emit('close');
   }
 }

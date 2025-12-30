@@ -2390,13 +2390,22 @@ export class MobileFresherFormPageComponent {
 
     return null;
   }
+
+
+
+
+
   toggleEducation(keys: any) {
     if (keys === 'isSchoolEducationOpen') {
       this.isSchoolEducationOpen = !this.isSchoolEducationOpen;
     }
-    else {
+    else if (keys === 'isDiplomaEducationOpen') {
+      this.isDiplomaEducationOpen = !this.isDiplomaEducationOpen;
+    }
+    else if (keys === 'isCollegeEducationOpen') {
       this.isCollegeEducationOpen = !this.isCollegeEducationOpen;
     }
+
   }
 
   createSchoolEducation(): FormGroup {
@@ -2666,6 +2675,14 @@ export class MobileFresherFormPageComponent {
     });
   }
 
+  savedEducation() {
+    this.startSuggestedProcess();
 
+
+    setTimeout(() => {
+      this.stopProcess();
+    }, 3000);
+
+  }
 
 }

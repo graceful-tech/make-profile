@@ -173,6 +173,7 @@ export class PreviewAndCreateResumeComponent {
   selectedCategory: any;
   resumePaths: any;
   updatePasswordFlag: any;
+  sub!: Subscription;
 
 
   constructor(
@@ -209,10 +210,7 @@ export class PreviewAndCreateResumeComponent {
     this.gs.resumeName$.subscribe((response) => {
       this.templateName = response;
     });
-
   }
-
-
 
   async ngOnInit() {
     this.createCandidateForm();
@@ -227,6 +225,8 @@ export class PreviewAndCreateResumeComponent {
     this.getDiplomaEducationFields();
     this.getAvailableCredits();
 
+    const previewedOnce = localStorage.getItem('previewOnce');
+
     this.gs.allTemplates$.subscribe(response => {
       if (!response) return;
 
@@ -236,8 +236,6 @@ export class PreviewAndCreateResumeComponent {
       this.resumePaths = this.templatesData[this.selectedCategory] ?? [];
     });
 
-
-
     if (this.candidates !== null && this.candidates !== undefined) {
       this.candidateId = this.candidates.id;
       const candidateClone = JSON.parse(JSON.stringify(this.candidates));
@@ -246,8 +244,14 @@ export class PreviewAndCreateResumeComponent {
         this.addAdditoinalDetail = true;
       }
 
-      await this.previewPdfItem();
-      this.showPopupStarting();
+      if (!previewedOnce) {
+        await this.previewPdfItem();
+        this.showPopupStarting();
+      }
+      else {
+        await this.previewPdfByPlaywright();
+        this.showPopupStarting();
+      }
 
     } else {
       await this.getCandidates();
@@ -255,15 +259,21 @@ export class PreviewAndCreateResumeComponent {
       if (this.candidates?.fresher) {
         this.addAdditoinalDetail = true;
       }
-      await this.previewPdfItem();
-      this.showPopupStarting();
 
+      if (!previewedOnce) {
+        await this.previewPdfItem();
+        this.showPopupStarting();
+      } else {
+        await this.previewPdfByPlaywright();
+        this.showPopupStarting();
+      }
     }
+    
     this.getSkillsFromApi();
-    this.candidateForm.valueChanges
+    this.sub = this.candidateForm.valueChanges
       .pipe(
         debounceTime(5000),
-        distinctUntilChanged()
+        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
       )
       .subscribe(() => {
         this.updateDetails();
@@ -2441,6 +2451,8 @@ export class PreviewAndCreateResumeComponent {
 
                     this.htmlcontent = canvas;
                   }
+
+                  localStorage.setItem('previewOnce', 'true');
                   resolve();
                   this.ngxLoaderStop();
                 } catch (err) {
@@ -3269,5 +3281,11 @@ export class PreviewAndCreateResumeComponent {
       this.generateResume();
     });
   }
+
+  ngOnDestroy(): void {
+    localStorage.removeItem('previewOnce');
+    this.sub?.unsubscribe();
+  }
+
 
 }

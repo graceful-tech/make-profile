@@ -25,6 +25,9 @@ export class MobileChangeTemplateComponent {
 
   constructor(private router: Router, private gs: GlobalService, private api: ApiService, private newLoader: LoaderControllerService) {
 
+  }
+
+  ngOnInit() {
     this.gs.allTemplates$.subscribe(response => {
       if (!response) return;
 
@@ -33,7 +36,17 @@ export class MobileChangeTemplateComponent {
       this.selectedCategory = this.categories[0];
       this.resumePaths = this.templatesData[this.selectedCategory] ?? [];
     });
+
+    this.gs.singlePageResumeState$.subscribe((response) => {
+      console.log(response)
+      if (response) {
+        this.selected = 'Multiple Page';
+        this.resumePaths = this.resumePaths.filter((s: any) => s.templateType === 'Multiple Page');
+      }
+    })
   }
+
+
 
   goBack(): void {
     this.router.navigate(['mob-candidate/create-resume']);

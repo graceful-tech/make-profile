@@ -157,7 +157,7 @@ export class MobileCandidateMultipleResumeFormComponent {
 
   ngOnInit() {
     this.createCandidateForm();
-   
+
     this.generateYearList();
     this.getGenderList();
     this.getLanguages();
@@ -2288,10 +2288,12 @@ export class MobileCandidateMultipleResumeFormComponent {
     else if (keys === 'isDiplomaEducationOpen') {
       this.isDiplomaEducationOpen = !this.isDiplomaEducationOpen;
     }
-    else {
+    else if (keys === 'isCollegeEducationOpen') {
       this.isCollegeEducationOpen = !this.isCollegeEducationOpen;
     }
   }
+
+
 
   createSchoolEducation(): FormGroup {
     return this.fb.group({
@@ -2349,7 +2351,7 @@ export class MobileCandidateMultipleResumeFormComponent {
   }
 
   callAISkillAPI(skill: string) {
-    this.startSuggestedProcess();
+
     const route = `content/get-suggested-skills?skills=${skill}`;
     this.api.get(route).subscribe({
       next: (response) => {
@@ -2362,11 +2364,11 @@ export class MobileCandidateMultipleResumeFormComponent {
           this.suggestedSoftSkills = suggested?.softSkills;
           this.suggestedCoreCompentencies = suggested?.coreCompentencies;
 
-          this.stopProcess();
+
         }
       },
       error: (error) => {
-        this.stopProcess();
+
         this.dataLoaded = true;
       },
     });

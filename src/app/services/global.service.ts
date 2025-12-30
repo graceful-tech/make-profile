@@ -62,6 +62,9 @@ export class GlobalService {
   public allTemplates = new BehaviorSubject(null);
   public allTemplates$ = this.allTemplates.asObservable();
 
+  public singlePageResumeState = new BehaviorSubject<boolean>(false);
+  public singlePageResumeState$ = this.singlePageResumeState.asObservable();
+
 
 
   todayEvents: Array<any> = [];
@@ -149,6 +152,10 @@ export class GlobalService {
 
   public setAllTemplates(data: any) {
     this.allTemplates.next(data);
+  }
+
+  public setSinglePageResumeState(data: any) {
+    this.singlePageResumeState.next(data);
   }
 
 
@@ -258,7 +265,7 @@ export class GlobalService {
         this.templatesData = {};
         this.resumePaths = [];
 
-        response.forEach((header:any) => {
+        response.forEach((header: any) => {
           const category = header.templateHeaderName;
 
           if (!this.templatesData[category]) {
@@ -272,7 +279,7 @@ export class GlobalService {
               templateType: tpl.templateType
             };
 
-          
+
             this.templatesData[category].push(templateDetails);
 
           });

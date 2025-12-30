@@ -22,13 +22,16 @@ export class ChangeTemplateComponent {
   selected: string = 'All Page';
 
 
+
   constructor(private router: Router,
     private gs: GlobalService,
     private api: ApiService,
-    private newLoader: LoaderControllerService) { }
+    private newLoader: LoaderControllerService) {
+
+
+  }
 
   ngOnInit() {
-
     this.gs.allTemplates$.subscribe(response => {
       if (!response) return;
 
@@ -37,11 +40,18 @@ export class ChangeTemplateComponent {
       this.selectedCategory = this.categories[0];
       this.resumePaths = this.templatesData[this.selectedCategory] ?? [];
     });
+
+    this.gs.singlePageResumeState$.subscribe((response) => {
+      console.log(response)
+      if (response) {
+        this.selected = 'Multiple Page';
+        this.resumePaths = this.resumePaths.filter((s: any) => s.templateType === 'Multiple Page');
+      }
+    })
   }
 
   openResume(resume: any) {
 
-    console.log('Previewing resume:', resume);
   }
 
   selectTemplate(templateName: string) {
@@ -64,10 +74,10 @@ export class ChangeTemplateComponent {
     if (this.selected !== 'All Page') {
       this.resumePaths = templates.filter((s: any) => s.templateType === this.selected);
     }
-    else{
-       this.resumePaths = templates;
+    else {
+      this.resumePaths = templates;
     }
-     
+
   }
 
 
@@ -92,8 +102,8 @@ export class ChangeTemplateComponent {
     if (this.selected !== 'All Page') {
       this.resumePaths = templates.filter((s: any) => s.templateType === type);
     }
-    else{
-       this.resumePaths = templates;
+    else {
+      this.resumePaths = templates;
     }
   }
 }

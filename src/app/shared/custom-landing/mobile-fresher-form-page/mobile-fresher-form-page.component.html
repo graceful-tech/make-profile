@@ -117,7 +117,7 @@
 
       <div *ngIf="showOtherFields">
         <div class="form-group">
-          <label>Add / Edit Your Skills</label>
+          <label>Add / Remove / Edit Your Skills</label>
           <div class="selected-skills">
             <span
               class="skill-chip"
@@ -409,6 +409,12 @@
                   Remove School Edcuation
                 </button>
               </div>
+
+              <div class="col-12 md:col-6 lg:col-3 mt-2">
+                <button type="button" class="save-btn">
+                  Save School Education
+                </button>
+              </div>
             </div>
 
             <!-- Add Qualification -->
@@ -538,6 +544,9 @@
                 >
                   Remove Diploma/ITI
                 </button>
+              </div>
+              <div class="col-12 md:col-6 lg:col-3 mt-2">
+                <button type="button" class="save-btn">Save Diploma/ITI</button>
               </div>
             </div>
 
@@ -679,6 +688,11 @@
                   Remove College Education
                 </button>
               </div>
+              <div class="col-12 md:col-6 lg:col-3 mt-2">
+                <button type="button" class="save-btn">
+                  Save College Education
+                </button>
+              </div>
             </div>
 
             <!-- Add Qualification -->
@@ -810,7 +824,7 @@
                   style="margin-bottom: 5px; font-size: 15px; font-weight: 500"
                   >Add a responsibility from the suggestions:</span
                 >
-                <div class="form-group"  *ngIf="suggestedRespondibilities">
+                <div class="form-group" *ngIf="suggestedRespondibilities">
                   <div class="selected-skills">
                     <span
                       class="skill-chip"
@@ -1386,8 +1400,8 @@
                 >
                 </tag-input>
                 <span style="color: rgb(88, 86, 86)"
-                  >Eg: Contribute positively to my team , Achieve steady growth
-                  in my field</span
+                  >Goals Example: Contribute positively to my team , Achieve
+                  steady growth in my field</span
                 >
               </div>
             </div>
@@ -1476,7 +1490,7 @@
     </div>
 
     <!-- Navigation Buttons -->
-    <div class="buttons" style="margin-top: 5px">
+    <div class="bottom-button-wrapper"  style="margin-top: 5px">
       <button
         type="button"
         class="backbutton"
@@ -1493,7 +1507,7 @@
         (click)="next()"
         *ngIf="step < 4"
       >
-        Next
+        Save & Next
       </button>
       <span *ngIf="step === 4">
         <button

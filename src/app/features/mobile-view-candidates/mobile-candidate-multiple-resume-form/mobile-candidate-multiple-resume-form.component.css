@@ -16,7 +16,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-   min-height: 100vh;
+  min-height: 100vh;
 }
 
 
@@ -180,7 +180,7 @@ button[disabled] {
   display: flex;
   justify-content: flex-end;
   margin-top: 10px;
-   margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 /* Base wrapper */
@@ -731,4 +731,15 @@ button[disabled] {
 
 .back-btn:hover {
   transform: scale(1.1);
+}
+
+.bottom-button-wrapper {
+  position: sticky;
+  bottom: 0;
+  padding: 16px;
+  width: 100%;
+  background: #ffffff;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
 }

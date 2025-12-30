@@ -204,6 +204,9 @@ export class NewCreateResumeComponent {
   }
 
   async ngAfterViewInit() {
+
+    const previewedOnce = localStorage.getItem('previewOnce');
+
     if (this.templateName === null || this.templateName === undefined) {
       this.templateName = localStorage.getItem('templateName');
     }
@@ -224,15 +227,30 @@ export class NewCreateResumeComponent {
         this.addAdditoinalDetail = true;
       }
 
-      await this.previewPdfItem();
-      this.showPopupStarting();
+
+      if (!previewedOnce) {
+        await this.previewPdfItem();
+        this.showPopupStarting();
+      }
+      else {
+        await this.previewPdfByPlaywright();
+        this.showPopupStarting();
+      }
+
+
     } else {
       await this.getCandidates();
       if (this.candidates?.fresher) {
         this.addAdditoinalDetail = true;
       }
-      await this.previewPdfItem();
-      this.showPopupStarting();
+      if (!previewedOnce) {
+        await this.previewPdfItem();
+        this.showPopupStarting();
+      }
+      else {
+        await this.previewPdfByPlaywright();
+        this.showPopupStarting();
+      }
     }
 
     this.gs.candidateImage$.subscribe((response) => {
@@ -2874,6 +2892,7 @@ export class NewCreateResumeComponent {
 
                     this.htmlcontent = canvas;
                   }
+                  localStorage.setItem('previewOnce', 'true');
                   resolve();
                   this.stopProcess();
                 } catch (err) {
@@ -3066,6 +3085,11 @@ export class NewCreateResumeComponent {
     ref.onClose.subscribe((response) => {
       this.generateResume();
     });
+  }
+
+
+  ngOnDestroy(): void {
+    localStorage.removeItem('previewOnce');
   }
 
 }

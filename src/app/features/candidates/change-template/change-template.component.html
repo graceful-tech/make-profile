@@ -8,6 +8,35 @@
     </div>
   </div>
 
+  <div class="selectedType">
+    <button
+      class="single-page"
+      type="button"
+      (click)="selectedType('All Page')"
+      [class.active]="selected === 'All Page'"
+    >
+      All Page
+    </button>
+    <button
+      class="single-page"
+      type="button"
+      (click)="selectedType('Single Page')"
+      [class.active]="selected === 'Single Page'"
+    >
+      Single Page
+    </button>
+    <button
+      class="multiple-page"
+      type="button"
+      (click)="selectedType('Multiple Page')"
+      [class.active]="selected === 'Multiple Page'"
+    >
+      Multiple Page
+    </button>
+  </div>
+</div>
+
+<div class="selectedType">
   <div class="content-column">
     <div class="category-wrapper">
       <button class="nav-btn left" (click)="scrollLeft()">&#10094;</button>
@@ -31,33 +60,6 @@
   </div>
 </div>
 
-<div class="selectedType">
-  <button
-    class="single-page"
-    type="button"
-    (click)="selectedType('All Page')"
-    [class.active]="selected === 'All Page'"
-  >
-    All Page
-  </button>
-  <button
-    class="single-page"
-    type="button"
-    (click)="selectedType('Single Page')"
-    [class.active]="selected === 'Single Page'"
-  >
-    Single Page
-  </button>
-  <button
-    class="multiple-page"
-    type="button"
-    (click)="selectedType('Multiple Page')"
-    [class.active]="selected === 'Multiple Page'"
-  >
-    Mutiple Page
-  </button>
-</div>
-
 <div>
   <div class="resume-gallery">
     <div class="resume-card" *ngFor="let resume of resumePaths">
@@ -72,5 +74,3 @@
     </div>
   </div>
 </div>
-
- 

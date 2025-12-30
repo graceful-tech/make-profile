@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
+import { GlobalService } from 'src/app/services/global.service';
 
 @Component({
   selector: 'app-confirmation-popup',
@@ -13,6 +14,9 @@ export class ConfirmationPopupComponent {
   @Output() closePopup = new EventEmitter<any>();
   @Output() changeTemplate = new EventEmitter<any>();
 
+  constructor(private gs: GlobalService) {
+
+  }
 
   stillDownload() {
     this.closePopupTap.emit('hai');
@@ -22,10 +26,11 @@ export class ConfirmationPopupComponent {
     this.editContent.emit('hai');
   }
 
-   ClosePopup() {
-     this.closePopup.emit('close');
-   }
-   ChangeTemplate() {
-     this.changeTemplate.emit('close');
-   }
+  ClosePopup() {
+    this.closePopup.emit('close');
+  }
+  ChangeTemplate() {
+    this.gs.setSinglePageResumeState(true);
+    this.changeTemplate.emit('close');
+  }
 }

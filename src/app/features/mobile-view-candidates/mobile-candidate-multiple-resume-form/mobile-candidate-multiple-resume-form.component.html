@@ -116,7 +116,7 @@
 
       <div *ngIf="showOtherFields">
         <div class="form-group">
-          <label>Add / Edit Your Skills</label>
+          <label>Add / Remove / Edit Your Skills</label>
           <div class="selected-skills">
             <span
               class="skill-chip"
@@ -804,28 +804,24 @@
               </div>
 
               <div class="col-12 md:col-6">
-               <span
-                        *ngIf="suggestedRespondibilities"
-                        style="
-                          margin-bottom: 5px;
-                          font-size: 15px;
-                          font-weight: 500;
-                        "
-                        >Add a responsibility from the suggestions:</span
-                      >
-                        <div class="form-group"   *ngIf="suggestedRespondibilities">
-                          <div class="selected-skills">
-                            <span
-                              class="skill-chip"
-                              *ngFor="let response of suggestedRespondibilities"
-                              (click)="addResponsibilities(i, response)"
-                            >
-                              {{ response }} &#43;
-                            </span>
-                          </div>
-                        </div>
+                <span
+                  *ngIf="suggestedRespondibilities"
+                  style="margin-bottom: 5px; font-size: 15px; font-weight: 500"
+                  >Add a responsibility from the suggestions:</span
+                >
+                <div class="form-group" *ngIf="suggestedRespondibilities">
+                  <div class="selected-skills">
+                    <span
+                      class="skill-chip"
+                      *ngFor="let response of suggestedRespondibilities"
+                      (click)="addResponsibilities(i, response)"
+                    >
+                      {{ response }} &#43;
+                    </span>
+                  </div>
+                </div>
                 <div class="field-wrapper">
-                    <label>Responsibilities</label>
+                  <label>Responsibilities</label>
                   <div class="input-wrapper">
                     <tag-input
                       formControlName="responsibilities"
@@ -1389,8 +1385,8 @@
                 >
                 </tag-input>
                 <span style="color: rgb(88, 86, 86)"
-                  >Eg: Contribute positively to my team , Achieve steady growth
-                  in my field</span
+                  >Goals Example: Contribute positively to my team , Achieve
+                  steady growth in my field</span
                 >
               </div>
             </div>
@@ -1478,8 +1474,7 @@
       </div>
     </div>
 
-    <!-- Navigation Buttons -->
-    <div class="buttons" style="margin-top: 5px">
+    <div class="bottom-button-wrapper" style="margin-top: 5px">
       <button
         type="button"
         class="backbutton"
@@ -1496,7 +1491,7 @@
         (click)="next()"
         *ngIf="step < 4"
       >
-        Next
+        Save & Next
       </button>
       <span *ngIf="step === 4">
         <button

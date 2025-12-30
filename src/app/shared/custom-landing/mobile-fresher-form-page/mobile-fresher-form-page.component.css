@@ -425,6 +425,18 @@ button[disabled] {
   width: 100%
 }
 
+.save-btn {
+  background-color: #2575fc;
+  color: white;
+  border: none;
+  padding: 8px 5px;
+  font-size: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-right: 15px;
+  font-weight: 400;
+}
+
 .custom-btn:hover {
   background-color: #2575fc;
 }
@@ -724,4 +736,15 @@ button[disabled] {
 
 .back-btn:hover {
   transform: scale(1.1);
+}
+
+.bottom-button-wrapper {
+  position: sticky;
+  bottom: 0;
+  padding: 16px;
+  width: 100%;
+  background: #ffffff;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
 }

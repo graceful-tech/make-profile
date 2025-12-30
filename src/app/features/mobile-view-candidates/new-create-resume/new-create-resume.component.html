@@ -23,14 +23,14 @@
 
     <button [class.active]="currentTab === 'edit'" (click)="switchTab('edit')">
       ✏️ Edit
-    </button> 
+    </button>
   </div>
 
   <div [hidden]="currentTab !== 'edit'" class="edit-tab">
     <div>
       <form [formGroup]="candidateForm">
         <div class="form-group">
-          <label><strong>Add Skills</strong></label>
+          <label>Add / Remove / Edit Your Skills</label>
           <div class="selected-skills">
             <span
               class="skill-chip"
@@ -512,8 +512,8 @@
                   >
                   </tag-input>
                   <span style="color: rgb(88, 86, 86)"
-                    >Eg: Contribute positively to my team , Achieve steady
-                    growth in my field</span
+                    >Goals Example: Contribute positively to my team , Achieve
+                    steady growth in my field</span
                   >
                 </div>
               </div>
@@ -629,28 +629,27 @@
                   </div>
 
                   <div class="col-12 md:col-6">
-                    
-                      <span
-                        *ngIf="suggestedRespondibilities"
-                        style="
-                          margin-bottom: 5px;
-                          font-size: 15px;
-                          font-weight: 500;
-                        "
-                        >Add a responsibility from the suggestions:</span
-                      >
-                      <div class="form-group" *ngIf="suggestedRespondibilities">
-                        <div class="selected-skills">
-                          <span
-                            class="skill-chip"
-                            *ngFor="let response of suggestedRespondibilities"
-                            (click)="addResponsibilities(i, response)"
-                          >
-                            {{ response }} &#43;
-                          </span>
-                        </div>
+                    <span
+                      *ngIf="suggestedRespondibilities"
+                      style="
+                        margin-bottom: 5px;
+                        font-size: 15px;
+                        font-weight: 500;
+                      "
+                      >Add a responsibility from the suggestions:</span
+                    >
+                    <div class="form-group" *ngIf="suggestedRespondibilities">
+                      <div class="selected-skills">
+                        <span
+                          class="skill-chip"
+                          *ngFor="let response of suggestedRespondibilities"
+                          (click)="addResponsibilities(i, response)"
+                        >
+                          {{ response }} &#43;
+                        </span>
                       </div>
-                   
+                    </div>
+
                     <div class="field-wrapper">
                       <div
                         class="label-wrapper"
@@ -1461,15 +1460,15 @@
       </form>
     </div>
 
-     <div class="bottom-button-preview">
-      <button class="update-btn" (click)="updateDetails()">
-       Save Details
+    <div class="bottom-button-wrapper">
+      <button class="create-btn" (click)="goBack()">
+        <i class="fa fa-home"></i> Home
       </button>
-      
+      <button class="change-template" (click)="updateDetails()">Save Details</button>
     </div>
   </div>
 
-  <div [hidden]="currentTab !== 'preview'"  class="preview-tab">
+  <div [hidden]="currentTab !== 'preview'" class="preview-tab">
     <div class="mobile-preview">
       <div class="pdf-container" #pdfContainer></div>
     </div>
@@ -1505,7 +1504,7 @@
   <app-mobile-confirmation-popup
     (proceedToDownload)="proceedToDownload($event)"
     (editContent)="editContent($event)"
-     (closePopup)="closePopups($event)"
-     (changeTemplate)="changeTemplates($event)"
+    (closePopup)="closePopups($event)"
+    (changeTemplate)="changeTemplates($event)"
   ></app-mobile-confirmation-popup>
 </ng-container>
