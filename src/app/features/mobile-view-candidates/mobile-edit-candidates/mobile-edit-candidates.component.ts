@@ -753,14 +753,6 @@ export class MobileEditCandidatesComponent {
     const projectArray = this.getProjects(experienceIndex);
 
     if (confirmDelete && projectArray.length >= 1) {
-      const removedProject = projectArray.at(projectIndex).value;
-
-      if (removedProject.id) {
-        removedProject.isDeleted = true;
-        const experienceGroup = this.experienceControls.at(experienceIndex);
-        const projectsControl = experienceGroup.get('projects') as FormArray;
-        projectsControl.at(projectIndex).patchValue(removedProject);
-      }
       projectArray.removeAt(projectIndex);
     }
   }

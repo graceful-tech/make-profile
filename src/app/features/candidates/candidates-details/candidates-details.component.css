@@ -280,12 +280,12 @@ img {
   cursor: pointer;
   /* margin-right: 15px; */
   font-style: italic;
-  font-weight: bold;
+ 
 }
 
 .modify-btn {
-  background-color: #19671c;
-  color: white;
+  background-color: #3c8c88;
+  color: rgb(255, 253, 253);
   border: none;
   padding: 8px 12px;
   font-size: 15px;
@@ -296,8 +296,8 @@ img {
 }
 
 .modify-btn:hover {
-  background-color: #30dc16;
-  color: black;
+  background-color: #035f5a;
+  color: rgb(255, 255, 255);
 }
 
 .header-middle {

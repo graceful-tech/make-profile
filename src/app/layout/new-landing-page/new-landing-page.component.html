@@ -1,12 +1,22 @@
 <header id="header" class="header fixed-top d-flex align-items-center">
-   <div *ngIf="!isMobile">
+  <!-- <div *ngIf="!isMobile">
     <a href="#select-template" class="header-hero">Create Resume →</a>
-  </div>
+  </div> -->
   <div class="header-login">
     <a href="#login" class="herologin-btn">Login</a>
     <a href="#create-resume-directly" class="herologin-btn">Create Account</a>
   </div>
 </header>
+
+<!-- Floating Create Resume Button -->
+<div class="floating-create-resume" (click)="selectTemplates()" >
+  <img
+    src="assets/images/create_resume.png"
+    alt="Create Resume"
+   
+  />
+</div>
+
 
 <section class="hero-section">
   <div
@@ -176,7 +186,9 @@
               <div class="hero-content" style="padding: 25px">
                 <h1>Create Your <span>Resume</span> and Apply for Jobs</h1>
 
-                  <a href="#select-template" class="custom-create">Start Your Career</a>
+                <a href="#select-template" class="custom-create"
+                  >Start Your Career</a
+                >
 
                 <p>
                   Build a professional resume in minutes and apply for the right
@@ -353,7 +365,7 @@
 
       <h1>AI that <span>perfects your words</span></h1>
 
-         <a href="#select-template" class="custom-create">Build with AI</a>
+      <a href="#select-template" class="custom-create">Build with AI</a>
 
       <p>
         Let AI instantly create the

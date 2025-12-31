@@ -160,6 +160,8 @@ export class NewLandingPageComponent implements AfterViewInit {
     });
   }
 
-
+selectTemplates(){
+  this.router.navigate(['select-template']);
+}
 
 }

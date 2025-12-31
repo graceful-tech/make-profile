@@ -122,7 +122,7 @@ export class NewCreateResumeComponent {
   achievementsEmptyFields: boolean = false;
   isLoading: boolean = false;
   isVerifying: boolean = false;
-  balanceCredits: any;
+  balanceCredits: any = 0;
   showPopup: boolean = false;
   summaryObjectiveContent: any;
   showErrorPopup: any;
@@ -149,6 +149,7 @@ export class NewCreateResumeComponent {
   selectedCategory: any;
   resumePaths: any;
   updatePasswordFlag: any;
+  haveCredits: boolean = false;
 
 
 
@@ -1444,15 +1445,7 @@ export class NewCreateResumeComponent {
     );
 
     const projectArray = this.getProjects(experienceIndex);
-
     if (confirmDelete && projectArray.length >= 1) {
-      // const removedProject = projectArray.at(projectIndex).value;
-
-      // if (removedProject.id) {
-      //   const experienceGroup = this.experienceControls.at(experienceIndex);
-      //   const projectsControl = experienceGroup.get('projects') as FormArray;
-      //   projectsControl.at(projectIndex).patchValue(removedProject);
-      // }
       projectArray.removeAt(projectIndex);
     }
   }
@@ -2205,6 +2198,11 @@ export class NewCreateResumeComponent {
       this.api.get(route).subscribe({
         next: (response) => {
           this.balanceCredits = response as any;
+
+          if (this.balanceCredits > 0) {
+            this.haveCredits = true;
+          }
+
           resolve();
         },
         error: (err) => {
@@ -2216,51 +2214,49 @@ export class NewCreateResumeComponent {
 
   async createFinalResume() {
 
-    if (
-      this.balanceCredits === null ||
-      this.balanceCredits === undefined ||
-      this.balanceCredits <= 0
-    ) {
-      this.showPopup = true;
-    } else {
-      const templateName = localStorage.getItem('templateName');
 
-      const foundResume: any = Object.values(this.templatesData)
-        .flatMap(resumes => resumes)
-        .find((resume: any) => resume.templateName.trim() === templateName);
+    const templateName = localStorage.getItem('templateName');
 
-      // const pageType: any = this.templatesTypes.find(template => template.templateName === templateName)?.pages
+    const foundResume: any = Object.values(this.templatesData)
+      .flatMap(resumes => resumes)
+      .find((resume: any) => resume.templateName.trim() === templateName);
 
-      const pageType: any = foundResume?.templateType.trim() === 'Single Page' ? 1 : 2;
+    const pageType: any = foundResume?.templateType.trim() === 'Single Page' ? 1 : 2;
 
 
-      if (pageType > 1) {
-        // this.createCandidate();
+    if (pageType > 1) {
+      if (this.updatePasswordFlag !== undefined && this.updatePasswordFlag === 'false') {
+        this.oneLastStep();
+      }
+      else {
+        if (this.haveCredits) {
+          this.generateResume();
+        }
+        else {
+          this.showPopup = true;
+        }
+      }
+    }
+    else {
 
+      if (this.totalPdfPages > 1) {
+        this.showConfirmationPopup = !this.showConfirmationPopup;
+      }
+      else {
         if (this.updatePasswordFlag !== undefined && this.updatePasswordFlag === 'false') {
           this.oneLastStep();
         }
         else {
-          this.generateResume();
-        }
-      }
-      else {
-
-        if (this.totalPdfPages > 1) {
-          this.showConfirmationPopup = !this.showConfirmationPopup;
-        }
-        else {
-          // this.createCandidate();
-
-          if (this.updatePasswordFlag !== undefined && this.updatePasswordFlag === 'false') {
-            this.oneLastStep();
+          if (this.haveCredits) {
+            this.generateResume();
           }
           else {
-            this.generateResume();
+            this.showPopup = true;
           }
         }
       }
     }
+
   }
 
   createResumeAfterPAy(event: any) {
@@ -2683,7 +2679,7 @@ export class NewCreateResumeComponent {
   }
   proceedToDownload(event: any) {
     this.showConfirmationPopup = false
-    // this.createCandidate();
+
 
     if (this.updatePasswordFlag !== undefined && this.updatePasswordFlag === 'false') {
       this.oneLastStep();
@@ -3083,7 +3079,13 @@ export class NewCreateResumeComponent {
     });
 
     ref.onClose.subscribe((response) => {
-      this.generateResume();
+      if (this.haveCredits) {
+        this.generateResume();
+      }
+      else {
+        this.showPopup = true;
+      }
+
     });
   }
 
