@@ -147,7 +147,7 @@ export class PreviewAndCreateResumeComponent {
   certificateEmptyFields: boolean = false;
   achievementsEmptyFields: boolean = false;
   nickName: any;
-  balanceCredits: any;
+  balanceCredits: any = 0;
   showPopup: boolean = false;
   summaryObjectiveContent: any;
   showErrorPopup: boolean = false;
@@ -174,6 +174,7 @@ export class PreviewAndCreateResumeComponent {
   resumePaths: any;
   updatePasswordFlag: any;
   sub!: Subscription;
+  haveCredits: boolean = false;
 
 
   constructor(
@@ -268,7 +269,7 @@ export class PreviewAndCreateResumeComponent {
         this.showPopupStarting();
       }
     }
-    
+
     this.getSkillsFromApi();
     this.sub = this.candidateForm.valueChanges
       .pipe(
@@ -1763,52 +1764,46 @@ export class PreviewAndCreateResumeComponent {
 
   async createFinalResume() {
 
-    if (
-      this.balanceCredits === null ||
-      this.balanceCredits === undefined ||
-      this.balanceCredits <= 0
-    ) {
-      this.showPopup = true;
-    } else {
 
-      const templateName = localStorage.getItem('templateName');
 
-      const foundResume: any = Object.values(this.templatesData)
-        .flatMap(resumes => resumes)
-        .find((resume: any) => resume.templateName.trim() === templateName);
+    const templateName = localStorage.getItem('templateName');
 
-      const pageType: any = foundResume?.templateType.trim() === 'Single Page' ? 1 : 2;
+    const foundResume: any = Object.values(this.templatesData)
+      .flatMap(resumes => resumes)
+      .find((resume: any) => resume.templateName.trim() === templateName);
 
-      if (pageType > 1) {
+    const pageType: any = foundResume?.templateType.trim() === 'Single Page' ? 1 : 2;
 
+    if (pageType > 1) {
+
+      if (this.updatePasswordFlag !== undefined && this.updatePasswordFlag === 'false') {
+        this.oneLastStep();
+      }
+      else {
+        if (!this.haveCredits) {
+          this.showPopup = true;
+        } else {
+          this.generateResume();
+        }
+      }
+    }
+    else {
+      if (this.totalPdfPages > 1) {
+        this.showConfirmationPopup = !this.showConfirmationPopup;
+      }
+      else {
         if (this.updatePasswordFlag !== undefined && this.updatePasswordFlag === 'false') {
           this.oneLastStep();
         }
         else {
-          this.generateResume();
-        }
-
-        // this.oneLastStep();
-        //already details has been saved so directly create the resume
-        // this.createCandidate();
-      }
-      else {
-        if (this.totalPdfPages > 1) {
-          this.showConfirmationPopup = !this.showConfirmationPopup;
-        }
-        else {
-          if (this.updatePasswordFlag !== undefined && this.updatePasswordFlag === 'false') {
-            this.oneLastStep();
-          }
-          else {
+          if (!this.haveCredits) {
+            this.showPopup = true;
+          } else {
             this.generateResume();
           }
-          //already details has been saved so directly create the resume
-          // this.createCandidate();
         }
       }
     }
-
   }
 
   showPopupStarting() {
@@ -1838,6 +1833,10 @@ export class PreviewAndCreateResumeComponent {
       this.api.get(route).subscribe({
         next: (response) => {
           this.balanceCredits = response as any;
+
+          if (this.balanceCredits > 0) {
+            this.haveCredits = true;
+          }
           resolve();
         },
         error: (err) => {
@@ -3270,7 +3269,6 @@ export class PreviewAndCreateResumeComponent {
         mobileNumber: this.candidates?.mobileNumber,
         email: this.candidates?.email
       },
-
       header: '',
       // width: '400px',
       styleClass: 'custom-popup',
@@ -3278,7 +3276,12 @@ export class PreviewAndCreateResumeComponent {
     });
 
     ref.onClose.subscribe((response) => {
-      this.generateResume();
+
+      if (!this.haveCredits) {
+        this.showPopup = true;
+      } else {
+        this.generateResume();
+      }
     });
   }
 
