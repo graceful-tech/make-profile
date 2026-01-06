@@ -145,6 +145,7 @@ export class MobileFresherFormPageComponent {
   showGoalsError: boolean = false;
   showExtraCurricularError: boolean = false;
   suggestedRespondibilities: any;
+  collegeNotStudied: boolean = false;
 
 
 
@@ -385,16 +386,20 @@ export class MobileFresherFormPageComponent {
             }
           }
 
-          if (qualification.length > 0) {
-            const firstGroup = qualification.at(0) as FormGroup;
-            const institutionName = firstGroup.get('institutionName')?.value;
+          if (!this.collegeNotStudied) {
+            if (qualification.length > 0) {
+              const firstGroup = qualification.at(0) as FormGroup;
+              const institutionName = firstGroup.get('institutionName')?.value;
 
-            if (!institutionName || institutionName.trim() === '') {
-              this.showCollegeError = true;
-              this.toast.showToast('error', 'Please Enter the College Details');
-              break;
+              if (!institutionName || institutionName.trim() === '') {
+                this.showCollegeError = true;
+                this.toast.showToast('error', 'Please Enter the College Details');
+                break;
+              }
             }
           }
+
+
           this.step++;
         }
         else {
@@ -2683,6 +2688,11 @@ export class MobileFresherFormPageComponent {
       this.stopProcess();
     }, 3000);
 
+  }
+
+
+  dummysave() {
+    this.toast.showToast('success', "Saved Succeessfully")
   }
 
 }

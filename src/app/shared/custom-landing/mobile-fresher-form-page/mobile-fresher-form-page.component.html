@@ -411,7 +411,7 @@
               </div>
 
               <div class="col-12 md:col-6 lg:col-3 mt-2">
-                <button type="button" class="save-btn">
+                <button type="button" class="save-btn" (click)="dummysave()">
                   Save School Education
                 </button>
               </div>
@@ -546,7 +546,9 @@
                 </button>
               </div>
               <div class="col-12 md:col-6 lg:col-3 mt-2">
-                <button type="button" class="save-btn">Save Diploma/ITI</button>
+                <button type="button" (click)="dummysave()" class="save-btn">
+                  Save Diploma/ITI
+                </button>
               </div>
             </div>
 
@@ -569,6 +571,19 @@
           class="drawer-header"
           (click)="toggleEducation('isCollegeEducationOpen')"
         >
+          <div class="checkbox-row">
+            <p-checkbox
+              [(ngModel)]="collegeNotStudied"
+              [ngModelOptions]="{ standalone: true }"
+              [binary]="true"
+              inputId="collegeNotStudied"
+            ></p-checkbox>
+
+            <label for="collegeNotStudied" class="checkbox-label"
+              >College Not Studied</label
+            >
+          </div>
+
           <h3>College/University Education</h3>
           <span [class.rotate]="isCollegeEducationOpen">⌃</span>
         </div>
@@ -689,7 +704,7 @@
                 </button>
               </div>
               <div class="col-12 md:col-6 lg:col-3 mt-2">
-                <button type="button" class="save-btn">
+                <button type="button" class="save-btn" (click)="dummysave()">
                   Save College Education
                 </button>
               </div>
@@ -1490,7 +1505,7 @@
     </div>
 
     <!-- Navigation Buttons -->
-    <div class="bottom-button-wrapper"  style="margin-top: 5px">
+    <div class="bottom-button-wrapper" style="margin-top: 5px">
       <button
         type="button"
         class="backbutton"

@@ -564,6 +564,18 @@
           <span [class.rotate]="isCollegeEducationOpen">⌃</span>
         </div>
         <div class="drawer-body" *ngIf="isCollegeEducationOpen">
+          <div class="checkbox-row">
+            <p-checkbox
+              [(ngModel)]="collegeNotStudied"
+              [ngModelOptions]="{ standalone: true }"
+              [binary]="true"
+              inputId="collegeNotStudied"
+            ></p-checkbox>
+
+            <label for="collegeNotStudied" class="checkbox-label"
+              >College Not Studied</label
+            >
+          </div>
           <div formArrayName="qualification">
             <div
               *ngFor="

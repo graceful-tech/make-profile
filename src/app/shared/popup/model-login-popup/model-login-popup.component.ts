@@ -68,7 +68,7 @@ export class ModelLoginPopupComponent {
 
   updatePassword() {
 
-    if (this.password?.length > 5) {
+    if (this.password?.length > 3) {
       const mobile = sessionStorage.getItem('mobileNumber');
 
       const route = 'user/update_password'
@@ -92,7 +92,7 @@ export class ModelLoginPopupComponent {
       });
     }
     else {
-      this.showError = false;
+      this.showError = true;
     }
 
 

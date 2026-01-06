@@ -68,6 +68,7 @@ export class NewLandingPageComponent implements AfterViewInit {
     });
  
    this.isMobile = this.isMobileDevice();
+   
   }
 
   ngAfterViewInit(): void { }

@@ -115,7 +115,7 @@
 
       <div *ngIf="showSkillFields">
         <div class="form-group">
-        <label>Add / Remove / Edit Your Skills</label>
+          <label>Add / Remove / Edit Your Skills</label>
           <div class="selected-skills">
             <span
               class="skill-chip"
@@ -410,19 +410,26 @@
                 </div>
 
                 <div class="col-12">
-                 
-                 <span *ngIf="suggestedRespondibilities" style="margin-bottom:5px;font-size:15px;font-weight:500;">Add a responsibility from the suggestions:</span>
-                    <div class="form-group" *ngIf="suggestedRespondibilities">
-                      <div class="selected-skills">
-                        <span
-                          class="skill-chip"
-                          *ngFor="let response of suggestedRespondibilities"
-                          (click)="addResponsibilities(i, response)"
-                        >
-                          {{ response }} &#43;
-                        </span>
-                      </div>
+                  <span
+                    *ngIf="suggestedRespondibilities"
+                    style="
+                      margin-bottom: 5px;
+                      font-size: 15px;
+                      font-weight: 500;
+                    "
+                    >Add a responsibility from the suggestions:</span
+                  >
+                  <div class="form-group" *ngIf="suggestedRespondibilities">
+                    <div class="selected-skills">
+                      <span
+                        class="skill-chip"
+                        *ngFor="let response of suggestedRespondibilities"
+                        (click)="addResponsibilities(i, response)"
+                      >
+                        {{ response }} &#43;
+                      </span>
                     </div>
+                  </div>
                   <div class="field-wrapper">
                     <label>Responsibilities</label>
                     <div class="input-wrapper">
@@ -817,7 +824,7 @@
                       placeholder="Select Qualification"
                       formControlName="qualificationLevel"
                       [filter]="true"
-                     filterBy="filterText"
+                      filterBy="filterText"
                       [filterMatchMode]="'contains'"
                       styleClass="narrow-dropdown"
                     >
@@ -907,6 +914,19 @@
         <h2 class="section-heading">College/University Education</h2>
 
         <div formArrayName="qualification">
+          <div class="checkbox-row">
+            <p-checkbox
+              [(ngModel)]="collegeNotStudied"
+              [ngModelOptions]="{ standalone: true }"
+              [binary]="true"
+              inputId="collegeNotStudied"
+            ></p-checkbox>
+
+            <label for="collegeNotStudied" class="checkbox-label"
+              >College Not Studied</label
+            >
+          </div>
+
           <div
             *ngFor="
               let qualifications of qualificationControls.controls;

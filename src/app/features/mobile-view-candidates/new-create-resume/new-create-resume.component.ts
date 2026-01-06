@@ -150,6 +150,7 @@ export class NewCreateResumeComponent {
   resumePaths: any;
   updatePasswordFlag: any;
   haveCredits: boolean = false;
+  contentModified: boolean = false;
 
 
 
@@ -200,6 +201,10 @@ export class NewCreateResumeComponent {
       this.categories = Object.keys(this.templatesData);
       this.selectedCategory = this.categories[0];
       this.resumePaths = this.templatesData[this.selectedCategory] ?? [];
+    });
+
+    this.candidateForm.valueChanges.subscribe(() => {
+      this.contentModified = true;
     });
 
   }
@@ -345,15 +350,19 @@ export class NewCreateResumeComponent {
   }
 
   switchTab(tab: 'edit' | 'preview') {
-    this.currentTab = tab;
 
-    // if (tab === 'preview') {
-    //   this.updateCandidate();
-    //   setTimeout(() => this.fitPreviewToMobile(), 100);
-    // }
+    if (this.contentModified && tab === 'preview') {
+      this.gs.showMobileMessage('Note..!', 'Save Details To Preview');
+    }
+    else {
+      this.currentTab = tab;
+    }
+
+
   }
 
   updateDetails() {
+    this.contentModified = false;
     this.currentTab = 'preview';
     this.updateCandidate();
     setTimeout(() => this.fitPreviewToMobile(), 100);

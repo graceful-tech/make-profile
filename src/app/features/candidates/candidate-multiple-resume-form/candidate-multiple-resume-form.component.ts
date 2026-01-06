@@ -142,7 +142,8 @@ export class CandidateMultipleResumeFormComponent {
   showGoalsError: boolean = false;
   showExtraCurricularError: boolean = false;
   suggestedRespondibilities: any;
-  firstResponsibilityApiCalled = false;
+  firstResponsibilityApiCalled: boolean = false;
+  collegeNotStudied: boolean = false;
 
 
   constructor(
@@ -383,18 +384,19 @@ export class CandidateMultipleResumeFormComponent {
 
           }
 
-          if (qualification.length > 0) {
-            const firstGroup = qualification.at(0) as FormGroup;
-            const institutionName = firstGroup.get('institutionName')?.value;
+          if (!this.collegeNotStudied) {
+            if (qualification.length > 0) {
+              const firstGroup = qualification.at(0) as FormGroup;
+              const institutionName = firstGroup.get('institutionName')?.value;
 
-            if (!institutionName || institutionName.trim() === '') {
-              this.showCollegeError = true;
-              this.toast.showToast('error', 'Please enter one  College Details');
-              break;
+              if (!institutionName || institutionName.trim() === '') {
+                this.showCollegeError = true;
+                this.toast.showToast('error', 'Please enter one  College Details');
+                break;
+              }
+
             }
-
           }
-
           this.step++;
 
         }
@@ -452,10 +454,10 @@ export class CandidateMultipleResumeFormComponent {
           else if (isCompanyNamePresent && isProjectPresent) {
             this.step++;
           }
-          else if(!isCompanyNamePresent){
+          else if (!isCompanyNamePresent) {
             this.toast.showToast('error', 'Your experience details are incomplete—please fill them in.');
           }
-          else if(!isProjectPresent) {
+          else if (!isProjectPresent) {
             this.toast.showToast('error', 'Your Project details are incomplete—please fill them in.');
           }
         }

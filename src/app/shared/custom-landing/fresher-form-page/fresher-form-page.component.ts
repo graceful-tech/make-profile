@@ -118,7 +118,6 @@ export class FresherFormPageComponent {
   suggestedSkills: any;
   suggestedSoftSkills: any;
   suggestedCoreCompentencies: any;
-
   existingResume = '';
   jobRole = '';
   skills = '';
@@ -143,6 +142,7 @@ export class FresherFormPageComponent {
   showGoalsError: boolean = false;
   showExtraCurricularError: boolean = false;
   suggestedRespondibilities: any;
+  collegeNotStudied: boolean = false;
 
 
   constructor(
@@ -459,16 +459,18 @@ export class FresherFormPageComponent {
 
           }
 
-          if (qualification.length > 0) {
-            const firstGroup = qualification.at(0) as FormGroup;
-            const institutionName = firstGroup.get('institutionName')?.value;
+          if (!this.collegeNotStudied) {
 
-            if (!institutionName || institutionName.trim() === '') {
-              this.showCollegeError = true;
-              this.toast.showToast('error', 'Please Enter the College Details');
-              break;
+            if (qualification.length > 0) {
+              const firstGroup = qualification.at(0) as FormGroup;
+              const institutionName = firstGroup.get('institutionName')?.value;
+
+              if (!institutionName || institutionName.trim() === '') {
+                this.showCollegeError = true;
+                this.toast.showToast('error', 'Please Enter the College Details');
+                break;
+              }
             }
-
           }
 
           this.step++;

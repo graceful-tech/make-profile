@@ -67,7 +67,7 @@ export class MobilePopupComponent {
 
   updatePassword() {
 
-    if (this.password?.length > 5) {
+    if (this.password?.trim().length > 2) {
       const mobile = sessionStorage.getItem('mobileNumber');
 
       const route = 'user/update_password'
@@ -91,7 +91,7 @@ export class MobilePopupComponent {
       });
     }
     else {
-      this.showError = false;
+      this.showError = true;
     }
   }
 }

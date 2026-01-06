@@ -142,6 +142,7 @@ export class MobileCandidateMultipleResumeFormComponent {
   showGoalsError: boolean = false;
   showExtraCurricularError: boolean = false;
   suggestedRespondibilities: any;
+  collegeNotStudied: boolean = false;
 
   constructor(
     private api: ApiService,
@@ -153,6 +154,8 @@ export class MobileCandidateMultipleResumeFormComponent {
     private toast: ToastService,
     private newLoader: LoaderControllerService
   ) {
+
+    console.log(this.collegeNotStudied);
   }
 
   ngOnInit() {
@@ -394,17 +397,21 @@ export class MobileCandidateMultipleResumeFormComponent {
 
           }
 
-          if (qualification.length > 0) {
-            const firstGroup = qualification.at(0) as FormGroup;
-            const institutionName = firstGroup.get('institutionName')?.value;
+          if (!this.collegeNotStudied) {
+            if (qualification.length > 0) {
+              const firstGroup = qualification.at(0) as FormGroup;
+              const institutionName = firstGroup.get('institutionName')?.value;
 
-            if (!institutionName || institutionName.trim() === '') {
-              this.showCollegeError = true;
-              this.toast.showToast('error', 'Please enter one  College Details');
-              break;
+              if (!institutionName || institutionName.trim() === '') {
+                this.showCollegeError = true;
+                this.toast.showToast('error', 'Please enter one  College Details');
+                break;
+              }
+
             }
-
           }
+
+
           this.step++;
         }
         else {

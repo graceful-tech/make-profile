@@ -748,3 +748,18 @@ button[disabled] {
   justify-content: space-between;
   gap: 10px;
 }
+
+
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 10px 0px;
+
+}
+
+.checkbox-label {
+  margin: 0;
+  cursor: pointer;
+  font-size: 14px;
+}
