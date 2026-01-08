@@ -143,6 +143,8 @@ export class FresherFormPageComponent {
   showExtraCurricularError: boolean = false;
   suggestedRespondibilities: any;
   collegeNotStudied: boolean = false;
+  isFresher: boolean = false;
+
 
 
   constructor(
@@ -164,6 +166,8 @@ export class FresherFormPageComponent {
     sessionStorage.removeItem('mobileNumber');
     sessionStorage.removeItem('userId');
     sessionStorage.removeItem('password');
+
+    this.isFresher = localStorage.getItem('isFresher') === 'true' ? true : false;
   }
 
   ngOnInit() {
@@ -2537,7 +2541,7 @@ export class FresherFormPageComponent {
   }
 
   goBack() {
-    this.router.navigate(['choose-direction']);
+    this.router.navigate(['select-template']);
   }
 
   checkAllDetailsMandatoryForFreshers(): boolean {

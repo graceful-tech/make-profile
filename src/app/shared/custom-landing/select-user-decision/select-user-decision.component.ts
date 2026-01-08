@@ -18,17 +18,15 @@ export class SelectUserDecisionComponent {
   }
 
   goToFresher() {
-    
+
     localStorage.setItem('isFresher', 'true');
 
     const sourse = this.isMobileDevice();
- 
+
     if (sourse) {
-
-      this.router.navigate(['mob-fresher-form']);
+      this.router.navigate(['resume-templates']);
     } else {
-
-      this.router.navigate(['fresher-form']);
+      this.router.navigate(['select-template']);
     }
   }
 
@@ -37,19 +35,19 @@ export class SelectUserDecisionComponent {
     const sourse = this.isMobileDevice();
 
     if (sourse) {
-      this.router.navigate(['mob-fresher-form']);
+      this.router.navigate(['resume-templates']);
     } else {
-      this.router.navigate(['fresher-form']);
+      this.router.navigate(['select-template']);
     }
   }
 
   goBack() {
     const sourse = this.isMobileDevice();
     if (sourse) {
-      this.router.navigate(['resume-templates']);
+      this.router.navigate(['']);
     }
     else {
-      this.router.navigate(['select-template']);
+      this.router.navigate(['']);
     }
   }
 }

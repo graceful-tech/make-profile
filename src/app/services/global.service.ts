@@ -272,15 +272,16 @@ export class GlobalService {
             this.templatesData[category] = [];
           }
 
-          header.template.forEach((tpl: any) => {
+          header.template.filter((s: any) => s.visible).forEach((tpl: any) => {
+
             const templateDetails = {
               templateLocation: tpl.templateLocation,
               templateName: tpl.templateName,
               templateType: tpl.templateType
             };
-
-
             this.templatesData[category].push(templateDetails);
+
+
 
           });
         });

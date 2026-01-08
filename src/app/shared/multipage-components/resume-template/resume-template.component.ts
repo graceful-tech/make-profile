@@ -109,7 +109,7 @@ export class ResumeTemplateComponent {
   }
 
   goBack() {
-    this.router.navigate(['']);
+    this.router.navigate(['choose-direction']);
   }
 
   prevResume() {
@@ -143,7 +143,9 @@ export class ResumeTemplateComponent {
 
     this.gs.setResumeName(resumeName);
 
-    this.router.navigate(['choose-direction']);
+    // this.router.navigate(['choose-direction']);
+
+    this.router.navigate(['fresher-form']);
   }
 
   getCandidateById(id: any) {

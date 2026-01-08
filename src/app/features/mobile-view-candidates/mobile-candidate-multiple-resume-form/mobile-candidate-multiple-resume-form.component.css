@@ -757,3 +757,15 @@ button[disabled] {
   cursor: pointer;
   font-size: 14px;
 }
+
+.save-btn {
+  background-color: #2575fc;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  font-size: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  /* margin-right: 15px; */
+  font-weight: 400;
+}

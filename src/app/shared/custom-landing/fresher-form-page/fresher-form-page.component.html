@@ -20,7 +20,7 @@
   <div class="mainContainer">
     <form class="simple-form" #resumeForm="ngForm">
       <div class="form-group">
-        <label>Do you have existing resume?</label>
+        <label class="required">Do you have existing resume?</label>
 
         <div class="input-row">
           <div
@@ -71,7 +71,7 @@
       </div>
 
       <div class="form-group" *ngIf="showSuggestJonFields">
-        <label>What job are you looking for?</label>
+        <label class="required">What job are you looking for?</label>
 
         <div class="input-row">
           <div class="input-container">
@@ -115,7 +115,7 @@
 
       <div *ngIf="showSkillFields">
         <div class="form-group">
-          <label>Add / Remove / Edit Your Skills</label>
+          <label class="required">Add / Remove / Edit Your Skills</label>
           <div class="selected-skills">
             <span
               class="skill-chip"
@@ -164,7 +164,7 @@
 
         <div *ngIf="showAllFields">
           <div class="form-group">
-            <label>Your Name</label>
+            <label class="required">Your Name</label>
             <input
               type="text"
               placeholder="e.g. Keerthi Raj"
@@ -181,7 +181,7 @@
 
           <!-- Mobile Number Field -->
           <div class="form-group">
-            <label>Mobile Number</label>
+            <label class="required">Mobile Number</label>
             <input
               type="tel"
               placeholder="e.g. 9876543210"
@@ -204,7 +204,7 @@
 
           <!-- Email Field -->
           <div class="form-group">
-            <label>Email</label>
+            <label class="required">Email</label>
             <input
               type="email"
               placeholder="e.g. keerthi@gmail.com"
@@ -221,7 +221,7 @@
 
           <!-- Gender Dropdown -->
           <div class="form-group">
-            <label>Gender</label>
+            <label class="required">Gender</label>
             <select
               [(ngModel)]="gender"
               name="gender"
@@ -1073,7 +1073,7 @@
         <div class="grid">
           <div class="col-12 md:col-6 lg:col-3">
             <div class="field-wrapper">
-              <label>Nationality</label>
+              <label [class.required]="isFresher">Nationality</label>
               <div class="input-wrapper">
                 <p-dropdown
                   [options]="nationalityList"
@@ -1096,7 +1096,7 @@
 
           <div class="col-12 md:col-6 lg:col-3">
             <div class="field-wrapper">
-              <label>Marital Status</label>
+              <label [class.required]="isFresher">Marital Status</label>
               <div class="input-wrapper">
                 <p-dropdown
                   [options]="maritalStatus"
@@ -1114,7 +1114,7 @@
 
           <div class="col-12 md:col-6 lg:col-3">
             <div class="field-wrapper">
-              <label>Languages Known</label>
+              <label [class.required]="isFresher">Languages Known</label>
               <div class="input-wrapper">
                 <p-multiSelect
                   [options]="languages"
@@ -1137,7 +1137,7 @@
 
           <div class="col-12 md:col-6 lg:col-3">
             <div class="field-wrapper">
-              <label>DOB</label>
+              <label [class.required]="isFresher">DOB</label>
               <div class="input-wrapper">
                 <p-calendar
                   appendTo="body"
@@ -1162,7 +1162,7 @@
 
           <div class="col-12 md:col-4">
             <div class="field-wrapper">
-              <label>Father Name</label>
+              <label [class.required]="isFresher">Father Name</label>
               <div class="input-wrapper">
                 <input type="text" pInputText formControlName="fatherName" />
               </div>
@@ -1177,7 +1177,7 @@
 
           <div class="col-12 md:col-4">
             <div class="field-wrapper">
-              <label>Hobbies</label>
+              <label [class.required]="isFresher">Hobbies</label>
               <div class="input-wrapper">
                 <p-chips
                   separator=","
@@ -1195,7 +1195,7 @@
 
           <div class="col-12">
             <div class="field-wrapper">
-              <Span>Soft Skills</Span>
+              <label [class.required]="isFresher">Soft Skills</label>
               <div class="form-group">
                 <div class="selected-skills">
                   <span
@@ -1227,7 +1227,7 @@
 
           <div class="col-12">
             <div class="field-wrapper">
-              <label>Core Compentencies.</label>
+              <label [class.required]="isFresher">Core Compentencies.</label>
               <div class="form-group">
                 <div class="selected-skills">
                   <span
@@ -1259,7 +1259,7 @@
 
           <div class="col-12 md:col-6">
             <div class="field-wrapper">
-              <Span>Strengths</Span>
+              <span [class.required]="isFresher">Strengths</span>
               <div class="form-group">
                 <div class="selected-skills">
                   <!-- <span
@@ -1288,7 +1288,7 @@
 
           <div class="col-12 md:col-6">
             <div class="field-wrapper">
-              <Span>Extra Curricular Activities</Span>
+              <span [class.required]="isFresher">Extra Curricular Activities</span>
               <div class="form-group">
                 <div class="selected-skills">
                   <!-- <span
@@ -1320,7 +1320,7 @@
 
           <div class="col-12">
             <div class="field-wrapper">
-              <Span>Goals</Span>
+              <span [class.required]="isFresher">Goals</span>
               <div class="form-group">
                 <div class="selected-skills">
                   <!-- <span
@@ -1351,7 +1351,7 @@
         <div class="grid">
           <div class="col-12 md:col-6">
             <div class="section-heading mt-3">
-              <div>Course & Certificates</div>
+              <label>Course & Certificates</label>
             </div>
             <div formArrayName="certificates">
               <div

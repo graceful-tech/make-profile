@@ -429,11 +429,11 @@ button[disabled] {
   background-color: #2575fc;
   color: white;
   border: none;
-  padding: 8px 5px;
+  padding: 8px 15px;
   font-size: 12px;
   border-radius: 8px;
   cursor: pointer;
-  margin-right: 15px;
+  /* margin-right: 15px; */
   font-weight: 400;
 }
 

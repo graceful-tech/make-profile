@@ -22,7 +22,7 @@
   <div class="mainContainer">
     <form class="simple-form" #resumeForm="ngForm">
       <div class="form-group">
-        <label>Do you have existing resume?</label>
+        <label class="required">Do you have existing resume?</label>
 
         <div class="input-row">
           <div
@@ -73,7 +73,7 @@
       </div>
 
       <div class="form-group" *ngIf="showSuggestJonFields">
-        <label>What job are you looking for?</label>
+        <label class="required">What job are you looking for?</label>
         <div class="input-row">
           <div class="input-container">
             <input
@@ -116,7 +116,7 @@
 
       <div *ngIf="showOtherFields">
         <div class="form-group">
-          <label>Add / Remove / Edit Your Skills</label>
+          <label class="required">Add / Remove / Edit Your Skills</label>
           <div class="selected-skills">
             <span
               class="skill-chip"
@@ -165,7 +165,7 @@
 
           <div *ngIf="showAllFields">
             <div class="form-group">
-              <label>Your Full Name</label>
+              <label class="required">Your Full Name</label>
               <input
                 type="text"
                 placeholder="e.g. Keerthi Raj"
@@ -182,7 +182,7 @@
 
             <!-- Mobile Number Field -->
             <div class="form-group">
-              <label>Mobile Number</label>
+              <label class="required">Mobile Number</label>
               <input
                 type="tel"
                 placeholder="e.g. 9876543210"
@@ -224,7 +224,7 @@
 
             <!-- Gender Dropdown -->
             <div class="form-group">
-              <label>Gender</label>
+              <label class="required">Gender</label>
               <select
                 [(ngModel)]="gender"
                 name="gender"
@@ -400,13 +400,19 @@
               </div>
 
               <!-- Remove Qualification -->
-              <div class="col-12 md:col-6 lg:col-3 mt-2">
+              <div
+                class="col-12 md:col-6 lg:col-3 mt-2"
+                style="display: flex; justify-content: space-between"
+              >
                 <button
                   type="button"
                   class="remove-btn"
                   (click)="removeSchoolEducation(i)"
                 >
                   Remove School/Intermediate
+                </button>
+                <button type="button" class="save-btn" (click)="dummysave()">
+                  Save
                 </button>
               </div>
             </div>
@@ -530,13 +536,20 @@
               </div>
 
               <!-- Remove Qualification -->
-              <div class="col-12 md:col-6 lg:col-3 mt-2">
+              <div
+                class="col-12 md:col-6 lg:col-3 mt-2"
+                style="display: flex; justify-content: space-between"
+              >
                 <button
                   type="button"
                   class="remove-btn"
                   (click)="removeDiplomaEducation(i)"
                 >
                   Remove Diploma/ITI
+                </button>
+
+                <button type="button" class="save-btn" (click)="dummysave()">
+                  Save
                 </button>
               </div>
             </div>
@@ -682,13 +695,20 @@
               </div>
 
               <!-- Remove Qualification -->
-              <div class="col-12 md:col-6 lg:col-3 mt-2">
+              <div
+                class="col-12 md:col-6 lg:col-3 mt-2"
+                style="display: flex; justify-content: space-between"
+              >
                 <button
                   type="button"
                   class="remove-btn"
                   (click)="removeQualification(i)"
                 >
                   Remove College Education
+                </button>
+
+                <button type="button" class="save-btn" (click)="dummysave()">
+                  Save
                 </button>
               </div>
             </div>
@@ -1183,7 +1203,7 @@
 
           <div class="col-12 md:col-6 lg:col-3">
             <div class="field-wrapper">
-              <label>Nationality</label>
+              <label [class.required]="isFresher">Nationality</label>
               <div class="input-wrapper">
                 <p-dropdown
                   [options]="nationalityList"
@@ -1224,7 +1244,7 @@
 
           <div class="col-12 md:col-6 lg:col-3">
             <div class="field-wrapper">
-              <label>Languages Known</label>
+              <label [class.required]="isFresher">Languages Known</label>
               <div class="input-wrapper">
                 <p-multiSelect
                   [options]="languages"
@@ -1247,7 +1267,7 @@
 
           <div class="col-12 md:col-6 lg:col-3">
             <div class="field-wrapper">
-              <label>DOB</label>
+              <label [class.required]="isFresher">DOB</label>
               <div class="input-wrapper">
                 <p-calendar
                   appendTo="body"
@@ -1278,7 +1298,7 @@
 
           <div class="col-12">
             <div class="field-wrapper">
-              <label>Hobbies</label>
+              <label [class.required]="isFresher">Hobbies</label>
               <div class="input-wrapper">
                 <tag-input
                   formControlName="hobbies"
@@ -1302,7 +1322,7 @@
 
           <div class="col-12 md:col-6">
             <div class="field-wrapper">
-              <Span>Strengths</Span>
+              <span [class.required]="isFresher">Strengths</span>
               <div class="form-group">
                 <div class="selected-skills">
                   <!-- <span
@@ -1336,7 +1356,9 @@
 
           <div class="col-12 md:col-6">
             <div class="field-wrapper">
-              <Span>Extra Curricular Activities</Span>
+              <span [class.required]="isFresher"
+                >Extra Curricular Activities</span
+              >
               <div class="form-group">
                 <div class="selected-skills">
                   <!-- <span
@@ -1374,7 +1396,7 @@
 
           <div class="col-12">
             <div class="field-wrapper">
-              <Span>Goals</Span>
+              <span [class.required]="isFresher">Goals</span>
               <div class="form-group">
                 <div class="selected-skills">
                   <!-- <span
@@ -1409,7 +1431,7 @@
 
           <div class="col-12 md:col-6">
             <div class="field-wrapper">
-              <label>Soft Skills</label>
+              <label [class.required]="isFresher">Soft Skills</label>
               <div class="form-group">
                 <div class="selected-skills">
                   <span
@@ -1447,7 +1469,7 @@
 
           <div class="col-12 md:col-6">
             <div class="field-wrapper">
-              <label>Core Competencies</label>
+              <label [class.required]="isFresher">Core Competencies</label>
               <div class="form-group">
                 <div class="selected-skills">
                   <span

@@ -144,6 +144,7 @@ export class CandidateMultipleResumeFormComponent {
   suggestedRespondibilities: any;
   firstResponsibilityApiCalled: boolean = false;
   collegeNotStudied: boolean = false;
+  isFresher: any;
 
 
   constructor(
@@ -157,6 +158,7 @@ export class CandidateMultipleResumeFormComponent {
     private toast: ToastService,
     private newLoader: LoaderControllerService
   ) {
+    this.isFresher = localStorage.getItem('isFresher') === 'true' ? true : false;
 
   }
 
@@ -461,6 +463,17 @@ export class CandidateMultipleResumeFormComponent {
             this.toast.showToast('error', 'Your Project details are incomplete—please fill them in.');
           }
         }
+
+        const Fresher = localStorage.getItem('isFresher');
+
+        if (Fresher === 'true') {
+          const myElement = document.getElementById('fresher')
+          if (myElement !== null) {
+            myElement.classList.add("required");
+          }
+        }
+
+
         break;
 
 

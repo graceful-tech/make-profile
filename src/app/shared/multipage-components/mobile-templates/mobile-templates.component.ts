@@ -123,11 +123,11 @@ export class MobileTemplatesComponent {
 
     this.gs.setResumeName(templateName);
 
-    this.router.navigate(['choose-direction']);
+    this.router.navigate(['mob-fresher-form']);
   }
 
   backToCandidates() {
-    this.router.navigate(['']);
+    this.router.navigate(['choose-direction']);
   }
 
   onTouchStart(event: TouchEvent) {

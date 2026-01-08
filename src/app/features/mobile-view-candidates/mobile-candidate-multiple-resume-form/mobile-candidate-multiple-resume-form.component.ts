@@ -143,6 +143,7 @@ export class MobileCandidateMultipleResumeFormComponent {
   showExtraCurricularError: boolean = false;
   suggestedRespondibilities: any;
   collegeNotStudied: boolean = false;
+  isFresher: any;
 
   constructor(
     private api: ApiService,
@@ -155,7 +156,7 @@ export class MobileCandidateMultipleResumeFormComponent {
     private newLoader: LoaderControllerService
   ) {
 
-    console.log(this.collegeNotStudied);
+    this.isFresher = localStorage.getItem('isFresher') === 'true' ? true : false;
   }
 
   ngOnInit() {
@@ -2583,6 +2584,10 @@ export class MobileCandidateMultipleResumeFormComponent {
         : null,
       percentage: qualification.percentage,
     });
+  }
+
+  dummysave() {
+    this.toast.showToast('success', "Saved Succeessfully")
   }
 
 
