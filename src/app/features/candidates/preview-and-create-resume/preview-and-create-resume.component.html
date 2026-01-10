@@ -9,7 +9,7 @@
             class="custom-blue"
           ></mat-spinner>
           <p class="loading-text">
-           Preview Resume<span class="dot dot1">.</span
+            Preview Resume<span class="dot dot1">.</span
             ><span class="dot dot2">.</span><span class="dot dot3">.</span>
           </p>
         </div>
@@ -31,6 +31,35 @@
     <form [formGroup]="candidateForm">
       <div class="form-group">
         <div class="grid">
+          <div class="col-12 md:col-6">
+            <div class="field-wrapper">
+              <input
+                type="file"
+                #attachment1
+                accept="image/png, image/jpeg, image/jpg, image/webp"
+                (change)="addCandidateImage($event)"
+                style="display: none"
+              />
+              <div class="image-container">
+                <ng-container *ngIf="candidateImageUrl; else other_content">
+                  <button
+                    class="remove-image-btn"
+                    type="button"
+                    (click)="removeCandidateImage()">Remove</button>
+                  <img class="image" [src]="candidateImageUrl" />
+                  <span class="edit-icon" (click)="attachment1.click()">
+                    <i class="fas fa-pencil-alt" Style="font-size: 18px;"></i>
+                  </span>
+                </ng-container>
+                <ng-template #other_content>
+                  <img class="image" src="assets/img/dummy-profile-pic.jpg" />
+                  <span class="edit-icon" (click)="attachment1.click()">
+                    <i class="fas fa-pencil-alt" Style="font-size: 18px;"></i>
+                  </span>
+                </ng-template>
+              </div>
+            </div>
+          </div>
           <div class="col-12 md:col-6">
             <div
               class="fresher-checkbox pb-3"
@@ -1461,7 +1490,7 @@
   <app-confirmation-popup
     (closePopupTap)="proceedToDownload($event)"
     (editContent)="editContent($event)"
-     (closePopup)="closePopups($event)"
-     (changeTemplate)="changeTemplates($event)"
+    (closePopup)="closePopups($event)"
+    (changeTemplate)="changeTemplates($event)"
   ></app-confirmation-popup>
 </ng-container>

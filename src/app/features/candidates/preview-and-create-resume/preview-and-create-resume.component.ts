@@ -201,15 +201,21 @@ export class PreviewAndCreateResumeComponent {
     this.templateName = this.config.data?.templateName;
 
     this.gs.candidateDetails$.subscribe((response) => {
-      this.candidates = response;
+      if (response !== null && response !== undefined) {
+        this.candidates = response;
+      }
+
     });
 
     this.gs.candidateImage$.subscribe((response) => {
-      this.candidateImageUrl = response;
+      if (response !== null && response !== undefined) {
+        this.candidateImageUrl = response;
+      }
     });
-
     this.gs.resumeName$.subscribe((response) => {
-      this.templateName = response;
+      if (response !== null && response !== undefined) {
+        this.templateName = response;
+      }
     });
   }
 
@@ -1328,22 +1334,33 @@ export class PreviewAndCreateResumeComponent {
     });
   }
 
-  addCandidateImage(event: any) {
+  async addCandidateImage(event: any) {
     this.candidateImageAttachments = [];
     this.multipartFile = event.target.files[0];
     this.imageName = this.multipartFile.name;
     const candidateImageAttachment = { fileName: this.multipartFile.name };
     this.candidateImageAttachments.push(candidateImageAttachment);
-    this.updateCandidateImage();
+    await this.updateCandidateImage();
+    this.uploadCandidateImage();
   }
 
-  updateCandidateImage() {
-    var reader = new FileReader();
-    reader.onload = () => {
-      this.candidateImageUrl = reader.result;
-    };
-    reader.readAsDataURL(this.multipartFile);
+  updateCandidateImage(): Promise<void> {
+    return new Promise<void>((resolve) => {
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        this.candidateImageUrl = reader.result;
+        resolve(); // 🔑 MUST call resolve
+      };
+
+      reader.onerror = () => {
+        resolve(); // fail-safe
+      };
+
+      reader.readAsDataURL(this.multipartFile);
+    });
   }
+
 
   uploadCandidateImage() {
     if (
@@ -1707,6 +1724,7 @@ export class PreviewAndCreateResumeComponent {
             const candidateClone = JSON.parse(JSON.stringify(candidate));
 
             this.patchCandidateForm(candidateClone);
+            this.getCandidateImage(candidate?.id);
             this.stopProcess();
             if (
               this.candidates?.summary === null ||
@@ -1729,18 +1747,21 @@ export class PreviewAndCreateResumeComponent {
   }
 
   getCandidateImage(id: any) {
-    const route = 'candidate/get-image';
+    const route = `candidate/get-image?candidateId=${id}`;
 
-    const formData = new FormData();
-    formData.append('candidateId', id);
-
-    this.api.upload(route, formData).subscribe({
+    this.api.getImage(route).subscribe({
       next: (response) => {
-        this.candidateImageUrl = URL.createObjectURL(response);
+        if (response.size > 0) {
+          this.candidateImageUrl = URL.createObjectURL(response);
+        }
+      },
+      error: (err) => {
+        console.error('Error fetching candidate image:', err);
 
       },
     });
   }
+
 
   async payRupees() {
     const confirmedAmount = prompt('Enter final amount in ₹', '10');
@@ -3290,5 +3311,21 @@ export class PreviewAndCreateResumeComponent {
     this.sub?.unsubscribe();
   }
 
+  removeCandidateImage() {
+    this.candidateImageUrl = null;
+
+   const route = `candidate/delete-image?candidateId=${this.candidateId}`;
+
+   this.api.get(route).subscribe({
+      next: (response) => {
+
+      },
+      error: (err) => {
+
+
+      },
+    });
+
+  }
 
 }

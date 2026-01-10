@@ -178,6 +178,38 @@
           <app-make-profile-divider></app-make-profile-divider>
           <div class="section-heading">Personal Details</div>
           <div class="grid">
+            <div class="col-12 md:col-6">
+              <div class="field-wrapper">
+                <input
+                  type="file"
+                  #attachment1
+                  accept="image/png, image/jpeg, image/jpg, image/webp"
+                  (change)="addCandidateImage($event)"
+                  style="display: none"
+                />
+                <div class="image-container">
+                  <ng-container *ngIf="candidateImageUrl; else other_content">
+                    <button
+                      class="remove-image-btn"
+                      type="button"
+                      (click)="removeCandidateImage()"
+                    >
+                      Remove
+                    </button>
+                    <img class="image" [src]="candidateImageUrl" />
+                    <span class="edit-icon" (click)="attachment1.click()">
+                      <i class="fas fa-pencil-alt" Style="font-size: 18px;"></i>
+                    </span>
+                  </ng-container>
+                  <ng-template #other_content>
+                    <img class="image" src="assets/img/dummy-profile-pic.jpg" />
+                    <span class="edit-icon" (click)="attachment1.click()">
+                      <i class="fas fa-pencil-alt" Style="font-size: 18px;"></i>
+                    </span>
+                  </ng-template>
+                </div>
+              </div>
+            </div>
             <div class="col-12">
               <div class="field-wrapper">
                 <div
@@ -1464,11 +1496,16 @@
       <button class="create-btn" (click)="goBack()">
         <i class="fa fa-home"></i> Home
       </button>
-      <button class="change-template" (click)="updateDetails()">Save Details</button>
+      <button class="change-template" (click)="updateDetails()">
+        Save Details
+      </button>
     </div>
   </div>
 
   <div [hidden]="currentTab !== 'preview'" class="preview-tab">
+    <div class="backBtn">
+      <button (click)="backBtn()" class="back-new">Back</button>
+    </div>
     <div class="mobile-preview">
       <div class="pdf-container" #pdfContainer></div>
     </div>

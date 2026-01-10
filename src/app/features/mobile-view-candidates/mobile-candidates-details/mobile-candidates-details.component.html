@@ -590,10 +590,16 @@
                   <input
                     type="file"
                     #attachment1
+                    accept="image/png, image/jpeg, image/jpg, image/webp"
                     (change)="addCandidateImage($event)"
                     style="display: none"
                   />
                   <div class="image-container">
+                    
+                 <button
+                  class="remove-image-btn"
+                  type="button"
+                  (click)="removeCandidateImage()">Remove</button>
                     <ng-container *ngIf="candidateImageUrl; else other_content">
                       <img class="image" [src]="candidateImageUrl" />
                       <span class="edit-icon" (click)="attachment1.click()">
@@ -857,8 +863,8 @@
                     >
                     </tag-input>
                     <span style="color: rgb(88, 86, 86)"
-                      >Eg: Volunteered for social service events , Participated in
-                      college cultural events</span
+                      >Eg: Volunteered for social service events , Participated
+                      in college cultural events</span
                     >
                   </div>
                 </div>
@@ -879,8 +885,8 @@
                     >
                     </tag-input>
                     <span style="color: rgb(88, 86, 86)"
-                      >Goals Example: Contribute positively to my team , Achieve steady
-                      growth in my field</span
+                      >Goals Example: Contribute positively to my team , Achieve
+                      steady growth in my field</span
                     >
                   </div>
                 </div>

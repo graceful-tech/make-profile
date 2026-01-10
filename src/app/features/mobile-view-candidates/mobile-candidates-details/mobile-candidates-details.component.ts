@@ -119,6 +119,7 @@ export class MobileCandidatesDetailsComponent {
   separatorPattern: RegExp = /[ ,;]+/;
   schoolEducation: Array<ValueSet> = [];
   diplomaEducation: Array<ValueSet> = [];
+  imageName: any;
 
 
   constructor(
@@ -639,12 +640,12 @@ export class MobileCandidatesDetailsComponent {
           this.candidates = response as Candidate;
           localStorage.setItem('candidateId', this.candidateId);
 
-          if (
-            this.candidateImageUrl !== undefined &&
-            this.multipartFile !== undefined
-          ) {
-            this.uploadCandidateImage();
-          }
+          // if (
+          //   this.candidateImageUrl !== undefined &&
+          //   this.multipartFile !== undefined
+          // ) {
+          //   this.uploadCandidateImage();
+          // }
 
           this.gs.setCandidateDetails(this.candidates);
 
@@ -933,20 +934,32 @@ export class MobileCandidatesDetailsComponent {
     });
   }
 
-  addCandidateImage(event: any) {
+ async addCandidateImage(event: any) {
     this.candidateImageAttachments = [];
     this.multipartFile = event.target.files[0];
+    this.imageName = this.multipartFile.name;
     const candidateImageAttachment = { fileName: this.multipartFile.name };
     this.candidateImageAttachments.push(candidateImageAttachment);
-    this.updateCandidateImage();
+    await this.updateCandidateImage();
+    this.uploadCandidateImage();
   }
 
-  updateCandidateImage() {
-    var reader = new FileReader();
-    reader.onload = () => {
-      this.candidateImageUrl = reader.result;
-    };
-    reader.readAsDataURL(this.multipartFile);
+
+  updateCandidateImage(): Promise<void> {
+    return new Promise<void>((resolve) => {
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        this.candidateImageUrl = reader.result;
+        resolve(); // 🔑 MUST call resolve
+      };
+
+      reader.onerror = () => {
+        resolve(); // fail-safe
+      };
+
+      reader.readAsDataURL(this.multipartFile);
+    });
   }
 
   uploadCandidateImage() {
@@ -2199,5 +2212,21 @@ export class MobileCandidatesDetailsComponent {
       this.diplomaControls.removeAt(index);
     }
   }
+
+  removeCandidateImage() {
+    this.candidateImageUrl = null;
+
+    const route = `candidate/delete-image?candidateId=${this.candidateId}`;
+    this.api.get(route).subscribe({
+      next: (response) => {
+
+      },
+      error: (err) => {
+
+      },
+    });
+
+  }
+
 
 }

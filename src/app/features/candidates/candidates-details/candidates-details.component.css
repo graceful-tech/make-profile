@@ -977,3 +977,20 @@ footer {
 .menu-link:hover span {
   color: white !important;
 }
+
+
+.remove-image-btn{
+  position: absolute;
+  top: -10px;
+  right: -110px;
+  background: #ff4d4d;
+  border: none;
+  border-radius: 18px;
+  /* width: 25px; */
+  /* height: 25px; */
+  padding: 4px 8px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0px 2px 5px rgba(255, 0, 0, 0.3);
+}

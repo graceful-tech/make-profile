@@ -139,7 +139,7 @@ export class VerifyCandidatesComponent {
     });
 
     this.gs.candidateImage$.subscribe((response) => {
-      if (response !== null) {
+      if (response !== null && response !== undefined) {
         this.candidateImageUrl = response;
       }
     });
@@ -168,18 +168,21 @@ export class VerifyCandidatesComponent {
       this.candidateId = this.candidates.id;
       const candidateClone = JSON.parse(JSON.stringify(this.candidates));
       this.patchCandidateForm(candidateClone);
+      if (
+        this.candidateImageUrl === null &&
+        this.candidateImageUrl === undefined
+      ) {
+        this.getCandidateImage(this.candidateId);
+      }
     } else {
       this.getCandidates();
     }
+
+
   }
 
   ngAfterViewInit() {
-    if (
-      this.candidateImageUrl === null &&
-      this.candidateImageUrl === undefined
-    ) {
-      this.getCandidateImage(this.candidateId);
-    }
+
   }
 
   createCandidateForm() {
@@ -580,8 +583,8 @@ export class VerifyCandidatesComponent {
           this.dataLoaded = true;
           localStorage.setItem('candidateId', this.candidateId);
           this.returnCandidate = response;
-          this.uploadCandidateImage();
-          this.returnCandidate.candidateLogo = this.candidateImageUrl;
+          // this.uploadCandidateImage();
+          // this.returnCandidate.candidateLogo = this.candidateImageUrl;
           this.candidates = response;
           response.candidateLogo = this.candidateImageUrl;
 
@@ -877,22 +880,41 @@ export class VerifyCandidatesComponent {
     });
   }
 
-  addCandidateImage(event: any) {
+  async addCandidateImage(event: any) {
     this.candidateImageAttachments = [];
     this.multipartFile = event.target.files[0];
     this.imageName = this.multipartFile.name;
     const candidateImageAttachment = { fileName: this.multipartFile.name };
     this.candidateImageAttachments.push(candidateImageAttachment);
-    this.updateCandidateImage();
+    await this.updateCandidateImage();
+    this.uploadCandidateImage();
   }
 
-  updateCandidateImage() {
-    var reader = new FileReader();
-    reader.onload = () => {
-      this.candidateImageUrl = reader.result;
-    };
-    reader.readAsDataURL(this.multipartFile);
+  // updateCandidateImage() {
+  //   var reader = new FileReader();
+  //   reader.onload = () => {
+  //     this.candidateImageUrl = reader.result;
+  //   };
+  //   reader.readAsDataURL(this.multipartFile);
+  // }
+
+  updateCandidateImage(): Promise<void> {
+    return new Promise<void>((resolve) => {
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        this.candidateImageUrl = reader.result;
+        resolve(); // 🔑 MUST call resolve
+      };
+
+      reader.onerror = () => {
+        resolve(); // fail-safe
+      };
+
+      reader.readAsDataURL(this.multipartFile);
+    });
   }
+
 
   uploadCandidateImage() {
     if (
@@ -1310,46 +1332,52 @@ export class VerifyCandidatesComponent {
     });
   }
 
-  getCandidates() {
+  getCandidates(): Promise<void> {
     this.newLoader.showLoader(['Please Wait'], 3500);
 
-    const route = 'candidate';
-    this.api.get(route).subscribe({
-      next: (response) => {
-        const candidate = response as Candidate;
-        if (candidate !== null) {
-          this.candidates = candidate;
-          this.candidateId = candidate?.id;
 
-          const candidateClone = JSON.parse(JSON.stringify(candidate));
+    return new Promise<void>((resolve) => {
+      const route = 'candidate';
+      this.api.get(route).subscribe({
+        next: (response) => {
+          const candidate = response as Candidate;
+          if (candidate !== null) {
+            this.candidates = candidate;
+            this.candidateId = candidate?.id;
 
-          this.patchCandidateForm(candidateClone);
-          this.getCandidateImage(candidate?.id);
+            const candidateClone = JSON.parse(JSON.stringify(candidate));
 
-          if (this.candidateId !== null && this.candidateId !== undefined) {
-            this.candidateForm.controls['mobileNumber'].disable();
+            this.patchCandidateForm(candidateClone);
+            this.getCandidateImage(candidate?.id);
+
+            if (this.candidateId !== null && this.candidateId !== undefined) {
+              this.candidateForm.controls['mobileNumber'].disable();
+            }
+            this.stopProcess();
+
           }
           this.stopProcess();
+        },
+        error: (err) => {
+          this.stopProcess();
+        },
+      });
 
-        }
-        this.stopProcess();
-      },
-      error: (err) => {
-        this.stopProcess();
-      },
     });
   }
 
   getCandidateImage(id: any) {
-    const route = 'candidate/get-image';
+    const route = `candidate/get-image?candidateId=${id}`;
 
-    const formData = new FormData();
-    formData.append('candidateId', id);
-
-    this.api.upload(route, formData).subscribe({
+    this.api.getImage(route).subscribe({
       next: (response) => {
-        this.candidateImageUrl = URL.createObjectURL(response);
-        this.dataLoaded = true;
+        if (response.size > 0) {
+          this.candidateImageUrl = URL.createObjectURL(response);
+        }
+      },
+      error: (err) => {
+        console.error('Error fetching candidate image:', err);
+
       },
     });
   }
@@ -1844,4 +1872,19 @@ export class VerifyCandidatesComponent {
     }
   }
 
+
+  removeCandidateImage() {
+    this.candidateImageUrl = null;
+
+    const route = `candidate/delete-image?candidateId=${this.candidateId}`;
+    this.api.get(route).subscribe({
+      next: (response) => {
+
+      },
+      error: (err) => {
+
+      },
+    });
+
+  }
 }

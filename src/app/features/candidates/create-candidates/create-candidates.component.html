@@ -207,11 +207,16 @@
             <input
               type="file"
               #attachment1
+              accept="image/png, image/jpeg, image/jpg, image/webp"
               (change)="addCandidateImage($event)"
               style="display: none"
             />
             <div class="image-container">
               <ng-container *ngIf="candidateImageUrl; else other_content">
+                 <button
+                    class="remove-image-btn"
+                    type="button"
+                    (click)="removeCandidateImage()">Remove</button>
                 <img class="image" [src]="candidateImageUrl" />
                 <span class="edit-icon" (click)="attachment1.click()">
                   <i class="fas fa-pencil-alt" Style="font-size: 18px;"></i>
