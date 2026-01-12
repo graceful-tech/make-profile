@@ -3317,12 +3317,11 @@ export class PreviewAndCreateResumeComponent {
    const route = `candidate/delete-image?candidateId=${this.candidateId}`;
 
    this.api.get(route).subscribe({
+    
       next: (response) => {
 
       },
       error: (err) => {
-
-
       },
     });
 

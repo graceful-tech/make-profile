@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class InterceptorService implements HttpInterceptor {
-  constructor(private router: Router) {}
+  constructor(private router: Router) { }
 
   intercept(
     request: HttpRequest<any>,
@@ -35,14 +35,16 @@ export class InterceptorService implements HttpInterceptor {
       request.url.includes('/open-ai/get-details') ||
       request.url.includes('/resume-ai/upload-resume') ||
       request.url.includes('/user/create-by-resume') ||
-      request.url.includes('/open-ai/get-details-login') || 
+      request.url.includes('/open-ai/get-details-login') ||
       request.url.includes('/resume-ai/upload-ai-resume') ||
-      request.url.includes('/candidate/check_mobile')  ||
-      request.url.includes('/candidate/get-bytearray')  ||
-      request.url.includes('/job-category') || 
-      request.url.includes('/content/get-suggested-skills') || 
-      request.url.includes('/templates/get-all')
-  
+      request.url.includes('/candidate/check_mobile') ||
+      request.url.includes('/candidate/get-bytearray') ||
+      request.url.includes('/job-category') ||
+      request.url.includes('/content/get-suggested-skills') ||
+      request.url.includes('/templates/get-all') ||
+      request.url.includes('/candidate/upload-image')
+
+
     ) {
       console.log('Skipping interceptor for login request');
       return next.handle(request);
