@@ -81,6 +81,7 @@ export class ModelLoginPopupComponent {
       this.api.update(route, payload).subscribe({
         next: (response) => {
 
+           sessionStorage.setItem('updatePassword', 'true');
           // this.router.navigate(['candidate']);
           this.toast.showToast('success', 'Password Updated Successfully');
           this.ref.close('success');

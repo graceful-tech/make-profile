@@ -80,6 +80,7 @@ export class MobilePopupComponent {
       this.api.update(route, payload).subscribe({
         next: (response) => {
 
+          sessionStorage.setItem('updatePassword', 'true');
           // this.router.navigate(['mob-candidate']);
           this.toast.showToast('success', 'Password Updated Successfully');
           this.ref.close('success');
