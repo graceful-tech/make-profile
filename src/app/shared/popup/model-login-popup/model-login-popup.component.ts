@@ -70,12 +70,14 @@ export class ModelLoginPopupComponent {
 
     if (this.password?.length > 3) {
       const mobile = sessionStorage.getItem('mobileNumber');
+       const userId = sessionStorage.getItem('userId');
 
       const route = 'user/update_password'
 
       const payload = {
         mobileNumber: mobile,
-        password: this.password
+        password: this.password,
+        id: userId
       }
 
       this.api.update(route, payload).subscribe({
