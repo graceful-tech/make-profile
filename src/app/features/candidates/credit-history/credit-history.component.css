@@ -11,6 +11,9 @@
   
 }
 
+.profile-wrapper{
+  height: 100vh;
+}
 .header-images {
   width: 100px;
   height: auto;
@@ -23,9 +26,15 @@
 }
 
 .table-container {
-  width: 70%;
-  margin-left:250px;
-  padding-top: 100px;
+  position: relative;
+  /* width: 70%;
+  margin-left:250px; */
+  /* padding-top: 100px; */
+  background: #ffffff;
+  border-radius: 30px;
+  padding: 50px;
+   
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.25);
 }
 
 p-table {
@@ -47,6 +56,8 @@ p-table th {
 
 .title{
     font-size: 20px;
+    margin-left: 20px;
+    font-weight: 600;
 }
 
  

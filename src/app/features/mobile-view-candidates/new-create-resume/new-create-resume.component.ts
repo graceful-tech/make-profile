@@ -233,6 +233,8 @@ export class NewCreateResumeComponent {
         this.addAdditoinalDetail = true;
       }
 
+      this.getCandidateImage(this.candidateId);
+
 
       if (!previewedOnce) {
         await this.previewPdfItem();

@@ -961,20 +961,23 @@ export class CandidatesDetailsComponent {
   checkScore(jobId: any, tenant: any) {
     this.matchingJob = true;
 
+
+    const candidateId: any = localStorage.getItem('candidateId');
+
     const route = 'score-check/get-score';
     const formData = new FormData();
 
     formData.append('jobId', jobId);
-    formData.append('candidateId', this.candidateId);
+    formData.append('candidateId', candidateId);
     formData.append('tenant', tenant);
 
     const payload = {
       jobId: jobId,
-      candidateId: this.candidateId,
+      candidateId: candidateId,
       tenant: tenant,
     };
 
-    this.api.upload(route, formData).subscribe({
+    this.api.retrieve(route, payload).subscribe({
       next: (response) => {
         this.candidateScore = response;
         this.matchingJob = false;
@@ -1021,7 +1024,15 @@ export class CandidatesDetailsComponent {
   //   });
   // }
 
-  async getScore(jobId: any, tenant: any) {
+  async getScore(requirement: any) {
+
+    const checkCandidateAlreadyApplied = this.checkAlreadyCandidateEligiblity(requirement);
+
+    if (checkCandidateAlreadyApplied) {
+      alert('You have already check the eligibility for this job.');
+      return;
+    }
+
     await this.getAvailableCreditsForDynamic();
 
     if (
@@ -1029,12 +1040,26 @@ export class CandidatesDetailsComponent {
       this.balanceCredits === undefined ||
       this.balanceCredits <= 0
     ) {
-      this.toast.showToast('error', "you don't have credits, pay to apply");
+      this.toast.showToast('error', "you don't have credits, pay to check eligibility");
       this.showPopup = true;
     } else {
-      this.checkScore(jobId, tenant);
+      this.checkScore(requirement.jobId, requirement.tenant);
     }
   }
+
+  checkAlreadyCandidateEligiblity(requirement: any): boolean {
+
+    if (!this.checkedScore) {
+      return false;
+    }
+
+    return this.checkedScore.some((score: any) =>
+      score?.jobId === requirement?.jobId &&
+      score?.tenant === requirement?.tenant
+    );
+  }
+
+
 
   createScoreAfterPay(Event: any) {
     this.toast.showToast('success', 'Now you can match with jobs!');
@@ -1997,7 +2022,27 @@ export class CandidatesDetailsComponent {
     return hasCandidateMatch || hasCheckedMatch;
   }
 
-  handleApply(requirement: any): void {
+  async handleApply(requirement: any) {
+
+    const isAlreadyApplied = this.checkCandidateAlreadyApplied(requirement);
+
+    if (isAlreadyApplied) {
+      alert('You have already applied for this job.');
+      return;
+    }
+
+    await this.getAvailableCreditsForDynamic();
+
+    if (
+      this.balanceCredits === null ||
+      this.balanceCredits === undefined ||
+      this.balanceCredits <= 0
+    ) {
+      this.toast.showToast('error', "you don't have credits, pay to Apply for this job");
+      this.showPopup = true;
+      return;
+    }
+
     const isEnabled = this.isButtonEnabled(requirement);
 
     if (isEnabled) {
@@ -2005,6 +2050,16 @@ export class CandidatesDetailsComponent {
     } else {
       alert('Error: You cannot apply for this job at the moment.');
     }
+  }
+
+  checkCandidateAlreadyApplied(requirement: any): boolean {
+
+    return this.appliedJobs?.some(
+      (job: any) =>
+        job.jobId === requirement.jobId && job.tenant === requirement.tenant
+    );
+
+
   }
 
   getCheckedScore() {
@@ -2278,7 +2333,7 @@ export class CandidatesDetailsComponent {
 
     const route = `candidate/delete-image?candidateId=${this.candidateId}`;
 
-  this.api.get(route).subscribe({
+    this.api.get(route).subscribe({
       next: (response) => {
 
       },

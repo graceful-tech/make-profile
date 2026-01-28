@@ -120,6 +120,7 @@ export class MobileCandidatesDetailsComponent {
   schoolEducation: Array<ValueSet> = [];
   diplomaEducation: Array<ValueSet> = [];
   imageName: any;
+  showPopup: boolean = false;
 
 
   constructor(
@@ -934,7 +935,7 @@ export class MobileCandidatesDetailsComponent {
     });
   }
 
- async addCandidateImage(event: any) {
+  async addCandidateImage(event: any) {
     this.candidateImageAttachments = [];
     this.multipartFile = event.target.files[0];
     this.imageName = this.multipartFile.name;
@@ -992,14 +993,21 @@ export class MobileCandidatesDetailsComponent {
 
     const route = 'score-check/get-score';
 
+    const candidateId: any = localStorage.getItem('candidateId');
+
     const formData = new FormData();
     formData.append('jobId', jobId);
     formData.append('candidateId', this.candidateId);
     formData.append('tenant', tenant);
 
-    //const payload = { jobId: jobId, candidateId: candidateIds, tenant: tenant };
+    const payload = {
+      jobId: jobId,
+      candidateId: candidateId,
+      tenant: tenant,
+    };
 
-    this.api.upload(route, formData).subscribe({
+
+    this.api.retrieve(route, payload).subscribe({
       next: (response) => {
         if (response) {
           this.candidateScore = response;
@@ -1016,39 +1024,93 @@ export class MobileCandidatesDetailsComponent {
     });
   }
 
-  getScore(jobId: any, tenant: any) {
-    this.isEligibile = true;
-    const route = 'credits/redeem';
+  // getScore(jobId: any, tenant: any) {
 
-    const userId = sessionStorage.getItem('userId');
+  //   this.isEligibile = true;
+  //   const route = 'credits/redeem';
 
-    const payload = {
-      userId: userId,
-      templateName: 'Applied Job',
-    };
+  //   const userId = sessionStorage.getItem('userId');
 
-    this.api.retrieve(route, payload).subscribe({
-      next: (response) => {
-        this.credits = response as any;
+  //   const payload = {
+  //     userId: userId,
+  //     templateName: 'Applied Job',
+  //   };
 
-        if (this.credits) {
-          this.checkScore(jobId, tenant);
-        } else {
-          this.gs.customMobileMessageWithNickName(
-            'Oops..!',
-            'You don’t have enough credits to check eligibility.',
-            'Applied Job',
-            'Applied Job'
-          );
-          this.isEligibile = false;
-        }
-      },
-      error: (error) => {
-        this.isEligibile = false;
-        this.gs.showMobileMessage('error', 'Error in Matching job');
-      },
+  //   this.api.retrieve(route, payload).subscribe({
+  //     next: (response) => {
+  //       this.credits = response as any;
+
+  //       if (this.credits) {
+  //         this.checkScore(jobId, tenant);
+  //       } else {
+  //         this.gs.customMobileMessageWithNickName(
+  //           'Oops..!',
+  //           'You don’t have enough credits to check eligibility.',
+  //           'Applied Job',
+  //           'Applied Job'
+  //         );
+  //         this.isEligibile = false;
+  //       }
+  //     },
+  //     error: (error) => {
+  //       this.isEligibile = false;
+  //       this.gs.showMobileMessage('error', 'Error in Matching job');
+  //     },
+  //   });
+  // }
+
+  async getScore(requirement: any) {
+
+    const checkCandidateAlreadyApplied = this.checkAlreadyCandidateEligiblity(requirement);
+
+    if (checkCandidateAlreadyApplied) {
+      alert('You have already check the eligibility for this job.');
+      return;
+    }
+
+    await this.getAvailableCreditsForDynamic();
+
+    if (
+      this.balanceCredits === null ||
+      this.balanceCredits === undefined ||
+      this.balanceCredits <= 0
+    ) {
+      this.toast.showToast('error', "you don't have credits, pay to check eligibility");
+      this.showPopup = true;
+    } else {
+      this.checkScore(requirement.jobId, requirement.tenant);
+    }
+  }
+
+   checkAlreadyCandidateEligiblity(requirement: any): boolean {
+
+    if (!this.checkedScore) {
+      return false;
+    }
+
+    return this.checkedScore.some((score: any) =>
+      score?.jobId === requirement?.jobId &&
+      score?.tenant === requirement?.tenant
+    );
+  }
+
+  getAvailableCreditsForDynamic(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const userId = sessionStorage.getItem('userId');
+      const route = `credits/get-available-credits?userId=${userId}`;
+
+      this.api.get(route).subscribe({
+        next: (response) => {
+          this.balanceCredits = response as any;
+          resolve();
+        },
+        error: (err) => {
+          reject(err);
+        },
+      });
     });
   }
+
 
   applyJob(jobId: any, tenant: any) {
     const route = 'applied-job/save';
@@ -1422,6 +1484,13 @@ export class MobileCandidatesDetailsComponent {
       const route = 'hurecom/get-requirements';
 
       const payload = this.requirementForm.getRawValue();
+
+      const skillsList: string[] = payload.skills.map((r: any) =>
+        typeof r === 'string' ? r : r.task || r.value || ''
+      );
+
+      payload.skills = skillsList;
+
 
       (payload['page'] = this.currentPage),
         (payload['limit'] = this.maxLimitPerPage);
@@ -1930,7 +1999,27 @@ export class MobileCandidatesDetailsComponent {
     return hasCandidateMatch || hasCheckedMatch;
   }
 
-  handleApply(requirement: any): void {
+  async handleApply(requirement: any) {
+
+    const isAlreadyApplied = this.checkCandidateAlreadyApplied(requirement);
+
+    if (isAlreadyApplied) {
+      alert('You have already applied for this job.');
+      return;
+    }
+
+    await this.getAvailableCreditsForDynamic();
+
+    if (
+      this.balanceCredits === null ||
+      this.balanceCredits === undefined ||
+      this.balanceCredits <= 0
+    ) {
+      this.toast.showToast('error', "you don't have credits, pay to Apply for this job");
+      this.showPopup = true;
+      return;
+    }
+
     const isEnabled = this.isButtonEnabled(requirement);
 
     if (isEnabled) {
@@ -1938,6 +2027,16 @@ export class MobileCandidatesDetailsComponent {
     } else {
       alert('Error: You cannot apply for this job at the moment.');
     }
+  }
+
+  checkCandidateAlreadyApplied(requirement: any): boolean {
+
+    return this.appliedJobs?.some(
+      (job: any) =>
+        job.jobId === requirement.jobId && job.tenant === requirement.tenant
+    );
+
+
   }
 
   getCheckedScore() {
@@ -2226,6 +2325,14 @@ export class MobileCandidatesDetailsComponent {
       },
     });
 
+  }
+
+  createScoreAfterPay(Event: any) {
+    this.toast.showToast('success', 'Now you can match with jobs!');
+  }
+
+  closePopup(event: any) {
+    this.showPopup = false;
   }
 
 

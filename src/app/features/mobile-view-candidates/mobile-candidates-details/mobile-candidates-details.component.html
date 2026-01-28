@@ -157,7 +157,7 @@
           </div>
         </div>
 
-        <div style="display: flex; justify-content: center">
+        <div class="create-resume-new-btn"  >
           <button class="create-button" (click)="createResume()">
             Click to create resume
           </button>
@@ -514,7 +514,7 @@
                 <td>
                   <button
                     class="small-btn"
-                    (click)="getScore(requirement.jobId, requirement.tenant)"
+                    (click)="getScore(requirement)"
                   >
                     Get Score
                   </button>
@@ -1986,3 +1986,10 @@
 </div>
 
 <footer>&copy; 2025 Makeprofiles. All rights reserved.</footer>
+
+<ng-container *ngIf="showPopup">
+  <app-custom-mobile-message
+    (valueSent)="createScoreAfterPay($event)"
+    (closePopup)="closePopup($event)"
+  ></app-custom-mobile-message>
+</ng-container>

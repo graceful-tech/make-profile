@@ -260,6 +260,8 @@ export class PreviewAndCreateResumeComponent {
         this.showPopupStarting();
       }
 
+      this.getCandidateImage(this.candidateId);
+
     } else {
       await this.getCandidates();
 
@@ -3314,10 +3316,10 @@ export class PreviewAndCreateResumeComponent {
   removeCandidateImage() {
     this.candidateImageUrl = null;
 
-   const route = `candidate/delete-image?candidateId=${this.candidateId}`;
+    const route = `candidate/delete-image?candidateId=${this.candidateId}`;
 
-   this.api.get(route).subscribe({
-    
+    this.api.get(route).subscribe({
+
       next: (response) => {
 
       },
