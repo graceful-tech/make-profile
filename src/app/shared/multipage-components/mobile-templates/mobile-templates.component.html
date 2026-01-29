@@ -83,9 +83,17 @@
 </div>
 
 <div class="overlay" *ngIf="selectedResume" (click)="closePreview()">
+  <button class="close-btn" (click)="closePreview()">&times;</button>
   <img
     [src]="selectedTemplatepath"
     [alt]="selectedResume"
     class="overlay-img"
   />
+
+  <button
+    class="open-Select-template"
+    (click)="openNickNameField(selectedResume)"
+  >
+    Select Template
+  </button>
 </div>

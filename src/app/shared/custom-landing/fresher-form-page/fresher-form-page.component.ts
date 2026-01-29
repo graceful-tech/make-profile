@@ -2486,8 +2486,9 @@ export class FresherFormPageComponent {
   }
 
   callAISkillAPI(skill: string) {
+    const self = this.jobRole + " " + skill;
 
-    const route = `content/get-suggested-skills?skills=${skill}`;
+    const route = `content/get-suggested-skills?skills=${self}`;
     this.api.get(route).subscribe({
       next: (response) => {
         if (response) {

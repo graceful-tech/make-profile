@@ -113,6 +113,8 @@
   align-items: center;
   animation: fadeIn 0.3s ease;
   cursor: zoom-out;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .overlay-img {
@@ -345,4 +347,27 @@
   background: rgb(24, 114, 24);
   color: white;
   transform: scale(1.2);
+}
+
+.selectedType button.active {
+  background: rgb(24, 114, 24);
+  color: white;
+  transform: scale(1.2);
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #fffdfd;
+  border: none;
+  color: rgb(8, 8, 8);
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  transition: 0.3s;
+
 }

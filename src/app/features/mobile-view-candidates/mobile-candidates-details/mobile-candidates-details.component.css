@@ -1304,8 +1304,128 @@ p {
 }
 
 
-.create-resume-new-btn {
+ 
+
+.right-side {
+  position: relative;
+  padding: 0px 20px 0px 10px;
+  background: #ffffff;
+
+}
+
+
+
+ 
+.right-side {
+  animation: fadeSlideUp 1s ease-out forwards;
+  margin-top: 10px;
+
+}
+
+
+.credits {
+  padding: 30px;
+  background: #ffffff;
+  box-shadow: 0 0 55px rgba(0, 0, 0, 0.15);
+  border-radius: 12px;
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.credits:hover {
+  transform: translateY(-6px) scale(1.01);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25);
+}
+
+
+@keyframes gradientMove {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  100% {
+    background-position: 100% 50%;
+  }
+}
+
+.credits-header {
+  /* background: linear-gradient(
+    90deg,
+    #093bb9,
+    #550ec6ea,
+    #38b909
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent; */
+  font-size: 13pt;
+  text-transform: uppercase;
+  font-weight: bold;
+  background:
+    radial-gradient(circle at 20% 30%, #b6f5c2 0%, transparent 40%),
+    radial-gradient(circle at 80% 20%, #ffb3b3 0%, transparent 45%),
+    radial-gradient(circle at 50% 80%, #c7d2ff 0%, transparent 45%),
+    #f9fafb;
+  padding: 10px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeInCredits 4s ease forwards;
+}
+
+@keyframes fadeInCredits {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.details-items {
+  margin: 6px 0;
+  opacity: 0;
+  animation: fadeIn 1s ease forwards;
+}
+
+.details-items:nth-child(1) {
+  animation-delay: 0.3s;
+}
+
+.details-items:nth-child(2) {
+  animation-delay: 0.5s;
+}
+
+
+@media (max-width: 768px) {
+  .separate-fields-items {
+    grid-template-columns: 1fr;
+  }
+}
+
+.credits-body {
+  margin-top: 20px;
+  font-size: 12pt;
+}
+
+ .create-resume-new-btn{
   display: flex;
   justify-content: center;
   animation: fadeSlideUp 1s ease-out forwards;
-}
+ }

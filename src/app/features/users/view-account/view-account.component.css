@@ -1,19 +1,25 @@
 .wrapper {
     background: #fff;
     height: auto;
-    padding:1.5rem;
+    padding: 1.5rem;
     margin: 0 auto;
-    margin-top:10%;
+    margin-top: 10%;
     width: 55%;
-}      
+    border-radius: 30px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    animation: fadeIn 2s ease forwards;
+}
+
+
 
 .align {
 
     align-items: center;
     height: 90vh;
-    
+
 }
-profile-wrapper {
+
+.profile-wrapper {
     margin: auto;
     background: #fff;
     padding: 1.2rem;
@@ -21,49 +27,94 @@ profile-wrapper {
     box-shadow: 0 1px 2px 0 #ffffff;
     overflow: hidden;
     box-sizing: border-box;
-} 
+    font-size: 12pt;
+
+}
 
 header-image {
     position: relative;
     top: 0;
     left: 0;
     width: 100%;
-    background: #fff; 
+    background: #fff;
     z-index: 1000;
-    display: flex;  
-    align-items: center;  
-     justify-content: space-around;  
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
     padding: 10px 10px;
-    
+
 }
 
 .header-images {
     width: 100px;
     height: auto;
-    /* background: #ffffff; */
-     
+
+
 }
 
 
-.right-align{
-    margin-left: 75%; 
+.right-align {
+    margin-left: 70%;
+    border-radius: 48px;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 48px;
+    background: rgb(11, 91, 118);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    color: white;
 }
+
+.right-align:hover {
+
+    background: #0d6efd;
+    color: #fff;
+    transform: scale(1.1);
+}
+
 .account-info {
 
-padding: 1rem;
-margin-left: 0.5rem;
+    padding: 1rem;
+    margin-left: 0.5rem;
 }
 
 .account-info label {
-font-weight: 500;
+    font-weight: 500;
 }
 
 .light-backgroud {
-background: #F8F9FA;
+    background: #F8F9FA;
 }
+
 .right-align-btn {
     float: right;
     margin-right: 15px;
     padding: 1rem;
-  }
-  
+}
+
+.page-container {
+    min-height: 100vh;
+    background-color: #ffffff;
+}
+
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+.move-content-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}

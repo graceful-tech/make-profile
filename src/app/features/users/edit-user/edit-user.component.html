@@ -1,3 +1,5 @@
+<div class="page-container">
+
 <div class="header-image">
   <img class="header-images" src="assets/images/logo.png" alt="Header Image" />
   <p-button (onClick)="goBack()" label="Back" class="right-align-btn "></p-button>
@@ -46,14 +48,16 @@
       <div class="col-2"><label>Password</label></div>
       <div class="col-10" style="display: flex; align-items: center">
         <input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="user.password" class="form-control" />
-        <button type="button" (click)="togglePassword()" style="margin-left: 10px">
+        <button type="button" (click)="togglePassword()" class="eye-btn" style="">
           <i [ngClass]="showPassword ? 'pi pi-eye-slash' : 'pi pi-eye'"></i>
         </button>
       </div>
     </div>
 
     <div class="mt-4 btn-primary">
-      <p-button (onClick)="saveUser()" class="btn-primary">Save</p-button>
+      <button (click)="saveUser()" class="save-btn">Save</button>
     </div>
   </div>
+</div>
+
 </div>

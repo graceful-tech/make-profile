@@ -2359,8 +2359,9 @@ export class MobileCandidateMultipleResumeFormComponent {
   }
 
   callAISkillAPI(skill: string) {
+    const self = this.jobRole + " " + skill;
 
-    const route = `content/get-suggested-skills?skills=${skill}`;
+    const route = `content/get-suggested-skills?skills=${self}`;
     this.api.get(route).subscribe({
       next: (response) => {
         if (response) {
@@ -2590,5 +2591,21 @@ export class MobileCandidateMultipleResumeFormComponent {
     this.toast.showToast('success', "Saved Succeessfully")
   }
 
+  validateSkills(name: string) {
+    if (!this.isFresher) return;
+
+    const payload = this.candidateForm.getRawValue();
+
+    const skillsList: string[] = payload?.[name]?.map((r: any) =>
+      typeof r === 'string' ? r : r.task || r.value || ''
+    ) || [];
+
+    if (skillsList.length < 3) {
+      this.toast.showToast('info', `Enter at least 3 ${name}.`);
+      return false;
+    }
+
+    return true;
+  }
 
 }

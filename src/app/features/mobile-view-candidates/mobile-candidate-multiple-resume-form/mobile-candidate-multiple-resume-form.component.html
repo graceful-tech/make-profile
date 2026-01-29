@@ -1308,6 +1308,8 @@
                   [addOnBlur]="true"
                   [trimTags]="true"
                   [editable]="true"
+                  (onAdd)="validateSkills('hobbies')"
+                  (onRemove)="validateSkills('hobbies')"
                 >
                 </tag-input>
                 <span style="color: rgb(88, 86, 86)"
@@ -1342,6 +1344,8 @@
                   [addOnBlur]="true"
                   [trimTags]="true"
                   [editable]="true"
+                  (onAdd)="validateSkills('strengths')"
+                  (onRemove)="validateSkills('strengths')"
                 >
                 </tag-input>
                 <span style="color: rgb(88, 86, 86)"
@@ -1452,6 +1456,8 @@
                   [addOnBlur]="true"
                   [trimTags]="true"
                   [editable]="true"
+                  (onAdd)="validateSkills('softSkills')"
+                  (onRemove)="validateSkills('softSkills')"
                 >
                 </tag-input>
                 <span style="color: rgb(88, 86, 86)"
@@ -1490,6 +1496,8 @@
                   [addOnBlur]="true"
                   [trimTags]="true"
                   [editable]="true"
+                  (onAdd)="validateSkills('coreCompentencies')"
+                  (onRemove)="validateSkills('coreCompentencies')"
                 >
                 </tag-input>
                 <span style="color: rgb(88, 86, 86)"

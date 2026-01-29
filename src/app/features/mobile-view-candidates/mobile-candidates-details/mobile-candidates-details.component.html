@@ -157,10 +157,32 @@
           </div>
         </div>
 
-        <div class="create-resume-new-btn"  >
+        <div class="create-resume-new-btn">
           <button class="create-button" (click)="createResume()">
             Click to create resume
           </button>
+        </div>
+
+        <div class="right-side">
+          <div class="credits">
+            <div class="credits-header">Your Credits</div>
+            <div class="credits-body">
+              <div class="details-items">
+                <strong>Name:</strong>
+                {{
+                  user
+                    ? user.name.charAt(0).toUpperCase() +
+                      user.name.substring(1, user.name.length)
+                    : "Name"
+                }}
+              </div>
+
+              <div class="details-items">
+                <strong>Available Credits:</strong>
+                {{ balanceCredits ? balanceCredits : 0 }}
+              </div>
+            </div>
+          </div>
         </div>
         <br />
 
@@ -428,7 +450,7 @@
                   <span
                     [ngClass]="{
                       green: score?.score > 59,
-                      red: score?.score <= 59
+                      red: score?.score <= 59,
                     }"
                   >
                     {{ score?.score !== null ? score?.score : "-" }}
@@ -444,15 +466,15 @@
                   <span
                     [ngClass]="{
                       green: score?.related === true,
-                      red: score?.related === false
+                      red: score?.related === false,
                     }"
                   >
                     {{
                       score?.score !== null && score?.related === true
                         ? "MATCHED"
                         : score?.score === null
-                        ? "-"
-                        : "NOT MATCHED"
+                          ? "-"
+                          : "NOT MATCHED"
                     }}
                   </span>
                 </td>
@@ -467,7 +489,7 @@
                     <span
                       [ngClass]="{
                         green: candidateScore?.score > '59',
-                        red: candidateScore?.score <= 59
+                        red: candidateScore?.score <= 59,
                       }"
                     >
                       {{
@@ -489,7 +511,7 @@
                     <span
                       [ngClass]="{
                         green: candidateScore?.related === true,
-                        red: candidateScore?.related === false
+                        red: candidateScore?.related === false,
                       }"
                     >
                       {{
@@ -497,8 +519,8 @@
                         candidateScore?.related === true
                           ? "MATCHED"
                           : candidateScore?.score === null
-                          ? "-"
-                          : "NOT MATCHED"
+                            ? "-"
+                            : "NOT MATCHED"
                       }}</span
                     >
                   </td>
@@ -512,10 +534,7 @@
                 </ng-template>
 
                 <td>
-                  <button
-                    class="small-btn"
-                    (click)="getScore(requirement)"
-                  >
+                  <button class="small-btn" (click)="getScore(requirement)">
                     Get Score
                   </button>
                 </td>
@@ -595,11 +614,13 @@
                     style="display: none"
                   />
                   <div class="image-container">
-                    
-                 <button
-                  class="remove-image-btn"
-                  type="button"
-                  (click)="removeCandidateImage()">Remove</button>
+                    <button
+                      class="remove-image-btn"
+                      type="button"
+                      (click)="removeCandidateImage()"
+                    >
+                      Remove
+                    </button>
                     <ng-container *ngIf="candidateImageUrl; else other_content">
                       <img class="image" [src]="candidateImageUrl" />
                       <span class="edit-icon" (click)="attachment1.click()">
@@ -1177,7 +1198,10 @@
             </ng-container>
 
             <div
-              *ngIf="candidateForm.errors?.['fresherOrExperienceRequired'] && candidateForm.touched"
+              *ngIf="
+                candidateForm.errors?.['fresherOrExperienceRequired'] &&
+                candidateForm.touched
+              "
               style="color: red; margin-top: 5px"
             >
               Please select Fresher OR add at least one Experience.

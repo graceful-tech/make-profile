@@ -1,21 +1,21 @@
 .header-image {
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 10px;
-    background-color: #fff;
-    flex-shrink: 0;
-    margin-bottom: 8px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  background-color: #fff;
+  flex-shrink: 0;
+  margin-bottom: 8px;
 }
 
 .header-images {
-    height: 50px;
+  height: 50px;
 }
 
 
 .right-align {
-    margin-left: auto;
+  margin-left: auto;
 }
 
 p-table {
@@ -36,7 +36,7 @@ p-table th {
 }
 
 .table-container {
-  width: 90%;
+  /* width: 90%; */
   margin: 0 auto;
   padding-top: 25px;
 }
@@ -45,9 +45,9 @@ p-table th {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 0 auto 6px auto;  
+  margin: 0 auto 6px auto;
   padding-top: 50px;
-  width: 90%;   
+  width: 90%;
 }
 
 .title {
@@ -59,4 +59,13 @@ p-table th {
   font-size: 15px;
   color: #141313;
   font-weight: bold;
+}
+
+.profile-wrapper {
+  height: 100vh;
+  padding: 1.2rem 1rem 1.5rem 1rem;
+}
+
+.p-paginator .p-paginator-pages .p-paginator-page{
+  min-width: 2rem;
 }

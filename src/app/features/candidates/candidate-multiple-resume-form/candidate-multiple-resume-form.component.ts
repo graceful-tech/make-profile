@@ -2263,8 +2263,8 @@ export class CandidateMultipleResumeFormComponent {
 
   callAISkillAPI(skill: string) {
 
-
-    const route = `content/get-suggested-skills?skills=${skill}`;
+    const self = this.jobRole + " " + skill;
+    const route = `content/get-suggested-skills?skills=${self}`;
     this.api.get(route).subscribe({
       next: (response) => {
         if (response) {
@@ -2523,5 +2523,19 @@ export class CandidateMultipleResumeFormComponent {
       percentage: qualification.percentage,
     });
   }
+
+  // validateSkills(name: string) {
+  //   if (!this.isFresher) return;
+
+  //   const skillsList: string[] = this.candidateForm.get(name)?.value || [];
+
+  //   if (skillsList.length < 3) {
+  //     this.toast.showToast('info', `Enter at least 3 ${name}.`);
+  //     return false;
+  //   }
+
+  //   return true;
+  // }
+
 }
 

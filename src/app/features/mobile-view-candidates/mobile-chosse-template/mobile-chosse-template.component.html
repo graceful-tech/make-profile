@@ -1,6 +1,3 @@
- 
-
-
 <div class="profile-wrapper">
   <button class="back-btn" (click)="backToCandidates()">← Back</button>
   <h2 class="resume-header">Choose Template</h2>
@@ -86,10 +83,17 @@
 </div>
 
 <div class="overlay" *ngIf="selectedResume" (click)="closePreview()">
+  <button class="close-btn" (click)="closePreview()">&times;</button>
   <img
     [src]="selectedTemplatepath"
     [alt]="selectedResume"
     class="overlay-img"
   />
-</div>
 
+  <button
+    class="open-Select-template"
+    (click)="openNickNameField(selectedResume)"
+  >
+    Select Template
+  </button>
+</div>
