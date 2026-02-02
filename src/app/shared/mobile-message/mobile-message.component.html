@@ -1,7 +1,8 @@
-
 <div class="p-dialog-content">
-    <div class="message">{{message}}</div>
+  <div class="message">{{ message }}</div>
 </div>
-<div class="p-dialog-footer">
-    <p-button label="Ok" (onClick)="close()"></p-button>
+<div class="p-dialog-footer fotter-btns">
+  <button  class="btn close" (click)="close()">Close</button>
+
+  <button  class="btn exit" (click)="update()">Save</button>
 </div>

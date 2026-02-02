@@ -48,6 +48,7 @@ import { SchoolEducation } from 'src/app/models/candidates/schoolEducation';
 import { DiplomaEducation } from 'src/app/models/candidates/diploma-education';
 import { ModelLoginPopupComponent } from 'src/app/shared/popup/model-login-popup/model-login-popup.component';
 import { MobilePopupComponent } from 'src/app/shared/popup/mobile-popup/mobile-popup.component';
+import { MobileMessageComponent } from 'src/app/shared/mobile-message/mobile-message.component';
 
 
 @Component({
@@ -354,13 +355,33 @@ export class NewCreateResumeComponent {
   switchTab(tab: 'edit' | 'preview') {
 
     if (this.contentModified && tab === 'preview') {
-      this.gs.showMobileMessage('Note..!', 'Save Details To Preview');
+      this.showMobileMessage('Note..!', 'Save Details To Preview');
     }
     else {
       this.currentTab = tab;
     }
+  }
 
+  showMobileMessage(status: string, message: string) {
+    const ref = this.dialog.open(MobileMessageComponent, {
+      data: {
+        message: message,
+      },
+      closable: false,
+      header: status,
+      width: '90%',
 
+    });
+
+    ref.onClose.subscribe((response) => {
+      if (response === 'success') {
+        this.updateDetails();
+      }
+      else {
+        this.contentModified = false;
+        this.currentTab = 'preview';
+      }
+    });
   }
 
   updateDetails() {
@@ -368,7 +389,6 @@ export class NewCreateResumeComponent {
     this.currentTab = 'preview';
     this.updateCandidate();
     setTimeout(() => this.fitPreviewToMobile(), 100);
-
   }
 
   fitPreviewToMobile() { }

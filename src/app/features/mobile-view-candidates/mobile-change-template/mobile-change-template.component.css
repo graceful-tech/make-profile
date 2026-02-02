@@ -371,3 +371,13 @@
   transition: 0.3s;
 
 }
+
+  .open-Select-template {
+   font-size: 16px;
+   border: none;
+   padding: 10px 20px;
+   background: linear-gradient(90deg, #0078ff, #00c6ff);
+   color: white;
+   border-radius: 50px;
+   font-weight: 600;
+ }

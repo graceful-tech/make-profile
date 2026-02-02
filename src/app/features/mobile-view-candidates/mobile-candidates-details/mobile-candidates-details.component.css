@@ -790,9 +790,10 @@ ngx-ui-loader .ngx-ui-loader__fg {
   padding: 10px 20px;
   font-size: 14px;
   font-weight: 500;
-  border-radius: 8px;
+  border-radius: 48px;
   cursor: pointer;
   transition: background 0.3s;
+
 }
 
 .browse-btn:hover {
@@ -982,6 +983,7 @@ ngx-ui-loader .ngx-ui-loader__fg {
   border-radius: 48px;
   cursor: pointer;
   transition: background 0.3s;
+  animation: fadeInCredits 4s ease forwards;
 }
 
 .new-btn {
@@ -994,6 +996,7 @@ ngx-ui-loader .ngx-ui-loader__fg {
   border-radius: 48px;
   cursor: pointer;
   transition: background 0.3s;
+  animation: fadeInCredits 4s ease forwards;
 }
 
 footer {

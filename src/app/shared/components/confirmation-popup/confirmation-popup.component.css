@@ -74,8 +74,8 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     margin-bottom: 5px;
-   
-    
+
+
 }
 
 
@@ -144,7 +144,7 @@
 
     .popup-subtitle {
         font-size: 27px !important;
-        
+
         margin-bottom: 8px !important;
     }
 
@@ -193,13 +193,13 @@
     right: 30px;
     background: lightcoral;
     border: none;
-    font-size: 22px;
-    font-weight: bold;
+    font-size: 16px;
+    font-weight: 400;
     cursor: pointer;
     color: #000000;
     transition: transform 0.2s ease, color 0.2s ease;
     border-radius: 18px;
-    padding:5px 12px;
+    padding: 5px 12px;
 }
 
 .close-btn:hover {
@@ -227,4 +227,14 @@
 .change-template-btn:hover {
     transform: scale(1.05);
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+
+.popup-icon {
+    font-size: 23px;
+    font-weight: 700;
+    color: red;
+    margin: 8px 0px;
+    display: flex;
+    justify-content: center;
 }

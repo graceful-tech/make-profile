@@ -7,3 +7,26 @@
     display: flex;
     justify-content: flex-end;
 }
+
+.fotter-btns{
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.btn{
+    border: none;
+    border-radius: 20px;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    color: white;
+    cursor: pointer;
+}
+
+.close {
+    background: linear-gradient(135deg, #4A90E2, #007AFF);
+}
+.exit {
+    background: linear-gradient(135deg, #85ac24, #5d8005);
+}

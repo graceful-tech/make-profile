@@ -133,17 +133,17 @@ export class MobileFresherFormPageComponent {
   showCoreCompentenciesError: boolean = false;
   showHobbiesError: boolean = false;
   schoolEducation: Array<ValueSet> = [];
-  showLanguageKnownError: boolean = false;
+  showLanguagesKnownError: boolean = false;
   showNationalityError: boolean = false;
   showFatherNameError: boolean = false;
   showDobError: boolean = false;
-  showMartialError: boolean = false;
+  showMaritalStatusError: boolean = false;
   diplomaEducationlength: number = 0;
   diplomaEducation: Array<ValueSet> = [];
   isDiplomaEducationOpen = false;
   showStrengthsError: boolean = false;
   showGoalsError: boolean = false;
-  showExtraCurricularError: boolean = false;
+  showExtraCurricularActivitiesError: boolean = false;
   suggestedRespondibilities: any;
   collegeNotStudied: boolean = false;
   isFresher: boolean = false;
@@ -2532,13 +2532,13 @@ export class MobileFresherFormPageComponent {
 
 
     this.showNationalityError = false;
-    this.showLanguageKnownError = false;
+    this.showLanguagesKnownError = false;
     this.showFatherNameError = false;
     this.showDobError = false;
-    this.showMartialError = false;
+    this.showMaritalStatusError = false;
     this.showStrengthsError = false;
     this.showGoalsError = false;
-    this.showExtraCurricularError = false;
+    this.showExtraCurricularActivitiesError = false;
     this.showSoftSkillsError = false;
     this.showCoreCompentenciesError = false;
     this.showHobbiesError = false;
@@ -2559,13 +2559,13 @@ export class MobileFresherFormPageComponent {
       valueCheck = false
     }
 
-    if (!nationality || nationality.length === 0) {
+    if (!nationality || nationality === null) {
       this.showNationalityError = true
       valueCheck = false
     }
 
     if (!languageKnown || languageKnown.length === 0) {
-      this.showLanguageKnownError = true;
+      this.showLanguagesKnownError = true;
       valueCheck = false
     }
 
@@ -2580,11 +2580,11 @@ export class MobileFresherFormPageComponent {
     }
 
     if (!martialStatus || martialStatus === null) {
-      this.showMartialError = true
+      this.showMaritalStatusError = true
       valueCheck = false
     }
 
-    if (!strengths || strengths.length === 0) {
+    if (!strengths || strengths.length < 3) {
       this.showStrengthsError = true;
       valueCheck = false
     }
@@ -2595,7 +2595,7 @@ export class MobileFresherFormPageComponent {
     }
 
     if (!extraCurricularActivities || extraCurricularActivities.length === 0) {
-      this.showExtraCurricularError = true;
+      this.showExtraCurricularActivitiesError = true;
       valueCheck = false
     }
 
@@ -2714,9 +2714,80 @@ export class MobileFresherFormPageComponent {
       return false;
     }
 
+    const uniquenames: any = 'show' + name.charAt(0).toUpperCase() + name.slice(1) + 'Error';
+
+    (this as any)[uniquenames] = false;
+
     return true;
   }
 
+  validateField(fieldName: string) {
+    if (fieldName === 'fatherName' && this.isFresher) {
+      const fatherName = this.candidateForm.get('fatherName')?.value;
+      if (!fatherName || fatherName.trim() === '') {
+        this.showFatherNameError = true;
+      } else {
+        this.showFatherNameError = false;
+      }
+    }
 
+  }
+
+  validateDropDown(fieldName: string) {
+    if (!this.isFresher) return;
+    const dropDown = this.candidateForm.get(fieldName)?.value;
+    if (!dropDown || dropDown === null) {
+      const uniquenames: any = 'show' + fieldName.charAt(0).toUpperCase() + fieldName.slice(1) + 'Error';
+      (this as any)[uniquenames] = true;
+    } else {
+      const uniquenames: any = 'show' + fieldName.charAt(0).toUpperCase() + fieldName.slice(1) + 'Error';
+      (this as any)[uniquenames] = false;
+    }
+  }
+
+  validateMultiSelect(fieldName: string) {
+    if (!this.isFresher) return;
+    const dropDown = this.candidateForm.get(fieldName)?.value;
+    if (!dropDown || dropDown === null || dropDown.length === 0) {
+      const uniquenames: any = 'show' + fieldName.charAt(0).toUpperCase() + fieldName.slice(1) + 'Error';
+      (this as any)[uniquenames] = true;
+    } else {
+      const uniquenames: any = 'show' + fieldName.charAt(0).toUpperCase() + fieldName.slice(1) + 'Error';
+      (this as any)[uniquenames] = false;
+    }
+  }
+
+
+
+  validategoals(name: string) {
+    if (!this.isFresher) return;
+
+    const payload = this.candidateForm.getRawValue();
+
+    const skillsList: string[] = payload?.[name]?.map((r: any) =>
+      typeof r === 'string' ? r : r.task || r.value || ''
+    ) || [];
+
+    if (skillsList.length < 1) {
+      this.toast.showToast('info', `Enter at least 1 ${name}.`);
+      return false;
+    }
+
+    const uniquenames: any = 'show' + name.charAt(0).toUpperCase() + name.slice(1) + 'Error';
+
+    (this as any)[uniquenames] = false;
+
+    return true;
+  }
+
+  validateDate(fieldName: string) {
+    if (!this.isFresher) return;
+    const dateValue = this.candidateForm.get(fieldName)?.value;
+    if (!dateValue) {
+      this.showDobError = true;
+    } else {
+      this.showDobError = false;
+    }
+  }
 
 }

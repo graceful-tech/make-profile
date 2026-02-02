@@ -7,12 +7,12 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   styleUrl: './error-login-popup.component.css'
 })
 export class ErrorLoginPopupComponent {
-   @Output() closePopupTap = new EventEmitter<any>();
-   @Input() message: string = ''; 
-    @Input() status: string = ''; 
+  @Output() closePopupTap = new EventEmitter<any>();
+  @Input() message: string = '';
+  @Input() status: string = '';
 
   isClosing = false;
-  
+
 
 
   close() {

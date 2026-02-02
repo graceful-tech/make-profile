@@ -1212,12 +1212,13 @@
                   placeholder="Select Nationality"
                   formControlName="nationality"
                   [filter]="true"
+                  (onChange)="validateDropDown('nationality')"
                 >
                 </p-dropdown>
               </div>
             </div>
             <div
-              *ngIf="showLanguageKnownError"
+              *ngIf="showNationalityError"
               style="color: red; margin-top: 10px"
             >
               Please Select Your Nationality
@@ -1234,10 +1235,14 @@
                   optionValue="dataValue"
                   placeholder="Select Marital"
                   formControlName="maritalStatus"
+                  (onChange)="validateDropDown('maritalStatus')"
                 ></p-dropdown>
               </div>
             </div>
-            <div *ngIf="showMartialError" style="color: red; margin-top: 5px">
+            <div
+              *ngIf="showMaritalStatusError"
+              style="color: red; margin-top: 5px"
+            >
               Please Select Your Status.
             </div>
           </div>
@@ -1253,12 +1258,13 @@
                   optionLabel="displayValue"
                   optionValue="dataValue"
                   formControlName="languagesKnown"
+                  (onChange)="validateMultiSelect('languagesKnown')"
                 >
                 </p-multiSelect>
               </div>
             </div>
             <div
-              *ngIf="showLanguageKnownError"
+              *ngIf="showLanguagesKnownError"
               style="color: red; margin-top: 10px"
             >
               Please Select Your Known Language
@@ -1273,6 +1279,7 @@
                   appendTo="body"
                   formControlName="dob"
                   placeholder="Select From Date"
+                  (onSelect)="validateDate('dob')"
                 ></p-calendar>
               </div>
             </div>
@@ -1285,7 +1292,7 @@
             <div class="field-wrapper">
               <label>Father Name</label>
               <div class="input-wrapper">
-                <input type="text" pInputText formControlName="fatherName" />
+                <input type="text" pInputText formControlName="fatherName" (blur)="validateField('fatherName')"/>
               </div>
             </div>
             <div
@@ -1382,6 +1389,8 @@
                   [addOnBlur]="true"
                   [trimTags]="true"
                   [editable]="true"
+                  (onAdd)="validategoals('extraCurricularActivities')"
+                  (onRemove)="validategoals('extraCurricularActivities')"
                 >
                 </tag-input>
                 <span style="color: rgb(88, 86, 86)"
@@ -1391,7 +1400,7 @@
               </div>
             </div>
             <div
-              *ngIf="showExtraCurricularError"
+              *ngIf="showExtraCurricularActivitiesError"
               style="color: red; margin-top: 5px"
             >
               Please Enter Extra Curricular Activities.
@@ -1420,6 +1429,8 @@
                   [addOnBlur]="true"
                   [trimTags]="true"
                   [editable]="true"
+                  (onAdd)="validategoals('goals')"
+                  (onRemove)="validategoals('goals')"
                 >
                 </tag-input>
                 <span style="color: rgb(88, 86, 86)"

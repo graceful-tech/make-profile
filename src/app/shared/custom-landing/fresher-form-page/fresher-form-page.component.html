@@ -1082,6 +1082,8 @@
                   placeholder="Select Nationality"
                   formControlName="nationality"
                   [filter]="true"
+                  (onChange)="validateDropDown('nationality')"
+        
                 >
                 </p-dropdown>
               </div>
@@ -1104,10 +1106,11 @@
                   optionValue="dataValue"
                   placeholder="Select Marital"
                   formControlName="maritalStatus"
+                  (onChange)="validateDropDown('maritalStatus')"
                 ></p-dropdown>
               </div>
             </div>
-            <div *ngIf="showMartialError" style="color: red; margin-top: 5px">
+            <div *ngIf="showMartialStatusError" style="color: red; margin-top: 5px">
               Please Select Your Status.
             </div>
           </div>
@@ -1123,12 +1126,13 @@
                   optionLabel="displayValue"
                   optionValue="dataValue"
                   formControlName="languagesKnown"
+                  (onChange)="validateMultiSelect('languagesKnown')"
                 >
                 </p-multiSelect>
               </div>
             </div>
             <div
-              *ngIf="showLanguageKnownError"
+              *ngIf="showLanguagesKnownError"
               style="color: red; margin-top: 10px"
             >
               Please Select Your Known Language
@@ -1143,6 +1147,7 @@
                   appendTo="body"
                   formControlName="dob"
                   placeholder="Select From Date"
+                  (onSelect)="validateDate('dob')"
                 ></p-calendar>
               </div>
             </div>
@@ -1164,7 +1169,7 @@
             <div class="field-wrapper">
               <label [class.required]="isFresher">Father Name</label>
               <div class="input-wrapper">
-                <input type="text" pInputText formControlName="fatherName" />
+                <input type="text" pInputText formControlName="fatherName" (blur)="validateField('fatherName')" />
               </div>
             </div>
             <div
@@ -1185,6 +1190,8 @@
                   [addOnBlur]="true"
                   [addOnTab]="true"
                   placeholder="Eg: Reading,Cooking,Traveling"
+                  (onAdd)="validateArrayField('hobbies',3)"
+                  (onRemove)="validateArrayField('hobbies',3)"
                 ></p-chips>
               </div>
             </div>
@@ -1214,6 +1221,8 @@
                   [addOnBlur]="true"
                   [addOnTab]="true"
                   placeholder="Eg: Communication,Teamwork,Fast Learning"
+                  (onAdd)="validateArrayField('softSkills',3)"
+                  (onRemove)="validateArrayField('softSkills',3)"
                 ></p-chips>
               </div>
             </div>
@@ -1246,6 +1255,8 @@
                   [addOnBlur]="true"
                   [addOnTab]="true"
                   placeholder="Eg: Project Management,Strategic Planning,Analytical Thinking"
+                  (onAdd)="validateArrayField('coreCompentencies',3)"
+                  (onRemove)="validateArrayField('coreCompentencies',3)"
                 ></p-chips>
               </div>
             </div>
@@ -1278,6 +1289,8 @@
                   [addOnBlur]="true"
                   [addOnTab]="true"
                   placeholder="Eg: Strengths,Time management,Good communication skills"
+                  (onAdd)="validateArrayField('strengths',3)" 
+                  (onRemove)="validateArrayField('strengths',3)"
                 ></p-chips>
               </div>
             </div>
@@ -1307,11 +1320,13 @@
                   [addOnBlur]="true"
                   [addOnTab]="true"
                   placeholder="Eg: Participation in sports competitions,Volunteering in community service programs"
+                  (onAdd)="validateArrayField('extraCurricularActivities',1)"
+                  (onRemove)="validateArrayField('extraCurricularActivities',1)"
                 ></p-chips>
               </div>
             </div>
             <div
-              *ngIf="showExtraCurricularError"
+              *ngIf="showExtraCurricularActivitiesError"
               style="color: red; margin-top: 5px"
             >
               Please Enter Extra Curricular Activities.
@@ -1339,6 +1354,8 @@
                   [addOnBlur]="true"
                   [addOnTab]="true"
                   placeholder="Goals Example: To work in a collaborative environment and expand my expertise , To continuously learn and improve in the field of technology"
+                  (onAdd)="validateArrayField('goals',1)"
+                  (onRemove)="validateArrayField('goals',1)"
                 ></p-chips>
               </div>
             </div>

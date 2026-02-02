@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 
 @Component({
@@ -9,15 +9,20 @@ import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 })
 export class MobileMessageComponent {
 
-   message!: String;
-  
-    constructor(public ref: DynamicDialogRef, public config: DynamicDialogConfig) { }
-  
-    ngOnInit() {
-      this.message = this.config.data?.message;
-    }
-  
-    close() {
-      this.ref.close();
-    }
+  message!: String;
+
+
+  constructor(public ref: DynamicDialogRef, public config: DynamicDialogConfig) { }
+
+  ngOnInit() {
+    this.message = this.config.data?.message;
+  }
+
+  close() {
+    this.ref.close();
+  }
+
+  update() {
+    this.ref.close('success');
+  }
 }

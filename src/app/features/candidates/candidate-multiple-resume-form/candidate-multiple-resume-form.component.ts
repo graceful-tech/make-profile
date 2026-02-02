@@ -140,7 +140,7 @@ export class CandidateMultipleResumeFormComponent {
   diplomaEducation: Array<ValueSet> = [];
   showStrengthsError: boolean = false;
   showGoalsError: boolean = false;
-  showExtraCurricularError: boolean = false;
+  showExtraCurricularActivitiesError: boolean = false;
   suggestedRespondibilities: any;
   firstResponsibilityApiCalled: boolean = false;
   collegeNotStudied: boolean = false;
@@ -2376,7 +2376,7 @@ export class CandidateMultipleResumeFormComponent {
     this.showMartialError = false;
     this.showStrengthsError = false;
     this.showGoalsError = false;
-    this.showExtraCurricularError = false;
+    this.showExtraCurricularActivitiesError = false;
     this.showSoftSkillsError = false;
     this.showCoreCompentenciesError = false;
     this.showHobbiesError = false;
@@ -2422,7 +2422,7 @@ export class CandidateMultipleResumeFormComponent {
       valueCheck = false
     }
 
-    if (!strengths || strengths.length === 0) {
+    if (!strengths || strengths.length < 3) {
       this.showStrengthsError = true;
       valueCheck = false
     }
@@ -2433,7 +2433,7 @@ export class CandidateMultipleResumeFormComponent {
     }
 
     if (!extraCurricularActivities || extraCurricularActivities.length === 0) {
-      this.showExtraCurricularError = true;
+      this.showExtraCurricularActivitiesError = true;
       valueCheck = false
     }
 
@@ -2524,18 +2524,68 @@ export class CandidateMultipleResumeFormComponent {
     });
   }
 
-  // validateSkills(name: string) {
-  //   if (!this.isFresher) return;
+  validateArrayField(name: string ,min:any) {
 
-  //   const skillsList: string[] = this.candidateForm.get(name)?.value || [];
+    if (!this.isFresher) return;
 
-  //   if (skillsList.length < 3) {
-  //     this.toast.showToast('info', `Enter at least 3 ${name}.`);
-  //     return false;
-  //   }
+    const value = this.candidateForm.get(name)?.value || [];
 
-  //   return true;
-  // }
+    const key =
+      'show' + name.charAt(0).toUpperCase() + name.slice(1) + 'Error';
+
+    (this as any)[key] = value?.length < min;
+  }
+
+
+  validateField(fieldName: string) {
+    if (fieldName === 'fatherName' && this.isFresher) {
+      const fatherName = this.candidateForm.get('fatherName')?.value;
+      if (!fatherName || fatherName.trim() === '') {
+        this.showFatherNameError = true;
+      } else {
+        this.showFatherNameError = false;
+      }
+    }
+
+  }
+
+  validateDropDown(fieldName: string) {
+    if (!this.isFresher) return;
+    const dropDown = this.candidateForm.get(fieldName)?.value;
+    if (!dropDown || dropDown === null) {
+      const uniquenames: any = 'show' + fieldName.charAt(0).toUpperCase() + fieldName.slice(1) + 'Error';
+      (this as any)[uniquenames] = true;
+    } else {
+      const uniquenames: any = 'show' + fieldName.charAt(0).toUpperCase() + fieldName.slice(1) + 'Error';
+      (this as any)[uniquenames] = false;
+    }
+  }
+
+  validateMultiSelect(fieldName: string) {
+    if (!this.isFresher) return;
+    const dropDown = this.candidateForm.get(fieldName)?.value;
+    if (!dropDown || dropDown === null || dropDown.length === 0) {
+      const uniquenames: any = 'show' + fieldName.charAt(0).toUpperCase() + fieldName.slice(1) + 'Error';
+      (this as any)[uniquenames] = true;
+    } else {
+      const uniquenames: any = 'show' + fieldName.charAt(0).toUpperCase() + fieldName.slice(1) + 'Error';
+      (this as any)[uniquenames] = false;
+    }
+  }
+
+
+ 
+
+  validateDate(fieldName: string) {
+    if (!this.isFresher) return;
+    const dateValue = this.candidateForm.get(fieldName)?.value;
+    if (!dateValue) {
+      this.showDobError = true;
+    } else {
+      this.showDobError = false;
+    }
+  }
+
 
 }
 

@@ -1,72 +1,108 @@
-<div class="header-image">
-  <img class="header-images" src="assets/images/logo.png" alt="Header Image" />
-  <p-button (onClick)="signOut()" label="Back" class="right-align"></p-button>
-</div>
-
-<div class="right-section">
-  <div class="wrapper">
-    <div class="heading">
-      <span>My Account</span>
-
-      <p-button (onClick)="editOut()" label="Edit" class="right-align"></p-button>
-    </div>
-    <div class="profile-wrapper">
-      <div class="col-12 md:col-6">
-        <div class="field-wrapper">
-          <label>Name</label>
-          <div class="input-wrapper">
-            <input type="text" pInputText [(ngModel)]="user.name" [disabled]="editUser" />
-          </div>
-        </div>
-      </div>
-      <div class="col-12 ">
-        <div class="field-wrapper">
-          <label>User Name</label>
-          <div class="input-wrapper">
-            <input type="text" pInputText [(ngModel)]="user.userName" [disabled]="editUser" />
-          </div>
-        </div>
-      </div>
-      <div class="col-12">
-        <div class="field-wrapper">
-          <label>Email</label>
-          <div class="input-wrapper">
-            <input type="text" pInputText [(ngModel)]="user.email" [disabled]="editUser" />
-          </div>
-        </div>
-      </div>
-      <div class="col-12">
-        <div class="field-wrapper">
-          <label>Contact</label>
-          <div class="input-wrapper">
-            <input type="text" [maxlength]="10" pInputText [(ngModel)]="user.mobileNumber" [disabled]="editUser" />
-          </div>
-        </div>
-      </div>
-
-      <div class="col-12">
-        <div class="field-wrapper">
-          <label>Password
-            <button type="button" (click)="togglePassword()">
-              <i [ngClass]="showPassword ? 'pi pi-eye-slash' : 'pi pi-eye'"></i>
-            </button>
-          </label>
-          <div class="input-wrapper">
-
-            <input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="user.password" class="form-control"
-              [disabled]="editUser" />
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <div style="text-align: right;">
-      <p-button (onClick)="updateUser()" [disabled]="editUser" label="Update"></p-button>
-
-    </div>
-
-
+<div class="mob-view-account-container">
+  <div class="header-image">
+    <img
+      class="header-images"
+      src="assets/images/logo.png"
+      alt="Header Image"
+    />
+    <p-button (onClick)="signOut()" label="Back" class="right-align"></p-button>
   </div>
 
+  <div class="right-section">
+    <div class="wrapper">
+      <div class="heading">
+        <span>{{ headingName }}</span>
+
+        <button
+          (click)="editOut()"
+         
+          class="edit-button"
+        >Edit</button>
+      </div>
+      <div class="profile-wrapper">
+        <div class="col-12 md:col-6">
+          <div class="field-wrapper">
+            <label>Name</label>
+            <div class="input-wrapper">
+              <input
+                type="text"
+                pInputText
+                [(ngModel)]="user.name"
+                [disabled]="editUser"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="field-wrapper">
+            <label>User Name</label>
+            <div class="input-wrapper">
+              <input
+                type="text"
+                pInputText
+                [(ngModel)]="user.userName"
+                [disabled]="editUser"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="field-wrapper">
+            <label>Email</label>
+            <div class="input-wrapper">
+              <input
+                type="text"
+                pInputText
+                [(ngModel)]="user.email"
+                [disabled]="editUser"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="field-wrapper">
+            <label>Contact</label>
+            <div class="input-wrapper">
+              <input
+                type="text"
+                [maxlength]="10"
+                pInputText
+                [(ngModel)]="user.mobileNumber"
+                [disabled]="editUser"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <div class="field-wrapper">
+            <label
+              >Password
+              <button type="button" (click)="togglePassword()">
+                <i
+                  [ngClass]="showPassword ? 'pi pi-eye-slash' : 'pi pi-eye'"
+                ></i>
+              </button>
+            </label>
+            <div class="input-wrapper">
+              <input
+                [type]="showPassword ? 'text' : 'password'"
+                [(ngModel)]="user.password"
+                class="form-control"
+                [disabled]="editUser"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="text-align: right">
+        <p-button
+          (onClick)="updateUser()"
+          [disabled]="editUser"
+          label="Update"
+        ></p-button>
+      </div>
+    </div>
+  </div>
 </div>
