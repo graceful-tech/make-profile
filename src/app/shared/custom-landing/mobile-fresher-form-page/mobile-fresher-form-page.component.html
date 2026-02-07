@@ -118,6 +118,13 @@
       <div *ngIf="showOtherFields">
         <div class="form-group">
           <label class="required">Add / Remove / Edit Your Skills</label>
+
+          <div *ngIf="isSkillsLoading" class="skills-loader">
+            <div class="spinner"></div>
+            <p style="margin-top: 15px">
+              ⏳ Wait, we are preparing your related skills.
+            </p>
+          </div>
           <div class="selected-skills">
             <span
               class="skill-chip"
@@ -304,7 +311,7 @@
           class="drawer-header"
           (click)="toggleEducation('isSchoolEducationOpen')"
         >
-          <h3>School/Intermedidate Education</h3>
+          <h3>School/Inter-College Education</h3>
           <span [class.rotate]="isSchoolEducationOpen">⌃</span>
         </div>
         <div class="drawer-body" *ngIf="isSchoolEducationOpen">
@@ -1242,7 +1249,10 @@
                 ></p-dropdown>
               </div>
             </div>
-            <div *ngIf="showMaritalStatusError" style="color: red; margin-top: 5px">
+            <div
+              *ngIf="showMaritalStatusError"
+              style="color: red; margin-top: 5px"
+            >
               Please Select Your Status.
             </div>
           </div>
@@ -1292,7 +1302,12 @@
             <div class="field-wrapper">
               <label [class.required]="isFresher">Father Name</label>
               <div class="input-wrapper">
-                <input type="text" pInputText formControlName="fatherName"  (blur)="validateField('fatherName')"/>
+                <input
+                  type="text"
+                  pInputText
+                  formControlName="fatherName"
+                  (blur)="validateField('fatherName')"
+                />
               </div>
             </div>
             <div

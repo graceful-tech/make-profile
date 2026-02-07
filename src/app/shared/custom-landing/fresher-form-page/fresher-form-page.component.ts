@@ -144,6 +144,7 @@ export class FresherFormPageComponent {
   suggestedRespondibilities: any;
   collegeNotStudied: boolean = false;
   isFresher: boolean = false;
+  isSkillsLoading: boolean = false;
 
 
 
@@ -427,6 +428,7 @@ export class FresherFormPageComponent {
     switch (this.step) {
 
       case 1:
+        window.scrollTo(0, 0);
         const isActive = sessionStorage.getItem('userName');
 
         if (isActive === undefined || isActive === null) {
@@ -443,6 +445,7 @@ export class FresherFormPageComponent {
         break;
 
       case 2:
+        window.scrollTo(0, 0);
         this.showSchoolError = false;
         this.showCollegeError = false;
         const isFresher = localStorage.getItem('isFresher');
@@ -486,6 +489,7 @@ export class FresherFormPageComponent {
         break;
 
       case 3:
+        window.scrollTo(0, 0);
         const fresher = this.candidateForm.get('fresher')?.value;
         const experiences = this.candidateForm.get('experiences') as FormArray;
 
@@ -545,6 +549,7 @@ export class FresherFormPageComponent {
 
 
       default:
+        window.scrollTo(0, 0);
         if (this.step < 5 && this.step > 1 && this.step !== 3) {
           this.step++;
         }
@@ -2486,6 +2491,7 @@ export class FresherFormPageComponent {
   }
 
   callAISkillAPI(skill: string) {
+    this.isSkillsLoading = true;
     const self = this.jobRole + " " + skill;
 
     const route = `content/get-suggested-skills?skills=${self}`;
@@ -2499,11 +2505,12 @@ export class FresherFormPageComponent {
           this.suggestedSkills = suggested?.skills;
           this.suggestedSoftSkills = suggested?.softSkills;
           this.suggestedCoreCompentencies = suggested?.coreCompentencies;
-
+          this.isSkillsLoading = false;
 
         }
       },
       error: (error) => {
+        this.isSkillsLoading = false;
         this.dataLoaded = true;
       },
     });
@@ -2539,6 +2546,8 @@ export class FresherFormPageComponent {
         this.candidateForm.get(key)?.setValue(updatedSkills);
       }
     }
+
+    this.validateArrayField(key,3);
   }
 
   goBack() {
@@ -2713,7 +2722,7 @@ export class FresherFormPageComponent {
     });
   }
 
-   validateArrayField(name: string ,min:any) {
+  validateArrayField(name: string, min: any) {
 
     if (!this.isFresher) return;
 
@@ -2721,8 +2730,15 @@ export class FresherFormPageComponent {
 
     const key =
       'show' + name.charAt(0).toUpperCase() + name.slice(1) + 'Error';
+    if (value?.length < min) {
+      (this as any)[key] = true;
+      return false
+    }
 
-    (this as any)[key] = value?.length < min;
+    (this as any)[key] = false;
+
+    return true;
+
   }
 
 
@@ -2741,11 +2757,12 @@ export class FresherFormPageComponent {
   validateDropDown(fieldName: string) {
     if (!this.isFresher) return;
     const dropDown = this.candidateForm.get(fieldName)?.value;
+    const uniquenames: any = 'show' + fieldName.charAt(0).toUpperCase() + fieldName.slice(1) + 'Error';
     if (!dropDown || dropDown === null) {
-      const uniquenames: any = 'show' + fieldName.charAt(0).toUpperCase() + fieldName.slice(1) + 'Error';
+
       (this as any)[uniquenames] = true;
     } else {
-      const uniquenames: any = 'show' + fieldName.charAt(0).toUpperCase() + fieldName.slice(1) + 'Error';
+
       (this as any)[uniquenames] = false;
     }
   }
@@ -2753,17 +2770,16 @@ export class FresherFormPageComponent {
   validateMultiSelect(fieldName: string) {
     if (!this.isFresher) return;
     const dropDown = this.candidateForm.get(fieldName)?.value;
+
+    const uniquenames: any = 'show' + fieldName.charAt(0).toUpperCase() + fieldName.slice(1) + 'Error';
     if (!dropDown || dropDown === null || dropDown.length === 0) {
-      const uniquenames: any = 'show' + fieldName.charAt(0).toUpperCase() + fieldName.slice(1) + 'Error';
+
       (this as any)[uniquenames] = true;
     } else {
-      const uniquenames: any = 'show' + fieldName.charAt(0).toUpperCase() + fieldName.slice(1) + 'Error';
+
       (this as any)[uniquenames] = false;
     }
   }
-
-
- 
 
   validateDate(fieldName: string) {
     if (!this.isFresher) return;

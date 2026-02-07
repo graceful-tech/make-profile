@@ -131,11 +131,11 @@ export class CandidateMultipleResumeFormComponent {
   suggestedSkills: any;
   suggestedSoftSkills: any;
   suggestedCoreCompentencies: any;
-  showLanguageKnownError: boolean = false;
+  showLanguagesKnownError: boolean = false;
   showNationalityError: boolean = false;
   showFatherNameError: boolean = false;
   showDobError: boolean = false;
-  showMartialError: boolean = false;
+  showMaritalStatusError: boolean = false;
   diplomaEducationlength: number = 0;
   diplomaEducation: Array<ValueSet> = [];
   showStrengthsError: boolean = false;
@@ -145,7 +145,7 @@ export class CandidateMultipleResumeFormComponent {
   firstResponsibilityApiCalled: boolean = false;
   collegeNotStudied: boolean = false;
   isFresher: any;
-
+  isSkillsLoading: boolean = false
 
   constructor(
     private api: ApiService,
@@ -363,9 +363,11 @@ export class CandidateMultipleResumeFormComponent {
 
       case 1:
         this.step++;
+        window.scrollTo(0, 0);
         break;
 
       case 2:
+        window.scrollTo(0, 0);
         this.showSchoolError = false;
         this.showCollegeError = false;
         const isFresher = localStorage.getItem('isFresher');
@@ -408,6 +410,7 @@ export class CandidateMultipleResumeFormComponent {
         break;
 
       case 3:
+        window.scrollTo(0, 0);
         const fresher = this.candidateForm.get('fresher')?.value;
         const experiences = this.candidateForm.get('experiences') as FormArray;
 
@@ -478,6 +481,7 @@ export class CandidateMultipleResumeFormComponent {
 
 
       default:
+        window.scrollTo(0, 0);
         if (this.step < 5 && this.step > 1 && this.step !== 3) {
           this.step++;
         }
@@ -2262,7 +2266,7 @@ export class CandidateMultipleResumeFormComponent {
   }
 
   callAISkillAPI(skill: string) {
-
+    this.isSkillsLoading = true;
     const self = this.jobRole + " " + skill;
     const route = `content/get-suggested-skills?skills=${self}`;
     this.api.get(route).subscribe({
@@ -2275,11 +2279,11 @@ export class CandidateMultipleResumeFormComponent {
           this.suggestedSkills = suggested?.skills;
           this.suggestedSoftSkills = suggested?.softSkills;
           this.suggestedCoreCompentencies = suggested?.coreCompentencies;
-
+          this.isSkillsLoading = false;
         }
       },
       error: (error) => {
-
+        this.isSkillsLoading = false;
 
       },
     });
@@ -2332,6 +2336,8 @@ export class CandidateMultipleResumeFormComponent {
         this.candidateForm.get(key)?.setValue(updatedSkills);
       }
     }
+
+    this.validateArrayField(key, 3);
   }
 
   addResponsibilities(index: any, value: any) {
@@ -2370,10 +2376,10 @@ export class CandidateMultipleResumeFormComponent {
 
 
     this.showNationalityError = false;
-    this.showLanguageKnownError = false;
+    this.showLanguagesKnownError = false;
     this.showFatherNameError = false;
     this.showDobError = false;
-    this.showMartialError = false;
+    this.showMaritalStatusError = false;
     this.showStrengthsError = false;
     this.showGoalsError = false;
     this.showExtraCurricularActivitiesError = false;
@@ -2403,7 +2409,7 @@ export class CandidateMultipleResumeFormComponent {
     }
 
     if (!languageKnown || languageKnown.length === 0) {
-      this.showLanguageKnownError = true;
+      this.showLanguagesKnownError = true;
       valueCheck = false
     }
 
@@ -2418,7 +2424,7 @@ export class CandidateMultipleResumeFormComponent {
     }
 
     if (!martialStatus || martialStatus === null) {
-      this.showMartialError = true
+      this.showMaritalStatusError = true
       valueCheck = false
     }
 
@@ -2524,7 +2530,7 @@ export class CandidateMultipleResumeFormComponent {
     });
   }
 
-  validateArrayField(name: string ,min:any) {
+  validateArrayField(name: string, min: any) {
 
     if (!this.isFresher) return;
 
@@ -2532,8 +2538,15 @@ export class CandidateMultipleResumeFormComponent {
 
     const key =
       'show' + name.charAt(0).toUpperCase() + name.slice(1) + 'Error';
+    if (value?.length < min) {
+      (this as any)[key] = true;
+      return false
+    }
 
-    (this as any)[key] = value?.length < min;
+    (this as any)[key] = false;
+
+    return true;
+
   }
 
 
@@ -2552,11 +2565,11 @@ export class CandidateMultipleResumeFormComponent {
   validateDropDown(fieldName: string) {
     if (!this.isFresher) return;
     const dropDown = this.candidateForm.get(fieldName)?.value;
+
+    const uniquenames: any = 'show' + fieldName.charAt(0).toUpperCase() + fieldName.slice(1) + 'Error';
     if (!dropDown || dropDown === null) {
-      const uniquenames: any = 'show' + fieldName.charAt(0).toUpperCase() + fieldName.slice(1) + 'Error';
       (this as any)[uniquenames] = true;
     } else {
-      const uniquenames: any = 'show' + fieldName.charAt(0).toUpperCase() + fieldName.slice(1) + 'Error';
       (this as any)[uniquenames] = false;
     }
   }
@@ -2564,17 +2577,16 @@ export class CandidateMultipleResumeFormComponent {
   validateMultiSelect(fieldName: string) {
     if (!this.isFresher) return;
     const dropDown = this.candidateForm.get(fieldName)?.value;
+    const uniquenames: any = 'show' + fieldName.charAt(0).toUpperCase() + fieldName.slice(1) + 'Error';
     if (!dropDown || dropDown === null || dropDown.length === 0) {
-      const uniquenames: any = 'show' + fieldName.charAt(0).toUpperCase() + fieldName.slice(1) + 'Error';
       (this as any)[uniquenames] = true;
     } else {
-      const uniquenames: any = 'show' + fieldName.charAt(0).toUpperCase() + fieldName.slice(1) + 'Error';
       (this as any)[uniquenames] = false;
     }
   }
 
 
- 
+
 
   validateDate(fieldName: string) {
     if (!this.isFresher) return;

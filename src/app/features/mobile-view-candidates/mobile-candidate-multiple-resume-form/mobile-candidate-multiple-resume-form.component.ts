@@ -144,6 +144,7 @@ export class MobileCandidateMultipleResumeFormComponent {
   suggestedRespondibilities: any;
   collegeNotStudied: boolean = false;
   isFresher: any;
+  isSkillsLoading: boolean = false
 
   constructor(
     private api: ApiService,
@@ -375,9 +376,11 @@ export class MobileCandidateMultipleResumeFormComponent {
 
       case 1:
         this.step++;
+        window.scrollTo(0, 0);
         break;
 
       case 2:
+        window.scrollTo(0, 0);
         this.showSchoolError = false;
         this.showCollegeError = false;
         const isFresher = localStorage.getItem('isFresher');
@@ -421,6 +424,7 @@ export class MobileCandidateMultipleResumeFormComponent {
         break;
 
       case 3:
+        window.scrollTo(0, 0);
         const fresher = this.candidateForm.get('fresher')?.value;
         const experiences = this.candidateForm.get('experiences') as FormArray;
 
@@ -480,6 +484,7 @@ export class MobileCandidateMultipleResumeFormComponent {
 
 
       default:
+        window.scrollTo(0, 0);
         if (this.step < 5 && this.step > 1 && this.step !== 3) {
           this.step++;
         }
@@ -2359,6 +2364,8 @@ export class MobileCandidateMultipleResumeFormComponent {
   }
 
   callAISkillAPI(skill: string) {
+    this.isSkillsLoading = true;
+
     const self = this.jobRole + " " + skill;
 
     const route = `content/get-suggested-skills?skills=${self}`;
@@ -2373,11 +2380,11 @@ export class MobileCandidateMultipleResumeFormComponent {
           this.suggestedSoftSkills = suggested?.softSkills;
           this.suggestedCoreCompentencies = suggested?.coreCompentencies;
 
-
+          this.isSkillsLoading = false;
         }
       },
       error: (error) => {
-
+        this.isSkillsLoading = false;
         this.dataLoaded = true;
       },
     });
@@ -2411,6 +2418,8 @@ export class MobileCandidateMultipleResumeFormComponent {
         this.candidateForm.get(key)?.setValue(updatedSkills);
       }
     }
+
+    this.validateSkills(key);
   }
 
   goBack() {
@@ -2600,12 +2609,11 @@ export class MobileCandidateMultipleResumeFormComponent {
       typeof r === 'string' ? r : r.task || r.value || ''
     ) || [];
 
+    const uniquenames: any = 'show' + name.charAt(0).toUpperCase() + name.slice(1) + 'Error';
     if (skillsList.length < 3) {
-      this.toast.showToast('info', `Enter at least 3 ${name}.`);
+      (this as any)[uniquenames] = true;
       return false;
     }
-
-    const uniquenames: any = 'show' + name.charAt(0).toUpperCase() + name.slice(1) + 'Error';
 
     (this as any)[uniquenames] = false;
 
@@ -2627,11 +2635,11 @@ export class MobileCandidateMultipleResumeFormComponent {
   validateDropDown(fieldName: string) {
     if (!this.isFresher) return;
     const dropDown = this.candidateForm.get(fieldName)?.value;
+
+    const uniquenames: any = 'show' + fieldName.charAt(0).toUpperCase() + fieldName.slice(1) + 'Error';
     if (!dropDown || dropDown === null) {
-      const uniquenames: any = 'show' + fieldName.charAt(0).toUpperCase() + fieldName.slice(1) + 'Error';
       (this as any)[uniquenames] = true;
     } else {
-      const uniquenames: any = 'show' + fieldName.charAt(0).toUpperCase() + fieldName.slice(1) + 'Error';
       (this as any)[uniquenames] = false;
     }
   }
@@ -2639,11 +2647,11 @@ export class MobileCandidateMultipleResumeFormComponent {
   validateMultiSelect(fieldName: string) {
     if (!this.isFresher) return;
     const dropDown = this.candidateForm.get(fieldName)?.value;
+
+    const uniquenames: any = 'show' + fieldName.charAt(0).toUpperCase() + fieldName.slice(1) + 'Error';
     if (!dropDown || dropDown === null || dropDown.length === 0) {
-      const uniquenames: any = 'show' + fieldName.charAt(0).toUpperCase() + fieldName.slice(1) + 'Error';
       (this as any)[uniquenames] = true;
     } else {
-      const uniquenames: any = 'show' + fieldName.charAt(0).toUpperCase() + fieldName.slice(1) + 'Error';
       (this as any)[uniquenames] = false;
     }
   }
@@ -2659,15 +2667,15 @@ export class MobileCandidateMultipleResumeFormComponent {
       typeof r === 'string' ? r : r.task || r.value || ''
     ) || [];
 
+    const uniquenames: any = 'show' + name.charAt(0).toUpperCase() + name.slice(1) + 'Error';
+
     if (skillsList.length < 1) {
+      (this as any)[uniquenames] = true;
       this.toast.showToast('info', `Enter at least 1 ${name}.`);
       return false;
     }
 
-    const uniquenames: any = 'show' + name.charAt(0).toUpperCase() + name.slice(1) + 'Error';
-
     (this as any)[uniquenames] = false;
-
     return true;
   }
 

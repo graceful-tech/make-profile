@@ -116,6 +116,12 @@
       <div *ngIf="showSkillFields">
         <div class="form-group">
           <label class="required">Add / Remove / Edit Your Skills</label>
+           <div *ngIf="isSkillsLoading" class="skills-loader">
+              <div class="spinner"></div>
+              <p style="margin-top: 15px">
+                ⏳ Wait, we are preparing your related skills.
+              </p>
+            </div>
           <div class="selected-skills">
             <span
               class="skill-chip"
@@ -654,7 +660,7 @@
       </div>
 
       <div *ngIf="step === 2">
-        <h2 class="section-heading">School/Intermediate Education</h2>
+        <h2 class="section-heading">School/Inter-College Education</h2>
 
         <div formArrayName="schoolEducation">
           <div

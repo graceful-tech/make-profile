@@ -75,7 +75,7 @@
 .edit-button {
     /* margin-left:65%;  */
     border: none;
-    background-color: #0d6efd;      
+    background-color: #0d6efd;
     color: white;
     padding: 5px 20px;
     border-radius: 48px;
@@ -108,9 +108,22 @@
     margin: 0px 10px;
     border-radius: 10px;
     box-shadow: 0 10px 35px rgba(0, 0, 0, 0.25);
+    animation: fadeIn 1.5s ease forwards;
 }
 
 .mob-view-account-container {
     background: #ffffff;
     height: 100vh;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }

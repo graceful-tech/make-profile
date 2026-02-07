@@ -147,6 +147,7 @@ export class MobileFresherFormPageComponent {
   suggestedRespondibilities: any;
   collegeNotStudied: boolean = false;
   isFresher: boolean = false;
+  isSkillsLoading: boolean = false
 
 
 
@@ -352,6 +353,7 @@ export class MobileFresherFormPageComponent {
     switch (this.step) {
 
       case 1:
+        window.scrollTo(0, 0);
         const isActive = sessionStorage.getItem('userName');
 
         if (isActive === undefined || isActive === null) {
@@ -371,6 +373,7 @@ export class MobileFresherFormPageComponent {
         break;
 
       case 2:
+        window.scrollTo(0, 0);
         this.showSchoolError = false;
         this.showCollegeError = false;
         const isFresher = localStorage.getItem('isFresher');
@@ -411,6 +414,7 @@ export class MobileFresherFormPageComponent {
         break;
 
       case 3:
+        window.scrollTo(0, 0);
         const fresher = this.candidateForm.get('fresher')?.value;
         const experiences = this.candidateForm.get('experiences') as FormArray;
 
@@ -471,6 +475,7 @@ export class MobileFresherFormPageComponent {
 
 
       default:
+        window.scrollTo(0, 0);
         if (this.step < 5 && this.step > 1 && this.step !== 3) {
           this.step++;
         }
@@ -2451,10 +2456,15 @@ export class MobileFresherFormPageComponent {
       const firstSkill = this.skills;
       this.firstSkillApiCalled = true;
       this.callAISkillAPI(firstSkill);
+
+
     }
   }
 
   callAISkillAPI(skill: string) {
+
+    this.isSkillsLoading = true;
+
 
     const self = this.jobRole + " " + skill;
 
@@ -2470,11 +2480,11 @@ export class MobileFresherFormPageComponent {
           this.suggestedSoftSkills = suggested?.softSkills;
           this.suggestedCoreCompentencies = suggested?.coreCompentencies;
 
-
+          this.isSkillsLoading = false;
         }
       },
       error: (error) => {
-
+      this.isSkillsLoading = false;
         this.dataLoaded = true;
       },
     });
@@ -2510,6 +2520,8 @@ export class MobileFresherFormPageComponent {
         this.candidateForm.get(key)?.setValue(updatedSkills);
       }
     }
+
+    this.validateSkills(key);
   }
 
   goBack() {
@@ -2709,12 +2721,12 @@ export class MobileFresherFormPageComponent {
       typeof r === 'string' ? r : r.task || r.value || ''
     ) || [];
 
+    const uniquenames: any = 'show' + name.charAt(0).toUpperCase() + name.slice(1) + 'Error';
+
     if (skillsList.length < 3) {
-      this.toast.showToast('info', `Enter at least 3 ${name}.`);
+      (this as any)[uniquenames] = true;
       return false;
     }
-
-    const uniquenames: any = 'show' + name.charAt(0).toUpperCase() + name.slice(1) + 'Error';
 
     (this as any)[uniquenames] = false;
 
@@ -2736,11 +2748,12 @@ export class MobileFresherFormPageComponent {
   validateDropDown(fieldName: string) {
     if (!this.isFresher) return;
     const dropDown = this.candidateForm.get(fieldName)?.value;
+    const uniquenames: any = 'show' + fieldName.charAt(0).toUpperCase() + fieldName.slice(1) + 'Error';
     if (!dropDown || dropDown === null) {
-      const uniquenames: any = 'show' + fieldName.charAt(0).toUpperCase() + fieldName.slice(1) + 'Error';
+
       (this as any)[uniquenames] = true;
     } else {
-      const uniquenames: any = 'show' + fieldName.charAt(0).toUpperCase() + fieldName.slice(1) + 'Error';
+
       (this as any)[uniquenames] = false;
     }
   }
@@ -2748,11 +2761,12 @@ export class MobileFresherFormPageComponent {
   validateMultiSelect(fieldName: string) {
     if (!this.isFresher) return;
     const dropDown = this.candidateForm.get(fieldName)?.value;
+    const uniquenames: any = 'show' + fieldName.charAt(0).toUpperCase() + fieldName.slice(1) + 'Error';
     if (!dropDown || dropDown === null || dropDown.length === 0) {
-      const uniquenames: any = 'show' + fieldName.charAt(0).toUpperCase() + fieldName.slice(1) + 'Error';
+
       (this as any)[uniquenames] = true;
     } else {
-      const uniquenames: any = 'show' + fieldName.charAt(0).toUpperCase() + fieldName.slice(1) + 'Error';
+
       (this as any)[uniquenames] = false;
     }
   }
@@ -2768,13 +2782,12 @@ export class MobileFresherFormPageComponent {
       typeof r === 'string' ? r : r.task || r.value || ''
     ) || [];
 
-    if (skillsList.length < 1) {
-      this.toast.showToast('info', `Enter at least 1 ${name}.`);
-      return false;
-    }
-
     const uniquenames: any = 'show' + name.charAt(0).toUpperCase() + name.slice(1) + 'Error';
 
+    if (skillsList.length < 1) {
+      (this as any)[uniquenames] = true;
+      return false;
+    }
     (this as any)[uniquenames] = false;
 
     return true;
