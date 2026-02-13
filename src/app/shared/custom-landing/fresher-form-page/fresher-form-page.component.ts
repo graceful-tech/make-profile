@@ -457,8 +457,9 @@ export class FresherFormPageComponent {
           if (schoolEducation.length > 0) {
             const firstGroup = schoolEducation.at(0) as FormGroup;
             const schoolName = firstGroup.get('schoolName')?.value;
+            const educationLevel = firstGroup.get('educationLevel')?.value;
 
-            if (!schoolName || schoolName.trim() === '') {
+            if (!schoolName || schoolName.trim() === '' || !educationLevel || educationLevel.trim() === '') {
               this.showSchoolError = true;
               this.toast.showToast('error', 'Please Enter the Schooling Details');
               break;
@@ -471,8 +472,10 @@ export class FresherFormPageComponent {
             if (qualification.length > 0) {
               const firstGroup = qualification.at(0) as FormGroup;
               const institutionName = firstGroup.get('institutionName')?.value;
+              const fieldOfStudy = firstGroup.get('fieldOfStudy')?.value;
+              const department = firstGroup.get('department')?.value;
 
-              if (!institutionName || institutionName.trim() === '') {
+              if (!institutionName || institutionName.trim() === '' || !fieldOfStudy || fieldOfStudy.trim() === '' || !department || department.trim() === '') {
                 this.showCollegeError = true;
                 this.toast.showToast('error', 'Please Enter the College Details');
                 break;
@@ -903,6 +906,10 @@ export class FresherFormPageComponent {
         }
       }
 
+      else {
+        payload.collegeProject = [];
+      }
+
       payload.coreCompentenciesMandatory =
         this.candidates?.coreCompentenciesMandatory !== null
           ? this.candidates?.coreCompentenciesMandatory
@@ -1043,10 +1050,14 @@ export class FresherFormPageComponent {
           const updatePassword = response.updatePassword === true ? 'true' : 'false';
           sessionStorage.setItem('updatePassword', updatePassword);
 
+
           // show the login on after creating the resume
           // this.loginPopup(response.userName, response.password);
           //  this.saveCandidate();
+
           const saveCandidate = await this.saveCandidate();
+
+          this.sendCredentialsToEmail();
           this.step++;
         }
       },
@@ -1057,6 +1068,21 @@ export class FresherFormPageComponent {
       },
     });
   }
+
+  sendCredentialsToEmail() {
+    const route = 'forgot-password/send-credentials';
+
+    this.api.get(route).subscribe(
+      (response) => {
+        this.gs.showMessage('Success', 'Credentials sent to your registered email address');
+      },
+      (error) => {
+
+      }
+    );
+  }
+
+
 
   //For experience
 
@@ -2270,6 +2296,10 @@ export class FresherFormPageComponent {
           }
         }
 
+        else {
+          payload.collegeProject = [];
+        }
+
         payload.coreCompentenciesMandatory =
           this.candidates?.coreCompentenciesMandatory !== null
             ? this.candidates?.coreCompentenciesMandatory
@@ -2547,7 +2577,7 @@ export class FresherFormPageComponent {
       }
     }
 
-    this.validateArrayField(key,3);
+    this.validateArrayField(key, 3);
   }
 
   goBack() {

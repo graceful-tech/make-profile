@@ -392,8 +392,9 @@ export class MobileCandidateMultipleResumeFormComponent {
           if (schoolEducation.length > 0) {
             const firstGroup = schoolEducation.at(0) as FormGroup;
             const schoolName = firstGroup.get('schoolName')?.value;
+            const educationLevel = firstGroup.get('educationLevel')?.value;
 
-            if (!schoolName || schoolName.trim() === '') {
+            if (!schoolName || schoolName.trim() === '' || !educationLevel || educationLevel.trim() === '') {
               this.showSchoolError = true;
               this.toast.showToast('error', 'Please enter atleast one Schooling Details');
               break;
@@ -405,8 +406,10 @@ export class MobileCandidateMultipleResumeFormComponent {
             if (qualification.length > 0) {
               const firstGroup = qualification.at(0) as FormGroup;
               const institutionName = firstGroup.get('institutionName')?.value;
+              const fieldOfStudy = firstGroup.get('fieldOfStudy')?.value;
+              const department = firstGroup.get('department')?.value;
 
-              if (!institutionName || institutionName.trim() === '') {
+              if (!institutionName || institutionName.trim() === '' || !fieldOfStudy || fieldOfStudy.trim() === '' || !department || department.trim() === '') {
                 this.showCollegeError = true;
                 this.toast.showToast('error', 'Please enter one  College Details');
                 break;
@@ -882,6 +885,9 @@ export class MobileCandidateMultipleResumeFormComponent {
           );
         }
       }
+    }
+    else {
+      payload.collegeProject = [];
     }
 
     payload.coreCompentenciesMandatory =
@@ -1859,6 +1865,9 @@ export class MobileCandidateMultipleResumeFormComponent {
               );
             }
           }
+        }
+        else {
+          payload.collegeProject = [];
         }
 
         payload.coreCompentenciesMandatory =

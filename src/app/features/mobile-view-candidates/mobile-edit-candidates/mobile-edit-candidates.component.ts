@@ -555,6 +555,9 @@ export class MobileEditCandidatesComponent {
           }
         }
       }
+      else{
+          payload.collegeProject = [];
+      }
 
       payload.coreCompentenciesMandatory =
         this.candidates?.coreCompentenciesMandatory !== null
@@ -1642,6 +1645,9 @@ export class MobileEditCandidatesComponent {
               );
             }
           }
+        }
+        else{
+            payload.collegeProject = [];
         }
 
         payload.coreCompentenciesMandatory =

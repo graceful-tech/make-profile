@@ -320,7 +320,24 @@ export class CreateCandidatesComponent {
       ) {
         payload.qualification = [];
       } else {
-        payload.qualification.forEach((q: any) => {
+
+        for (const q of payload.qualification) {
+
+
+          if (!q.fieldOfStudy || q.fieldOfStudy.trim() === '') {
+            this.dataLoaded = true;
+
+            this.toast.showToast('error', 'Please Enter the Department in College/Unversity Education')
+            return;
+          }
+
+          if (!q.department || q.department.trim() === '') {
+            this.dataLoaded = true;
+
+            this.toast.showToast('error', 'Please Enter the Qualification in College/Unversity Education')
+            return;
+          }
+
           q.qualificationStartYear = this.datePipe.transform(
             q.qualificationStartYear,
             'yyyy-MM-dd'
@@ -329,7 +346,9 @@ export class CreateCandidatesComponent {
             q.qualificationEndYear,
             'yyyy-MM-dd'
           );
-        });
+        };
+
+
       }
 
       if (
@@ -338,7 +357,15 @@ export class CreateCandidatesComponent {
       ) {
         payload.schoolEducation = [];
       } else {
-        payload.schoolEducation.forEach((q: any) => {
+
+
+        for (const q of payload.schoolEducation) {
+          if (q.educationLevel && q.educationLevel.trim() === '') {
+            this.dataLoaded = true;
+            this.toast.showToast('error', 'Please Enter the Education Level in School Education')
+            return;
+          }
+
           q.schoolStartYear = this.datePipe.transform(
             q.schoolStartYear,
             'yyyy-MM-dd'
@@ -347,7 +374,10 @@ export class CreateCandidatesComponent {
             q.schoolEndYear,
             'yyyy-MM-dd'
           );
-        });
+        };
+
+
+
       }
 
       if (
@@ -476,6 +506,9 @@ export class CreateCandidatesComponent {
             );
           }
         }
+      }
+      else {
+        payload.collegeProject = [];
       }
 
       payload.coreCompentenciesMandatory =

@@ -612,6 +612,9 @@ export class MobileCandidatesDetailsComponent {
           }
         }
       }
+      else{
+          payload.collegeProject = [];
+      }
 
       payload.coreCompentenciesMandatory =
         this.candidates?.coreCompentenciesMandatory !== null

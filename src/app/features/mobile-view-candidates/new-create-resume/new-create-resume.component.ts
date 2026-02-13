@@ -179,6 +179,8 @@ export class NewCreateResumeComponent {
         this.templateName = response;
       }
     });
+
+    window.scrollTo(0, 0);
   }
 
   ngOnInit() {
@@ -353,6 +355,8 @@ export class NewCreateResumeComponent {
   }
 
   switchTab(tab: 'edit' | 'preview') {
+
+
 
     if (this.contentModified && tab === 'preview') {
       this.showMobileMessage('Note..!', 'Save Details To Preview');
@@ -874,6 +878,9 @@ export class NewCreateResumeComponent {
           }
         }
       }
+      else {
+        payload.collegeProject = [];
+      }
 
       payload.coreCompentenciesMandatory =
         this.candidates?.coreCompentenciesMandatory !== null
@@ -1271,6 +1278,9 @@ export class NewCreateResumeComponent {
             );
           }
         }
+      }
+      else {
+        payload.collegeProject = [];
       }
 
       payload.coreCompentenciesMandatory =
@@ -2266,16 +2276,23 @@ export class NewCreateResumeComponent {
 
 
     if (pageType > 1) {
-      if (this.updatePasswordFlag !== undefined && this.updatePasswordFlag === 'false') {
-        this.oneLastStep();
+      // if (this.updatePasswordFlag !== undefined && this.updatePasswordFlag === 'false') {
+      //   this.oneLastStep();
+      // }
+      // else {
+      //   if (this.haveCredits) {
+      //     this.generateResume();
+      //   }
+      //   else {
+      //     this.showPopup = true;
+      //   }
+      // }
+
+      if (this.haveCredits) {
+        this.generateResume();
       }
       else {
-        if (this.haveCredits) {
-          this.generateResume();
-        }
-        else {
-          this.showPopup = true;
-        }
+        this.showPopup = true;
       }
     }
     else {
@@ -2284,16 +2301,23 @@ export class NewCreateResumeComponent {
         this.showConfirmationPopup = !this.showConfirmationPopup;
       }
       else {
-        if (this.updatePasswordFlag !== undefined && this.updatePasswordFlag === 'false') {
-          this.oneLastStep();
+        // if (this.updatePasswordFlag !== undefined && this.updatePasswordFlag === 'false') {
+        //   this.oneLastStep();
+        // }
+        // else {
+        //   if (this.haveCredits) {
+        //     this.generateResume();
+        //   }
+        //   else {
+        //     this.showPopup = true;
+        //   }
+        // }
+
+        if (this.haveCredits) {
+          this.generateResume();
         }
         else {
-          if (this.haveCredits) {
-            this.generateResume();
-          }
-          else {
-            this.showPopup = true;
-          }
+          this.showPopup = true;
         }
       }
     }

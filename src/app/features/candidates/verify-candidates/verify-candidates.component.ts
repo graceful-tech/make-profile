@@ -556,6 +556,9 @@ export class VerifyCandidatesComponent {
           }
         }
       }
+      else{
+        payload.collegeProject = [];
+      }
 
       payload.coreCompentenciesMandatory =
         this.candidates?.coreCompentenciesMandatory !== null
@@ -1684,6 +1687,9 @@ export class VerifyCandidatesComponent {
               );
             }
           }
+        }
+        else{
+          payload.collegeProject = [];
         }
 
         payload.coreCompentenciesMandatory =

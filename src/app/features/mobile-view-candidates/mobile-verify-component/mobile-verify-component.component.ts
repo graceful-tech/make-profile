@@ -474,6 +474,10 @@ export class MobileVerifyComponentComponent {
         }
       }
 
+      else{
+          payload.collegeProject = [];
+      }
+
       this.api.retrieve(route, payload).subscribe({
         next: (response) => {
           this.candidateId = response?.id;

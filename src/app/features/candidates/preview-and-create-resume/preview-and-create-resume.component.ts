@@ -946,6 +946,9 @@ export class PreviewAndCreateResumeComponent {
           }
         }
       }
+      else{
+        payload.collegeProject = [];
+      }
 
       payload.coreCompentenciesMandatory =
         this.candidates?.coreCompentenciesMandatory !== null
@@ -1799,31 +1802,43 @@ export class PreviewAndCreateResumeComponent {
 
     if (pageType > 1) {
 
-      if (this.updatePasswordFlag !== undefined && this.updatePasswordFlag === 'false') {
-        this.oneLastStep();
-      }
-      else {
-        if (!this.haveCredits) {
+      // if (this.updatePasswordFlag !== undefined && this.updatePasswordFlag === 'false') {
+      //   this.oneLastStep();
+      // }
+      // else {
+      //   if (!this.haveCredits) {
+      //     this.showPopup = true;
+      //   } else {
+      //     this.generateResume();
+      //   }
+      // }
+
+      if (!this.haveCredits) {
           this.showPopup = true;
         } else {
           this.generateResume();
         }
-      }
     }
     else {
       if (this.totalPdfPages > 1) {
         this.showConfirmationPopup = !this.showConfirmationPopup;
       }
       else {
-        if (this.updatePasswordFlag !== undefined && this.updatePasswordFlag === 'false') {
-          this.oneLastStep();
-        }
-        else {
-          if (!this.haveCredits) {
-            this.showPopup = true;
-          } else {
-            this.generateResume();
-          }
+        // if (this.updatePasswordFlag !== undefined && this.updatePasswordFlag === 'false') {
+        //   this.oneLastStep();
+        // }
+        // else {
+        //   if (!this.haveCredits) {
+        //     this.showPopup = true;
+        //   } else {
+        //     this.generateResume();
+        //   }
+        // }
+
+         if (!this.haveCredits) {
+          this.showPopup = true;
+        } else {
+          this.generateResume();
         }
       }
     }
@@ -2788,6 +2803,9 @@ export class PreviewAndCreateResumeComponent {
               );
             }
           }
+        }
+        else{
+          payload.collegeProject = [];
         }
 
         payload.coreCompentenciesMandatory =

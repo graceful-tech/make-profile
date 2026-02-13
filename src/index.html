@@ -86,6 +86,27 @@
     <script src="assets/vendor/php-email-form/validate.js"></script>
     <script src="assets/js/main.js"></script>
 
+    <script>
+      window.onload = function () {
+        var ua = navigator.userAgent || navigator.vendor || window.opera;
+        var isInstagram = /Instagram|FBAN|FBAV/i.test(ua);
+
+        if (!isInstagram) return;
+
+        var url = location.href;
+
+        // Android Chrome deep link (best effort)
+        if (/Android/i.test(ua)) {
+          window.location.href =
+            "intent://" +
+            url.replace(/^https?:\/\//, "") +
+            "#Intent;scheme=https;package=com.android.chrome;end";
+        } else {
+          window.location.href = url;
+        }
+      };
+    </script>
+
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"

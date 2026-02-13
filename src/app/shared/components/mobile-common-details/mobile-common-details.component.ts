@@ -326,7 +326,21 @@ export class MobileCommonDetailsComponent {
       ) {
         payload.qualification = [];
       } else {
-        payload.qualification.forEach((q: any) => {
+
+        for (const q of payload.qualification) {
+
+          if (!q.fieldOfStudy || q.fieldOfStudy.trim() === '') {
+            this.loader.stop();
+            this.toast.showToast('error', 'Please Enter the Department in College/Unversity Education')
+            return;
+          }
+
+          if (!q.department || q.department.trim() === '') {
+            this.loader.stop();
+            this.toast.showToast('error', 'Please Enter the Qualification in College/Unversity Education')
+            return;
+          }
+
           q.qualificationStartYear = this.datePipe.transform(
             q.qualificationStartYear,
             'yyyy-MM-dd'
@@ -335,7 +349,9 @@ export class MobileCommonDetailsComponent {
             q.qualificationEndYear,
             'yyyy-MM-dd'
           );
-        });
+        };
+
+
       }
 
       if (
@@ -344,7 +360,13 @@ export class MobileCommonDetailsComponent {
       ) {
         payload.schoolEducation = [];
       } else {
-        payload.schoolEducation.forEach((q: any) => {
+        for (const q of payload.schoolEducation) {
+          if (q.educationLevel && q.educationLevel.trim() === '') {
+            this.loader.stop();
+            this.toast.showToast('error', 'Please Enter the Education Level in School Education')
+            return;
+          }
+
           q.schoolStartYear = this.datePipe.transform(
             q.schoolStartYear,
             'yyyy-MM-dd'
@@ -353,7 +375,7 @@ export class MobileCommonDetailsComponent {
             q.schoolEndYear,
             'yyyy-MM-dd'
           );
-        });
+        };
       }
 
       if (
@@ -538,6 +560,9 @@ export class MobileCommonDetailsComponent {
             );
           }
         }
+      }
+      else {
+        payload.collegeProject = [];
       }
 
       payload.coreCompentenciesMandatory =
@@ -936,7 +961,7 @@ export class MobileCommonDetailsComponent {
       ? candidate.hobbies.split(',').map((skill: string) => skill.trim())
       : [];
 
-      candidate.strengths = candidate?.strengths
+    candidate.strengths = candidate?.strengths
       ? candidate.strengths
         .split(',')
         .map((skill: string) => skill.trim())
@@ -1002,32 +1027,32 @@ export class MobileCommonDetailsComponent {
       });
     }
 
-     if (candidate.schoolEducation?.length > 0) {
-          const schoolFormArray = this.candidateForm.get(
-            'schoolEducation'
-          ) as FormArray;
-          schoolFormArray.clear();
-    
-          candidate.schoolEducation?.forEach((qualification) => {
-            schoolFormArray.push(
-              this.createSchoolEducationFormGroup(qualification)
-            );
-          });
-        }
-    
-        if (candidate.diplomaEducation?.length > 0) {
-          const schoolFormArray = this.candidateForm.get(
-            'diplomaEducation'
-          ) as FormArray;
-          schoolFormArray.clear();
-    
-          candidate.diplomaEducation?.forEach((qualification) => {
-            schoolFormArray.push(
-              this.createDiplomaEducationFormGroup(qualification)
-            );
-          });
-        }
-    
+    if (candidate.schoolEducation?.length > 0) {
+      const schoolFormArray = this.candidateForm.get(
+        'schoolEducation'
+      ) as FormArray;
+      schoolFormArray.clear();
+
+      candidate.schoolEducation?.forEach((qualification) => {
+        schoolFormArray.push(
+          this.createSchoolEducationFormGroup(qualification)
+        );
+      });
+    }
+
+    if (candidate.diplomaEducation?.length > 0) {
+      const schoolFormArray = this.candidateForm.get(
+        'diplomaEducation'
+      ) as FormArray;
+      schoolFormArray.clear();
+
+      candidate.diplomaEducation?.forEach((qualification) => {
+        schoolFormArray.push(
+          this.createDiplomaEducationFormGroup(qualification)
+        );
+      });
+    }
+
 
     if (candidate.achievements?.some((a) => a && a.achievementsName.trim())) {
       const achievementFormArray = this.candidateForm.get(
@@ -1503,128 +1528,128 @@ export class MobileCommonDetailsComponent {
   }
 
   createSchoolEducationFormGroup(qualification: SchoolEducation) {
-      return this.fb.group({
-        id: qualification.id,
-        schoolName: qualification.schoolName,
-        educationLevel: qualification.educationLevel,
-        schoolStartYear: qualification.schoolStartYear
-          ? new Date(qualification.schoolStartYear)
-          : null,
-        schoolEndYear: qualification.schoolEndYear
-          ? new Date(qualification.schoolEndYear)
-          : null,
-        percentage: qualification.percentage,
-      });
+    return this.fb.group({
+      id: qualification.id,
+      schoolName: qualification.schoolName,
+      educationLevel: qualification.educationLevel,
+      schoolStartYear: qualification.schoolStartYear
+        ? new Date(qualification.schoolStartYear)
+        : null,
+      schoolEndYear: qualification.schoolEndYear
+        ? new Date(qualification.schoolEndYear)
+        : null,
+      percentage: qualification.percentage,
+    });
+  }
+
+
+  createSchoolEducation(): FormGroup {
+    return this.fb.group({
+      id: [''],
+      schoolName: [''],
+      educationLevel: [''],
+      schoolStartYear: [''],
+      schoolEndYear: [''],
+      percentage: ['']
+    });
+  }
+
+  get schoolControls() {
+    return this.candidateForm.get('schoolEducation') as FormArray;
+  }
+
+  addSchoolEducation() {
+    this.schoolControls.push(this.createSchoolEducation());
+
+  }
+
+  removeSchoolEducation(index: number) {
+    const confirmDelete = window.confirm(
+      'Are you sure you want to remove this school education?'
+    );
+    if (confirmDelete && this.schoolControls.length >= 1) {
+      this.schoolControls.removeAt(index);
+
     }
-  
-  
-    createSchoolEducation(): FormGroup {
-      return this.fb.group({
-        id: [''],
-        schoolName: [''],
-        educationLevel: [''],
-        schoolStartYear: [''],
-        schoolEndYear: [''],
-        percentage: ['']
-      });
-    }
-  
-    get schoolControls() {
-      return this.candidateForm.get('schoolEducation') as FormArray;
-    }
-  
-    addSchoolEducation() {
-      this.schoolControls.push(this.createSchoolEducation());
-  
-    }
-  
-    removeSchoolEducation(index: number) {
-      const confirmDelete = window.confirm(
-        'Are you sure you want to remove this school education?'
-      );
-      if (confirmDelete && this.schoolControls.length >= 1) {
-        this.schoolControls.removeAt(index);
-  
-      }
-  
-    }
-  
-    getSchoolEducationFields() {
-      const route = 'value-sets/search-by-code';
-      const postData = { valueSetCode: 'SCHOOL_QUALIFICATION' };
-      this.api.retrieve(route, postData).subscribe({
-        next: (response) => {
-          this.schoolEducation = response.map((item:any) => ({
+
+  }
+
+  getSchoolEducationFields() {
+    const route = 'value-sets/search-by-code';
+    const postData = { valueSetCode: 'SCHOOL_QUALIFICATION' };
+    this.api.retrieve(route, postData).subscribe({
+      next: (response) => {
+        this.schoolEducation = response.map((item: any) => ({
           ...item,
 
           filterText: item.displayValue
             ? item.displayValue.replace(/\./g, '').toLowerCase()
             : ''
         }));
-        },
-      });
-    }
-  
-  
-    createDiplomaEducationFormGroup(qualification: DiplomaEducation) {
-      return this.fb.group({
-        id: qualification.id,
-        diplomaInstitutionName: qualification.diplomaInstitutionName,
-        qualificationLevel: qualification.qualificationLevel,
-        diplomaStartYear: qualification.diplomaStartYear
-          ? new Date(qualification.diplomaStartYear)
-          : null,
-        diplomaEndYear: qualification.diplomaEndYear
-          ? new Date(qualification.diplomaEndYear)
-          : null,
-        percentage: qualification.percentage,
-      });
-    }
-  
-  
-    getDiplomaEducationFields() {
-      const route = 'value-sets/search-by-code';
-      const postData = { valueSetCode: 'DIPLOMA_QUALIFICATION' };
-      this.api.retrieve(route, postData).subscribe({
-        next: (response) => {
-          this.diplomaEducation = response.map((item:any) => ({
+      },
+    });
+  }
+
+
+  createDiplomaEducationFormGroup(qualification: DiplomaEducation) {
+    return this.fb.group({
+      id: qualification.id,
+      diplomaInstitutionName: qualification.diplomaInstitutionName,
+      qualificationLevel: qualification.qualificationLevel,
+      diplomaStartYear: qualification.diplomaStartYear
+        ? new Date(qualification.diplomaStartYear)
+        : null,
+      diplomaEndYear: qualification.diplomaEndYear
+        ? new Date(qualification.diplomaEndYear)
+        : null,
+      percentage: qualification.percentage,
+    });
+  }
+
+
+  getDiplomaEducationFields() {
+    const route = 'value-sets/search-by-code';
+    const postData = { valueSetCode: 'DIPLOMA_QUALIFICATION' };
+    this.api.retrieve(route, postData).subscribe({
+      next: (response) => {
+        this.diplomaEducation = response.map((item: any) => ({
           ...item,
 
           filterText: item.displayValue
             ? item.displayValue.replace(/\./g, '').toLowerCase()
             : ''
         }));
-        },
-      });
+      },
+    });
+  }
+
+
+  createDiplomaEducation(): FormGroup {
+    return this.fb.group({
+      id: [''],
+      diplomaInstitutionName: [''],
+      qualificationLevel: [''],
+      diplomaStartYear: [''],
+      diplomaEndYear: [''],
+      percentage: ['']
+    });
+  }
+
+  get diplomaControls() {
+    return this.candidateForm.get('diplomaEducation') as FormArray;
+  }
+
+  addDiplomaEducation() {
+    this.diplomaControls.push(this.createDiplomaEducation());
+  }
+
+  removeDiplomaEducation(index: number) {
+    const confirmDelete = window.confirm(
+      'Are you sure you want to remove this Diploma/ITI education?'
+    );
+    if (confirmDelete && this.diplomaControls.length >= 1) {
+      this.diplomaControls.removeAt(index);
     }
-  
-  
-    createDiplomaEducation(): FormGroup {
-      return this.fb.group({
-        id: [''],
-        diplomaInstitutionName: [''],
-        qualificationLevel: [''],
-        diplomaStartYear: [''],
-        diplomaEndYear: [''],
-        percentage: ['']
-      });
-    }
-  
-    get diplomaControls() {
-      return this.candidateForm.get('diplomaEducation') as FormArray;
-    }
-  
-    addDiplomaEducation() {
-      this.diplomaControls.push(this.createDiplomaEducation());
-    }
-  
-    removeDiplomaEducation(index: number) {
-      const confirmDelete = window.confirm(
-        'Are you sure you want to remove this Diploma/ITI education?'
-      );
-      if (confirmDelete && this.diplomaControls.length >= 1) {
-        this.diplomaControls.removeAt(index);
-      }
-    }
-  
+  }
+
 }

@@ -445,6 +445,9 @@ export class CreateResumeCommonDetailsComponent {
           }
         }
       }
+      else{
+          payload.collegeProject = [];
+      }
 
       payload.coreCompentenciesMandatory =
         this.candidates?.coreCompentenciesMandatory !== null

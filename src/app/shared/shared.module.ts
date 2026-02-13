@@ -58,6 +58,7 @@ import { GlobalLoaderComponent } from './components/global-loader/global-loader.
 import { ConfirmationPopupComponent } from './components/confirmation-popup/confirmation-popup.component';
 import { MobileConfirmationPopupComponent } from './components/mobile-confirmation-popup/mobile-confirmation-popup.component';
 import { CommonDecisionComponent } from './components/common-decision/common-decision.component';
+import { UpdateUserPasswordComponent } from './components/update-user-password/update-user-password.component';
   
 @NgModule({
   declarations: [
@@ -106,7 +107,8 @@ import { CommonDecisionComponent } from './components/common-decision/common-dec
     GlobalLoaderComponent,
     ConfirmationPopupComponent,
     MobileConfirmationPopupComponent,
-    CommonDecisionComponent
+    CommonDecisionComponent,
+    UpdateUserPasswordComponent
     
   ],
   imports: [
@@ -181,7 +183,8 @@ import { CommonDecisionComponent } from './components/common-decision/common-dec
     GlobalLoaderComponent,
     ConfirmationPopupComponent,
     MobileConfirmationPopupComponent,
-    CommonDecisionComponent
+    CommonDecisionComponent,
+    UpdateUserPasswordComponent
     
   ],
 })

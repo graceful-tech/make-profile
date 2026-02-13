@@ -42,7 +42,8 @@ export class InterceptorService implements HttpInterceptor {
       request.url.includes('/job-category') ||
       request.url.includes('/content/get-suggested-skills') ||
       request.url.includes('/templates/get-all') ||
-      request.url.includes('/candidate/upload-image')
+      request.url.includes('/candidate/upload-image') ||
+      request.url.includes('/forgot-password/update-user')
 
 
     ) {

@@ -543,6 +543,9 @@ export class MobileMultiPageFormsComponent {
           }
         }
       }
+      else{
+          payload.collegeProject = [];
+      }
 
       payload.coreCompentenciesMandatory =
         this.candidates?.coreCompentenciesMandatory !== null
@@ -1545,6 +1548,9 @@ getFieldOfStudy() {
               );
             }
           }
+        }
+        else{
+            payload.collegeProject = [];
         }
 
         payload.coreCompentenciesMandatory =

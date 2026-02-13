@@ -379,6 +379,9 @@ export class CandidatesDetailsComponent {
           payload.experiences = [];
         } else {
           payload.experiences = payload.experiences.map((exp: any) => {
+
+            exp.id === null ? exp.id = '' : exp.id = exp.id;
+
             const experienceYearStartDate = this.datePipe.transform(
               exp.experienceYearStartDate,
               'yyyy-MM-dd'
@@ -414,6 +417,10 @@ export class CandidatesDetailsComponent {
                     .join(', ')
                   : proj.projectSkills,
               }));
+
+
+
+
             }
 
             return {
@@ -433,7 +440,21 @@ export class CandidatesDetailsComponent {
       ) {
         payload.qualification = [];
       } else {
-        payload.qualification.forEach((q: any) => {
+        for (const q of payload.qualification) {
+
+
+          if (!q.fieldOfStudy || q.fieldOfStudy.trim() === '') {
+            this.loader.stop();
+            this.toast.showToast('error', 'Please Enter the Department in College/Unversity Education')
+            return;
+          }
+
+          if (!q.department || q.department.trim() === '') {
+            this.loader.stop();
+            this.toast.showToast('error', 'Please Enter the Qualification in College/Unversity Education')
+            return;
+          }
+
           q.qualificationStartYear = this.datePipe.transform(
             q.qualificationStartYear,
             'yyyy-MM-dd'
@@ -442,7 +463,7 @@ export class CandidatesDetailsComponent {
             q.qualificationEndYear,
             'yyyy-MM-dd'
           );
-        });
+        };
       }
 
       if (
@@ -451,7 +472,13 @@ export class CandidatesDetailsComponent {
       ) {
         payload.schoolEducation = [];
       } else {
-        payload.schoolEducation.forEach((q: any) => {
+        for (const q of payload.schoolEducation) {
+          if (q.educationLevel && q.educationLevel.trim() === '') {
+            this.loader.stop();
+            this.toast.showToast('error', 'Please Enter the Education Level in School Education')
+            return;
+          }
+
           q.schoolStartYear = this.datePipe.transform(
             q.schoolStartYear,
             'yyyy-MM-dd'
@@ -460,7 +487,8 @@ export class CandidatesDetailsComponent {
             q.schoolEndYear,
             'yyyy-MM-dd'
           );
-        });
+        };
+
       }
 
       if (
@@ -613,6 +641,9 @@ export class CandidatesDetailsComponent {
             );
           }
         }
+      }
+      else {
+        payload.collegeProject = [];
       }
 
       this.api.retrieve(route, payload).subscribe({
@@ -1210,7 +1241,7 @@ export class CandidatesDetailsComponent {
       closable: true,
       width: '70%',
       height: '95%',
-      header: 'Update Your Resume',
+      header: 'Update Your Resume Details',
       styleClass: 'update-dialog-header',
     });
 
@@ -2344,6 +2375,7 @@ export class CandidatesDetailsComponent {
     });
 
   }
+
 
 
 }

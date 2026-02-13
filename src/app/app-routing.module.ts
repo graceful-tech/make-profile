@@ -21,6 +21,7 @@ import { SelectUserDecisionComponent } from './shared/custom-landing/select-user
 import { FresherFormPageComponent } from './shared/custom-landing/fresher-form-page/fresher-form-page.component';
 import { MobileFresherFormPageComponent } from './shared/custom-landing/mobile-fresher-form-page/mobile-fresher-form-page.component';
 import { CommonDecisionComponent } from './shared/components/common-decision/common-decision.component';
+import { UpdateUserPasswordComponent } from './shared/components/update-user-password/update-user-password.component';
 
 const routes: Routes = [
   { path: '', component: NewLandingPageComponent },
@@ -68,6 +69,7 @@ const routes: Routes = [
 
   { path: 'user-decision', component: CommonDecisionComponent },
 
+   { path: 'update-user-password/:userName', component: UpdateUserPasswordComponent },
 
   {
     path: 'candidate',

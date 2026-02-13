@@ -479,6 +479,9 @@ export class FinalVerifyComponent {
           }
         }
       }
+      else{
+          payload.collegeProject = [];
+      }
 
       payload.coreCompentenciesMandatory =
         this.candidates?.coreCompentenciesMandatory !== null
